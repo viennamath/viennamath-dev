@@ -14,22 +14,39 @@
 /********** Inspired by Todd Veldhuizen's expression-templates ************/
 /********** Applied on polynomials for easier basis-function-setup ********/
 
-#ifndef ELFEM_EXPRESSIONS_GUARD
-#define ELFEM_EXPRESSIONS_GUARD
+#ifndef VIENNAMATH_EXPRESSION_GUARD
+#define VIENNAMATH_EXPRESSION_GUARD
 
-#include "afftrans.h"
 #include "typelist.h"
-#include "expression_header.h"
 
-namespace elfem {
+namespace viennamath{
 
-namespace expressions{
-
+  template <typename LHS_TYPE, typename RHS_TYPE, typename op_tag>
+  struct op_traits
+  {
+    typedef typename op_tag::ERROR_CANNOT_DETERMINE_TYPE_OF_RESULT  error_type;
+  };
+  
+  
+  //sample overload for expr + expr (needs refinement...)
+  template <typename LHS_TYPE, typename RHS_TYPE>
+  struct op_traits<LHS_TYPE, RHS_TYPE, op_plus>
+  {
+    typedef ct_expr<typename LHS_TYPE::result_type,
+                    LHS_TYPE,
+                    RHS_TYPE,
+                    op_plus>  result_type;
+  };
+  
+  //tons of other overloads to follow...
+  
+  
   //operators:
-  template <typename T>
   struct op_plus
   {
-    static T apply(T lhs, T rhs)
+    template <typename LHS_TYPE, typename RHS_TYPE>
+    static typename op_traits<LHS_TYPE, RHS_TYPE, op_plus>::result_type
+    apply(LHS_TYPE const & lhs, RHS_TYPE const & rhs)
     { return lhs + rhs; }
 
     static void print()

@@ -11,8 +11,8 @@
 ======================================================================= */
 
 
-#ifndef VIENNAMATH_UNKNOWN_CPP
-#define VIENNAMATH_UNKNOWN_CPP
+#ifndef VIENNAMATH_CONSTANT_CPP
+#define VIENNAMATH_CONSTANT_CPP
 
 namespace viennamath
 {
@@ -23,7 +23,7 @@ namespace viennamath
   {
     
     public:
-      ScalarExpression(ScalarType s_) : s(s_) {};
+      constant(ScalarType s_) : s(s_) {};
 
       ScalarType operator() () const
       {
@@ -41,7 +41,7 @@ namespace viennamath
   };
 
   //specialization: for long, we use compile-time magic :-)
-  template <long value_ = 0>
+  template <long value_>
   class constant<long, value_>
   {    
     public:

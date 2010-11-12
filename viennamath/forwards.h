@@ -7,86 +7,47 @@
 
    authors:    Karl Rupp                          rupp@iue.tuwien.ac.at
 
-   license:    MIT (X11), see file LICENSE in the ViennaMesh base directory
+   license:    MIT (X11), see file LICENSE in the ViennaMath base directory
 ======================================================================= */
 
-  //prototypes for expressions.h
-#ifndef ELFEM_EXPRESSION_HEADER_GUARD
-#define ELFEM_EXPRESSION_HEADER_GUARD
+#ifndef VIENNAMATH_FORWARDS_GUARD
+#define VIENNAMATH_FORWARDS_GUARD
 
-namespace elfem{
+namespace viennamath{
 
-  template <typename CellTag>
-  struct BFStock;
-
-namespace expressions{
-
-  template <typename EXPR, typename BF1, typename BF2>
-  struct EXPRESSION_SUBSTITUTE_BASISFUNCTIONS;
+ namespace expressions{
 
   template <typename EXP, bool again = true>
   struct EXPRESSION_OPTIMIZER;
 
-  template <typename T, typename LHS, typename RHS, typename OP >
-  class Expression;
+  ///////// representation of a mathematical expression: ///////////////
+  
+  //compile time expression:
+  template <typename RetType, typename LHS, typename RHS, typename OP >
+  class ct_expr;
 
-  typedef double          ExpressionDefaultScalarType;
-
-  template <unsigned long id>
-  struct var;
-
-  template <long num, typename diff_tag>
-  struct basisfun;
-
-  template <typename LHS, typename RHS, typename OP>
-  struct LogicalExpression;
-
-  template <long value_>
-  struct ScalarExpression;
-
-  template <typename T>
+  //runtime expression
+  template <typename RetType>
+  class rt_expr;
+  
+  
+  ///////// representation of (scalar and vector-valued) functions: ////////////
+  
+  //       (to be done) - concept required!
+  
+  
+  ///////// tags for operators: /////////////////////
   struct op_plus;
-
-  template <typename T>
   struct op_minus;
-
-  template <typename T>
   struct op_mult;
-
-  template <typename T>
   struct op_div;
-
-  struct op_equal;
-
-  struct CompoundUnused;
-
-  template <long num, long denum,
-              typename T1, long pow1,
-              typename T2, long pow2,   //no point in using less than two compound-types
-              typename T3 = CompoundUnused, long pow3 = 0,
-              typename T4 = CompoundUnused, long pow4 = 0
-            >
-  struct CompoundExpression;
-
+  //struct op_equal;
 
   template <typename L_BOUND, typename U_BOUND, typename EXPR, typename INTVAR>
   struct EXPRESSION_INTEGRATE;
 
   template <typename EXPR, long startval = 1>
   struct EXPRESSION_EXPAND;
-
-//   template <typename EXPR, typename BF1, typename BF2>
-//   struct ANALYTIC_INTEGRATION_ON_LINE;
-// 
-//   template <typename EXPR, typename BF1, typename BF2>
-//   struct ANALYTIC_INTEGRATION_ON_TRIANGLE;
-// 
-//   template <typename EXPR, typename BF1, typename BF2>
-//   struct ANALYTIC_INTEGRATION_ON_TETRAHEDRON;
-
-
-  template <typename CellTag, typename EXPR, typename BF1, typename BF2>
-  struct ANALYTIC_INTEGRATION;
 
   template <typename EXPR>
   struct EXPRESSION_REDUCE_DIVISIONS;
@@ -96,47 +57,6 @@ namespace expressions{
   struct DiffTraits;
 
   // helper struct for evaluation at a point (cf. ExpressionHelper)
-
-  // for (compounded) expressions:
-  template <typename T>
-  struct PointEvaluator
-  {
-    template <typename Point>
-    static double apply(T const & expr, Point const & p)
-    {
-      return expr(p);
-    }
-  };
-
-  template <>
-  struct PointEvaluator<double>
-  {
-    template <typename Point>
-    static double apply(double value, Point const & p)
-    {
-      return value;
-    }
-  };
-
-  template <>
-  struct PointEvaluator<float>
-  {
-    template <typename Point>
-    static float apply(float value, Point const & p)
-    {
-      return value;
-    }
-  };
-
-  template <>
-  struct PointEvaluator<long>
-  {
-    template <typename Point>
-    static long apply(long value, Point const & p)
-    {
-      return value;
-    }
-  };
 
   template <long arg>
   struct FACTORIAL
@@ -150,19 +70,12 @@ namespace expressions{
     enum { ReturnValue = 1 };
   };
 
-
   //Definitions from assembly:
   template <typename LHSType, typename RHSType>
   struct EquationType;
 
   template <typename IntDomain, typename Integrand, typename IntTag>
   struct IntegrationType;
-
-  template <long id>
-  struct Gamma;
-
-  template <long id>
-  struct Interface;
 
 } //expressions
 

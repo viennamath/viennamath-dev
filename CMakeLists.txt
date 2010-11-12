@@ -6,6 +6,7 @@ SET(CMAKE_VERBOSE_MAKEFILE ON)
 
 #specify include directory
 #INCLUDE_DIRECTORIES("${PROJECT_SOURCE_DIR}/viennama")
+INCLUDE_DIRECTORIES(".")
 
 #add definitions, compiler switches, etc.
 ADD_DEFINITIONS(-Wall -O2)
