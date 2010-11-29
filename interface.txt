@@ -1,0 +1,30 @@
+
+#unknowns:
+variable<double, 0> x;
+variable<double, 1> y;
+
+#constants:
+constant<double> pi(3.1415);    //run time
+constant<long>   rt_four(4);    //run time 
+constant<long, compile_time_constant<4> > four;         //compile time
+
+#'points':
+value v1 = ( pi, rt_four );     //run time value
+value v2 = ( four, four  );     //compile time value assigned to run time value
+
+#create functions
+expr g = sin(pi * x) + exp(y) - x*y + four;     //compile-time is implicitly converted to run time here
+
+#evaluation:
+g(point);       //evaluation at a point at run time
+(x*y - four)(v1);              //run time evaluation of compile time expression
+(x*y - four)( (four, four) );              //compile time evaluation of compile time expression
+
+#integration:
+value v1 = integral( (a, b), integrand, rule);  //allows homogeneous interface for compile- and runtime evaluation.
+value v2 = integral( Omega, integrand, rule);         //for FEM - Omega denotes the integration domain
+expr h = integral( (a, b), integrand, rule);  //integration over a variable for a multi-variate function, result is a function again
+
+#differentiation:
+expr h = diff(func, variable);       //returns a function object
+diff(func, variable)( (four, four) ); // can be evaluated at compile- or runtime.
