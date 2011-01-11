@@ -1,0 +1,71 @@
+
+#include <iostream>
+#include <vector>
+#include <stdlib.h>
+
+#include "viennamath/vector.hpp"
+#include "viennamath/unknown.hpp"
+#include "viennamath/constant.hpp"
+
+
+int main()
+{
+  viennamath::unknown<double, 0> x;
+  viennamath::unknown<double, 1> y;
+  viennamath::unknown<double, 2> z;
+  viennamath::constant<double> c4(4.0);
+  viennamath::constant<long> c6(6);
+  viennamath::constant<long, viennamath::compile_time_constant<8> > c8;
+  
+  std::vector<double> p(2);
+  p[0] = 1;
+  p[1] = 2;
+  p[2] = 3;
+  
+  std::cout << "--- Involved types ---" << std::endl;
+  std::cout << "x: " << x << std::endl;
+  std::cout << "y: " << y << std::endl;
+  std::cout << "z: " << z << std::endl;
+  std::cout << "c4: " << c4 << std::endl;
+  std::cout << "c6: " << c6 << std::endl;
+  std::cout << "c8: " << c8 << std::endl;
+
+  std::cout << "--- Evaluation of constants ---" << std::endl;
+  std::cout << "c4(" << p[0] << "," << p[1] << ", " << p[2] << ") = " << c4(p) << std::endl;
+  std::cout << "c4(" << c4 << ") = " << c4(c4) << std::endl;
+  std::cout << "c4(" << c8 << ") = " << c4(c8) << std::endl;
+  
+  std::cout << "c8(" << p[0] << "," << p[1] << ", " << p[2] << ") = " << c8(p) << std::endl;
+  std::cout << "c8(" << c4 << ") = " << c8(c4) << std::endl;
+  std::cout << "c8(" << c8 << ") = " << c8(c8) << std::endl;
+  
+  std::cout << "--- Evaluation of variables via std::vector ---" << std::endl;
+  std::cout << "x(" << p[0] << "," << p[1] << ", " << p[2] << ") = " << x(p) << std::endl;
+  std::cout << "y(" << p[0] << "," << p[1] << ", " << p[2] << ") = " << y(p) << std::endl;
+  std::cout << "z(" << p[0] << "," << p[1] << ", " << p[2] << ") = " << z(p) << std::endl;
+
+  std::cout << "--- Evaluation of variables via constant c4 ---" << std::endl;
+  std::cout << "x(" << c4 << ") = " << x(c4) << std::endl;
+  //std::cout << "y(" << c4 << ") = " << y(c4) << std::endl;
+
+  std::cout << "--- Evaluation of variables via constant c8 ---" << std::endl;
+  std::cout << "x(" << c8 << ") = " << x(c8) << std::endl;
+  //std::cout << "y(" << c8 << ") = " << y(c8) << std::endl;
+
+  std::cout << "--- Evaluation of variables via vector (c4, c8) ---" << std::endl;
+  std::cout << "x(" << viennamath::make_vector(c4, c6, c8) << ") = " << x( viennamath::make_vector(c4, c6, c8) ) << std::endl;
+  std::cout << "y(" << viennamath::make_vector(c4, c6, c8) << ") = " << y( viennamath::make_vector(c4, c6, c8) ) << std::endl;
+  std::cout << "z(" << viennamath::make_vector(c4, c6, c8) << ") = " << z( viennamath::make_vector(c4, c6, c8) ) << std::endl;
+  
+  long long_x = x( viennamath::make_vector(c4, c6, c8) );
+  long long_y = y( viennamath::make_vector(c4, c6, c8) );
+  long long_z = z( viennamath::make_vector(c4, c6, c8) );
+  std::cout << "Long variables: " << long_x << ", " << long_y << ", " << long_z << std::endl;
+  
+  long double_x = x( viennamath::make_vector(c4, c6, c8) );
+  long double_y = y( viennamath::make_vector(c4, c6, c8) );
+  long double_z = z( viennamath::make_vector(c4, c6, c8) );
+  std::cout << "Double variables: " << double_x << ", " << double_y << ", " << double_z << std::endl;
+  
+  return EXIT_SUCCESS;
+}

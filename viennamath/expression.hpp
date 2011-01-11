@@ -10,4 +10,16 @@
    license:    MIT (X11), see file LICENSE in the ViennaMath base directory
 ======================================================================= */
 
-// create something great here...
+
+
+#ifndef VIENNAMATH_EXPRESSION_CPP
+#define VIENNAMATH_EXPRESSION_CPP
+
+#include "viennamath/expression_compile_time.hpp"
+#include "viennamath/expression_run_time.hpp"
+#include "viennamath/op_tags.hpp"
+//#include "viennamath/expression_compile_time_operations.hpp"
+#include "viennamath/expression_run_time_operations.hpp"
+
+
+#endif

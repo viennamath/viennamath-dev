@@ -9,11 +9,10 @@ SET(CMAKE_VERBOSE_MAKEFILE ON)
 INCLUDE_DIRECTORIES(".")
 
 #add definitions, compiler switches, etc.
-ADD_DEFINITIONS(-Wall -O2)
+ADD_DEFINITIONS(-Wall -pedantic -O3)
 
 #list all source files here
-ADD_EXECUTABLE(test examples/test.cpp)
+ADD_EXECUTABLE(basic_test examples/basic_test.cpp)
+ADD_EXECUTABLE(runtime_test examples/runtime_test.cpp)
 
-#need to link to some other libraries ? just add them here
-#TARGET_LINK_LIBRARIES(quantitymanager png jpeg)
  

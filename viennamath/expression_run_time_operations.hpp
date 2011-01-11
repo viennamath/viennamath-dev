@@ -10,4 +10,23 @@
    license:    MIT (X11), see file LICENSE in the ViennaMath base directory
 ======================================================================= */
 
-// create something great here...
+
+
+#ifndef VIENNAMATH_EXPRESSION_RUN_TIME_OPERATIONS_CPP
+#define VIENNAMATH_EXPRESSION_RUN_TIME_OPERATIONS_CPP
+
+#include "viennamath/forwards.h"
+#include "viennamath/expression_compile_time.hpp"
+#include "viennamath/expression_run_time.hpp"
+#include "viennamath/op_tags.hpp"
+
+namespace viennamath
+{
+  expr operator+(expr const & lhs, expr const & rhs)
+  {
+    return expr(lhs.clone(), op_plus().clone(), rhs.clone());
+  }
+  
+}
+
+#endif

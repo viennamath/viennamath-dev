@@ -2,7 +2,7 @@
    Copyright (c) 2010, Institute for Microelectronics, TU Vienna.
    http://www.iue.tuwien.ac.at
                              -----------------
-                     ViennaMath - Symbolic and Numeric Math in C++
+                 ViennaMath - Symbolic and Numeric Math in C++
                              -----------------
 
    authors:    Karl Rupp                          rupp@iue.tuwien.ac.at
@@ -10,76 +10,52 @@
    license:    MIT (X11), see file LICENSE in the ViennaMath base directory
 ======================================================================= */
 
-#ifndef VIENNAMATH_FORWARDS_GUARD
-#define VIENNAMATH_FORWARDS_GUARD
 
-namespace viennamath{
 
- namespace expressions{
+#ifndef VIENNAMATH_FORWARDS_H
+#define VIENNAMATH_FORWARDS_H
 
-  template <typename EXP, bool again = true>
-  struct EXPRESSION_OPTIMIZER;
-
-  ///////// representation of a mathematical expression: ///////////////
+namespace viennamath
+{
   
-  //compile time expression:
-  template <typename RetType, typename LHS, typename RHS, typename OP >
-  class ct_expr;
-
-  //runtime expression
-  template <typename RetType>
-  class rt_expr;
+  /////// run time expression ///////
+  class expression_interface;
+  class expr;
   
+  /////// interface for op_tags: ///////
+  class op_interface
+  {
+    public:
+      virtual ~op_interface() {}
+      
+      virtual op_interface * clone() const = 0;
+      virtual std::string print() const = 0;
+  };
   
-  ///////// representation of (scalar and vector-valued) functions: ////////////
-  
-  //       (to be done) - concept required!
-  
-  
-  ///////// tags for operators: /////////////////////
   struct op_plus;
   struct op_minus;
   struct op_mult;
   struct op_div;
-  //struct op_equal;
+  
+  /////// unknown ///////
+  template <typename ScalarType, 
+            unsigned long id = 0>
+  struct unknown;
 
-  template <typename L_BOUND, typename U_BOUND, typename EXPR, typename INTVAR>
-  struct EXPRESSION_INTEGRATE;
-
-  template <typename EXPR, long startval = 1>
-  struct EXPRESSION_EXPAND;
-
-  template <typename EXPR>
-  struct EXPRESSION_REDUCE_DIVISIONS;
-
-
-  template <char diffvar, typename EXPR, typename op_tag = typename EXPR::OperatorType>
-  struct DiffTraits;
-
-  // helper struct for evaluation at a point (cf. ExpressionHelper)
-
-  template <long arg>
-  struct FACTORIAL
+  
+  /////// constant ///////
+  class run_time_constant {};
+  template <long i>
+  class compile_time_constant
   {
-    enum { ReturnValue = arg * FACTORIAL<arg-1>::ReturnValue };
+    enum { value = i }; 
   };
-
-  template <>
-  struct FACTORIAL<0>
-  {
-    enum { ReturnValue = 1 };
-  };
-
-  //Definitions from assembly:
-  template <typename LHSType, typename RHSType>
-  struct EquationType;
-
-  template <typename IntDomain, typename Integrand, typename IntTag>
-  struct IntegrationType;
-
-} //expressions
-
-} //elfem
+  
+  template <typename ScalarType,
+            typename compile_time_qualifier = run_time_constant>
+  class constant;
+  
+  
+}
 
 #endif
-
