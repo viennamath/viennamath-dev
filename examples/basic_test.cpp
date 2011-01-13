@@ -3,9 +3,7 @@
 #include <vector>
 #include <stdlib.h>
 
-#include "viennamath/vector.hpp"
-#include "viennamath/unknown.hpp"
-#include "viennamath/constant.hpp"
+#include "viennamath/expression.hpp"
 
 
 int main()
@@ -15,7 +13,7 @@ int main()
   viennamath::unknown<double, 2> z;
   viennamath::constant<double> c4(4.0);
   viennamath::constant<long> c6(6);
-  viennamath::constant<long, viennamath::compile_time_constant<8> > c8;
+  viennamath::ct_constant<8> c8;
   
   std::vector<double> p(2);
   p[0] = 1;

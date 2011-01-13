@@ -73,7 +73,7 @@ namespace viennamath
     //per default, access id-th element;
     static return_type get(vector_1<T0> const & v)
     {
-      return v[index_helper<id>()];
+      return v[ct_index<id>()];
     }
   };
   
@@ -90,7 +90,7 @@ namespace viennamath
     //per default, access id-th element;
     static return_type get(vector_2<T0, T1> const & v)
     {
-      return v[index_helper<id>()];
+      return v[ct_index<id>()];
     }
   };
 
@@ -107,35 +107,35 @@ namespace viennamath
     //per default, access id-th element;
     static return_type get(vector_3<T0, T1, T2> const & v)
     {
-      return v[index_helper<id>()];
+      return v[ct_index<id>()];
     }
   };
 
   
 
   /*********** evaluation of a run time constant: *****************/
-  template <typename ScalarType, typename T>
+  template <typename ScalarType>
   struct unknown_traits <ScalarType,
-                         constant<ScalarType, T>,
+                         constant<ScalarType>,
                          0>
   {
-    typedef viennamath::constant<ScalarType, T>   return_type;
+    typedef viennamath::constant<ScalarType>   return_type;
     
     //per default, access id-th element;
-    static return_type get(viennamath::constant<ScalarType, T> const & v)
+    static return_type get(viennamath::constant<ScalarType> const & v)
     {
       return v;
     }
   };
 
   //guard: something like (x*y - z)(constant<double>(4)) is not allowed
-  template <typename ScalarType, typename T, long id>
+  template <typename ScalarType, long id>
   struct unknown_traits <ScalarType, 
-                         constant<ScalarType, T>,
+                         constant<ScalarType>,
                          id>
   {
     //try to provide a good compiler error message:
-    typedef typename viennamath::constant<ScalarType, T>::ERROR_PROVIDED_NOT_ENOUGH_ARGUMENTS_TO_EXPRESSION   error_type;
+    typedef typename viennamath::constant<ScalarType>::ERROR_PROVIDED_NOT_ENOUGH_ARGUMENTS_TO_EXPRESSION   error_type;
     
     //providing a non-vector type is bogus -> force linker error!
   };
@@ -143,26 +143,26 @@ namespace viennamath
   /************* evaluation of a compile time constant *****************/
   template <typename ScalarType, long value_>
   struct unknown_traits <ScalarType, 
-                         constant<long, compile_time_constant<value_> >,
+                         ct_constant<value_>,
                          0>
   {
-    typedef viennamath::constant<long, compile_time_constant<value_> >   return_type;
+    typedef viennamath::ct_constant<value_>   return_type;
     
     //per default, access id-th element;
-    static return_type get(viennamath::constant<long, compile_time_constant<value_> > const & v)
+    static return_type get(viennamath::ct_constant<value_> const & v)
     {
       return v;
     }
   };
 
-  //guard: something like (x*y - z)(constant<long, compile_time_constant<4> >()) is not allowed
+  //guard: something like (x*y - z)(constant<long, ct_constant<4> >()) is not allowed
   template <typename ScalarType, long value_, long id>
   struct unknown_traits <ScalarType, 
-                         constant<long, compile_time_constant<value_> >, 
+                         ct_constant<value_>, 
                          id>
   {
     //try to provide a good compiler error message:
-    typedef typename compile_time_constant<value_>::ERROR_PROVIDED_NOT_ENOUGH_ARGUMENTS_TO_EXPRESSION   error_type;
+    typedef typename ct_constant<value_>::ERROR_PROVIDED_NOT_ENOUGH_ARGUMENTS_TO_EXPRESSION   error_type;
     
     //providing a non-vector type is bogus -> force linker error!
   };
@@ -202,7 +202,38 @@ namespace viennamath
       return unknown_traits<ScalarType, VectorType, id>::get(v);
     }
     
+    //interface requirements:
+    expression_interface * clone() const { return new unknown(); }
+    expr eval(std::vector<double> const & v) const { return expr(constant<ScalarType>((*this)(v))); }
+    std::string str() const
+    {
+      std::stringstream ss;
+      ss << "unknown<" << id << ">";
+      return ss.str();      
+    }
+    numeric_type unwrap() const
+    {
+      throw expression_not_unwrappable();
+      return 0;
+    }
+      
+
+
+
     ////////////////// Operations //////////////////////////////
+    
+    //operator+
+    template <typename LHS, typename OP, typename RHS>
+    expression<unknown<ScalarType, id>,
+               op_plus,
+               expression<LHS, OP, RHS> >
+    operator+(expression<LHS, OP, RHS> const & other) const
+    {
+      return expression<unknown<ScalarType, id>,
+                        op_plus,
+                        expression<LHS, OP, RHS> >(*this, other);
+    }
+    
     template <typename OtherScalarType, unsigned long other_id>
     expression<unknown<ScalarType, id>,
                op_plus,
@@ -213,17 +244,169 @@ namespace viennamath
                         op_plus,
                         unknown<OtherScalarType, other_id> >(*this, other);
     }
-    
-    //interface requirements:
-    expression_interface * clone() const { return new unknown(); }
-    std::string print() const
+
+    template <typename OtherScalarType>
+    expression<unknown<ScalarType, id>,
+               op_plus,
+               constant<OtherScalarType> >
+    operator+(constant<OtherScalarType> const & other) const
     {
-      std::stringstream ss;
-      ss << "unknown<" << id << ">";
-      return ss.str();      
+      return expression<unknown<ScalarType, id>,
+                        op_plus,
+                        constant<OtherScalarType> >(*this, other);
     }
-    bool is_primitive() const { return true; }
+
+    template <long value>
+    expression<unknown<ScalarType, id>,
+               op_plus,
+               ct_constant<value> >
+    operator+(ct_constant<value> const & other) const
+    {
+      return expression<unknown<ScalarType, id>,
+                        op_plus,
+                        ct_constant<value> >(*this, other);
+    }
+
+
+    //operator-
+    template <typename LHS, typename OP, typename RHS>
+    expression<unknown<ScalarType, id>,
+               op_minus,
+               expression<LHS, OP, RHS> >
+    operator-(expression<LHS, OP, RHS> const & other) const
+    {
+      return expression<unknown<ScalarType, id>,
+                        op_minus,
+                        expression<LHS, OP, RHS> >(*this, other);
+    }
     
+    template <typename OtherScalarType, unsigned long other_id>
+    expression<unknown<ScalarType, id>,
+               op_minus,
+               unknown<OtherScalarType, other_id> >
+    operator-(unknown<OtherScalarType, other_id> const & other) const
+    {
+      return expression<unknown<ScalarType, id>,
+                        op_minus,
+                        unknown<OtherScalarType, other_id> >(*this, other);
+    }
+
+    template <typename OtherScalarType>
+    expression<unknown<ScalarType, id>,
+               op_minus,
+               constant<OtherScalarType> >
+    operator-(constant<OtherScalarType> const & other) const
+    {
+      return expression<unknown<ScalarType, id>,
+                        op_minus,
+                        constant<OtherScalarType> >(*this, other);
+    }
+    
+    template <long value>
+    expression<unknown<ScalarType, id>,
+               op_minus,
+               ct_constant<value> >
+    operator-(ct_constant<value> const & other) const
+    {
+      return expression<unknown<ScalarType, id>,
+                        op_minus,
+                        ct_constant<value> >(*this, other);
+    }
+
+
+    //operator*
+    template <typename LHS, typename OP, typename RHS>
+    expression<unknown<ScalarType, id>,
+               op_mult,
+               expression<LHS, OP, RHS> >
+    operator*(expression<LHS, OP, RHS> const & other) const
+    {
+      return expression<unknown<ScalarType, id>,
+                        op_mult,
+                        expression<LHS, OP, RHS> >(*this, other);
+    }
+    
+    template <typename OtherScalarType, unsigned long other_id>
+    expression<unknown<ScalarType, id>,
+               op_mult,
+               unknown<OtherScalarType, other_id> >
+    operator*(unknown<OtherScalarType, other_id> const & other) const
+    {
+      return expression<unknown<ScalarType, id>,
+                        op_mult,
+                        unknown<OtherScalarType, other_id> >(*this, other);
+    }
+
+    template <typename OtherScalarType>
+    expression<unknown<ScalarType, id>,
+               op_mult,
+               constant<OtherScalarType> >
+    operator*(constant<OtherScalarType> const & other) const
+    {
+      return expression<unknown<ScalarType, id>,
+                        op_mult,
+                        constant<OtherScalarType> >(*this, other);
+    }
+
+    template <long value>
+    expression<unknown<ScalarType, id>,
+               op_mult,
+               ct_constant<value> >
+    operator*(ct_constant<value> const & other) const
+    {
+      return expression<unknown<ScalarType, id>,
+                        op_mult,
+                        ct_constant<value> >(*this, other);
+    }
+
+
+    //operator/
+    template <typename LHS, typename OP, typename RHS>
+    expression<unknown<ScalarType, id>,
+               op_div,
+               expression<LHS, OP, RHS> >
+    operator/(expression<LHS, OP, RHS> const & other) const
+    {
+      return expression<unknown<ScalarType, id>,
+                        op_div,
+                        expression<LHS, OP, RHS> >(*this, other);
+    }
+    
+    template <typename OtherScalarType, unsigned long other_id>
+    expression<unknown<ScalarType, id>,
+               op_div,
+               unknown<OtherScalarType, other_id> >
+    operator/(unknown<OtherScalarType, other_id> const & other) const
+    {
+      return expression<unknown<ScalarType, id>,
+                        op_div,
+                        unknown<OtherScalarType, other_id> >(*this, other);
+    }
+
+    template <typename OtherScalarType>
+    expression<unknown<ScalarType, id>,
+               op_div,
+               constant<OtherScalarType> >
+    operator/(constant<OtherScalarType> const & other) const
+    {
+      return expression<unknown<ScalarType, id>,
+                        op_div,
+                        constant<OtherScalarType> >(*this, other);
+    }
+    
+    template <long value>
+    expression<unknown<ScalarType, id>,
+               op_div,
+               ct_constant<value> >
+    operator/(ct_constant<value> const & other) const
+    {
+      return expression<unknown<ScalarType, id>,
+                        op_div,
+                        ct_constant<value> >(*this, other);
+    }
+    
+    
+
   };
 
   template <typename ScalarType, unsigned long id>

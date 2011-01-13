@@ -12,22 +12,34 @@
 
 
 
-#ifndef VIENNAMATH_EXPRESSION_CPP
-#define VIENNAMATH_EXPRESSION_CPP
+#ifndef VIENNAMATH_EXPRESSION_COMPILE_TIME_OPERATIONS_CPP
+#define VIENNAMATH_EXPRESSION_COMPILE_TIME_OPERATIONS_CPP
 
 #include "viennamath/forwards.h"
-
-#include "viennamath/vector.hpp"
-#include "viennamath/ct_constant.hpp"
 #include "viennamath/constant.hpp"
 #include "viennamath/unknown.hpp"
 #include "viennamath/expression_compile_time.hpp"
-#include "viennamath/expression_run_time.hpp"
-
 #include "viennamath/op_tags.hpp"
-//#include "viennamath/expression_compile_time_operations.hpp"
-#include "viennamath/expression_run_time_operations.hpp"
-#include "viennamath/constant_operations.hpp"
 
+namespace viennamath
+{
+  /////////////////////////////////// operator+ ///////////////////////////////////
+  
+   
+  
+
+  /////////////////////////////////// operator- ///////////////////////////////////
+
+
+
+  /////////////////////////////////// operator* ///////////////////////////////////
+
+
+
+
+  /////////////////////////////////// operator/ ///////////////////////////////////
+
+  
+}
 
 #endif
