@@ -16,9 +16,30 @@
 #define VIENNAMATH_EXPRESSION_COMPILE_TIME_CPP
 
 #include <ostream>
+#include "viennamath/forwards.h"
 
 namespace viennamath
 {
+  
+  template <typename T>
+  struct expression_traits
+  {
+    typedef T const &   const_reference_type; 
+  };
+  
+  //for compile time constants, we have to copy in order to circumvent problems with temporaries
+  template <long value>
+  struct expression_traits < ct_constant<value> >
+  {
+     typedef ct_constant<value>    const_reference_type;
+  };
+
+  template <typename T>
+  struct expression_traits < constant<T> >
+  {
+     typedef constant<T>    const_reference_type;
+  };
+  
   
   //A compile time expression
   template <typename LHS,
@@ -26,20 +47,41 @@ namespace viennamath
             typename RHS>
   class expression
   {
+      typedef typename expression_traits<LHS>::const_reference_type    internal_lhs_type;
+      typedef typename expression_traits<RHS>::const_reference_type    internal_rhs_type;
     public:
       typedef LHS    lhs_type;
       typedef OP     op_type;
       typedef RHS    rhs_type;
       
-      explicit expression(LHS const & lhs, RHS const & rhs) : lhs_(lhs), rhs_(rhs) {}
+      explicit expression() : lhs_(LHS()), rhs_(RHS()) {} 
       
-      LHS const & lhs() const { return lhs_; }
-      RHS const & rhs() const { return rhs_; }
-    
+      explicit expression(internal_lhs_type lhs,
+                          internal_rhs_type rhs) : lhs_(lhs), rhs_(rhs) {}
+      
+      internal_lhs_type lhs() const { return lhs_; }
+      internal_rhs_type rhs() const { return rhs_; }
+      
+      template <typename VectorType>
+      typename op_return_type<LHS, RHS>::return_type operator()(VectorType const & v) const
+      {
+        return OP::static_apply(static_cast<numeric_type>(lhs_(v)), static_cast<numeric_type>(rhs_(v)));
+      }
+      
     private:
-      LHS const & lhs_;
-      RHS const & rhs_;
+      internal_lhs_type lhs_;
+      internal_rhs_type rhs_;
   };
+  
+  
+  //stream operator for output:
+  template <typename LHS, typename OP, typename RHS>
+  std::ostream& operator<<(std::ostream & stream, expression<LHS, OP, RHS> const & other)
+  {
+    stream << "[" << other.lhs() << OP().str() << other.rhs() << "]";
+    return stream;
+  }
+
   
 }
 

@@ -35,20 +35,12 @@ namespace viennamath
   
   
   
-  //helper: deduce return type:
-  template <typename RHS, typename LHS>
-  struct op_return_type
-  {
-    typedef numeric_type      return_type;
-  };
-    
-  
   
   
   struct op_plus : public op_interface
   {
     template <typename LHS, typename RHS>
-    static typename op_return_type<LHS, RHS>::return_type apply(LHS const & lhs, RHS const & rhs) { return lhs + rhs; }
+    static typename op_return_type<LHS, RHS>::return_type static_apply(LHS const & lhs, RHS const & rhs) { return lhs + rhs; }
     
     //run time stuff:
     op_interface * clone() const { return new op_plus(); }
@@ -65,7 +57,7 @@ namespace viennamath
   struct op_minus : public op_interface
   {
     template <typename LHS, typename RHS>
-    static typename op_return_type<LHS, RHS>::return_type apply(LHS const & lhs, RHS const & rhs) { return lhs - rhs; }
+    static typename op_return_type<LHS, RHS>::return_type static_apply(LHS const & lhs, RHS const & rhs) { return lhs - rhs; }
     
     
     //run time stuff:
@@ -83,7 +75,7 @@ namespace viennamath
   struct op_mult : public op_interface
   {
     template <typename LHS, typename RHS>
-    static typename op_return_type<LHS, RHS>::return_type apply(LHS const & lhs, RHS const & rhs) { return lhs * rhs; }
+    static typename op_return_type<LHS, RHS>::return_type static_apply(LHS const & lhs, RHS const & rhs) { return lhs * rhs; }
     
     
     //run time stuff:
@@ -101,7 +93,7 @@ namespace viennamath
   struct op_div : public op_interface
   {
     template <typename LHS, typename RHS>
-    static typename op_return_type<LHS, RHS>::return_type apply(LHS const & lhs, RHS const & rhs) { return lhs / rhs; }
+    static typename op_return_type<LHS, RHS>::return_type static_apply(LHS const & lhs, RHS const & rhs) { return lhs / rhs; }
     
     
     //run time stuff:

@@ -116,6 +116,14 @@ namespace viennamath
   struct op_mult;
   struct op_div;
   
+  //helper: deduce return type:
+  template <typename RHS, typename LHS>
+  struct op_return_type
+  {
+    typedef numeric_type      return_type;
+  };
+    
+  
   
   
   

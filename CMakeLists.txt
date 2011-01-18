@@ -15,5 +15,7 @@ ADD_DEFINITIONS(-Wall -pedantic -O0 -g)
 #list all source files here
 ADD_EXECUTABLE(basic_test examples/basic_test.cpp)
 ADD_EXECUTABLE(runtime_test examples/runtime_test.cpp)
+ADD_EXECUTABLE(compiletime_test examples/compiletime_test.cpp)
+ADD_EXECUTABLE(compiletime_evaluation examples/compiletime_evaluation.cpp)
 
  

@@ -16,6 +16,7 @@
 #define VIENNAMATH_EXPRESSION_CPP
 
 #include "viennamath/forwards.h"
+#include "viennamath/promote_traits.hpp"
 
 #include "viennamath/vector.hpp"
 #include "viennamath/ct_constant.hpp"
@@ -25,7 +26,7 @@
 #include "viennamath/expression_run_time.hpp"
 
 #include "viennamath/op_tags.hpp"
-//#include "viennamath/expression_compile_time_operations.hpp"
+#include "viennamath/expression_compile_time_operations.hpp"
 #include "viennamath/expression_run_time_operations.hpp"
 #include "viennamath/constant_operations.hpp"
 

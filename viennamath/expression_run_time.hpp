@@ -45,9 +45,14 @@ namespace viennamath
       }
 
       template <typename LHS, typename OP, typename RHS>
-      expr(expression<LHS, OP, RHS> const & other) : lhs_(other.lhs().clone()),
-                                                     op_(OP().clone()),
-                                                     rhs_(other.rhs().clone()) {}
+      expr(expression<LHS, OP, RHS> const & other) : op_(OP().clone())
+      {
+        expr temp1(other.lhs());
+        expr temp2(other.rhs());
+        
+        lhs_ = std::auto_ptr<expression_interface>(temp1.clone());
+        rhs_ = std::auto_ptr<expression_interface>(temp2.clone());
+      }
 
       template <typename T, unsigned long id>
       expr(unknown<T, id> const & other) : lhs_(other.clone()),
@@ -73,9 +78,12 @@ namespace viennamath
       template <typename LHS, typename OP, typename RHS>
       expr & operator=(expression<LHS, OP, RHS> const & other) 
       {
-        lhs_ = std::auto_ptr<expression_interface>(other.lhs().clone());
+        expr temp1(other.lhs());
+        expr temp2(other.rhs());
+        
+        lhs_ = std::auto_ptr<expression_interface>(temp1.clone());
         op_ = std::auto_ptr<op_interface>(OP().clone());
-        rhs_ = std::auto_ptr<expression_interface>(other.rhs().clone());
+        rhs_ = std::auto_ptr<expression_interface>(temp2.clone());
         return *this;
       }
 
@@ -115,6 +123,13 @@ namespace viennamath
       const expression_interface   * rhs() const { return rhs_.get(); }
       
       //evaluation:
+      expr operator()(numeric_type val) const
+      {
+        std::vector<numeric_type> v(1);
+        v[0] = val;
+        return op_->apply(lhs_.get(), rhs_.get(), v);
+      }
+      
       template <typename VectorType>
       expr operator()(VectorType const & v) const
       {

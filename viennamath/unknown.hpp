@@ -245,6 +245,16 @@ namespace viennamath
                         unknown<OtherScalarType, other_id> >(*this, other);
     }
 
+    expression<ct_constant<2>,
+               op_mult,
+               unknown<ScalarType, id> >
+    operator+(unknown<ScalarType, id> const & other) const
+    {
+      return expression<ct_constant<2>,
+                        op_mult,
+                        unknown<ScalarType, id> >(ct_constant<2>(), *this);
+    }
+
     template <typename OtherScalarType>
     expression<unknown<ScalarType, id>,
                op_plus,
@@ -289,6 +299,13 @@ namespace viennamath
       return expression<unknown<ScalarType, id>,
                         op_minus,
                         unknown<OtherScalarType, other_id> >(*this, other);
+    }
+
+    template <typename OtherScalarType>
+    ct_constant<0>
+    operator-(unknown<OtherScalarType, id> const & other) const
+    {
+      return ct_constant<0>();
     }
 
     template <typename OtherScalarType>
@@ -381,6 +398,13 @@ namespace viennamath
       return expression<unknown<ScalarType, id>,
                         op_div,
                         unknown<OtherScalarType, other_id> >(*this, other);
+    }
+
+    template <typename OtherScalarType>
+    ct_constant<1>
+    operator/(unknown<OtherScalarType, id> const & other) const
+    {
+      return ct_constant<1>();
     }
 
     template <typename OtherScalarType>
