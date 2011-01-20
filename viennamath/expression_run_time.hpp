@@ -47,11 +47,9 @@ namespace viennamath
       template <typename LHS, typename OP, typename RHS>
       expr(expression<LHS, OP, RHS> const & other) : op_(OP().clone())
       {
-        expr temp1(other.lhs());
-        expr temp2(other.rhs());
-        
-        lhs_ = std::auto_ptr<expression_interface>(temp1.clone());
-        rhs_ = std::auto_ptr<expression_interface>(temp2.clone());
+        std::cout << "Constructing from expression " << other << std::endl;
+        lhs_ = std::auto_ptr<expression_interface>(other.lhs().clone());
+        rhs_ = std::auto_ptr<expression_interface>(other.rhs().clone());
       }
 
       template <typename T, unsigned long id>
@@ -78,12 +76,9 @@ namespace viennamath
       template <typename LHS, typename OP, typename RHS>
       expr & operator=(expression<LHS, OP, RHS> const & other) 
       {
-        expr temp1(other.lhs());
-        expr temp2(other.rhs());
-        
-        lhs_ = std::auto_ptr<expression_interface>(temp1.clone());
+        lhs_ = std::auto_ptr<expression_interface>(other.lhs().clone());
         op_ = std::auto_ptr<op_interface>(OP().clone());
-        rhs_ = std::auto_ptr<expression_interface>(temp2.clone());
+        rhs_ = std::auto_ptr<expression_interface>(other.rhs().clone());
         return *this;
       }
 
@@ -122,35 +117,44 @@ namespace viennamath
       const op_interface           * op()  const { return op_.get(); }
       const expression_interface   * rhs() const { return rhs_.get(); }
       
-      //evaluation:
+      ///////////////// evaluation: ///////////////////////////////
       expr operator()(numeric_type val) const
       {
-        std::vector<numeric_type> v(1);
-        v[0] = val;
-        return op_->apply(lhs_.get(), rhs_.get(), v);
+        std::vector<numeric_type> stl_v(1);
+        stl_v[0] = val;
+        return this->eval(stl_v);
       }
 
       template <typename ScalarType>
       expr operator()(constant<ScalarType> val) const
       {
-        std::vector<numeric_type> v(1);
-        v[0] = static_cast<numeric_type>(val);
-        return op_->apply(lhs_.get(), rhs_.get(), v);
+        std::vector<numeric_type> stl_v(1);
+        stl_v[0] = static_cast<numeric_type>(val);
+        return this->eval(stl_v);
       }
       
       template <long value>
       expr operator()(ct_constant<value> val) const
       {
-        std::vector<numeric_type> v(1);
-        v[0] = value;
-        return op_->apply(lhs_.get(), rhs_.get(), v);
+        std::vector<numeric_type> stl_v(1);
+        stl_v[0] = value;
+        return this->eval(stl_v);
       }
       
 
       template <typename VectorType>
       expr operator()(VectorType const & v) const
       {
-        return op_->apply(lhs_.get(), rhs_.get(), v);
+        std::vector<double> stl_v(v.size());
+        for (size_t i=0; i<v.size(); ++i)
+          stl_v[i] = v[i];
+        
+        return this->eval(stl_v);
+      }
+
+      expr operator()(std::vector<numeric_type> const & stl_v) const
+      {
+        return this->eval(stl_v);
       }
 
       template <typename T0>
@@ -158,7 +162,7 @@ namespace viennamath
       {
         std::vector<double> stl_v(1);
         stl_v[0] = v[ct_index<0>()];
-        return op_->apply(lhs_.get(), rhs_.get(), stl_v);
+        return this->eval(stl_v);
       }
 
       template <typename T0, typename T1>
@@ -167,7 +171,7 @@ namespace viennamath
         std::vector<double> stl_v(2);
         stl_v[0] = v[ct_index<0>()];
         stl_v[1] = v[ct_index<1>()];
-        return op_->apply(lhs_.get(), rhs_.get(), stl_v);
+        return this->eval(stl_v);
       }
       
       template <typename T0, typename T1, typename T2>
@@ -177,15 +181,61 @@ namespace viennamath
         stl_v[0] = v[ct_index<0>()];
         stl_v[1] = v[ct_index<1>()];
         stl_v[2] = v[ct_index<2>()];
-        return op_->apply(lhs_.get(), rhs_.get(), stl_v);
+        return this->eval(stl_v);
       }
       
       expr eval(std::vector<double> const & v) const
       {
         return op_->apply(lhs_.get(), rhs_.get(), v);
       }
+      
+      ///////////////////// substitution /////////////////////////////
+      
+      expression_interface * optimize()
+      {
+        if (lhs_->unwrappable() && rhs_->unwrappable())
+        {
+          return new constant<numeric_type>( unwrap() );
+        }
+        else if (lhs_->unwrappable())
+        {
+          lhs_ = std::auto_ptr<expression_interface>( new constant<numeric_type>(lhs_->unwrap()) );
+          rhs_ = std::auto_ptr<expression_interface>( rhs_->optimize() );
+        }
+        else if (rhs_->unwrappable())
+        {
+          lhs_ = std::auto_ptr<expression_interface>(lhs_->optimize());
+          rhs_ = std::auto_ptr<expression_interface>( new constant<numeric_type>(rhs_->unwrap()) );
+        }
+        
+        else
+        {
+          lhs_ = std::auto_ptr<expression_interface>( new constant<numeric_type>(lhs_->unwrap()) );
+          rhs_ = std::auto_ptr<expression_interface>( new constant<numeric_type>(rhs_->unwrap()) );
+        }
+        
+        return this;        
+      }
+      
+      template <typename ScalarType, unsigned long id, typename ReplacementType>
+      expr substitute(unknown<ScalarType, id> const & u,
+                      ReplacementType const & repl) const
+      {
+        //TODO: Remove dynamic_casts!!
+        expression_interface * ret = this->substitute(&u, &repl);
+        if (dynamic_cast<expr *>(ret) != NULL)
+        {
+          expression_interface * ret2 = ret->optimize();
+          if (dynamic_cast<expr *>(ret) != NULL)
+            return dynamic_cast<expr &>(*ret);
+          return expr(ret2, op_unary< op_id >().clone(), ret2);
+        }
+        
+        return expr(ret, op_unary< op_id >().clone(), ret);
+      }
+      
     
-      //interface requirements:
+      ///////// other interface requirements ////////////////////////
       expression_interface * clone() const { return new expr(lhs_->clone(), op_->clone(), rhs_->clone()); }
       std::string str() const
       {
@@ -211,10 +261,22 @@ namespace viennamath
       
       numeric_type unwrap() const
       {
-        if (op_->is_unary())
-          return lhs_->unwrap();
+        //if (op_->is_unary())
+        //  return lhs_->unwrap();
         return op_->apply(lhs_->unwrap(), rhs_->unwrap());
       }
+      
+      bool unwrappable() const { return lhs_->unwrappable() && rhs_->unwrappable(); };
+      
+      virtual expression_interface * substitute(const expression_interface * e,
+                                                const expression_interface * repl) const
+      {
+        return expr(lhs_->substitute(e, repl),
+                    op_->clone(),
+                    rhs_->substitute(e, repl) ).clone(); 
+      };
+      
+
       
     private:
       std::auto_ptr<expression_interface>  lhs_;
@@ -233,6 +295,12 @@ namespace viennamath
   
   template <typename ScalarType>
   expr constant<ScalarType>::eval(std::vector<double> const & v) const { return (*this)(v); }
+  
+  template <typename LHS, typename OP, typename RHS>
+  expression_interface * expression<LHS, OP, RHS>::clone() const
+  {
+    return expr(*this).clone();
+  }
   
   
 }

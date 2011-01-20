@@ -36,61 +36,53 @@ namespace viennamath
   template <typename LHS, typename OP, typename RHS>
   expr operator+(expr const & lhs, expression<LHS, OP, RHS> const & rhs)
   {
-    expr e = rhs;
-    return expr(lhs.clone(), op_plus().clone(), e.clone());
+    return expr(lhs.clone(), op_plus().clone(), rhs.clone());
   }
   
   template <typename LHS, typename OP, typename RHS>
   expr operator+(expression<LHS, OP, RHS> const & lhs, expr const & rhs)
   {
-    expr e = lhs;
-    return expr(e.clone(), op_plus().clone(), rhs.clone());
+    return expr(lhs.clone(), op_plus().clone(), rhs.clone());
   }
 
   //with constant:
   template <typename T>
   expr operator+(expr const & lhs, constant<T> const & rhs)
   {
-    expr e = rhs;
-    return expr(lhs.clone(), op_plus().clone(), e.clone());
+    return expr(lhs.clone(), op_plus().clone(), rhs.clone());
   }
 
   template <typename T>
   expr operator+(constant<T> const & lhs, expr const & rhs)
   {
-    expr e = lhs;
-    return expr(e.clone(), op_plus().clone(), rhs.clone());
+    return expr(lhs.clone(), op_plus().clone(), rhs.clone());
   }
 
   //with ct_constant:
   template <unsigned long value>
   expr operator+(expr const & lhs, ct_constant<value> const & rhs)
   {
-    expr e = rhs;
-    return expr(lhs.clone(), op_plus().clone(), e.clone());
+    return expr(lhs.clone(), op_plus().clone(), rhs.clone());
   }
 
   template <unsigned long value>
   expr operator+(ct_constant<value> const & lhs, expr const & rhs)
   {
-    expr e = lhs;
-    return expr(e.clone(), op_plus().clone(), rhs.clone());
+    return expr(lhs.clone(), op_plus().clone(), rhs.clone());
   }
 
   //with unknown:
   template <typename T, unsigned long id>
   expr operator+(expr const & lhs, unknown<T, id> const & rhs)
   {
-    expr e = rhs;
-    return expr(lhs.clone(), op_plus().clone(), e.clone());
+    return expr(lhs.clone(), op_plus().clone(), rhs.clone());
   }
 
   template <typename T, unsigned long id>
   expr operator+(unknown<T, id> const & lhs, expr const & rhs)
   {
-    expr e = lhs;
-    std::cout << "Generating compound: " << lhs << "+" << rhs << std::endl;
-    return expr(e.clone(), op_plus().clone(), rhs.clone());
+    //std::cout << "Generating compound: " << lhs << "+" << rhs << std::endl;
+    return expr(lhs.clone(), op_plus().clone(), rhs.clone());
   }
   
   //with plain numeric type (see notes on numeric_type_proxy)
@@ -117,60 +109,52 @@ namespace viennamath
   template <typename LHS, typename OP, typename RHS>
   expr operator-(expr const & lhs, expression<LHS, OP, RHS> const & rhs)
   {
-    expr e = rhs;
-    return expr(lhs.clone(), op_minus().clone(), e.clone());
+    return expr(lhs.clone(), op_minus().clone(), rhs.clone());
   }
   
   template <typename LHS, typename OP, typename RHS>
   expr operator-(expression<LHS, OP, RHS> const & lhs, expr const & rhs)
   {
-    expr e = lhs;
-    return expr(e.clone(), op_minus().clone(), rhs.clone());
+    return expr(lhs.clone(), op_minus().clone(), rhs.clone());
   }
 
   //with constant:
   template <typename T>
   expr operator-(expr const & lhs, constant<T> const & rhs)
   {
-    expr e = rhs;
-    return expr(lhs.clone(), op_minus().clone(), e.clone());
+    return expr(lhs.clone(), op_minus().clone(), rhs.clone());
   }
 
   template <typename T>
   expr operator-(constant<T> const & lhs, expr const & rhs)
   {
-    expr e = lhs;
-    return expr(e.clone(), op_minus().clone(), rhs.clone());
+    return expr(lhs.clone(), op_minus().clone(), rhs.clone());
   }
 
   //with ct_constant:
   template <unsigned long value>
   expr operator-(expr const & lhs, ct_constant<value> const & rhs)
   {
-    expr e = rhs;
-    return expr(lhs.clone(), op_minus().clone(), e.clone());
+    return expr(lhs.clone(), op_minus().clone(), rhs.clone());
   }
 
   template <unsigned long value>
   expr operator-(ct_constant<value> const & lhs, expr const & rhs)
   {
-    expr e = lhs;
-    return expr(e.clone(), op_minus().clone(), rhs.clone());
+    return expr(lhs.clone(), op_minus().clone(), rhs.clone());
   }
 
   //with unknown:
   template <typename T, unsigned long id>
   expr operator-(expr const & lhs, unknown<T, id> const & rhs)
   {
-    expr e = rhs;
-    return expr(lhs.clone(), op_minus().clone(), e.clone());
+    return expr(lhs.clone(), op_minus().clone(), rhs.clone());
   }
 
   template <typename T, unsigned long id>
   expr operator-(unknown<T, id> const & lhs, expr const & rhs)
   {
-    expr e = lhs;
-    return expr(e.clone(), op_minus().clone(), rhs.clone());
+    return expr(lhs.clone(), op_minus().clone(), rhs.clone());
   }
 
   //with plain numeric type (see notes on numeric_type_proxy)
@@ -198,60 +182,52 @@ namespace viennamath
   template <typename LHS, typename OP, typename RHS>
   expr operator*(expr const & lhs, expression<LHS, OP, RHS> const & rhs)
   {
-    expr e = rhs;
-    return expr(lhs.clone(), op_mult().clone(), e.clone());
+    return expr(lhs.clone(), op_mult().clone(), rhs.clone());
   }
   
   template <typename LHS, typename OP, typename RHS>
   expr operator*(expression<LHS, OP, RHS> const & lhs, expr const & rhs)
   {
-    expr e = lhs;
-    return expr(e.clone(), op_mult().clone(), rhs.clone());
+    return expr(lhs.clone(), op_mult().clone(), rhs.clone());
   }
 
   //with constant:
   template <typename T>
   expr operator*(expr const & lhs, constant<T> const & rhs)
   {
-    expr e = rhs;
-    return expr(lhs.clone(), op_mult().clone(), e.clone());
+    return expr(lhs.clone(), op_mult().clone(), rhs.clone());
   }
 
   template <typename T>
   expr operator*(constant<T> const & lhs, expr const & rhs)
   {
-    expr e = lhs;
-    return expr(e.clone(), op_mult().clone(), rhs.clone());
+    return expr(lhs.clone(), op_mult().clone(), rhs.clone());
   }
 
   //with ct_constant:
   template <unsigned long value>
   expr operator*(expr const & lhs, ct_constant<value> const & rhs)
   {
-    expr e = rhs;
-    return expr(lhs.clone(), op_mult().clone(), e.clone());
+    return expr(lhs.clone(), op_mult().clone(), rhs.clone());
   }
 
   template <unsigned long value>
   expr operator*(ct_constant<value> const & lhs, expr const & rhs)
   {
-    expr e = lhs;
-    return expr(e.clone(), op_mult().clone(), rhs.clone());
+    return expr(lhs.clone(), op_mult().clone(), rhs.clone());
   }
 
   //with unknown:
   template <typename T, unsigned long id>
   expr operator*(expr const & lhs, unknown<T, id> const & rhs)
   {
-    expr e = rhs;
-    return expr(lhs.clone(), op_mult().clone(), e.clone());
+    return expr(lhs.clone(), op_mult().clone(), rhs.clone());
   }
 
   template <typename T, unsigned long id>
   expr operator*(unknown<T, id> const & lhs, expr const & rhs)
   {
-    expr e = lhs;
-    return expr(e.clone(), op_mult().clone(), rhs.clone());
+    return expr(lhs.clone(), op_mult().clone(), rhs.clone());
   }
 
   //with plain numeric type (see notes on numeric_type_proxy)
@@ -281,60 +257,52 @@ namespace viennamath
   template <typename LHS, typename OP, typename RHS>
   expr operator/(expr const & lhs, expression<LHS, OP, RHS> const & rhs)
   {
-    expr e = rhs;
-    return expr(lhs.clone(), op_div().clone(), e.clone());
+    return expr(lhs.clone(), op_div().clone(), rhs.clone());
   }
   
   template <typename LHS, typename OP, typename RHS>
   expr operator/(expression<LHS, OP, RHS> const & lhs, expr const & rhs)
   {
-    expr e = lhs;
-    return expr(e.clone(), op_div().clone(), rhs.clone());
+    return expr(lhs.clone(), op_div().clone(), rhs.clone());
   }
 
   //with constant:
   template <typename T>
   expr operator/(expr const & lhs, constant<T> const & rhs)
   {
-    expr e = rhs;
-    return expr(lhs.clone(), op_div().clone(), e.clone());
+    return expr(lhs.clone(), op_div().clone(), rhs.clone());
   }
 
   template <typename T>
   expr operator/(constant<T> const & lhs, expr const & rhs)
   {
-    expr e = lhs;
-    return expr(e.clone(), op_div().clone(), rhs.clone());
+    return expr(lhs.clone(), op_div().clone(), rhs.clone());
   }
 
   //with ct_constant:
   template <unsigned long value>
   expr operator/(expr const & lhs, ct_constant<value> const & rhs)
   {
-    expr e = rhs;
-    return expr(lhs.clone(), op_div().clone(), e.clone());
+    return expr(lhs.clone(), op_div().clone(), rhs.clone());
   }
 
   template <unsigned long value>
   expr operator/(ct_constant<value> const & lhs, expr const & rhs)
   {
-    expr e = lhs;
-    return expr(e.clone(), op_div().clone(), rhs.clone());
+    return expr(lhs.clone(), op_div().clone(), rhs.clone());
   }
 
   //with unknown:
   template <typename T, unsigned long id>
   expr operator/(expr const & lhs, unknown<T, id> const & rhs)
   {
-    expr e = rhs;
-    return expr(lhs.clone(), op_div().clone(), e.clone());
+    return expr(lhs.clone(), op_div().clone(), rhs.clone());
   }
 
   template <typename T, unsigned long id>
   expr operator/(unknown<T, id> const & lhs, expr const & rhs)
   {
-    expr e = lhs;
-    return expr(e.clone(), op_div().clone(), rhs.clone());
+    return expr(lhs.clone(), op_div().clone(), rhs.clone());
   }
 
   //with plain numeric type (see notes on numeric_type_proxy)

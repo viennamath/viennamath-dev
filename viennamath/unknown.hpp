@@ -456,9 +456,16 @@ namespace viennamath
                         ct_constant<value> >(*this, other);
     }
     
-    
+    //protected:
+      virtual expression_interface * substitute(const expression_interface * e,
+                                                const expression_interface * repl) const
+      {
+        if (dynamic_cast< const unknown<ScalarType, id> *>(e) != NULL)
+          return repl->clone();
+        return clone();
+      };    
 
-  };
+  }; //unknown
 
   template <typename ScalarType, unsigned long id>
   std::ostream& operator<<(std::ostream & stream, unknown<ScalarType, id> const & u)

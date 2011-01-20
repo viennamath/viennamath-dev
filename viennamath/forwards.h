@@ -66,8 +66,12 @@ namespace viennamath
       virtual expression_interface * clone() const = 0;
       virtual std::string str() const = 0;
       virtual expr eval(std::vector<double> const & v) const = 0;
+      virtual expression_interface * optimize() { return this; }
       virtual bool is_unary() const { return true; }
+      virtual bool unwrappable() const { return false; }
       virtual numeric_type unwrap() const = 0;
+      virtual expression_interface * substitute(const expression_interface * e,
+                                                const expression_interface * repl) const = 0;
   };
  
 

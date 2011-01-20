@@ -6,6 +6,7 @@
 
 #include "viennamath/expression.hpp"
 #include "viennamath/eval.hpp"
+#include "viennamath/substitute.hpp"
 
 template <typename E, typename T, typename U>
 void operations_test(E & e, T const & t, U const & u, double t2, double u2)
@@ -177,11 +178,21 @@ int main()
   std::cout << e << ": " << viennamath::eval(e, c8) << std::endl;
 
   unary_test(x);
-  unary_test(x-c4);
-  unary_test(y-c6);
+  unary_test(x+c4);
+  unary_test(y*c6);
   unary_test(y/x);
   unary_test(c6+c8);
   
+  e = x - c4 - y;
+  std::cout << "Replacing x in " << e 
+            << " with " << c6
+            << " leads to " << viennamath::substitute(x, c6, e) << std::endl;
+
+  e = viennamath::exp(x) - c4 - y;
+  std::cout << "Replacing x in " << e 
+            << " with " << c6
+            << " leads to " << viennamath::substitute(x, c6, e) << std::endl;
+            
   std::cout << "--- Involved types ---" << std::endl;
   std::cout << "x: " << x << std::endl;
   std::cout << "y: " << y << std::endl;

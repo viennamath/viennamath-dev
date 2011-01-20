@@ -49,6 +49,12 @@ namespace viennamath
       }
       numeric_type unwrap() const { return value_; }
       
+      virtual expression_interface * substitute(const expression_interface * e,
+                                                const expression_interface * repl) const
+      {
+        return clone();
+      };    
+      
       
       ////////////////// Operations //////////////////////////////
       

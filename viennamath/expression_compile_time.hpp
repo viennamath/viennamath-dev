@@ -58,6 +58,9 @@ namespace viennamath
       
       explicit expression(internal_lhs_type lhs,
                           internal_rhs_type rhs) : lhs_(lhs), rhs_(rhs) {}
+                          
+      expression_interface * clone() const;
+                    
       
       internal_lhs_type lhs() const { return lhs_; }
       internal_rhs_type rhs() const { return rhs_; }
