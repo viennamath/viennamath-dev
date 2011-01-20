@@ -56,6 +56,49 @@ void evaluations_test(E & e, double ref_solution)
 }
 
 
+template <typename E>
+void unary_test(E const & e, double ref_solution)
+{
+  viennamath::constant<double> c4(4.0);
+  viennamath::constant<long> c6(6);
+  viennamath::ct_constant<8> c8;
+
+  std::vector<double> p(2);
+  p[0] = 4;
+  p[1] = 6;
+  p[2] = 8;
+  
+  std::cout << e << " at STL (" << p[0] << ", " << p[1] << ", " << p[2] << ")"
+            << " = " << e(p) 
+            << " = " << viennamath::eval(e,p) 
+            << " (reference solution: " << ref_solution << ")" << std::endl;
+  assert(viennamath::eval(e, p) == ref_solution);
+  
+  std::cout << e << " at vector_3 (" << viennamath::make_vector(c4, c6, c8) << ")"
+            << " = " << e(viennamath::make_vector(c4, c6, c8))
+            << " = " << viennamath::eval(e, viennamath::make_vector(c4, c6, c8)) 
+            << " (reference solution: " << ref_solution << ")" << std::endl;
+  assert(viennamath::eval(e, viennamath::make_vector(c4, c6, c8)) == ref_solution);
+}
+
+void unary_test(viennamath::expr const & e)
+{
+  std::vector<double> p(2);
+  p[0] = 4;
+  p[1] = 6;
+  p[2] = 8;
+  
+  unary_test(viennamath::exp(e),   exp(viennamath::eval(e,p)) );
+  unary_test(viennamath::sin(e),   sin(viennamath::eval(e,p)) );
+  unary_test(viennamath::cos(e),   cos(viennamath::eval(e,p)) );
+  unary_test(viennamath::tan(e),   tan(viennamath::eval(e,p)) );
+  unary_test(viennamath::fabs(e),  fabs(viennamath::eval(e,p)) );
+  unary_test(viennamath::sqrt(e),  sqrt(viennamath::eval(e,p)) );
+  unary_test(viennamath::log(e),   log(viennamath::eval(e,p)) );
+  unary_test(viennamath::log10(e), log10(viennamath::eval(e,p)) );
+}
+
+
 
 int main()
 {
@@ -124,6 +167,20 @@ int main()
   std::cout << "*****     TEST COMPLETED SUCCESSFULLY!     *****" << std::endl;
   std::cout << "************************************************" << std::endl;
   std::cout << std::endl;
+  
+  
+  std::cout << x << ": " << viennamath::eval(x, c4) << std::endl;
+  std::cout << e2  << ": " << viennamath::eval(e2, c4) << std::endl;
+  e = x + e2;
+  std::cout << e << ": " << viennamath::eval(e, c4) << std::endl;
+  std::cout << e << ": " << viennamath::eval(e, c6) << std::endl;
+  std::cout << e << ": " << viennamath::eval(e, c8) << std::endl;
+
+  unary_test(x);
+  unary_test(x-c4);
+  unary_test(y-c6);
+  unary_test(y/x);
+  unary_test(c6+c8);
   
   std::cout << "--- Involved types ---" << std::endl;
   std::cout << "x: " << x << std::endl;

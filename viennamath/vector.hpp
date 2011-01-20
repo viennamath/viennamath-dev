@@ -37,6 +37,8 @@ namespace viennamath
       {
         typedef typename ct_index<i>::ERROR_VECTOR_1_INDEX_OUT_OF_BOUNDS  error_message; 
       }
+      
+      size_t size() const { return 1; }
 
     private:
       T0 const & t0_;
@@ -70,6 +72,8 @@ namespace viennamath
       {
         typedef typename ct_index<i>::ERROR_VECTOR_2_INDEX_OUT_OF_BOUNDS  error_message; 
       }
+
+      size_t size() const { return 2; }
 
     private:
       T0 const & t0_;
@@ -105,6 +109,8 @@ namespace viennamath
       {
         typedef typename ct_index<i>::ERROR_VECTOR_3_INDEX_OUT_OF_BOUNDS  error_message; 
       }
+
+      size_t size() const { return 3; }
 
     private:
       T0 const & t0_;

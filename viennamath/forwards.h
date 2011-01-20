@@ -18,6 +18,7 @@
 #include <string>
 #include <vector>
 #include <exception>
+#include <sstream>
 
 namespace viennamath
 {
@@ -94,15 +95,50 @@ namespace viennamath
       virtual bool is_unary() const { return false; }
   };
   
-  struct op_unary : public op_interface
+  //binary operator tags:  
+  struct op_plus;
+  struct op_minus;
+  struct op_mult;
+  struct op_div;
+  struct op_pow;
+
+  //unary operator tags
+  template <typename unary_operation>
+  class op_unary : public op_interface
+  {
+    public: 
+      //TODO: deduce return type
+      //template <typename LHS, typename RHS>
+      //static void apply(LHS const & lhs, RHS const & rhs) { return lhs; }
+      
+      
+      //run time stuff:
+      std::string str() const { return unary_operation::str(); }
+      op_interface * clone() const { return new op_unary<unary_operation>(); }
+      expr apply(expression_interface * lhs,
+                expression_interface * rhs,
+                std::vector<numeric_type> const & v) const;//  { return unary_op_.apply(lhs); };
+      bool is_unary() const { return true; }
+      numeric_type apply(numeric_type lhs, numeric_type rhs) const { return unary_op_.apply(lhs); }
+    
+    private:
+      //We use a unary_operation member, because the unary_operation tag might have a state -> pure static tag dispatch not enough.
+      unary_operation unary_op_;
+  };
+
+  struct op_id {};
+  
+  //separate treatment of identity:
+  template <>
+  struct op_unary<op_id> : public op_interface
   {
     //TODO: deduce return type
-    template <typename LHS, typename RHS>
-    static void apply(LHS const & lhs, RHS const & rhs) { return lhs; }
+    //template <typename LHS, typename RHS>
+    //static void apply(LHS const & lhs, RHS const & rhs) { return lhs; }
     
     
     //run time stuff:
-    std::string str() const { return "UNARY"; }
+    std::string str() const { return "id"; }
     op_interface * clone() const;
     expr apply(expression_interface * lhs,
                expression_interface * rhs,
@@ -110,11 +146,17 @@ namespace viennamath
     bool is_unary() const { return true; }
     numeric_type apply(numeric_type lhs, numeric_type rhs) const { return lhs; }
   };
+
   
-  struct op_plus;
-  struct op_minus;
-  struct op_mult;
-  struct op_div;
+  struct op_exp;
+  struct op_sin;
+  struct op_cos;
+  struct op_tan;
+  struct op_fabs;
+  struct op_sqrt;
+  struct op_log; //natural logarithm
+  struct op_log10;
+
   
   //helper: deduce return type:
   template <typename RHS, typename LHS>
@@ -123,10 +165,6 @@ namespace viennamath
     typedef numeric_type      return_type;
   };
     
-  
-  
-  
-  
   
   
   
@@ -170,6 +208,23 @@ namespace viennamath
   {
     const char * what() const throw() { return "Expression cannot be unwrapped!"; } 
   };
+  
+  class unknown_index_out_of_bounds : public std::exception
+  {
+    const char * what() const throw()
+    {
+      std::stringstream ss;
+      ss << "Encountered an unknown<> type with id larger or equal to the size of the supplied vector of values. id=" << id_ << ", vector_size=" << vector_size_ << std::endl;
+      return ss.str().c_str(); } 
+    
+    public:
+      unknown_index_out_of_bounds(long id, long vector_size) : id_(id), vector_size_(vector_size) {}
+      
+    private:
+      long id_;
+      long vector_size_;
+  };
+  
 }
 
 #endif

@@ -89,6 +89,7 @@ namespace viennamath
   expr operator+(unknown<T, id> const & lhs, expr const & rhs)
   {
     expr e = lhs;
+    std::cout << "Generating compound: " << lhs << "+" << rhs << std::endl;
     return expr(e.clone(), op_plus().clone(), rhs.clone());
   }
   

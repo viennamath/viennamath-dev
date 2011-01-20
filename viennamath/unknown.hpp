@@ -21,23 +21,10 @@
 #include "viennamath/expression_run_time.hpp"
 #include "viennamath/expression_compile_time.hpp"
 
+#include <assert.h>
+
 namespace viennamath
 {
-  /********** evaluation at STL vector types ***************/
-  template <typename ScalarType,
-            typename VectorType,
-            long id>
-  struct unknown_traits
-  {
-    typedef ScalarType   return_type;
-    
-    //per default, access id-th element;
-    static return_type get(VectorType const & v)
-    {
-      return v[id];
-    }
-  };
-  
   /********** evaluation at ViennaMath vector types ***************/
   template <typename vmath_vector, long id>
   struct type_by_index {};
@@ -60,6 +47,22 @@ namespace viennamath
     typedef typename vmath_vector::type_2   result_type; 
   };
 
+  /********** evaluation at STL vector types ***************/
+  template <typename ScalarType,
+            typename VectorType,
+            long id>
+  struct unknown_traits
+  {
+    typedef ScalarType   return_type;
+    
+    //per default, access id-th element;
+    static return_type get(VectorType const & v)
+    {
+      return v[id];
+    }
+  };
+  
+  
   //vector_1:
   template <typename ScalarType,
             typename T0,
@@ -195,16 +198,40 @@ namespace viennamath
       return value;
     }
 
-    //Vector argument (can be of type std::vector
+    template <typename OtherScalarType>
+    constant<ScalarType> operator()(constant<OtherScalarType> const & other) const
+    {
+      if (id > 0)
+        throw unknown_index_out_of_bounds(id, 0);
+      return constant<ScalarType>(static_cast<OtherScalarType>(other));
+    }
+
+    template <long value>
+    ScalarType operator()(ct_constant<value> const & other) const
+    {
+      if (id > 0)
+        throw unknown_index_out_of_bounds(id, 0);
+      return value;
+    }
+
+    //Vector argument (can be of type std::vector)
     template <typename VectorType>
     typename unknown_traits<ScalarType, VectorType, id>::return_type operator()(VectorType const & v) const
     {
+      if(id >= v.size())
+        throw unknown_index_out_of_bounds(id, v.size());
       return unknown_traits<ScalarType, VectorType, id>::get(v);
     }
     
     //interface requirements:
     expression_interface * clone() const { return new unknown(); }
-    expr eval(std::vector<double> const & v) const { return expr(constant<ScalarType>((*this)(v))); }
+    expr eval(std::vector<double> const & v) const
+    {
+      if (id >= v.size())
+        throw unknown_index_out_of_bounds(id, v.size());
+      
+      return expr(constant<ScalarType>((*this)(v)));
+    }
     std::string str() const
     {
       std::stringstream ss;

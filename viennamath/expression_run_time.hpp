@@ -38,11 +38,11 @@ namespace viennamath
                     op_interface         * op,
                     expression_interface * rhs) : lhs_(lhs->clone()), op_(op->clone()), rhs_(rhs->clone()) {}
                     
-      template <typename LHS, typename OP, typename RHS>
+      /*template <typename LHS, typename OP, typename RHS>
       explicit expr(LHS const & lhs, OP const & op, RHS const & rhs) 
       {
         expr(&lhs, &op, &rhs); 
-      }
+      }*/
 
       template <typename LHS, typename OP, typename RHS>
       expr(expression<LHS, OP, RHS> const & other) : op_(OP().clone())
@@ -56,17 +56,17 @@ namespace viennamath
 
       template <typename T, unsigned long id>
       expr(unknown<T, id> const & other) : lhs_(other.clone()),
-                                           op_(op_unary().clone()),
+                                           op_(op_unary<op_id>().clone()),
                                            rhs_(other.clone()) {}
 
       template <typename T>
       expr(constant<T> const & other) : lhs_(other.clone()),
-                                           op_(op_unary().clone()),
+                                           op_(op_unary<op_id>().clone()),
                                            rhs_(other.clone()) {}
 
       template <long value>
       expr(ct_constant<value> const & other) : lhs_(other.clone()),
-                                                         op_(op_unary().clone()),
+                                                         op_(op_unary<op_id>().clone()),
                                                          rhs_(other.clone()) {}
 
       //Copy CTOR:
@@ -99,7 +99,7 @@ namespace viennamath
       expr & operator=(constant<ScalarType> const & other)
       {
         lhs_ = std::auto_ptr<expression_interface>(other.clone());
-        op_  = std::auto_ptr<op_interface>(new op_unary());
+        op_  = std::auto_ptr<op_interface>(new op_unary<op_id>());
         rhs_ = std::auto_ptr<expression_interface>(other.clone());
         return *this;
       }
@@ -113,7 +113,7 @@ namespace viennamath
       expr & operator=(numeric_type value)
       {
         lhs_ = std::auto_ptr<expression_interface>(new constant<numeric_type>(value));
-        op_  = std::auto_ptr<op_interface>(new op_unary());
+        op_  = std::auto_ptr<op_interface>(new op_unary<op_id>());
         rhs_ = std::auto_ptr<expression_interface>(new constant<numeric_type>(value));
         return *this;
       }
@@ -129,7 +129,24 @@ namespace viennamath
         v[0] = val;
         return op_->apply(lhs_.get(), rhs_.get(), v);
       }
+
+      template <typename ScalarType>
+      expr operator()(constant<ScalarType> val) const
+      {
+        std::vector<numeric_type> v(1);
+        v[0] = static_cast<numeric_type>(val);
+        return op_->apply(lhs_.get(), rhs_.get(), v);
+      }
       
+      template <long value>
+      expr operator()(ct_constant<value> val) const
+      {
+        std::vector<numeric_type> v(1);
+        v[0] = value;
+        return op_->apply(lhs_.get(), rhs_.get(), v);
+      }
+      
+
       template <typename VectorType>
       expr operator()(VectorType const & v) const
       {
@@ -147,7 +164,7 @@ namespace viennamath
       template <typename T0, typename T1>
       expr operator()(viennamath::vector_2<T0, T1> const & v) const
       {
-        std::vector<double> stl_v(1);
+        std::vector<double> stl_v(2);
         stl_v[0] = v[ct_index<0>()];
         stl_v[1] = v[ct_index<1>()];
         return op_->apply(lhs_.get(), rhs_.get(), stl_v);
@@ -156,7 +173,7 @@ namespace viennamath
       template <typename T0, typename T1, typename T2>
       expr operator()(viennamath::vector_3<T0, T1, T2> const & v) const
       {
-        std::vector<double> stl_v(1);
+        std::vector<double> stl_v(3);
         stl_v[0] = v[ct_index<0>()];
         stl_v[1] = v[ct_index<1>()];
         stl_v[2] = v[ct_index<2>()];
@@ -173,20 +190,21 @@ namespace viennamath
       std::string str() const
       {
         std::stringstream ss;
+        ss << "(";
         if (op_->is_unary())
         {
+          ss << op_->str();
           ss << "(";
           ss << lhs_->str();
           ss << ")";
         }
         else
         {
-          ss << "(";
           ss << lhs_->str();
           ss << op_->str();
           ss << rhs_->str();
-          ss << ")";
         }
+        ss << ")";
         return ss.str();        
       }
       bool is_unary() const { return false; }

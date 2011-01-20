@@ -1,12 +1,12 @@
 
 /*** unknowns: ***/
-variable<double, 0> x;
-variable<double, 1> y;
+unknown<double, 0>   x;
+unknown<double, 1>   y;
 
 /*** constants: ***/
 constant<double> pi(3.1415);    // run time
 constant<long>   rt_four(4);    // run time 
-constant<long, compile_time_constant<4> > four;         // compile time
+constant<long, compile_time_constant<4> > ct_four;         // compile time
 constant<long, compile_time_constant<3> > three;        // compile time
 
 /*** 'points': ***/
@@ -23,7 +23,7 @@ eval(x*y - four, make_vector(four, four) );  // compile time evaluation of compi
 //alternative:
 g(point);
 (x*y - four)(point);
-(x*y - four)(make_vector(four, four));
+(x*y - four)(make_vector(ct_four, ct_four));
 
 /*** substitution of values for variables: ***/
 substitute(x, four,  x*y - three * z + three);  // returns 4*y - 3*z + 3 (here: compile time)

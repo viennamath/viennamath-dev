@@ -45,7 +45,7 @@ namespace viennamath
       operator ScalarType() const { return s; }
       
       //interface requirements:
-      expression_interface * clone() const { return new constant(s); }
+      expression_interface * clone() const { return new constant<ScalarType>(s); }
       expr eval(std::vector<double> const & v) const;// { return (*this)(v); }
       std::string str() const
       {
