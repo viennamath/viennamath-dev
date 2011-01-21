@@ -225,13 +225,22 @@ namespace viennamath
     
     //interface requirements:
     expression_interface * clone() const { return new unknown(); }
-    expr eval(std::vector<double> const & v) const
+    numeric_type eval(std::vector<double> const & v) const
     {
       if (id >= v.size())
         throw unknown_index_out_of_bounds(id, v.size());
       
-      return expr(constant<ScalarType>((*this)(v)));
+      return (*this)(v);
     }
+    
+    numeric_type eval(numeric_type val) const
+    {
+      if (id >= 1)
+        throw unknown_index_out_of_bounds(id, 1);
+      
+      return val;
+    }
+    
     std::string str() const
     {
       std::stringstream ss;
@@ -244,226 +253,19 @@ namespace viennamath
       return 0;
     }
       
-
-
-
-    ////////////////// Operations //////////////////////////////
-    
-    //operator+
-    template <typename LHS, typename OP, typename RHS>
-    expression<unknown<ScalarType, id>,
-               op_plus,
-               expression<LHS, OP, RHS> >
-    operator+(expression<LHS, OP, RHS> const & other) const
-    {
-      return expression<unknown<ScalarType, id>,
-                        op_plus,
-                        expression<LHS, OP, RHS> >(*this, other);
-    }
-    
-    template <typename OtherScalarType, unsigned long other_id>
-    expression<unknown<ScalarType, id>,
-               op_plus,
-               unknown<OtherScalarType, other_id> >
-    operator+(unknown<OtherScalarType, other_id> const & other) const
-    {
-      return expression<unknown<ScalarType, id>,
-                        op_plus,
-                        unknown<OtherScalarType, other_id> >(*this, other);
-    }
-
-    expression<ct_constant<2>,
-               op_mult,
-               unknown<ScalarType, id> >
-    operator+(unknown<ScalarType, id> const & other) const
-    {
-      return expression<ct_constant<2>,
-                        op_mult,
-                        unknown<ScalarType, id> >(ct_constant<2>(), *this);
-    }
-
-    template <typename OtherScalarType>
-    expression<unknown<ScalarType, id>,
-               op_plus,
-               constant<OtherScalarType> >
-    operator+(constant<OtherScalarType> const & other) const
-    {
-      return expression<unknown<ScalarType, id>,
-                        op_plus,
-                        constant<OtherScalarType> >(*this, other);
-    }
-
-    template <long value>
-    expression<unknown<ScalarType, id>,
-               op_plus,
-               ct_constant<value> >
-    operator+(ct_constant<value> const & other) const
-    {
-      return expression<unknown<ScalarType, id>,
-                        op_plus,
-                        ct_constant<value> >(*this, other);
-    }
-
-
-    //operator-
-    template <typename LHS, typename OP, typename RHS>
-    expression<unknown<ScalarType, id>,
-               op_minus,
-               expression<LHS, OP, RHS> >
-    operator-(expression<LHS, OP, RHS> const & other) const
-    {
-      return expression<unknown<ScalarType, id>,
-                        op_minus,
-                        expression<LHS, OP, RHS> >(*this, other);
-    }
-    
-    template <typename OtherScalarType, unsigned long other_id>
-    expression<unknown<ScalarType, id>,
-               op_minus,
-               unknown<OtherScalarType, other_id> >
-    operator-(unknown<OtherScalarType, other_id> const & other) const
-    {
-      return expression<unknown<ScalarType, id>,
-                        op_minus,
-                        unknown<OtherScalarType, other_id> >(*this, other);
-    }
-
-    template <typename OtherScalarType>
-    ct_constant<0>
-    operator-(unknown<OtherScalarType, id> const & other) const
-    {
-      return ct_constant<0>();
-    }
-
-    template <typename OtherScalarType>
-    expression<unknown<ScalarType, id>,
-               op_minus,
-               constant<OtherScalarType> >
-    operator-(constant<OtherScalarType> const & other) const
-    {
-      return expression<unknown<ScalarType, id>,
-                        op_minus,
-                        constant<OtherScalarType> >(*this, other);
-    }
-    
-    template <long value>
-    expression<unknown<ScalarType, id>,
-               op_minus,
-               ct_constant<value> >
-    operator-(ct_constant<value> const & other) const
-    {
-      return expression<unknown<ScalarType, id>,
-                        op_minus,
-                        ct_constant<value> >(*this, other);
-    }
-
-
-    //operator*
-    template <typename LHS, typename OP, typename RHS>
-    expression<unknown<ScalarType, id>,
-               op_mult,
-               expression<LHS, OP, RHS> >
-    operator*(expression<LHS, OP, RHS> const & other) const
-    {
-      return expression<unknown<ScalarType, id>,
-                        op_mult,
-                        expression<LHS, OP, RHS> >(*this, other);
-    }
-    
-    template <typename OtherScalarType, unsigned long other_id>
-    expression<unknown<ScalarType, id>,
-               op_mult,
-               unknown<OtherScalarType, other_id> >
-    operator*(unknown<OtherScalarType, other_id> const & other) const
-    {
-      return expression<unknown<ScalarType, id>,
-                        op_mult,
-                        unknown<OtherScalarType, other_id> >(*this, other);
-    }
-
-    template <typename OtherScalarType>
-    expression<unknown<ScalarType, id>,
-               op_mult,
-               constant<OtherScalarType> >
-    operator*(constant<OtherScalarType> const & other) const
-    {
-      return expression<unknown<ScalarType, id>,
-                        op_mult,
-                        constant<OtherScalarType> >(*this, other);
-    }
-
-    template <long value>
-    expression<unknown<ScalarType, id>,
-               op_mult,
-               ct_constant<value> >
-    operator*(ct_constant<value> const & other) const
-    {
-      return expression<unknown<ScalarType, id>,
-                        op_mult,
-                        ct_constant<value> >(*this, other);
-    }
-
-
-    //operator/
-    template <typename LHS, typename OP, typename RHS>
-    expression<unknown<ScalarType, id>,
-               op_div,
-               expression<LHS, OP, RHS> >
-    operator/(expression<LHS, OP, RHS> const & other) const
-    {
-      return expression<unknown<ScalarType, id>,
-                        op_div,
-                        expression<LHS, OP, RHS> >(*this, other);
-    }
-    
-    template <typename OtherScalarType, unsigned long other_id>
-    expression<unknown<ScalarType, id>,
-               op_div,
-               unknown<OtherScalarType, other_id> >
-    operator/(unknown<OtherScalarType, other_id> const & other) const
-    {
-      return expression<unknown<ScalarType, id>,
-                        op_div,
-                        unknown<OtherScalarType, other_id> >(*this, other);
-    }
-
-    template <typename OtherScalarType>
-    ct_constant<1>
-    operator/(unknown<OtherScalarType, id> const & other) const
-    {
-      return ct_constant<1>();
-    }
-
-    template <typename OtherScalarType>
-    expression<unknown<ScalarType, id>,
-               op_div,
-               constant<OtherScalarType> >
-    operator/(constant<OtherScalarType> const & other) const
-    {
-      return expression<unknown<ScalarType, id>,
-                        op_div,
-                        constant<OtherScalarType> >(*this, other);
-    }
-    
-    template <long value>
-    expression<unknown<ScalarType, id>,
-               op_div,
-               ct_constant<value> >
-    operator/(ct_constant<value> const & other) const
-    {
-      return expression<unknown<ScalarType, id>,
-                        op_div,
-                        ct_constant<value> >(*this, other);
-    }
-    
     //protected:
-      virtual expression_interface * substitute(const expression_interface * e,
-                                                const expression_interface * repl) const
+    virtual expression_interface * substitute(const expression_interface * e,
+                                              const expression_interface * repl) const
+    {
+      //std::cout << "Comparing unknown<" << id << "> with " << e->str() << ", result: ";
+      if (dynamic_cast< const unknown<ScalarType, id> *>(e) != NULL)
       {
-        if (dynamic_cast< const unknown<ScalarType, id> *>(e) != NULL)
-          return repl->clone();
-        return clone();
-      };    
+        //std::cout << "TRUE, replacing with " << repl->str() << std::endl;
+        return repl->clone();
+      }
+      //std::cout << "FALSE" << std::endl;
+      return clone();
+    };    
 
   }; //unknown
 

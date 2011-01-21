@@ -29,29 +29,11 @@ namespace viennamath
   
   ////////////////////////////////////////////// unary operators/functions //////////////////////////////////////
 
-  template <typename unary_operation>
-  expr op_unary<unary_operation>::apply(expression_interface * lhs,
-                                        expression_interface * rhs,
-                                        std::vector<numeric_type> const & v) const
-  {
-    return constant<numeric_type>(unary_op_.apply(lhs->eval(v).unwrap()));
-  }
-  
   
   //special case: identity
   //template <>
   op_interface * op_unary<op_id>::clone() const { return new op_unary<op_id>(); }
   
-  //template <>
-  expr op_unary<op_id>::apply(expression_interface * lhs,
-                              expression_interface * rhs,
-                              std::vector<double> const & v) const 
-  { 
-    return lhs->eval(v);
-  }
-  
-
-
   //
   // exponential
   //
@@ -195,13 +177,20 @@ namespace viennamath
     
     //run time stuff:
     op_interface * clone() const { return new op_plus(); }
-    expr apply(expression_interface * lhs,
-               expression_interface * rhs,
-               std::vector<double> const & v) const 
+    numeric_type apply(expression_interface * lhs,
+                       expression_interface * rhs,
+                       std::vector<double> const & v) const 
     { 
       return lhs->eval(v) + rhs->eval(v);      
     }
-    
+
+    numeric_type apply(expression_interface * lhs,
+                       expression_interface * rhs,
+                       numeric_type v) const 
+    { 
+      return lhs->eval(v) + rhs->eval(v);      
+    }
+
     numeric_type apply(numeric_type lhs,
                        numeric_type rhs) const
     {
@@ -220,7 +209,16 @@ namespace viennamath
     
     //run time stuff:
     op_interface * clone() const { return new op_minus(); }
-    expr apply(expression_interface * lhs, expression_interface * rhs, std::vector<double> const & v) const 
+    numeric_type apply(expression_interface * lhs,
+                       expression_interface * rhs,
+                       std::vector<double> const & v) const 
+    { 
+      return lhs->eval(v) - rhs->eval(v);      
+    }
+
+    numeric_type apply(expression_interface * lhs,
+                       expression_interface * rhs,
+                       numeric_type v) const 
     { 
       return lhs->eval(v) - rhs->eval(v);      
     }
@@ -238,7 +236,16 @@ namespace viennamath
     
     //run time stuff:
     op_interface * clone() const { return new op_mult(); }
-    expr apply(expression_interface * lhs, expression_interface * rhs, std::vector<double> const & v) const 
+    numeric_type apply(expression_interface * lhs,
+                       expression_interface * rhs,
+                       std::vector<double> const & v) const 
+    { 
+      return lhs->eval(v) * rhs->eval(v);      
+    }
+
+    numeric_type apply(expression_interface * lhs,
+                       expression_interface * rhs,
+                       numeric_type v) const 
     { 
       return lhs->eval(v) * rhs->eval(v);      
     }
@@ -256,7 +263,16 @@ namespace viennamath
     
     //run time stuff:
     op_interface * clone() const { return new op_div(); }
-    expr apply(expression_interface * lhs, expression_interface * rhs, std::vector<double> const & v) const 
+    numeric_type apply(expression_interface * lhs,
+                       expression_interface * rhs,
+                       std::vector<double> const & v) const 
+    { 
+      return lhs->eval(v) / rhs->eval(v);      
+    }
+
+    numeric_type apply(expression_interface * lhs,
+                       expression_interface * rhs,
+                       numeric_type v) const 
     { 
       return lhs->eval(v) / rhs->eval(v);      
     }

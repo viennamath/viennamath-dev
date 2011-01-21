@@ -46,8 +46,9 @@ namespace viennamath
       
       //interface requirements:
       expression_interface * clone() const { return new constant<ScalarType>(s); }
-      expr eval(std::vector<double> const & v) const;// { return (*this)(v); }
-      bool unwrappable() const { return true; }
+      numeric_type eval(std::vector<double> const & v) const { return s; }
+      numeric_type eval(numeric_type v) const { return s; }
+      bool is_constant() const { return true; }
       std::string str() const
       {
         std::stringstream ss;

@@ -59,7 +59,7 @@ namespace viennamath
   numeric_type eval(expr const & e, VectorType const & v)
   {
     //we have unwrap the runtime expression:
-    return e(v).unwrap();
+    return e(v);
   }
   
 

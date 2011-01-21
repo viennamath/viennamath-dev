@@ -29,6 +29,8 @@
 #include "viennamath/expression_compile_time_operations.hpp"
 #include "viennamath/expression_run_time_operations.hpp"
 #include "viennamath/constant_operations.hpp"
+#include "viennamath/ct_constant_operations.hpp"
+#include "viennamath/unknown_operations.hpp"
 
 
 #endif

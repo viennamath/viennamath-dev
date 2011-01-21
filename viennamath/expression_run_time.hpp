@@ -64,8 +64,8 @@ namespace viennamath
 
       template <long value>
       expr(ct_constant<value> const & other) : lhs_(other.clone()),
-                                                         op_(op_unary<op_id>().clone()),
-                                                         rhs_(other.clone()) {}
+                                               op_(op_unary<op_id>().clone()),
+                                               rhs_(other.clone()) {}
 
       //Copy CTOR:
       expr(expr const & other) : lhs_(other.lhs_->clone()), 
@@ -118,32 +118,27 @@ namespace viennamath
       const expression_interface   * rhs() const { return rhs_.get(); }
       
       ///////////////// evaluation: ///////////////////////////////
-      expr operator()(numeric_type val) const
+      
+      //operator() is a convenience layer:
+      numeric_type operator()(numeric_type val) const
       {
-        std::vector<numeric_type> stl_v(1);
-        stl_v[0] = val;
-        return this->eval(stl_v);
+        return this->eval(val);
       }
 
       template <typename ScalarType>
-      expr operator()(constant<ScalarType> val) const
+      numeric_type operator()(constant<ScalarType> val) const
       {
-        std::vector<numeric_type> stl_v(1);
-        stl_v[0] = static_cast<numeric_type>(val);
-        return this->eval(stl_v);
+        return this->eval(static_cast<numeric_type>(val));
       }
       
       template <long value>
-      expr operator()(ct_constant<value> val) const
+      numeric_type operator()(ct_constant<value> val) const
       {
-        std::vector<numeric_type> stl_v(1);
-        stl_v[0] = value;
-        return this->eval(stl_v);
+        return this->eval(value);
       }
-      
 
       template <typename VectorType>
-      expr operator()(VectorType const & v) const
+      numeric_type operator()(VectorType const & v) const
       {
         std::vector<double> stl_v(v.size());
         for (size_t i=0; i<v.size(); ++i)
@@ -152,13 +147,13 @@ namespace viennamath
         return this->eval(stl_v);
       }
 
-      expr operator()(std::vector<numeric_type> const & stl_v) const
+      numeric_type operator()(std::vector<numeric_type> const & stl_v) const
       {
         return this->eval(stl_v);
       }
 
       template <typename T0>
-      expr operator()(viennamath::vector_1<T0> const & v) const
+      numeric_type operator()(viennamath::vector_1<T0> const & v) const
       {
         std::vector<double> stl_v(1);
         stl_v[0] = v[ct_index<0>()];
@@ -166,7 +161,7 @@ namespace viennamath
       }
 
       template <typename T0, typename T1>
-      expr operator()(viennamath::vector_2<T0, T1> const & v) const
+      numeric_type operator()(viennamath::vector_2<T0, T1> const & v) const
       {
         std::vector<double> stl_v(2);
         stl_v[0] = v[ct_index<0>()];
@@ -175,7 +170,7 @@ namespace viennamath
       }
       
       template <typename T0, typename T1, typename T2>
-      expr operator()(viennamath::vector_3<T0, T1, T2> const & v) const
+      numeric_type operator()(viennamath::vector_3<T0, T1, T2> const & v) const
       {
         std::vector<double> stl_v(3);
         stl_v[0] = v[ct_index<0>()];
@@ -184,25 +179,31 @@ namespace viennamath
         return this->eval(stl_v);
       }
       
-      expr eval(std::vector<double> const & v) const
+      //virtual functions for evaluations
+      numeric_type eval(std::vector<double> const & v) const
       {
         return op_->apply(lhs_.get(), rhs_.get(), v);
       }
-      
+
+      numeric_type eval(numeric_type val) const
+      {
+        return op_->apply(lhs_.get(), rhs_.get(), val);
+      }
+
       ///////////////////// substitution /////////////////////////////
       
       expression_interface * optimize()
       {
-        if (lhs_->unwrappable() && rhs_->unwrappable())
+        if (lhs_->is_constant() && rhs_->is_constant())
         {
           return new constant<numeric_type>( unwrap() );
         }
-        else if (lhs_->unwrappable())
+        else if (lhs_->is_constant())
         {
           lhs_ = std::auto_ptr<expression_interface>( new constant<numeric_type>(lhs_->unwrap()) );
           rhs_ = std::auto_ptr<expression_interface>( rhs_->optimize() );
         }
-        else if (rhs_->unwrappable())
+        else if (rhs_->is_constant())
         {
           lhs_ = std::auto_ptr<expression_interface>(lhs_->optimize());
           rhs_ = std::auto_ptr<expression_interface>( new constant<numeric_type>(rhs_->unwrap()) );
@@ -266,7 +267,7 @@ namespace viennamath
         return op_->apply(lhs_->unwrap(), rhs_->unwrap());
       }
       
-      bool unwrappable() const { return lhs_->unwrappable() && rhs_->unwrappable(); };
+      bool is_constant() const { return lhs_->is_constant() && rhs_->is_constant(); };
       
       virtual expression_interface * substitute(const expression_interface * e,
                                                 const expression_interface * repl) const
@@ -292,9 +293,6 @@ namespace viennamath
            << "";
     return stream;
   }
-  
-  template <typename ScalarType>
-  expr constant<ScalarType>::eval(std::vector<double> const & v) const { return (*this)(v); }
   
   template <typename LHS, typename OP, typename RHS>
   expression_interface * expression<LHS, OP, RHS>::clone() const

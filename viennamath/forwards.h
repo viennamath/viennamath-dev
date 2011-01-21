@@ -65,10 +65,14 @@ namespace viennamath
       
       virtual expression_interface * clone() const = 0;
       virtual std::string str() const = 0;
-      virtual expr eval(std::vector<double> const & v) const = 0;
+      virtual numeric_type eval(std::vector<double> const & v) const = 0;
+      virtual numeric_type eval(numeric_type val) const = 0;
       virtual expression_interface * optimize() { return this; }
       virtual bool is_unary() const { return true; }
-      virtual bool unwrappable() const { return false; }
+      
+      /** @brief Returns true, if the expression can be evaluated without providing values for variables (i.e. the expression is a constant) */
+      virtual bool is_constant() const { return false; }
+      
       virtual numeric_type unwrap() const = 0;
       virtual expression_interface * substitute(const expression_interface * e,
                                                 const expression_interface * repl) const = 0;
@@ -92,9 +96,13 @@ namespace viennamath
       
       virtual op_interface * clone() const = 0;
       virtual std::string str() const = 0;
-      virtual expr apply(expression_interface * lhs,
-                         expression_interface * rhs,
-                         std::vector<numeric_type> const & v) const  = 0;
+      virtual numeric_type apply(expression_interface * lhs,
+                                 expression_interface * rhs,
+                                 std::vector<numeric_type> const & v) const  = 0;
+      virtual numeric_type apply(expression_interface * lhs,
+                                 expression_interface * rhs,
+                                 numeric_type val) const  = 0;
+                         
       virtual numeric_type apply(numeric_type lhs, numeric_type rhs) const = 0;                   
       virtual bool is_unary() const { return false; }
   };
@@ -119,11 +127,14 @@ namespace viennamath
       //run time stuff:
       std::string str() const { return unary_operation::str(); }
       op_interface * clone() const { return new op_unary<unary_operation>(); }
-      expr apply(expression_interface * lhs,
-                expression_interface * rhs,
-                std::vector<numeric_type> const & v) const;//  { return unary_op_.apply(lhs); };
-      bool is_unary() const { return true; }
+      virtual numeric_type apply(expression_interface * lhs,
+                                 expression_interface * rhs,
+                                 std::vector<numeric_type> const & v) const  { return unary_op_.apply(lhs->eval(v)); }
+      virtual numeric_type apply(expression_interface * lhs,
+                                 expression_interface * rhs,
+                                 numeric_type val) const   { return unary_op_.apply(lhs->eval(val)); }
       numeric_type apply(numeric_type lhs, numeric_type rhs) const { return unary_op_.apply(lhs); }
+      bool is_unary() const { return true; }
     
     private:
       //We use a unary_operation member, because the unary_operation tag might have a state -> pure static tag dispatch not enough.
@@ -144,11 +155,14 @@ namespace viennamath
     //run time stuff:
     std::string str() const { return "id"; }
     op_interface * clone() const;
-    expr apply(expression_interface * lhs,
-               expression_interface * rhs,
-               std::vector<numeric_type> const & v) const;
-    bool is_unary() const { return true; }
+    virtual numeric_type apply(expression_interface * lhs,
+                               expression_interface * rhs,
+                               std::vector<numeric_type> const & v) const  { return lhs->eval(v); }
+    virtual numeric_type apply(expression_interface * lhs,
+                               expression_interface * rhs,
+                               numeric_type val) const   { return lhs->eval(val); }
     numeric_type apply(numeric_type lhs, numeric_type rhs) const { return lhs; }
+    bool is_unary() const { return true; }
   };
 
   
