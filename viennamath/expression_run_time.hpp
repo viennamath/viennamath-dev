@@ -192,6 +192,7 @@ namespace viennamath
 
       ///////////////////// substitution /////////////////////////////
       
+      
       expression_interface * optimize()
       {
         if (lhs_->is_constant() && rhs_->is_constant())
@@ -211,8 +212,8 @@ namespace viennamath
         
         else
         {
-          lhs_ = std::auto_ptr<expression_interface>( new constant<numeric_type>(lhs_->unwrap()) );
-          rhs_ = std::auto_ptr<expression_interface>( new constant<numeric_type>(rhs_->unwrap()) );
+          lhs_ = std::auto_ptr<expression_interface>( lhs_->optimize() );
+          rhs_ = std::auto_ptr<expression_interface>( rhs_->optimize() );
         }
         
         return this;        
