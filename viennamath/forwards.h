@@ -54,7 +54,9 @@ namespace viennamath
   
   /////// run time expression ///////
     
-  class expr;
+  class binary_expr;
+
+  class op_interface;
 
   //class expression_interface;
   //interface for dispatches:
@@ -76,13 +78,20 @@ namespace viennamath
       virtual numeric_type unwrap() const = 0;
       virtual expression_interface * substitute(const expression_interface * e,
                                                 const expression_interface * repl) const = 0;
+                                                
+      virtual bool equal(const expression_interface *) const = 0;
+      
+      virtual const expression_interface * lhs() const { return this; };
+      virtual const op_interface * op() { return NULL; }  //primitives do not have an operator
+      virtual const expression_interface * rhs() const { return NULL; } //unary expressions do not have a right-hand side
+                                                
   };
  
-
+/*
   expr operator+(expr const & lhs, expr const & rhs);
   expr operator-(expr const & lhs, expr const & rhs);
   expr operator*(expr const & lhs, expr const & rhs);
-  expr operator/(expr const & lhs, expr const & rhs);
+  expr operator/(expr const & lhs, expr const & rhs); */
   
   
   

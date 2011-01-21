@@ -63,6 +63,11 @@ namespace viennamath
         return clone();
       };    
       
+      bool equal(const expression_interface * other) const
+      {
+        return dynamic_cast< const constant<ScalarType> *>(other) != NULL;
+      }
+      
     private:
       ScalarType s;
   };

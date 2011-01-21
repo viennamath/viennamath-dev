@@ -77,9 +77,9 @@ int main()
   viennamath::unknown<double, 0>  x;
   viennamath::unknown<double, 1>  T;
   viennamath::constant<double>    value_for_T(300.0);
-  viennamath::expr e = (T * eps * x * viennamath::exp( prefactor * voltage / (kb * T) ) );
+  viennamath::binary_expr e = (T * eps * x * viennamath::exp( prefactor * voltage / (kb * T) ) );
   std::cout << "Expression before substitution: " << e << std::endl;
-  viennamath::expr e_opt = viennamath::substitute(T, value_for_T, e);
+  viennamath::binary_expr e_opt = viennamath::substitute(T, value_for_T, e);
   std::cout << "Expression after substitution: " << e_opt << std::endl;
   result = 0;
   timer.start();

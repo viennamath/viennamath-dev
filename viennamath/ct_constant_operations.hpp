@@ -17,7 +17,7 @@
 
 #include <ostream>
 #include "viennamath/forwards.h"
-#include "viennamath/expression_run_time.hpp"
+#include "viennamath/binary_expression.hpp"
 #include "viennamath/op_tags.hpp"
 #include "viennamath/ct_constant.hpp"
 

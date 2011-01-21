@@ -16,7 +16,7 @@
 #define VIENNAMATH_EVAL_HPP
 
 #include "viennamath/forwards.h"
-#include "viennamath/expression_run_time_operations.hpp"
+#include "viennamath/binary_expression_operations.hpp"
 
 namespace viennamath
 {
@@ -56,7 +56,7 @@ namespace viennamath
   }
 
   template <typename VectorType>
-  numeric_type eval(expr const & e, VectorType const & v)
+  numeric_type eval(binary_expr const & e, VectorType const & v)
   {
     //we have unwrap the runtime expression:
     return e(v);

@@ -16,7 +16,7 @@
 #define VIENNAMATH_SUBSTITUTE_HPP
 
 #include "viennamath/forwards.h"
-#include "viennamath/expression_run_time_operations.hpp"
+#include "viennamath/binary_expression_operations.hpp"
 
 namespace viennamath
 {
@@ -31,7 +31,7 @@ namespace viennamath
   //public interface:
   /** @brief Replaces all occurances of the unknown u in the expression 'e' with 'u'. */
   template <typename ScalarType, unsigned long id, typename ReplacementType, typename ExpressionType>
-  expr substitute(unknown<ScalarType, id> const & u,
+  binary_expr substitute(unknown<ScalarType, id> const & u,
                   ReplacementType const & repl,
                   ExpressionType const & e)
   {

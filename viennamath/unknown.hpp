@@ -18,7 +18,7 @@
 #include "viennamath/constant.hpp"
 #include "viennamath/vector.hpp"
 #include "viennamath/op_tags.hpp"
-#include "viennamath/expression_run_time.hpp"
+#include "viennamath/binary_expression.hpp"
 #include "viennamath/expression_compile_time.hpp"
 
 #include <assert.h>
@@ -254,7 +254,7 @@ namespace viennamath
     }
       
     //protected:
-    virtual expression_interface * substitute(const expression_interface * e,
+    expression_interface * substitute(const expression_interface * e,
                                               const expression_interface * repl) const
     {
       //std::cout << "Comparing unknown<" << id << "> with " << e->str() << ", result: ";
@@ -266,7 +266,12 @@ namespace viennamath
       //std::cout << "FALSE" << std::endl;
       return clone();
     };    
-
+    
+    bool equal(const expression_interface * other) const
+    {
+      return dynamic_cast< const unknown<ScalarType, id> *>(other) != NULL;
+    }
+    
   }; //unknown
 
   template <typename ScalarType, unsigned long id>

@@ -12,8 +12,8 @@
 
 
 
-#ifndef VIENNAMATH_EXPRESSION_RUN_TIME_CPP
-#define VIENNAMATH_EXPRESSION_RUN_TIME_CPP
+#ifndef VIENNAMATH_BINARY_EXPRESSION_CPP
+#define VIENNAMATH_BINARY_EXPRESSION_CPP
 
 #include <ostream>
 #include <sstream>
@@ -26,63 +26,114 @@ namespace viennamath
 {
   
   //A run time expression
-  class expr : public expression_interface
+  class binary_expr : public expression_interface
   {
     public:
 //       explicit expr(expression_interface * lhs,
 //                     op_interface         * op,
 //                     expression_interface * rhs) : lhs_(lhs), op_(op), rhs_(rhs) {}
-      expr() {}
+      binary_expr() {}
 
-      explicit expr(expression_interface * lhs,
-                    op_interface         * op,
-                    expression_interface * rhs) : lhs_(lhs->clone()), op_(op->clone()), rhs_(rhs->clone()) {}
+      explicit binary_expr(expression_interface * lhs,
+                           op_interface         * op,
+                           expression_interface * rhs) : lhs_(lhs->clone()),
+                                                         op_(op->clone()),
+                                                         rhs_(rhs->clone()) {}
                     
-      /*template <typename LHS, typename OP, typename RHS>
-      explicit expr(LHS const & lhs, OP const & op, RHS const & rhs) 
-      {
-        expr(&lhs, &op, &rhs); 
-      }*/
-
       template <typename LHS, typename OP, typename RHS>
-      expr(expression<LHS, OP, RHS> const & other) : op_(OP().clone())
+      binary_expr(expression<LHS, OP, RHS> const & other) : op_(OP().clone())
       {
-        std::cout << "Constructing from expression " << other << std::endl;
+        //std::cout << "Constructing from expression " << other << std::endl;
         lhs_ = std::auto_ptr<expression_interface>(other.lhs().clone());
         rhs_ = std::auto_ptr<expression_interface>(other.rhs().clone());
       }
 
+      template <typename LHS, typename OP, long value>
+      binary_expr(expression<LHS, OP, ct_constant<value> > const & other) : op_(OP().clone())
+      {
+        //std::cout << "Constructing from expression " << other << std::endl;
+        lhs_ = std::auto_ptr<expression_interface>(other.lhs().clone());
+        rhs_ = std::auto_ptr<expression_interface>(new constant<numeric_type>(value));
+      }
+
+      template <long value, typename OP, typename RHS>
+      binary_expr(expression<ct_constant<value>, OP, RHS > const & other) : op_(OP().clone())
+      {
+        //std::cout << "Constructing from expression " << other << std::endl;
+        lhs_ = std::auto_ptr<expression_interface>(new constant<numeric_type>(value));
+        rhs_ = std::auto_ptr<expression_interface>(other.rhs().clone());
+      }
+
+      template <long value1, typename OP, long value2>
+      binary_expr(expression<ct_constant<value1>, OP, ct_constant<value2> > const & other) : op_(new op_unary<op_id>())
+      {
+        //std::cout << "Constructing from expression " << other << std::endl;
+        lhs_ = std::auto_ptr<expression_interface>(new constant<numeric_type>(OP().apply(value1, value2)));
+        rhs_ = std::auto_ptr<expression_interface>(new constant<numeric_type>(OP().apply(value1, value2)));
+      }
+
       template <typename T, unsigned long id>
-      expr(unknown<T, id> const & other) : lhs_(other.clone()),
-                                           op_(op_unary<op_id>().clone()),
-                                           rhs_(other.clone()) {}
+      binary_expr(unknown<T, id> const & other) : lhs_(other.clone()),
+                                                  op_(op_unary<op_id>().clone()),
+                                                  rhs_(other.clone()) {}
 
       template <typename T>
-      expr(constant<T> const & other) : lhs_(other.clone()),
-                                           op_(op_unary<op_id>().clone()),
-                                           rhs_(other.clone()) {}
-
-      template <long value>
-      expr(ct_constant<value> const & other) : lhs_(other.clone()),
+      binary_expr(constant<T> const & other) : lhs_(other.clone()),
                                                op_(op_unary<op_id>().clone()),
                                                rhs_(other.clone()) {}
 
+      template <long value>
+      binary_expr(ct_constant<value> const & other) : lhs_(new constant<numeric_type>(value)),
+                                                      op_(op_unary<op_id>().clone()),
+                                                      rhs_(new constant<numeric_type>(value)) {}
+
       //Copy CTOR:
-      expr(expr const & other) : lhs_(other.lhs_->clone()), 
-                                 op_(other.op_->clone()),
-                                 rhs_(other.rhs_->clone()) {};
+      binary_expr(binary_expr const & other) : lhs_(other.lhs_->clone()), 
+                                               op_(other.op_->clone()),
+                                               rhs_(other.rhs_->clone()) {}
 
       //assignments:                           
       template <typename LHS, typename OP, typename RHS>
-      expr & operator=(expression<LHS, OP, RHS> const & other) 
+      binary_expr & operator=(expression<LHS, OP, RHS> const & other) 
       {
         lhs_ = std::auto_ptr<expression_interface>(other.lhs().clone());
         op_ = std::auto_ptr<op_interface>(OP().clone());
         rhs_ = std::auto_ptr<expression_interface>(other.rhs().clone());
         return *this;
       }
+      
+      template <typename LHS, typename OP, long value>
+      binary_expr & operator=(expression<LHS, OP, ct_constant<value> > const & other)
+      {
+        //std::cout << "Constructing from expression " << other << std::endl;
+        lhs_ = std::auto_ptr<expression_interface>(other.lhs().clone());
+        op_ = std::auto_ptr<op_interface>(OP().clone());
+        rhs_ = std::auto_ptr<expression_interface>(new constant<numeric_type>(value));
+        return *this;
+      }
 
-      expr & operator=(expr const & other) 
+      template <long value, typename OP, typename RHS>
+      binary_expr & operator=(expression<ct_constant<value>, OP, RHS > const & other)
+      {
+        //std::cout << "Constructing from expression " << other << std::endl;
+        lhs_ = std::auto_ptr<expression_interface>(new constant<numeric_type>(value));
+        op_ = std::auto_ptr<op_interface>(OP().clone());
+        rhs_ = std::auto_ptr<expression_interface>(other.rhs().clone());
+        return *this;
+      }
+
+      template <long value1, typename OP, long value2>
+      binary_expr & operator=(expression<ct_constant<value1>, OP, ct_constant<value2> > const & other)
+      {
+        std::cout << "Constructing from expression " << other << std::endl;
+        lhs_ = std::auto_ptr<expression_interface>(new constant<numeric_type>(OP().apply(value1, value2)));
+        op_  = std::auto_ptr<op_interface>(new op_unary<op_id>());
+        rhs_ = std::auto_ptr<expression_interface>(new constant<numeric_type>(OP().apply(value1, value2)));
+        return *this;
+      }
+      
+
+      binary_expr & operator=(binary_expr const & other) 
       {
         lhs_ = std::auto_ptr<expression_interface>(other.lhs()->clone());
         op_  = std::auto_ptr<op_interface>(other.op()->clone());
@@ -91,7 +142,7 @@ namespace viennamath
       }
 
       template <typename ScalarType>
-      expr & operator=(constant<ScalarType> const & other)
+      binary_expr & operator=(constant<ScalarType> const & other)
       {
         lhs_ = std::auto_ptr<expression_interface>(other.clone());
         op_  = std::auto_ptr<op_interface>(new op_unary<op_id>());
@@ -100,12 +151,12 @@ namespace viennamath
       }
 
       template <long value>
-      expr & operator=(ct_constant<value> const & other)
+      binary_expr & operator=(ct_constant<value> const & other)
       {
         return *this = value;
       }
 
-      expr & operator=(numeric_type value)
+      binary_expr & operator=(numeric_type value)
       {
         lhs_ = std::auto_ptr<expression_interface>(new constant<numeric_type>(value));
         op_  = std::auto_ptr<op_interface>(new op_unary<op_id>());
@@ -220,25 +271,25 @@ namespace viennamath
       }
       
       template <typename ScalarType, unsigned long id, typename ReplacementType>
-      expr substitute(unknown<ScalarType, id> const & u,
+      binary_expr substitute(unknown<ScalarType, id> const & u,
                       ReplacementType const & repl) const
       {
         //TODO: Remove dynamic_casts!!
         expression_interface * ret = this->substitute(&u, &repl);
-        if (dynamic_cast<expr *>(ret) != NULL)
+        if (dynamic_cast<binary_expr *>(ret) != NULL)
         {
           expression_interface * ret2 = ret->optimize();
-          if (dynamic_cast<expr *>(ret) != NULL)
-            return dynamic_cast<expr &>(*ret);
-          return expr(ret2, op_unary< op_id >().clone(), ret2);
+          if (dynamic_cast<binary_expr *>(ret) != NULL)
+            return dynamic_cast<binary_expr &>(*ret);
+          return binary_expr(ret2, op_unary< op_id >().clone(), ret2);
         }
         
-        return expr(ret, op_unary< op_id >().clone(), ret);
+        return binary_expr(ret, op_unary< op_id >().clone(), ret);
       }
       
     
       ///////// other interface requirements ////////////////////////
-      expression_interface * clone() const { return new expr(lhs_->clone(), op_->clone(), rhs_->clone()); }
+      expression_interface * clone() const { return new binary_expr(lhs_->clone(), op_->clone(), rhs_->clone()); }
       std::string str() const
       {
         std::stringstream ss;
@@ -273,10 +324,15 @@ namespace viennamath
       virtual expression_interface * substitute(const expression_interface * e,
                                                 const expression_interface * repl) const
       {
-        return expr(lhs_->substitute(e, repl),
+        return binary_expr(lhs_->substitute(e, repl),
                     op_->clone(),
                     rhs_->substitute(e, repl) ).clone(); 
       };
+      
+      bool equal(const expression_interface * other) const
+      {
+        return lhs_->equal(other) && rhs_->equal(other);
+      }
       
 
       
@@ -287,7 +343,7 @@ namespace viennamath
   };
   
   
-  std::ostream& operator<<(std::ostream & stream, expr const & e)
+  std::ostream& operator<<(std::ostream & stream, binary_expr const & e)
   {
     stream << "expr" 
            << e.str()
@@ -298,9 +354,8 @@ namespace viennamath
   template <typename LHS, typename OP, typename RHS>
   expression_interface * expression<LHS, OP, RHS>::clone() const
   {
-    return expr(*this).clone();
+    return binary_expr(*this).clone();
   }
-  
   
 }
 

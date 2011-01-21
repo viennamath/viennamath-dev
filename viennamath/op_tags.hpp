@@ -19,7 +19,7 @@
 #include <vector>
 #include <math.h>
 #include "viennamath/forwards.h"
-#include "viennamath/expression_run_time.hpp"
+#include "viennamath/binary_expression.hpp"
 
 
 namespace viennamath
@@ -43,9 +43,9 @@ namespace viennamath
     numeric_type apply(numeric_type value) const { return exp(value); }
   };
   
-  expr exp(expr const & other)
+  binary_expr exp(binary_expr const & other)
   {
-    return expr(other.clone(), op_unary<op_exp>().clone(), other.clone()); 
+    return binary_expr(other.clone(), op_unary<op_exp>().clone(), other.clone()); 
   }
 
 
@@ -60,9 +60,9 @@ namespace viennamath
     numeric_type apply(numeric_type value) const { return sin(value); }
   };
   
-  expr sin(expr const & other)
+  binary_expr sin(binary_expr const & other)
   {
-    return expr(other.clone(), op_unary<op_sin>().clone(), other.clone()); 
+    return binary_expr(other.clone(), op_unary<op_sin>().clone(), other.clone()); 
   }
   
   
@@ -77,9 +77,9 @@ namespace viennamath
     numeric_type apply(numeric_type value) const { return cos(value); }
   };
 
-  expr cos(expr const & other)
+  binary_expr cos(binary_expr const & other)
   {
-    return expr(other.clone(), op_unary<op_cos>().clone(), other.clone()); 
+    return binary_expr(other.clone(), op_unary<op_cos>().clone(), other.clone()); 
   }
   
 
@@ -92,9 +92,9 @@ namespace viennamath
     numeric_type apply(numeric_type value) const { return tan(value); }
   };
   
-  expr tan(expr const & other)
+  binary_expr tan(binary_expr const & other)
   {
-    return expr(other.clone(), op_unary<op_tan>().clone(), other.clone()); 
+    return binary_expr(other.clone(), op_unary<op_tan>().clone(), other.clone()); 
   }
   
   
@@ -107,9 +107,9 @@ namespace viennamath
     numeric_type apply(numeric_type value) const { return fabs(value); }
   };
   
-  expr fabs(expr const & other)
+  binary_expr fabs(binary_expr const & other)
   {
-    return expr(other.clone(), op_unary<op_fabs>().clone(), other.clone()); 
+    return binary_expr(other.clone(), op_unary<op_fabs>().clone(), other.clone()); 
   }
   
 
@@ -122,9 +122,9 @@ namespace viennamath
     numeric_type apply(numeric_type value) const { return sqrt(value); }
   };
 
-  expr sqrt(expr const & other)
+  binary_expr sqrt(binary_expr const & other)
   {
-    return expr(other.clone(), op_unary<op_sqrt>().clone(), other.clone()); 
+    return binary_expr(other.clone(), op_unary<op_sqrt>().clone(), other.clone()); 
   }
   
   
@@ -138,9 +138,9 @@ namespace viennamath
     numeric_type apply(numeric_type value) const { return log(value); }
   };
 
-  expr log(expr const & other)
+  binary_expr log(binary_expr const & other)
   {
-    return expr(other.clone(), op_unary<op_log>().clone(), other.clone()); 
+    return binary_expr(other.clone(), op_unary<op_log>().clone(), other.clone()); 
   }
   
   
@@ -153,9 +153,9 @@ namespace viennamath
     numeric_type apply(numeric_type value) const { return log10(value); }
   };
   
-  expr log10(expr const & other)
+  binary_expr log10(binary_expr const & other)
   {
-    return expr(other.clone(), op_unary<op_log10>().clone(), other.clone()); 
+    return binary_expr(other.clone(), op_unary<op_log10>().clone(), other.clone()); 
   }
   
   

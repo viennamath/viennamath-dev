@@ -18,7 +18,7 @@
 #include "viennamath/constant.hpp"
 #include "viennamath/vector.hpp"
 #include "viennamath/op_tags.hpp"
-#include "viennamath/expression_run_time.hpp"
+#include "viennamath/binary_expression.hpp"
 #include "viennamath/expression_compile_time.hpp"
 #include "viennamath/unknown.hpp"
 
@@ -201,19 +201,19 @@ namespace viennamath
 
   //with plain numeric type (see notes on numeric_type_proxy)
   template <typename ScalarType, unsigned long id>
-  expr operator*(unknown<ScalarType, id> const & lhs,
+  binary_expr operator*(unknown<ScalarType, id> const & lhs,
                  numeric_type_proxy rhs)
   {
-    return expr(lhs.clone(),
+    return binary_expr(lhs.clone(),
                 op_mult().clone(),
                 constant<numeric_type>(rhs.get()).clone());
   }
 
   template <typename ScalarType, unsigned long id>
-  expr operator*(numeric_type_proxy lhs,
+  binary_expr operator*(numeric_type_proxy lhs,
                  unknown<ScalarType, id> const & rhs)
   {
-    return expr(constant<numeric_type>(lhs.get()).clone(),
+    return binary_expr(constant<numeric_type>(lhs.get()).clone(),
                 op_mult().clone(),
                 rhs.clone());
   }
@@ -278,19 +278,19 @@ namespace viennamath
 
   //with plain numeric type (see notes on numeric_type_proxy)
   template <typename ScalarType, unsigned long id>
-  expr operator/(unknown<ScalarType, id> const & lhs,
+  binary_expr operator/(unknown<ScalarType, id> const & lhs,
                  numeric_type_proxy rhs)
   {
-    return expr(lhs.clone(),
+    return binary_expr(lhs.clone(),
                 op_div().clone(),
                 constant<numeric_type>(rhs.get()).clone());
   }
 
   template <typename ScalarType, unsigned long id>
-  expr operator/(numeric_type_proxy lhs,
+  binary_expr operator/(numeric_type_proxy lhs,
                  unknown<ScalarType, id> const & rhs)
   {
-    return expr(constant<numeric_type>(lhs.get()).clone(),
+    return binary_expr(constant<numeric_type>(lhs.get()).clone(),
                 op_div().clone(),
                 rhs.clone());
   }

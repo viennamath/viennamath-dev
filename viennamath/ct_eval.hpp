@@ -315,7 +315,7 @@ namespace viennamath
   };
 
   template <typename VectorType>
-  struct ct_evaluation < expr, VectorType>
+  struct ct_evaluation < binary_expr, VectorType>
   {
     typedef typename VectorType::ERROR_RUNTIME_EXPRESSION_NOT_ALLOWED_IN_COMPILETIME_EVALUATION  error_type;
   };
