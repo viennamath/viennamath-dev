@@ -156,8 +156,16 @@ int main()
   std::cout << viennamath::diff(viennamath::tan(x), x) << std::endl;
   std::cout << viennamath::diff(viennamath::tan(e1), x) << std::endl;
   
+  std::cout << viennamath::diff(viennamath::sqrt(x), x) << std::endl;
+  std::cout << viennamath::diff(viennamath::sqrt(e1), x) << std::endl;
   
+  std::cout << viennamath::diff(viennamath::log(x), x) << std::endl;
+  std::cout << viennamath::diff(viennamath::log(e1), x) << std::endl;
+
+  std::cout << viennamath::diff(viennamath::log10(x), x) << std::endl;
+  std::cout << viennamath::diff(viennamath::log10(e1), x) << std::endl;
    
+
   std::cout << "************************************************" << std::endl;
   std::cout << "*****     TEST COMPLETED SUCCESSFULLY!     *****" << std::endl;
   std::cout << "************************************************" << std::endl;

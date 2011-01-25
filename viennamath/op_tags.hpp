@@ -346,7 +346,12 @@ namespace viennamath
     static const expression_interface * diff(const expression_interface * expr,
                                              const expression_interface * diff_var)
     {
-      return NULL;  //TODO: Insert correct formula here
+      return binary_expr( expr->diff(diff_var),
+                          op_div().clone(),
+                          binary_expr( constant<numeric_type>(2).clone(),
+                                       op_mult().clone(),
+                                       unary_expr(expr->clone(), op_unary<op_sqrt>().clone()).clone() ).clone()
+                        ).clone();
     }
     
   };
@@ -369,7 +374,10 @@ namespace viennamath
     static const expression_interface * diff(const expression_interface * expr,
                                              const expression_interface * diff_var)
     {
-      return NULL;  //TODO: Insert correct formula here
+      return binary_expr( expr->diff(diff_var),
+                          op_div().clone(),
+                          unary_expr(expr->clone()).clone()
+                        ).clone();
     }
     
   };
@@ -388,10 +396,16 @@ namespace viennamath
     static std::string str() { return "log10"; }
     numeric_type apply(numeric_type value) const { return log10(value); }
 
+    // (log10(f))' = f' / (ln(f) * ln(10))
     static const expression_interface * diff(const expression_interface * expr,
                                              const expression_interface * diff_var)
     {
-      return NULL;  //TODO: Insert correct formula here
+      return binary_expr( expr->diff(diff_var),
+                          op_div().clone(),
+                          binary_expr( constant<numeric_type>( ::log(10) ).clone(),
+                                       op_mult().clone(),
+                                       unary_expr(expr->clone()).clone() ).clone()
+                        ).clone();
     }
 
   };
