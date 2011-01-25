@@ -84,7 +84,9 @@ namespace viennamath
       virtual const expression_interface * lhs() const { return this; };
       virtual const op_interface * op() { return NULL; }  //primitives do not have an operator
       virtual const expression_interface * rhs() const { return NULL; } //unary expressions do not have a right-hand side
-                                                
+
+
+      virtual const expression_interface * diff(const expression_interface * diff_var) const = 0;
   };
  
 /*
@@ -114,6 +116,10 @@ namespace viennamath
                          
       virtual numeric_type apply(numeric_type lhs, numeric_type rhs) const = 0;                   
       virtual bool is_unary() const { return false; }
+      
+      virtual const expression_interface * diff(const expression_interface * lhs,
+                                                const expression_interface * rhs,
+                                                const expression_interface * diff_var) const  = 0;
   };
   
   //binary operator tags:  
@@ -144,6 +150,10 @@ namespace viennamath
                                  numeric_type val) const   { return unary_op_.apply(lhs->eval(val)); }
       numeric_type apply(numeric_type lhs, numeric_type rhs) const { return unary_op_.apply(lhs); }
       bool is_unary() const { return true; }
+      
+      const expression_interface * diff(const expression_interface * lhs,
+                                        const expression_interface * rhs,
+                                        const expression_interface * diff_var) const { return unary_operation::diff(lhs, diff_var); }
     
     private:
       //We use a unary_operation member, because the unary_operation tag might have a state -> pure static tag dispatch not enough.
@@ -172,6 +182,10 @@ namespace viennamath
                                numeric_type val) const   { return lhs->eval(val); }
     numeric_type apply(numeric_type lhs, numeric_type rhs) const { return lhs; }
     bool is_unary() const { return true; }
+    
+    const expression_interface * diff(const expression_interface * lhs,
+                                      const expression_interface * rhs,
+                                      const expression_interface * diff_var) const { return lhs->diff(diff_var); }
   };
 
   

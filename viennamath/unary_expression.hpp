@@ -35,8 +35,10 @@ namespace viennamath
       unary_expr() {}
 
       explicit unary_expr(expression_interface * lhs,
-                    op_interface         * op) : expr_(lhs->clone()),
+                          op_interface         * op) : expr_(lhs->clone()),
                                                   op_(op->clone()) {}
+                                                  
+      explicit unary_expr(const expression_interface * lhs) : expr_(lhs->clone()), op_(op_unary<op_id>().clone()) {}
                     
       /*template <typename LHS, typename OP, typename RHS>
       explicit expr(LHS const & lhs, OP const & op, RHS const & rhs) 
@@ -247,7 +249,10 @@ namespace viennamath
         return expr_->equal(other); 
       }
       
-
+      const expression_interface * diff(const expression_interface * diff_var) const
+      {
+        return op_->diff(expr_.get(), expr_.get(), diff_var);
+      }
       
     private:
       std::auto_ptr<expression_interface>  expr_;

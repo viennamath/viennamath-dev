@@ -34,11 +34,11 @@ namespace viennamath
 //                     expression_interface * rhs) : lhs_(lhs), op_(op), rhs_(rhs) {}
       binary_expr() {}
 
-      explicit binary_expr(expression_interface * lhs,
-                           op_interface         * op,
-                           expression_interface * rhs) : lhs_(lhs->clone()),
-                                                         op_(op->clone()),
-                                                         rhs_(rhs->clone()) {}
+      explicit binary_expr(const expression_interface * lhs,
+                           const op_interface         * op,
+                           const expression_interface * rhs) : lhs_(lhs->clone()),
+                                                               op_(op->clone()),
+                                                               rhs_(rhs->clone()) {}
                     
       template <typename LHS, typename OP, typename RHS>
       binary_expr(expression<LHS, OP, RHS> const & other) : op_(OP().clone())
@@ -334,6 +334,16 @@ namespace viennamath
         return lhs_->equal(other) && rhs_->equal(other);
       }
       
+      template <typename ScalarType, unsigned long id>
+      const expression_interface * diff(unknown<ScalarType, id> const & diff_var) const
+      {
+        return diff(&diff_var); 
+      }
+      
+      const expression_interface * diff(const expression_interface * diff_var) const
+      {
+        return op_->diff(lhs_.get(), rhs_.get(), diff_var);
+      }
 
       
     private:

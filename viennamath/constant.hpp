@@ -68,6 +68,11 @@ namespace viennamath
         return dynamic_cast< const constant<ScalarType> *>(other) != NULL;
       }
       
+      const expression_interface * diff(const expression_interface * diff_var) const
+      {
+        return new constant<ScalarType>(0);
+      }
+      
     private:
       ScalarType s;
   };

@@ -272,6 +272,17 @@ namespace viennamath
       return dynamic_cast< const unknown<ScalarType, id> *>(other) != NULL;
     }
     
+    const expression_interface * diff(const expression_interface * diff_var) const
+    {
+      if (dynamic_cast< const unknown<ScalarType, id> *>(diff_var) != NULL)
+      {
+        //std::cout << "TRUE, replacing with " << repl->str() << std::endl;
+        return constant<numeric_type>(1).clone();
+      }
+      //std::cout << "FALSE" << std::endl;
+      return constant<numeric_type>(0).clone();
+    }
+    
   }; //unknown
 
   template <typename ScalarType, unsigned long id>

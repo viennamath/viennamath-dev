@@ -18,5 +18,6 @@ ADD_EXECUTABLE(runtime_test examples/runtime_test.cpp)
 ADD_EXECUTABLE(compiletime_test examples/compiletime_test.cpp)
 ADD_EXECUTABLE(compiletime_evaluation examples/compiletime_evaluation.cpp)
 ADD_EXECUTABLE(model_benchmark examples/model_benchmark.cpp)
+ADD_EXECUTABLE(diff_test examples/diff_test.cpp)
 
  
