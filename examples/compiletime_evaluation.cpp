@@ -35,9 +35,9 @@ void operations_test(T const & t, U const & u)
 template <typename T>
 void operations_test(T const & t)
 {
-  viennamath::unknown<double, 0> x;
-  viennamath::unknown<double, 1> y;
-  viennamath::unknown<double, 2> z;
+  viennamath::variable<0> x;
+  viennamath::variable<1> y;
+  viennamath::variable<2> z;
   viennamath::ct_constant<5> c5;
   viennamath::ct_constant<7> c7;
   
@@ -107,9 +107,9 @@ void evaluations_test(E const & e, double ref_solution)
 
 int main()
 {
-  viennamath::unknown<double, 0> x;
-  viennamath::unknown<double, 1> y;
-  viennamath::unknown<double, 2> z;
+  viennamath::variable<0> x;
+  viennamath::variable<1> y;
+  viennamath::variable<2> z;
   viennamath::ct_constant<5> c5;
   viennamath::ct_constant<7> c7;
   

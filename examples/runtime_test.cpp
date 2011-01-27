@@ -103,9 +103,9 @@ void unary_test(viennamath::binary_expr const & e)
 
 int main()
 {
-  viennamath::unknown<double, 0> x;
-  viennamath::unknown<double, 1> y;
-  viennamath::unknown<double, 2> z;
+  viennamath::variable<0> x;
+  viennamath::variable<1> y;
+  viennamath::variable<2> z;
   viennamath::constant<double> c4(4.0);
   viennamath::constant<long> c6(6);
   viennamath::ct_constant<8> c8;

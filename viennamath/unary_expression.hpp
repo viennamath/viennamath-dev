@@ -53,8 +53,8 @@ namespace viennamath
         expr_ = std::auto_ptr<expression_interface>(other.lhs().clone());
       }
 
-      template <typename T, unsigned long id>
-      unary_expr(unknown<T, id> const & other) : expr_(other.clone()),
+      template <unsigned long id>
+      unary_expr(variable<id> const & other) : expr_(other.clone()),
                                                  op_(op_unary<op_id>().clone())  {}
 
       template <typename T>
@@ -195,8 +195,8 @@ namespace viennamath
         return this;        
       }
       
-      template <typename ScalarType, unsigned long id, typename ReplacementType>
-      unary_expr substitute(unknown<ScalarType, id> const & u,
+      template <unsigned long id, typename ReplacementType>
+      unary_expr substitute(variable<id> const & u,
                       ReplacementType const & repl) const
       {
         //TODO: Remove dynamic_casts!!

@@ -72,8 +72,8 @@ namespace viennamath
         rhs_ = std::auto_ptr<expression_interface>(new constant<numeric_type>(OP().apply(value1, value2)));
       }
 
-      template <typename T, unsigned long id>
-      binary_expr(unknown<T, id> const & other) : lhs_(other.clone()),
+      template <unsigned long id>
+      binary_expr(variable<id> const & other) : lhs_(other.clone()),
                                                   op_(op_unary<op_id>().clone()),
                                                   rhs_(other.clone()) {}
 
@@ -270,8 +270,8 @@ namespace viennamath
         return this;        
       }
       
-      template <typename ScalarType, unsigned long id, typename ReplacementType>
-      binary_expr substitute(unknown<ScalarType, id> const & u,
+      template <unsigned long id, typename ReplacementType>
+      binary_expr substitute(variable<id> const & u,
                       ReplacementType const & repl) const
       {
         //TODO: Remove dynamic_casts!!
@@ -334,8 +334,8 @@ namespace viennamath
         return lhs_->equal(other) && rhs_->equal(other);
       }
       
-      template <typename ScalarType, unsigned long id>
-      const expression_interface * diff(unknown<ScalarType, id> const & diff_var) const
+      template <unsigned long id>
+      const expression_interface * diff(variable<id> const & diff_var) const
       {
         return diff(&diff_var); 
       }

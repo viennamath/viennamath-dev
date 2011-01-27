@@ -29,9 +29,9 @@ namespace viennamath
   
   
   //public interface:
-  /** @brief Replaces all occurances of the unknown u in the expression 'e' with 'u'. */
-  template <typename ScalarType, unsigned long id, typename ReplacementType, typename ExpressionType>
-  binary_expr substitute(unknown<ScalarType, id> const & u,
+  /** @brief Replaces all occurances of the variable u in the expression 'e' with 'u'. */
+  template <unsigned long id, typename ReplacementType, typename ExpressionType>
+  binary_expr substitute(variable<id> const & u,
                   ReplacementType const & repl,
                   ExpressionType const & e)
   {

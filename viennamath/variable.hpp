@@ -12,8 +12,8 @@
 
 
 
-#ifndef VIENNAMATH_UNKNOWN_CPP
-#define VIENNAMATH_UNKNOWN_CPP
+#ifndef VIENNAMATH_VARIABLE_CPP
+#define VIENNAMATH_VARIABLE_CPP
 
 #include "viennamath/constant.hpp"
 #include "viennamath/vector.hpp"
@@ -48,12 +48,11 @@ namespace viennamath
   };
 
   /********** evaluation at STL vector types ***************/
-  template <typename ScalarType,
-            typename VectorType,
+  template <typename VectorType,
             long id>
-  struct unknown_traits
+  struct variable_traits
   {
-    typedef ScalarType   return_type;
+    typedef numeric_type          return_type;
     
     //per default, access id-th element;
     static return_type get(VectorType const & v)
@@ -64,12 +63,10 @@ namespace viennamath
   
   
   //vector_1:
-  template <typename ScalarType,
-            typename T0,
+  template <typename T0,
             long id>
-  struct unknown_traits <ScalarType, 
-                         vector_1<T0>, 
-                         id>
+  struct variable_traits <vector_1<T0>, 
+                          id>
   {
     typedef typename type_by_index<vector_1<T0>, id>::result_type   return_type;
     
@@ -81,12 +78,10 @@ namespace viennamath
   };
   
   //vector_2:
-  template <typename ScalarType,
-            typename T0, typename T1,
+  template <typename T0, typename T1,
             long id>
-  struct unknown_traits <ScalarType, 
-                         vector_2<T0, T1>, 
-                         id>
+  struct variable_traits <vector_2<T0, T1>, 
+                          id>
   {
     typedef typename type_by_index<vector_2<T0, T1>, id>::result_type   return_type;
     
@@ -98,12 +93,10 @@ namespace viennamath
   };
 
   //vector_3:
-  template <typename ScalarType,
-            typename T0, typename T1, typename T2,
+  template <typename T0, typename T1, typename T2,
             long id>
-  struct unknown_traits <ScalarType, 
-                         vector_3<T0, T1, T2>, 
-                         id>
+  struct variable_traits <vector_3<T0, T1, T2>, 
+                          id>
   {
     typedef typename type_by_index<vector_3<T0, T1, T2>, id>::result_type   return_type;
     
@@ -118,9 +111,8 @@ namespace viennamath
 
   /*********** evaluation of a run time constant: *****************/
   template <typename ScalarType>
-  struct unknown_traits <ScalarType,
-                         constant<ScalarType>,
-                         0>
+  struct variable_traits <constant<ScalarType>,
+                          0>
   {
     typedef viennamath::constant<ScalarType>   return_type;
     
@@ -133,9 +125,8 @@ namespace viennamath
 
   //guard: something like (x*y - z)(constant<double>(4)) is not allowed
   template <typename ScalarType, long id>
-  struct unknown_traits <ScalarType, 
-                         constant<ScalarType>,
-                         id>
+  struct variable_traits <constant<ScalarType>,
+                          id>
   {
     //try to provide a good compiler error message:
     typedef typename viennamath::constant<ScalarType>::ERROR_PROVIDED_NOT_ENOUGH_ARGUMENTS_TO_EXPRESSION   error_type;
@@ -144,10 +135,9 @@ namespace viennamath
   };
   
   /************* evaluation of a compile time constant *****************/
-  template <typename ScalarType, long value_>
-  struct unknown_traits <ScalarType, 
-                         ct_constant<value_>,
-                         0>
+  template <long value_>
+  struct variable_traits <ct_constant<value_>,
+                          0>
   {
     typedef viennamath::ct_constant<value_>   return_type;
     
@@ -159,10 +149,9 @@ namespace viennamath
   };
 
   //guard: something like (x*y - z)(constant<long, ct_constant<4> >()) is not allowed
-  template <typename ScalarType, long value_, long id>
-  struct unknown_traits <ScalarType, 
-                         ct_constant<value_>, 
-                         id>
+  template <long value_, long id>
+  struct variable_traits <ct_constant<value_>, 
+                          id>
   {
     //try to provide a good compiler error message:
     typedef typename ct_constant<value_>::ERROR_PROVIDED_NOT_ENOUGH_ARGUMENTS_TO_EXPRESSION   error_type;
@@ -170,65 +159,66 @@ namespace viennamath
     //providing a non-vector type is bogus -> force linker error!
   };
   
-  // further specialize unknown_traits::get() here as required.
+  // further specialize variable_traits::get() here as required.
   
   
   
-  /** @brief Representation of an unknown (a variable). If the supplied argument is some vector type,
+  /** @brief Representation of an variable (a variable). If the supplied argument is some vector type,
    *  a traits system accesses the id-th component
    * 
    * @tparam ScalarType        the underlying numerical type (typically float, double)
-   * @tparam id                the component of the vector for which 'unknown' is evaluated
+   * @tparam id                the component of the vector for which 'variable' is evaluated
    */
-  template <typename ScalarType, 
-            unsigned long id /* see forwards.h for default argument */>
-  struct unknown : public expression_interface
+  template <unsigned long id /* see forwards.h for default argument */>
+  struct variable : public expression_interface
   {
-    explicit unknown() {};
+    explicit variable() {};
 
     std::ostream & operator<<(std::ostream & stream) const
     {
-      stream << "unknown<" << id << ">";
+      stream << "variable<" << id << ">";
       return stream;
     }
 
     /////////////////   Basic evaluation: //////////////////////////////////
-    ScalarType operator()(ScalarType value) const
+    numeric_type operator()(numeric_type value) const
     {
       return value;
     }
 
-    template <typename OtherScalarType>
-    constant<ScalarType> operator()(constant<OtherScalarType> const & other) const
+    template <typename ScalarType>
+    constant<ScalarType> operator()(constant<ScalarType> const & other) const
     {
       if (id > 0)
-        throw unknown_index_out_of_bounds(id, 0);
-      return constant<ScalarType>(static_cast<OtherScalarType>(other));
+        throw variable_index_out_of_bounds(id, 0);
+      return constant<ScalarType>(static_cast<ScalarType>(other));
     }
 
     template <long value>
-    ScalarType operator()(ct_constant<value> const & other) const
+    long operator()(ct_constant<value> const & other) const
     {
       if (id > 0)
-        throw unknown_index_out_of_bounds(id, 0);
+        throw variable_index_out_of_bounds(id, 0);
       return value;
     }
 
     //Vector argument (can be of type std::vector)
     template <typename VectorType>
-    typename unknown_traits<ScalarType, VectorType, id>::return_type operator()(VectorType const & v) const
+    typename variable_traits<VectorType, id>::return_type 
+    //numeric_type 
+    operator()(VectorType const & v) const
     {
       if(id >= v.size())
-        throw unknown_index_out_of_bounds(id, v.size());
-      return unknown_traits<ScalarType, VectorType, id>::get(v);
+        throw variable_index_out_of_bounds(id, v.size());
+      return variable_traits<VectorType, id>::get(v);
     }
     
     //interface requirements:
-    expression_interface * clone() const { return new unknown(); }
+    expression_interface * clone() const { return new variable(); }
     numeric_type eval(std::vector<double> const & v) const
     {
       if (id >= v.size())
-        throw unknown_index_out_of_bounds(id, v.size());
+        throw variable_index_out_of_bounds(id, v.size());
       
       return (*this)(v);
     }
@@ -236,7 +226,7 @@ namespace viennamath
     numeric_type eval(numeric_type val) const
     {
       if (id >= 1)
-        throw unknown_index_out_of_bounds(id, 1);
+        throw variable_index_out_of_bounds(id, 1);
       
       return val;
     }
@@ -244,7 +234,7 @@ namespace viennamath
     std::string str() const
     {
       std::stringstream ss;
-      ss << "unknown<" << id << ">";
+      ss << "variable<" << id << ">";
       return ss.str();      
     }
     numeric_type unwrap() const
@@ -257,8 +247,8 @@ namespace viennamath
     expression_interface * substitute(const expression_interface * e,
                                               const expression_interface * repl) const
     {
-      //std::cout << "Comparing unknown<" << id << "> with " << e->str() << ", result: ";
-      if (dynamic_cast< const unknown<ScalarType, id> *>(e) != NULL)
+      //std::cout << "Comparing variable<" << id << "> with " << e->str() << ", result: ";
+      if (dynamic_cast< const variable<id> *>(e) != NULL)
       {
         //std::cout << "TRUE, replacing with " << repl->str() << std::endl;
         return repl->clone();
@@ -269,12 +259,12 @@ namespace viennamath
     
     bool equal(const expression_interface * other) const
     {
-      return dynamic_cast< const unknown<ScalarType, id> *>(other) != NULL;
+      return dynamic_cast< const variable<id> *>(other) != NULL;
     }
     
     const expression_interface * diff(const expression_interface * diff_var) const
     {
-      if (dynamic_cast< const unknown<ScalarType, id> *>(diff_var) != NULL)
+      if (dynamic_cast< const variable<id> *>(diff_var) != NULL)
       {
         //std::cout << "TRUE, replacing with " << repl->str() << std::endl;
         return constant<numeric_type>(1).clone();
@@ -283,12 +273,12 @@ namespace viennamath
       return constant<numeric_type>(0).clone();
     }
     
-  }; //unknown
+  }; //variable
 
-  template <typename ScalarType, unsigned long id>
-  std::ostream& operator<<(std::ostream & stream, unknown<ScalarType, id> const & u)
+  template <unsigned long id>
+  std::ostream& operator<<(std::ostream & stream, variable<id> const & u)
   {
-    stream << "unknown<" << id << ">";
+    stream << "variable<" << id << ">";
     return stream;
   }
 

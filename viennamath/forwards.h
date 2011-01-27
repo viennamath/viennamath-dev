@@ -210,10 +210,9 @@ namespace viennamath
   
   
   
-  /////// unknown ///////
-  template <typename ScalarType, 
-            unsigned long id = 0>
-  struct unknown;
+  /////// variable ///////
+  template <unsigned long id = 0>
+  struct variable;
 
   
   
@@ -250,16 +249,16 @@ namespace viennamath
     const char * what() const throw() { return "Expression cannot be unwrapped!"; } 
   };
   
-  class unknown_index_out_of_bounds : public std::exception
+  class variable_index_out_of_bounds : public std::exception
   {
     const char * what() const throw()
     {
       std::stringstream ss;
-      ss << "Encountered an unknown<> type with id larger or equal to the size of the supplied vector of values. id=" << id_ << ", vector_size=" << vector_size_ << std::endl;
+      ss << "Encountered an variable<> type with id larger or equal to the size of the supplied vector of values. id=" << id_ << ", vector_size=" << vector_size_ << std::endl;
       return ss.str().c_str(); } 
     
     public:
-      unknown_index_out_of_bounds(long id, long vector_size) : id_(id), vector_size_(vector_size) {}
+      variable_index_out_of_bounds(long id, long vector_size) : id_(id), vector_size_(vector_size) {}
       
     private:
       long id_;

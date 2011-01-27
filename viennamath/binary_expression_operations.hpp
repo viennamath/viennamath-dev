@@ -71,15 +71,15 @@ namespace viennamath
     return binary_expr(lhs.clone(), op_plus().clone(), rhs.clone());
   }
 
-  //with unknown:
-  template <typename T, unsigned long id>
-  binary_expr operator+(binary_expr const & lhs, unknown<T, id> const & rhs)
+  //with variable:
+  template <unsigned long id>
+  binary_expr operator+(binary_expr const & lhs, variable<id> const & rhs)
   {
     return binary_expr(lhs.clone(), op_plus().clone(), rhs.clone());
   }
 
-  template <typename T, unsigned long id>
-  binary_expr operator+(unknown<T, id> const & lhs, binary_expr const & rhs)
+  template <unsigned long id>
+  binary_expr operator+(variable<id> const & lhs, binary_expr const & rhs)
   {
     //std::cout << "Generating compound: " << lhs << "+" << rhs << std::endl;
     return binary_expr(lhs.clone(), op_plus().clone(), rhs.clone());
@@ -144,15 +144,15 @@ namespace viennamath
     return binary_expr(lhs.clone(), op_minus().clone(), rhs.clone());
   }
 
-  //with unknown:
-  template <typename T, unsigned long id>
-  binary_expr operator-(binary_expr const & lhs, unknown<T, id> const & rhs)
+  //with variable:
+  template <unsigned long id>
+  binary_expr operator-(binary_expr const & lhs, variable<id> const & rhs)
   {
     return binary_expr(lhs.clone(), op_minus().clone(), rhs.clone());
   }
 
-  template <typename T, unsigned long id>
-  binary_expr operator-(unknown<T, id> const & lhs, binary_expr const & rhs)
+  template <unsigned long id>
+  binary_expr operator-(variable<id> const & lhs, binary_expr const & rhs)
   {
     return binary_expr(lhs.clone(), op_minus().clone(), rhs.clone());
   }
@@ -217,15 +217,15 @@ namespace viennamath
     return binary_expr(lhs.clone(), op_mult().clone(), rhs.clone());
   }
 
-  //with unknown:
-  template <typename T, unsigned long id>
-  binary_expr operator*(binary_expr const & lhs, unknown<T, id> const & rhs)
+  //with variable:
+  template <unsigned long id>
+  binary_expr operator*(binary_expr const & lhs, variable<id> const & rhs)
   {
     return binary_expr(lhs.clone(), op_mult().clone(), rhs.clone());
   }
 
-  template <typename T, unsigned long id>
-  binary_expr operator*(unknown<T, id> const & lhs, binary_expr const & rhs)
+  template <unsigned long id>
+  binary_expr operator*(variable<id> const & lhs, binary_expr const & rhs)
   {
     return binary_expr(lhs.clone(), op_mult().clone(), rhs.clone());
   }
@@ -292,15 +292,15 @@ namespace viennamath
     return binary_expr(lhs.clone(), op_div().clone(), rhs.clone());
   }
 
-  //with unknown:
-  template <typename T, unsigned long id>
-  binary_expr operator/(binary_expr const & lhs, unknown<T, id> const & rhs)
+  //with variable:
+  template <unsigned long id>
+  binary_expr operator/(binary_expr const & lhs, variable<id> const & rhs)
   {
     return binary_expr(lhs.clone(), op_div().clone(), rhs.clone());
   }
 
-  template <typename T, unsigned long id>
-  binary_expr operator/(unknown<T, id> const & lhs, binary_expr const & rhs)
+  template <unsigned long id>
+  binary_expr operator/(variable<id> const & lhs, binary_expr const & rhs)
   {
     return binary_expr(lhs.clone(), op_div().clone(), rhs.clone());
   }

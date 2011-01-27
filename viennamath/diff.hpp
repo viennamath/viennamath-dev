@@ -24,59 +24,43 @@ namespace viennamath
   
   //////////// derivative of a constant: /////////////////////////////////
 
-  template <typename ScalarType, unsigned long id>
+  template <unsigned long id>
   constant<numeric_type> diff(numeric_type value,
-                              unknown<ScalarType, id> const & var)
+                              variable<id> const & var)
   {
     return constant<numeric_type>(0);
   }
   
   template <typename OtherScalarType,
-            typename ScalarType, unsigned long id>
+            unsigned long id>
   constant<numeric_type> diff(constant<OtherScalarType> const & c,
-                              unknown<ScalarType, id> const & var)
+                              variable<id> const & var)
   {
     return constant<numeric_type>(0);
   }
 
-  //////////// derivative of an unknown: /////////////////////////////////
+  //////////// derivative of an variable: /////////////////////////////////
 
-  template <typename OtherScalarType, unsigned long other_id,
-            typename ScalarType, unsigned long id>
-  constant<numeric_type> diff(unknown<OtherScalarType, other_id> const & c,
-                              unknown<ScalarType, id> const & var)
+  template <unsigned long other_id,
+            unsigned long id>
+  constant<numeric_type> diff(variable<other_id> const & c,
+                              variable<id> const & var)
   {
     return constant<numeric_type>(0);
   }
 
-  template <long other_id,
-            typename ScalarType, unsigned long id>
-  constant<numeric_type> diff(unknown<ScalarType, other_id> const & c,
-                              unknown<ScalarType, id> const & var)
-  {
-    return constant<numeric_type>(0);
-  }
-
-  template <typename OtherScalarType,
-            typename ScalarType, unsigned long id>
-  constant<numeric_type> diff(unknown<OtherScalarType, id> const & c,
-                              unknown<ScalarType, id> const & var)
-  {
-    return constant<numeric_type>(1);
-  }
-
-  template <typename ScalarType, unsigned long id>
-  constant<numeric_type> diff(unknown<ScalarType, id> const & c,
-                              unknown<ScalarType, id> const & var)
+  template <unsigned long id>
+  constant<numeric_type> diff(variable<id> const & c,
+                              variable<id> const & var)
   {
     return constant<numeric_type>(1);
   }
 
   /////////////////// derivative of runtime expression /////////////////////
 
-  template <typename ScalarType, unsigned long id>
+  template <unsigned long id>
   unary_expr diff(binary_expr const & e,
-                   unknown<ScalarType, id> const & var)
+                  variable<id> const & var)
   {
     //generic approach: use operator() and hope the best:
     return unary_expr(e.diff(var));
@@ -98,52 +82,52 @@ namespace viennamath
   };
   
   // (u + v)' = u' + v'
-  template <typename LHS, typename RHS, typename ScalarType, unsigned long id>
+  template <typename LHS, typename RHS, unsigned long id>
   struct ct_diff<expression<LHS, op_plus, RHS>,
-                 unknown<ScalarType, id> >
+                 variable<id> >
   {
-    typedef expression< typename ct_diff<LHS, unknown<ScalarType, id> >::result_type,
+    typedef expression< typename ct_diff<LHS, variable<id> >::result_type,
                         op_plus,
-                        typename ct_diff<RHS, unknown<ScalarType, id> >::result_type >     result_type;    
+                        typename ct_diff<RHS, variable<id> >::result_type >     result_type;    
   };
   
   // (u - v)' = u' - v'
-  template <typename LHS, typename RHS, typename ScalarType, unsigned long id>
+  template <typename LHS, typename RHS, unsigned long id>
   struct ct_diff<expression<LHS, op_minus, RHS>,
-                 unknown<ScalarType, id> >
+                 variable<id> >
   {
-    typedef expression< typename ct_diff<LHS, unknown<ScalarType, id> >::result_type,
+    typedef expression< typename ct_diff<LHS, variable<id> >::result_type,
                         op_minus,
-                        typename ct_diff<RHS, unknown<ScalarType, id> >::result_type >     result_type;    
+                        typename ct_diff<RHS, variable<id> >::result_type >     result_type;    
   };
   
   // (u * v)' = u'*v + u*v'
-  template <typename LHS, typename RHS, typename ScalarType, unsigned long id>
+  template <typename LHS, typename RHS, unsigned long id>
   struct ct_diff<expression<LHS, op_mult, RHS>,
-                 unknown<ScalarType, id> >
+                 variable<id> >
   {
-    typedef expression< expression< typename ct_diff<LHS, unknown<ScalarType, id> >::result_type,
+    typedef expression< expression< typename ct_diff<LHS, variable<id> >::result_type,
                                     op_mult,
                                     RHS>,
                         op_plus,            
                         expression< LHS,
                                     op_mult,
-                                    typename ct_diff<RHS, unknown<ScalarType, id> >::result_type >
+                                    typename ct_diff<RHS, variable<id> >::result_type >
                       >                                                      result_type;    
   };
 
   // (u/v)' = (u'*v - u*v') / v^2
-  template <typename LHS, typename RHS, typename ScalarType, unsigned long id>
+  template <typename LHS, typename RHS, unsigned long id>
   struct ct_diff<expression<LHS, op_div, RHS>,
-                 unknown<ScalarType, id> >
+                 variable<id> >
   {
-    typedef expression< expression< expression< typename ct_diff<LHS, unknown<ScalarType, id> >::result_type,
+    typedef expression< expression< expression< typename ct_diff<LHS, variable<id> >::result_type,
                                                 op_mult,
                                                 RHS>,
                                     op_minus,            
                                     expression< LHS,
                                                 op_mult,
-                                                typename ct_diff<RHS, unknown<ScalarType, id> >::result_type >
+                                                typename ct_diff<RHS, variable<id> >::result_type >
                                    >,
                       op_div,             
                       expression< RHS,
@@ -152,40 +136,24 @@ namespace viennamath
                       >                    result_type;    
   };
   
-  template <typename OtherScalarType, unsigned long other_id,
-            typename ScalarType, unsigned long id>
-  struct ct_diff< unknown<OtherScalarType, other_id>,
-                  unknown<ScalarType, id> >
-  {
-    typedef ct_constant<0>    result_type;    
-  };
-
   template <unsigned long other_id,
-            typename ScalarType, unsigned long id>
-  struct ct_diff< unknown<ScalarType, other_id>,
-                  unknown<ScalarType, id> >
+            unsigned long id>
+  struct ct_diff< variable<other_id>,
+                  variable<id> >
   {
     typedef ct_constant<0>    result_type;    
   };
   
-  template <typename OtherScalarType,
-            typename ScalarType, unsigned long id>
-  struct ct_diff< unknown<OtherScalarType, id>,
-                  unknown<ScalarType, id> >
+  template <unsigned long id>
+  struct ct_diff< variable<id>,
+                  variable<id> >
   {
     typedef ct_constant<1>    result_type;    
   };
   
-  template <typename ScalarType, unsigned long id>
-  struct ct_diff< unknown<ScalarType, id>,
-                  unknown<ScalarType, id> >
-  {
-    typedef ct_constant<1>    result_type;    
-  };
-  
-  template <long value, typename ScalarType, unsigned long id>
+  template <long value, unsigned long id>
   struct ct_diff< ct_constant<value>,
-                  unknown<ScalarType, id> >
+                  variable<id> >
   {
     typedef ct_constant<0>    result_type;    
   };
@@ -194,14 +162,14 @@ namespace viennamath
   
   //interface function
   template <typename LHS, typename OP, typename RHS,
-            typename ScalarType, unsigned long id>
+            unsigned long id>
   typename ct_diff<expression<LHS, OP, RHS>,
-                   unknown<ScalarType, id> >::result_type
+                   variable<id> >::result_type
   diff(expression<LHS, OP, RHS> const & c,
-       unknown<ScalarType, id> const & var)
+       variable<id> const & var)
   {
     return typename ct_diff<expression<LHS, OP, RHS>,
-                            unknown<ScalarType, id> >::result_type();
+                            variable<id> >::result_type();
   }
 }
 

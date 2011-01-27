@@ -21,7 +21,7 @@
 #include "viennamath/vector.hpp"
 #include "viennamath/ct_constant.hpp"
 #include "viennamath/constant.hpp"
-#include "viennamath/unknown.hpp"
+#include "viennamath/variable.hpp"
 #include "viennamath/expression_compile_time.hpp"
 #include "viennamath/binary_expression.hpp"
 #include "viennamath/unary_expression.hpp"
@@ -31,7 +31,7 @@
 #include "viennamath/binary_expression.hpp"
 #include "viennamath/constant_operations.hpp"
 #include "viennamath/ct_constant_operations.hpp"
-#include "viennamath/unknown_operations.hpp"
+#include "viennamath/variable_operations.hpp"
 
 
 #endif

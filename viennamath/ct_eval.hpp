@@ -16,7 +16,7 @@
 #define VIENNAMATH_CT_EVAL_HPP
 
 #include "viennamath/forwards.h"
-#include "viennamath/unknown.hpp"
+#include "viennamath/variable.hpp"
 
 namespace viennamath
 {
@@ -338,14 +338,14 @@ namespace viennamath
     typedef ct_constant<value>    result_type;
   };
   
-  template <typename ScalarType, unsigned long id, typename VectorType>
-  struct ct_evaluation< unknown<ScalarType, id>, VectorType>
+  template <unsigned long id, typename VectorType>
+  struct ct_evaluation< variable<id>, VectorType>
   {
     typedef typename type_by_index<VectorType, id>::result_type  result_type;
   };
   
-  template <typename ScalarType, long value>
-  struct ct_evaluation< unknown<ScalarType, 0>, ct_constant<value> >
+  template <long value>
+  struct ct_evaluation< variable<0>, ct_constant<value> >
   {
     typedef ct_constant<value>  result_type;
   };
@@ -373,8 +373,8 @@ namespace viennamath
     enum { return_value = 1 };
   };
   
-  template <typename ScalarType, unsigned long id>
-  struct is_ct_evaluable< unknown<ScalarType, id> >
+  template <unsigned long id>
+  struct is_ct_evaluable< variable<id> >
   {
     enum { return_value = 1 };
   };

@@ -94,16 +94,16 @@ namespace viennamath
                       RHS >(ct_constant<value + value2>(), other.rhs());
   }
   
-  template <long value, typename OtherScalarType, unsigned long other_id>
+  template <long value, unsigned long other_id>
   expression<ct_constant<value>,
             op_plus,
-            unknown<OtherScalarType, other_id> >
+            variable<other_id> >
   operator+(ct_constant<value> const & lhs, 
-            unknown<OtherScalarType, other_id> const & other)
+            variable<other_id> const & other)
   {
     return expression<ct_constant<value>,
                       op_plus,
-                      unknown<OtherScalarType, other_id> >(lhs, other);
+                      variable<other_id> >(lhs, other);
   }
 
   template <long value, typename OtherScalarType>
@@ -191,16 +191,16 @@ namespace viennamath
   }
   
   
-  template <long value, typename OtherScalarType, unsigned long other_id>
+  template <long value, unsigned long other_id>
   expression<ct_constant<value>,
             op_minus,
-            unknown<OtherScalarType, other_id> >
+            variable<other_id> >
   operator-(ct_constant<value> const & lhs, 
-            unknown<OtherScalarType, other_id> const & other)
+            variable<other_id> const & other)
   {
     return expression<ct_constant<value>,
                       op_minus,
-                      unknown<OtherScalarType, other_id> >(lhs, other);
+                      variable<other_id> >(lhs, other);
   }
 
   template <long value, typename OtherScalarType>
@@ -233,16 +233,16 @@ namespace viennamath
                       expression<LHS, OP, RHS> >(lhs, other);
   }
   
-  template <long value, typename OtherScalarType, unsigned long other_id>
+  template <long value, unsigned long other_id>
   expression<ct_constant<value>,
             op_mult,
-            unknown<OtherScalarType, other_id> >
+            variable<other_id> >
   operator*(ct_constant<value> const & lhs, 
-            unknown<OtherScalarType, other_id> const & other)
+            variable<other_id> const & other)
   {
     return expression<ct_constant<value>,
                       op_mult,
-                      unknown<OtherScalarType, other_id> >(lhs, other);
+                      variable<other_id> >(lhs, other);
   }
 
   template <long value, typename OtherScalarType>
@@ -275,16 +275,16 @@ namespace viennamath
                       expression<LHS, OP, RHS> >(lhs, other);
   }
   
-  template <long value, typename OtherScalarType, unsigned long other_id>
+  template <long value, unsigned long other_id>
   expression<ct_constant<value>,
             op_div,
-            unknown<OtherScalarType, other_id> >
+            variable<other_id> >
   operator/(ct_constant<value> const & lhs, 
-            unknown<OtherScalarType, other_id> const & other)
+            variable<other_id> const & other)
   {
     return expression<ct_constant<value>,
                       op_div,
-                      unknown<OtherScalarType, other_id> >(lhs, other);
+                      variable<other_id> >(lhs, other);
   }
 
   template <long value, typename OtherScalarType>

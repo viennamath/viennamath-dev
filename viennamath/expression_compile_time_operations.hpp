@@ -17,7 +17,7 @@
 
 #include "viennamath/forwards.h"
 #include "viennamath/constant.hpp"
-#include "viennamath/unknown.hpp"
+#include "viennamath/variable.hpp"
 #include "viennamath/expression_compile_time.hpp"
 #include "viennamath/op_tags.hpp"
 
@@ -38,16 +38,16 @@ namespace viennamath
                           expression<LHS2, OP2, RHS2> >(lhs, other);
       }
       
-      template <typename LHS, typename OP, typename RHS, typename ScalarType, unsigned long id>
+      template <typename LHS, typename OP, typename RHS, unsigned long id>
       expression<expression<LHS, OP, RHS>,
                  op_plus,
-                 unknown<ScalarType, id> >
+                 variable<id> >
       operator+(expression<LHS, OP, RHS> const & lhs,
-                unknown<ScalarType, id> const & other)
+                variable<id> const & other)
       {
         return expression<expression<LHS, OP, RHS>,
                           op_plus,
-                          unknown<ScalarType, id> >(lhs, other);
+                          variable<id> >(lhs, other);
       }
       
       //with constant:
@@ -211,24 +211,24 @@ namespace viennamath
                           expression<LHS2, OP2, RHS2> >(lhs, other);
       }
 
-      //with unknown:
-      template <typename LHS, typename OP, typename RHS, typename ScalarType, unsigned long id>
+      //with variable:
+      template <typename LHS, typename OP, typename RHS, unsigned long id>
       expression<expression<LHS, OP, RHS>,
                  op_minus,
-                 unknown<ScalarType, id> >
+                 variable<id> >
       operator-(expression<LHS, OP, RHS> const & lhs,
-                unknown<ScalarType, id> const & other)
+                variable<id> const & other)
       {
         return expression<expression<LHS, OP, RHS>,
                           op_minus,
-                          unknown<ScalarType, id> >(lhs, other);
+                          variable<id> >(lhs, other);
       }
 
-      // (A + B) - A  -> B, where A is an unknown:
-      template <typename ScalarType, unsigned long id, typename RHS>
+      // (A + B) - A  -> B, where A is an variable:
+      template <unsigned long id, typename RHS>
       RHS
-      operator-(expression<unknown<ScalarType, id>, op_plus, RHS> const & lhs,
-                unknown<ScalarType, id> const & other)
+      operator-(expression<variable<id>, op_plus, RHS> const & lhs,
+                variable<id> const & other)
       {
         return lhs.rhs();
       }
@@ -396,16 +396,16 @@ namespace viennamath
                           expression<LHS2, OP2, RHS2> >(lhs, other);
       }
       
-      template <typename LHS, typename OP, typename RHS, typename ScalarType, unsigned long id>
+      template <typename LHS, typename OP, typename RHS, unsigned long id>
       expression<expression<LHS, OP, RHS>,
                  op_mult,
-                 unknown<ScalarType, id> >
+                 variable<id> >
       operator*(expression<LHS, OP, RHS> const & lhs,
-                unknown<ScalarType, id> const & other)
+                variable<id> const & other)
       {
         return expression<expression<LHS, OP, RHS>,
                           op_mult,
-                          unknown<ScalarType, id> >(lhs, other);
+                          variable<id> >(lhs, other);
       }
       
       template <typename LHS, typename OP, typename RHS, typename ScalarType>
@@ -458,16 +458,16 @@ namespace viennamath
         return ct_constant<1>();
       }
       
-      template <typename LHS, typename OP, typename RHS, typename ScalarType, unsigned long id>
+      template <typename LHS, typename OP, typename RHS, unsigned long id>
       expression<expression<LHS, OP, RHS>,
                  op_div,
-                 unknown<ScalarType, id> >
+                 variable<id> >
       operator/(expression<LHS, OP, RHS> const & lhs,
-                unknown<ScalarType, id> const & other)
+                variable<id> const & other)
       {
         return expression<expression<LHS, OP, RHS>,
                           op_div,
-                          unknown<ScalarType, id> >(lhs, other);
+                          variable<id> >(lhs, other);
       }
       
       template <typename LHS, typename OP, typename RHS, typename ScalarType>
