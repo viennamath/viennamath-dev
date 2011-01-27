@@ -62,13 +62,13 @@ namespace viennamath
     }
     std::string str() const { return "+"; }
     
-    const expression_interface * diff(const expression_interface * lhs,
-                                      const expression_interface * rhs,
-                                      const expression_interface * diff_var) const
+    expression_interface * diff(const expression_interface * lhs,
+                                const expression_interface * rhs,
+                                const expr & diff_var) const
     {
-      return binary_expr( lhs->diff(diff_var),
-                          op_plus().clone(),
-                          rhs->diff(diff_var) ).clone();
+      return new binary_expr( lhs->diff(diff_var),
+                              new op_plus(),
+                              rhs->diff(diff_var) );
     }
   };
   
@@ -97,13 +97,13 @@ namespace viennamath
     numeric_type apply(numeric_type lhs, numeric_type rhs) const { return lhs - rhs; }
     std::string str() const { return "-"; }
     
-    const expression_interface * diff(const expression_interface * lhs,
-                                      const expression_interface * rhs,
-                                      const expression_interface * diff_var) const
+    expression_interface * diff(const expression_interface * lhs,
+                                const expression_interface * rhs,
+                                const expr & diff_var) const
     {
-      return binary_expr( lhs->diff(diff_var),
-                          op_minus().clone(),
-                          rhs->diff(diff_var) ).clone();
+      return new binary_expr( lhs->diff(diff_var),
+                              new op_minus(),
+                              rhs->diff(diff_var) );
     }
   };
 
@@ -132,18 +132,18 @@ namespace viennamath
     numeric_type apply(numeric_type lhs, numeric_type rhs) const { return lhs * rhs; }
     std::string str() const { return "*"; }
 
-    const expression_interface * diff(const expression_interface * lhs,
-                                      const expression_interface * rhs,
-                                      const expression_interface * diff_var) const
+    expression_interface * diff(const expression_interface * lhs,
+                                const expression_interface * rhs,
+                                const expr & diff_var) const
     {
-      return binary_expr( binary_expr(lhs->diff(diff_var),
-                                      op_mult().clone(),
-                                      rhs).clone(),
-                          op_plus().clone(),
-                          binary_expr(lhs,
-                                      op_mult().clone(),
-                                      rhs->diff(diff_var)).clone()
-                         ).clone();
+      return new binary_expr( new binary_expr(lhs->diff(diff_var),
+                                              new op_mult(),
+                                              rhs->clone()),
+                              new op_plus(),
+                              new binary_expr(lhs->clone(),
+                                              new op_mult(),
+                                              rhs->diff(diff_var) )
+                            );
     }
 
   };
@@ -174,22 +174,23 @@ namespace viennamath
     std::string str() const { return "/"; }
 
 
-    const expression_interface * diff(const expression_interface * lhs,
-                                      const expression_interface * rhs,
-                                      const expression_interface * diff_var) const
+    expression_interface * diff(const expression_interface * lhs,
+                                const expression_interface * rhs,
+                                const expr &  diff_var) const
     {
-      return binary_expr( binary_expr( binary_expr(lhs->diff(diff_var),
-                                                    op_mult().clone(),
-                                                    rhs).clone(),
-                                        op_minus().clone(),
-                                        binary_expr(lhs,
-                                                    op_mult().clone(),
-                                                    rhs->diff(diff_var)).clone()
-                                      ).clone(),
-                          op_div().clone(),
-                          binary_expr(rhs->clone(),
-                                      op_mult().clone(),
-                                      rhs->clone()).clone() ).clone();
+      return new binary_expr( new binary_expr( new binary_expr(lhs->diff(diff_var),
+                                                               new op_mult(),
+                                                               rhs->clone()),
+                                               new op_minus(),
+                                               new binary_expr(lhs->clone(),
+                                                               new op_mult(),
+                                                               rhs->diff(diff_var))
+                                             ),
+                              new op_div(),
+                              new binary_expr(rhs->clone(),
+                                              new op_mult(),
+                                              rhs->clone())
+                            );
     }
 
   };
@@ -211,13 +212,12 @@ namespace viennamath
     static std::string str() { return "exp"; }
     numeric_type apply(numeric_type value) const { return exp(value); }
     
-    static const expression_interface * diff(const expression_interface * expr,
-                                             const expression_interface * diff_var)
+    static expression_interface * diff(const expression_interface * e,
+                                       const expr &  diff_var)
     {
-      return binary_expr( unary_expr(expr->clone(), op_unary<op_exp>().clone()).clone(),
-                          op_mult().clone(),
-                          expr->diff(diff_var) ).clone(); 
-      //return NULL;  //TODO: Insert correct formula here
+      return new binary_expr( new unary_expr(e->clone(), new op_unary<op_exp>()),
+                              new op_mult(),
+                              e->diff(diff_var)); 
     }
   };
   
@@ -237,8 +237,8 @@ namespace viennamath
     static std::string str() { return "sin"; }
     numeric_type apply(numeric_type value) const { return sin(value); }
     
-    static const expression_interface * diff(const expression_interface * expr,
-                                             const expression_interface * diff_var); //defined after cosinus
+    static expression_interface * diff(const expression_interface * e,
+                                       const expr &  diff_var); //defined after cosinus
   };
   
   binary_expr sin(binary_expr const & other)
@@ -257,25 +257,25 @@ namespace viennamath
     static std::string str() { return "cos"; }
     numeric_type apply(numeric_type value) const { return cos(value); }
 
-    static const expression_interface * diff(const expression_interface * expr,
-                                             const expression_interface * diff_var)
+    static expression_interface * diff(const expression_interface * e,
+                                       const expr &  diff_var)
     {
-      return binary_expr( unary_expr(expr->clone(), op_unary<op_sin>().clone()).clone(),
-                          op_mult().clone(),
-                          binary_expr( constant<numeric_type>(-1).clone(),
-                                       op_mult().clone(),
-                                       expr->diff(diff_var) ).clone()
-                         ).clone();
+      return new binary_expr( new unary_expr(e->clone(), new op_unary<op_sin>()),
+                              new op_mult(),
+                              new binary_expr( new constant<numeric_type>(-1),
+                                               new op_mult(),
+                                               e->diff(diff_var) )
+                            );
     }
     
   };
   
-  const expression_interface * op_sin::diff(const expression_interface * expr,
-                                            const expression_interface * diff_var)
+  expression_interface * op_sin::diff(const expression_interface * e,
+                                      const expr &  diff_var)
   {
-    return binary_expr( unary_expr(expr->clone(), op_unary<op_cos>().clone()).clone(),
-                        op_mult().clone(),
-                        expr->diff(diff_var) ).clone();
+    return new binary_expr( new unary_expr(e->clone(), new op_unary<op_cos>()),
+                            new op_mult(),
+                            e->diff(diff_var) );
   }
 
 
@@ -293,15 +293,17 @@ namespace viennamath
     static std::string str() { return "tan"; }
     numeric_type apply(numeric_type value) const { return tan(value); }
     
-    static const expression_interface * diff(const expression_interface * expr,
-                                             const expression_interface * diff_var)
+    static expression_interface * diff(const expression_interface * e,
+                                       const expr & diff_var)
     {
-      return binary_expr( expr->diff(diff_var),
-                          op_div().clone(),
-                          binary_expr( unary_expr(expr->clone(), op_unary<op_cos>().clone()).clone(),
-                                       op_mult().clone(),
-                                       unary_expr(expr->clone(), op_unary<op_cos>().clone()).clone() ).clone()
-                        ).clone();
+      return new binary_expr( e->diff(diff_var),
+                              new op_div(),
+                              new binary_expr( new unary_expr(e->clone(),
+                                                              new op_unary<op_cos>()),
+                                               new op_mult(),
+                                               new unary_expr(e->clone(),
+                                                              new op_unary<op_cos>()) )
+                            );
     }
     
   };
@@ -320,8 +322,8 @@ namespace viennamath
     static std::string str() { return "fabs"; }
     numeric_type apply(numeric_type value) const { return fabs(value); }
 
-    static const expression_interface * diff(const expression_interface * expr,
-                                             const expression_interface * diff_var)
+    static expression_interface * diff(const expression_interface * e,
+                                       const expr & diff_var)
     {
       throw "absolute value not differentiable!";
       return NULL;  //TODO: Think about returning a piecewise function here?
@@ -343,15 +345,17 @@ namespace viennamath
     static std::string str() { return "sqrt"; }
     numeric_type apply(numeric_type value) const { return sqrt(value); }
 
-    static const expression_interface * diff(const expression_interface * expr,
-                                             const expression_interface * diff_var)
+    static expression_interface * diff(const expression_interface * e,
+                                       const expr & diff_var)
     {
-      return binary_expr( expr->diff(diff_var),
-                          op_div().clone(),
-                          binary_expr( constant<numeric_type>(2).clone(),
-                                       op_mult().clone(),
-                                       unary_expr(expr->clone(), op_unary<op_sqrt>().clone()).clone() ).clone()
-                        ).clone();
+      return new binary_expr( e->diff(diff_var),
+                              new op_div(),
+                              new binary_expr( new constant<numeric_type>(2),
+                                               new op_mult(),
+                                               new unary_expr(e->clone(),
+                                                              new op_unary<op_sqrt>())
+                                              )
+                            );
     }
     
   };
@@ -371,13 +375,13 @@ namespace viennamath
     static std::string str() { return "log"; }
     numeric_type apply(numeric_type value) const { return log(value); }
 
-    static const expression_interface * diff(const expression_interface * expr,
-                                             const expression_interface * diff_var)
+    static expression_interface * diff(const expression_interface * e,
+                                       const expr & diff_var)
     {
-      return binary_expr( expr->diff(diff_var),
-                          op_div().clone(),
-                          unary_expr(expr->clone()).clone()
-                        ).clone();
+      return new binary_expr( e->diff(diff_var),
+                              new op_div(),
+                              new unary_expr(e->clone())
+                        );
     }
     
   };
@@ -397,15 +401,16 @@ namespace viennamath
     numeric_type apply(numeric_type value) const { return log10(value); }
 
     // (log10(f))' = f' / (ln(f) * ln(10))
-    static const expression_interface * diff(const expression_interface * expr,
-                                             const expression_interface * diff_var)
+    static expression_interface * diff(const expression_interface * e,
+                                       const expr & diff_var)
     {
-      return binary_expr( expr->diff(diff_var),
-                          op_div().clone(),
-                          binary_expr( constant<numeric_type>( ::log(10) ).clone(),
-                                       op_mult().clone(),
-                                       unary_expr(expr->clone()).clone() ).clone()
-                        ).clone();
+      return new binary_expr( e->diff(diff_var),
+                              new op_div(),
+                              new binary_expr( new constant<numeric_type>( ::log(10) ),
+                                               new op_mult(),
+                                               new unary_expr(e->clone())
+                                             )
+                        );
     }
 
   };

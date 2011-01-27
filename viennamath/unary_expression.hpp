@@ -35,10 +35,11 @@ namespace viennamath
       unary_expr() {}
 
       explicit unary_expr(expression_interface * lhs,
-                          op_interface         * op) : expr_(lhs->clone()),
-                                                  op_(op->clone()) {}
+                          op_interface         * op) : expr_(lhs),
+                                                       op_(op) {}
                                                   
-      explicit unary_expr(const expression_interface * lhs) : expr_(lhs->clone()), op_(op_unary<op_id>().clone()) {}
+      explicit unary_expr(expression_interface * lhs) : expr_(lhs), 
+                                                        op_(new op_unary<op_id>()) {}
                     
       /*template <typename LHS, typename OP, typename RHS>
       explicit expr(LHS const & lhs, OP const & op, RHS const & rhs) 
@@ -47,7 +48,7 @@ namespace viennamath
       }*/
 
       template <typename LHS, typename OP, typename RHS>
-      unary_expr(expression<LHS, OP, RHS> const & other) : op_(OP().clone())
+      unary_expr(expression<LHS, OP, RHS> const & other) : op_(new OP())
       {
         std::cout << "Constructing from expression " << other << std::endl;
         expr_ = std::auto_ptr<expression_interface>(other.lhs().clone());
@@ -55,7 +56,7 @@ namespace viennamath
 
       template <unsigned long id>
       unary_expr(variable<id> const & other) : expr_(other.clone()),
-                                                 op_(op_unary<op_id>().clone())  {}
+                                                 op_(new op_unary<op_id>())  {}
 
       template <typename T>
       unary_expr(constant<T> const & other) : expr_(other.clone()),
@@ -63,7 +64,7 @@ namespace viennamath
 
       template <long value>
       unary_expr(ct_constant<value> const & other) : expr_(other.clone()),
-                                                     op_(op_unary<op_id>().clone()) {}
+                                                     op_(new op_unary<op_id>()) {}
 
       //Copy CTOR:
       unary_expr(unary_expr const & other) : expr_(other.expr_->clone()), 
@@ -74,7 +75,7 @@ namespace viennamath
       unary_expr & operator=(expression<LHS, OP, RHS> const & other) 
       {
         expr_ = std::auto_ptr<expression_interface>(other.lhs().clone());
-        op_ = std::auto_ptr<op_interface>(OP().clone());
+        op_ = std::auto_ptr<op_interface>(new OP());
         return *this;
       }
 
@@ -237,19 +238,19 @@ namespace viennamath
       
       bool is_constant() const { return expr_->is_constant(); };
       
-      virtual expression_interface * substitute(const expression_interface * e,
-                                                const expression_interface * repl) const
+      expression_interface * substitute(const expr & e,
+                                                const expr & repl) const
       {
-        return unary_expr(expr_->substitute(e, repl),
-                          op_->clone()).clone(); 
+        return new unary_expr(expr_->substitute(e, repl),
+                              op_->clone());
       };
       
-      bool equal(const expression_interface * other) const
+      bool equal(const expr & other) const
       {
         return expr_->equal(other); 
       }
       
-      const expression_interface * diff(const expression_interface * diff_var) const
+      expression_interface * diff(const expr & diff_var) const
       {
         return op_->diff(expr_.get(), expr_.get(), diff_var);
       }

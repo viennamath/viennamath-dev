@@ -25,6 +25,7 @@
 #include "viennamath/expression_compile_time.hpp"
 #include "viennamath/binary_expression.hpp"
 #include "viennamath/unary_expression.hpp"
+#include "viennamath/expr.hpp"
 
 #include "viennamath/op_tags.hpp"
 #include "viennamath/expression_compile_time_operations.hpp"

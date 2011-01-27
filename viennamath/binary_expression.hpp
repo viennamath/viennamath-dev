@@ -21,6 +21,8 @@
 #include "viennamath/forwards.h"
 #include "viennamath/constant.hpp"
 #include "viennamath/expression_compile_time.hpp"
+#include "viennamath/unary_expression.hpp"
+#include "viennamath/expression.hpp"
 
 namespace viennamath
 {
@@ -34,11 +36,11 @@ namespace viennamath
 //                     expression_interface * rhs) : lhs_(lhs), op_(op), rhs_(rhs) {}
       binary_expr() {}
 
-      explicit binary_expr(const expression_interface * lhs,
-                           const op_interface         * op,
-                           const expression_interface * rhs) : lhs_(lhs->clone()),
-                                                               op_(op->clone()),
-                                                               rhs_(rhs->clone()) {}
+      explicit binary_expr(expression_interface * lhs,
+                           op_interface         * op,
+                           expression_interface * rhs) : lhs_(lhs),
+                                                         op_(op),
+                                                         rhs_(rhs) {}
                     
       template <typename LHS, typename OP, typename RHS>
       binary_expr(expression<LHS, OP, RHS> const & other) : op_(OP().clone())
@@ -49,7 +51,7 @@ namespace viennamath
       }
 
       template <typename LHS, typename OP, long value>
-      binary_expr(expression<LHS, OP, ct_constant<value> > const & other) : op_(OP().clone())
+      binary_expr(expression<LHS, OP, ct_constant<value> > const & other) : op_(new OP())
       {
         //std::cout << "Constructing from expression " << other << std::endl;
         lhs_ = std::auto_ptr<expression_interface>(other.lhs().clone());
@@ -57,7 +59,7 @@ namespace viennamath
       }
 
       template <long value, typename OP, typename RHS>
-      binary_expr(expression<ct_constant<value>, OP, RHS > const & other) : op_(OP().clone())
+      binary_expr(expression<ct_constant<value>, OP, RHS > const & other) : op_(new OP())
       {
         //std::cout << "Constructing from expression " << other << std::endl;
         lhs_ = std::auto_ptr<expression_interface>(new constant<numeric_type>(value));
@@ -74,17 +76,17 @@ namespace viennamath
 
       template <unsigned long id>
       binary_expr(variable<id> const & other) : lhs_(other.clone()),
-                                                  op_(op_unary<op_id>().clone()),
+                                                  op_(new op_unary<op_id>()),
                                                   rhs_(other.clone()) {}
 
       template <typename T>
       binary_expr(constant<T> const & other) : lhs_(other.clone()),
-                                               op_(op_unary<op_id>().clone()),
+                                               op_(new op_unary<op_id>()),
                                                rhs_(other.clone()) {}
 
       template <long value>
       binary_expr(ct_constant<value> const & other) : lhs_(new constant<numeric_type>(value)),
-                                                      op_(op_unary<op_id>().clone()),
+                                                      op_(new op_unary<op_id>()),
                                                       rhs_(new constant<numeric_type>(value)) {}
 
       //Copy CTOR:
@@ -271,20 +273,18 @@ namespace viennamath
       }
       
       template <unsigned long id, typename ReplacementType>
-      binary_expr substitute(variable<id> const & u,
-                      ReplacementType const & repl) const
+      expression_interface * substitute(variable<id> const & u,
+                                        ReplacementType const & repl) const
       {
-        //TODO: Remove dynamic_casts!!
-        expression_interface * ret = this->substitute(&u, &repl);
-        if (dynamic_cast<binary_expr *>(ret) != NULL)
+        expression_interface * ret = this->substitute(expr(u.clone()), expr(repl.clone()));
+        if (dynamic_cast<const binary_expr *>(ret) != NULL)
         {
+          //TODO: Remove mem leak!
           expression_interface * ret2 = ret->optimize();
-          if (dynamic_cast<binary_expr *>(ret) != NULL)
-            return dynamic_cast<binary_expr &>(*ret);
-          return binary_expr(ret2, op_unary< op_id >().clone(), ret2);
+          return new unary_expr(ret2, new op_unary< op_id >());
         }
         
-        return binary_expr(ret, op_unary< op_id >().clone(), ret);
+        return new binary_expr(ret, new op_unary< op_id >(), ret);
       }
       
     
@@ -321,26 +321,26 @@ namespace viennamath
       
       bool is_constant() const { return lhs_->is_constant() && rhs_->is_constant(); };
       
-      virtual expression_interface * substitute(const expression_interface * e,
-                                                const expression_interface * repl) const
+      expression_interface * substitute(const expr & e,
+                                        const expr & repl) const
       {
-        return binary_expr(lhs_->substitute(e, repl),
-                    op_->clone(),
-                    rhs_->substitute(e, repl) ).clone(); 
+        return new binary_expr(lhs_->substitute(e, repl),
+                                    op_->clone(),
+                                    rhs_->substitute(e, repl) ); 
       };
       
-      bool equal(const expression_interface * other) const
+      bool equal(const expr & other) const
       {
         return lhs_->equal(other) && rhs_->equal(other);
       }
       
       template <unsigned long id>
-      const expression_interface * diff(variable<id> const & diff_var) const
+      expression_interface * diff(variable<id> const & diff_var) const
       {
-        return diff(&diff_var); 
+        return diff(expr(diff_var.clone())); 
       }
       
-      const expression_interface * diff(const expression_interface * diff_var) const
+      expression_interface * diff(const expr & diff_var) const
       {
         return op_->diff(lhs_.get(), rhs_.get(), diff_var);
       }

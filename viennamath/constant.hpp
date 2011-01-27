@@ -57,18 +57,18 @@ namespace viennamath
       }
       numeric_type unwrap() const { return s; }
       
-      virtual expression_interface * substitute(const expression_interface * e,
-                                                const expression_interface * repl) const
+      expression_interface * substitute(const expr & e,
+                                        const expr & repl) const
       {
         return clone();
       };    
       
-      bool equal(const expression_interface * other) const
+      bool equal(const expr & other) const
       {
-        return dynamic_cast< const constant<ScalarType> *>(other) != NULL;
+        return dynamic_cast< const constant<ScalarType> *>(other.get()) != NULL;
       }
       
-      const expression_interface * diff(const expression_interface * diff_var) const
+      expression_interface * diff(const expr & diff_var) const
       {
         return new constant<ScalarType>(0);
       }

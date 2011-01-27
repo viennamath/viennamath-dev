@@ -19,6 +19,7 @@
 #include <vector>
 #include <exception>
 #include <sstream>
+#include <memory>
 
 namespace viennamath
 {
@@ -52,10 +53,125 @@ namespace viennamath
             typename RHS>
   class expression;
   
+  /////// variable ///////
+  template <unsigned long id = 0>
+  struct variable;
+
+  /////// constant ///////
+  template <typename ScalarType>
+  class constant;
+
+  template <long value_>
+  class ct_constant;
+
+  /////// vector ////////
+  template <long i>
+  struct ct_index {};
+  
+  template <typename T0>
+  class vector_1;
+  
+  template <typename T0, typename T1>
+  class vector_2;
+  
+  template <typename T0, typename T1, typename T2>
+  class vector_3;
+ 
+  
+  
   /////// run time expression ///////
     
+  class expression_interface;
   class binary_expr;
+  class unary_expr;
 
+  /** @brief An tweaked auto_ptr for run time expressions. 
+   * 
+   * Additionally provides the basic user-interface for evaluation using operator().
+   */ 
+  class expr
+  {
+    public:
+      expr() {}
+
+      explicit expr(const expression_interface * e) : expr_(e) {}
+      
+      expr(binary_expr const & other);
+
+      expr(unary_expr const & other);
+
+      template <typename LHS, typename OP, typename RHS>
+      expr(expression<LHS, OP, RHS> const & other)
+      {
+        expr_ = std::auto_ptr<expression_interface>(new binary_expr(other));
+      }
+
+      template <unsigned long id>
+      expr(variable<id> const & other)
+      {
+        expr_ = std::auto_ptr<expression_interface>(new unary_expr(other));
+      }
+
+      template <typename T>
+      expr(constant<T> const & other)
+      {
+        expr_ = std::auto_ptr<expression_interface>(new unary_expr(other));
+      }
+
+      template <long value>
+      expr(ct_constant<value> const & other)
+      {
+        expr_ = std::auto_ptr<expression_interface>(new unary_expr(other));
+      }
+
+      //Copy CTOR:
+      expr(expr const & other);
+
+      //assignments:                           
+      template <typename LHS, typename OP, typename RHS>
+      expr & operator=(expression<LHS, OP, RHS> const & other); 
+
+      expr & operator=(binary_expr const & other);
+
+      template <typename ScalarType>
+      expr & operator=(constant<ScalarType> const & other);
+
+      template <long value>
+      expr & operator=(ct_constant<value> const & other);
+
+      expr & operator=(numeric_type value);
+
+      const expression_interface   * get() const;
+      
+      ///////////////// evaluation: ///////////////////////////////
+      
+      //operator() is a convenience layer:
+      numeric_type operator()(numeric_type val) const;
+
+      template <typename ScalarType>
+      numeric_type operator()(constant<ScalarType> val) const;
+      
+      template <long value>
+      numeric_type operator()(ct_constant<value> val) const;
+
+      template <typename VectorType>
+      numeric_type operator()(VectorType const & v) const;
+
+      numeric_type operator()(std::vector<numeric_type> const & stl_v) const;
+
+      template <typename T0>
+      numeric_type operator()(viennamath::vector_1<T0> const & v) const;
+
+      template <typename T0, typename T1>
+      numeric_type operator()(viennamath::vector_2<T0, T1> const & v) const;
+      
+      template <typename T0, typename T1, typename T2>
+      numeric_type operator()(viennamath::vector_3<T0, T1, T2> const & v) const;
+      
+    private:
+      std::auto_ptr<const expression_interface>  expr_;
+  };
+  
   class op_interface;
 
   //class expression_interface;
@@ -65,36 +181,30 @@ namespace viennamath
     public:
       virtual ~expression_interface() {}
       
-      virtual expression_interface * clone() const = 0;
+      virtual expression_interface * clone() const = 0;  //receiver owns pointer!
       virtual std::string str() const = 0;
       virtual numeric_type eval(std::vector<double> const & v) const = 0;
       virtual numeric_type eval(numeric_type val) const = 0;
-      virtual expression_interface * optimize() { return this; }
+      virtual expression_interface * optimize() { return this; }  //receiver owns pointer!
       virtual bool is_unary() const { return true; }
       
       /** @brief Returns true, if the expression can be evaluated without providing values for variables (i.e. the expression is a constant) */
       virtual bool is_constant() const { return false; }
       
       virtual numeric_type unwrap() const = 0;
-      virtual expression_interface * substitute(const expression_interface * e,
-                                                const expression_interface * repl) const = 0;
+      virtual expression_interface * substitute(const expr & e,
+                                                const expr & repl) const = 0;  //receiver owns pointer!
                                                 
-      virtual bool equal(const expression_interface *) const = 0;
+      virtual bool equal(const expr & e) const = 0;
       
       virtual const expression_interface * lhs() const { return this; };
       virtual const op_interface * op() { return NULL; }  //primitives do not have an operator
       virtual const expression_interface * rhs() const { return NULL; } //unary expressions do not have a right-hand side
 
 
-      virtual const expression_interface * diff(const expression_interface * diff_var) const = 0;
+      virtual expression_interface * diff(const expr & diff_var) const = 0;   //receiver owns pointer!
   };
  
-/*
-  expr operator+(expr const & lhs, expr const & rhs);
-  expr operator-(expr const & lhs, expr const & rhs);
-  expr operator*(expr const & lhs, expr const & rhs);
-  expr operator/(expr const & lhs, expr const & rhs); */
-  
   
   
   
@@ -117,9 +227,9 @@ namespace viennamath
       virtual numeric_type apply(numeric_type lhs, numeric_type rhs) const = 0;                   
       virtual bool is_unary() const { return false; }
       
-      virtual const expression_interface * diff(const expression_interface * lhs,
-                                                const expression_interface * rhs,
-                                                const expression_interface * diff_var) const  = 0;
+      virtual expression_interface * diff(const expression_interface * lhs,
+                                          const expression_interface * rhs,
+                                          const expr & diff_var) const  = 0;
   };
   
   //binary operator tags:  
@@ -151,9 +261,12 @@ namespace viennamath
       numeric_type apply(numeric_type lhs, numeric_type rhs) const { return unary_op_.apply(lhs); }
       bool is_unary() const { return true; }
       
-      const expression_interface * diff(const expression_interface * lhs,
-                                        const expression_interface * rhs,
-                                        const expression_interface * diff_var) const { return unary_operation::diff(lhs, diff_var); }
+      expression_interface * diff(const expression_interface * lhs,
+                                  const expression_interface * rhs,
+                                  const expr & diff_var) const
+      {
+        return unary_operation::diff(lhs, diff_var);
+      }
     
     private:
       //We use a unary_operation member, because the unary_operation tag might have a state -> pure static tag dispatch not enough.
@@ -183,9 +296,9 @@ namespace viennamath
     numeric_type apply(numeric_type lhs, numeric_type rhs) const { return lhs; }
     bool is_unary() const { return true; }
     
-    const expression_interface * diff(const expression_interface * lhs,
-                                      const expression_interface * rhs,
-                                      const expression_interface * diff_var) const { return lhs->diff(diff_var); }
+    expression_interface * diff(const expression_interface * lhs,
+                                const expression_interface * rhs,
+                                const expr & diff_var) const { return lhs->diff(diff_var); }
   };
 
   
@@ -210,37 +323,6 @@ namespace viennamath
   
   
   
-  /////// variable ///////
-  template <unsigned long id = 0>
-  struct variable;
-
-  
-  
-  
-  
-  
-  /////// constant ///////
-  template <typename ScalarType>
-  class constant;
-
-  template <long value_>
-  class ct_constant;
-
-  
-  
-  /////// vector ////////
-  template <long i>
-  struct ct_index {};
-  
-  template <typename T0>
-  class vector_1;
-  
-  template <typename T0, typename T1>
-  class vector_2;
-  
-  template <typename T0, typename T1, typename T2>
-  class vector_3;
- 
   
   /////// exceptions ///////
   

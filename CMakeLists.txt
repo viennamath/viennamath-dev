@@ -9,8 +9,8 @@ SET(CMAKE_VERBOSE_MAKEFILE ON)
 INCLUDE_DIRECTORIES(".")
 
 #add definitions, compiler switches, etc.
-ADD_DEFINITIONS(-Wall -pedantic -O3)
-#ADD_DEFINITIONS(-Wall -pedantic -O0 -g)
+#ADD_DEFINITIONS(-Wall -pedantic -O3)
+ADD_DEFINITIONS(-Wall -pedantic -O0 -g)
 
 #list all source files here
 ADD_EXECUTABLE(basic_test examples/basic_test.cpp)

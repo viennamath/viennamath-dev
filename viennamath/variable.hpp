@@ -244,33 +244,33 @@ namespace viennamath
     }
       
     //protected:
-    expression_interface * substitute(const expression_interface * e,
-                                              const expression_interface * repl) const
+    expression_interface * substitute(const expr & e,
+                                      const expr & repl) const
     {
       //std::cout << "Comparing variable<" << id << "> with " << e->str() << ", result: ";
-      if (dynamic_cast< const variable<id> *>(e) != NULL)
+      if (dynamic_cast< const variable<id> *>(e.get()) != NULL)
       {
         //std::cout << "TRUE, replacing with " << repl->str() << std::endl;
-        return repl->clone();
+        return repl.get()->clone();
       }
       //std::cout << "FALSE" << std::endl;
       return clone();
     };    
     
-    bool equal(const expression_interface * other) const
+    bool equal(const expr & other) const
     {
-      return dynamic_cast< const variable<id> *>(other) != NULL;
+      return dynamic_cast< const variable<id> *>(other.get()) != NULL;
     }
     
-    const expression_interface * diff(const expression_interface * diff_var) const
+    expression_interface * diff(const expr & diff_var) const
     {
-      if (dynamic_cast< const variable<id> *>(diff_var) != NULL)
+      if (dynamic_cast< const variable<id> *>(diff_var.get()) != NULL)
       {
         //std::cout << "TRUE, replacing with " << repl->str() << std::endl;
-        return constant<numeric_type>(1).clone();
+        return new constant<numeric_type>(1);
       }
       //std::cout << "FALSE" << std::endl;
-      return constant<numeric_type>(0).clone();
+      return new constant<numeric_type>(0);
     }
     
   }; //variable

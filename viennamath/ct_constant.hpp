@@ -24,7 +24,7 @@ namespace viennamath
   
   //A compile time constant using C++ template magic :-)
   template <long value_>
-  class ct_constant// : public expression_interface
+  class ct_constant
   {    
       typedef ct_constant<value_>     self_type;
     public:
@@ -37,25 +37,6 @@ namespace viennamath
       
       operator long() const { return value_; }
       
-      //interface requirements:
-      /*
-      expression_interface * clone() const { return new ct_constant<value_>(); }
-      numeric_type eval(std::vector<double> const & v) const { return value_; }
-      numeric_type eval(numeric_type v) const { return value_; }
-      bool is_constant() const { return true; }
-      numeric_type unwrap() const { return value_; }
-      
-      virtual expression_interface * substitute(const expression_interface * e,
-                                                const expression_interface * repl) const
-      {
-        return clone();
-      };    
-      
-      bool equal(const expression_interface * other) const
-      {
-        return dynamic_cast< const ct_constant<value_> *>(other) != NULL;
-      } */
-
       std::string str() const
       {
         std::stringstream ss;
