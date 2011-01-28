@@ -126,7 +126,9 @@ namespace viennamath
       //Copy CTOR:
       expr(expr const & other);
 
-      //assignments:                           
+      //assignments:    
+      expr & operator=(expression_interface * other);
+      
       template <typename LHS, typename OP, typename RHS>
       expr & operator=(expression<LHS, OP, RHS> const & other); 
 
@@ -185,6 +187,8 @@ namespace viennamath
       virtual numeric_type eval(std::vector<double> const & v) const = 0;
       virtual numeric_type eval(numeric_type val) const = 0;
       virtual expression_interface * optimize() const { return clone(); }  //receiver owns pointer!
+      virtual bool optimizable() const { return false; }      
+      
       virtual bool is_unary() const { return true; }
       
       /** @brief Returns true, if the expression can be evaluated without providing values for variables (i.e. the expression is a constant) */
@@ -229,6 +233,15 @@ namespace viennamath
       virtual expression_interface * diff(const expression_interface * lhs,
                                           const expression_interface * rhs,
                                           const expr & diff_var) const  = 0;
+                                          
+      //optimization for binary operators:
+      virtual expression_interface * optimize(const expression_interface * lhs,
+                                              const expression_interface * rhs) const;  //default defined in binary_expression.hpp
+
+      //optimization for unary operators:
+      //virtual expression_interface * optimize(const expression_interface * lhs) const { return lhs->optimize(); }
+      virtual bool optimizable(const expression_interface * lhs,
+                               const expression_interface * rhs) const { return false; }      
   };
   
   //binary operator tags:  

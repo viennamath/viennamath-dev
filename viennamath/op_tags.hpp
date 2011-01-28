@@ -70,6 +70,48 @@ namespace viennamath
                               new op_plus(),
                               rhs->diff(diff_var) );
     }
+    
+    expression_interface * optimize(const expression_interface * lhs,
+                                    const expression_interface * rhs) const
+    {
+        if (lhs->is_constant())
+        {
+          numeric_type val = lhs->unwrap();
+          if (val == 0.0)
+            return rhs->optimize();
+          
+          return new binary_expr(new constant<numeric_type>(val),
+                                 new op_plus(),
+                                 rhs->optimize());
+        }
+        else if (rhs->is_constant())
+        {
+          numeric_type val = rhs->unwrap();
+          if (val == 0.0)
+            return lhs->optimize();
+          
+          return new binary_expr(lhs->optimize(),
+                                 new op_plus(),
+                                 new constant<numeric_type>(val));
+        }
+        
+        return new binary_expr(lhs->optimize(),
+                               new op_plus(),
+                               rhs->optimize());
+    }
+    
+    bool optimizable(const expression_interface * lhs,
+                     const expression_interface * rhs) const
+    {
+      if (lhs->is_constant())
+        if (lhs->unwrap() == 0.0)
+          return true;
+      if (rhs->is_constant())
+        if (rhs->unwrap() == 0.0)
+          return true;
+      return lhs->optimizable() || rhs->optimizable();
+    }      
+    
   };
   
   
@@ -105,6 +147,42 @@ namespace viennamath
                               new op_minus(),
                               rhs->diff(diff_var) );
     }
+    
+    expression_interface * optimize(const expression_interface * lhs,
+                                    const expression_interface * rhs) const
+    {
+      //std::cout << "Optimizing in op_minus" << std::endl;
+        if (lhs->is_constant())
+        {
+          return new binary_expr(new constant<numeric_type>(lhs->unwrap()),
+                                 new op_minus(),
+                                 rhs->optimize());
+        }
+        else if (rhs->is_constant())
+        {
+          numeric_type val = rhs->unwrap();
+          if (val == 0.0)
+            return lhs->optimize();
+          
+          return new binary_expr(lhs->optimize(),
+                                 new op_minus(),
+                                 new constant<numeric_type>(val));
+        }
+        
+        return new binary_expr(lhs->optimize(),
+                               new op_minus(),
+                               rhs->optimize());
+    }
+    
+    bool optimizable(const expression_interface * lhs,
+                     const expression_interface * rhs) const
+    {
+      if (rhs->is_constant())
+        if (rhs->unwrap() == 0.0)
+          return true;
+      return lhs->optimizable() || rhs->optimizable();
+    }      
+    
   };
 
   
@@ -146,6 +224,62 @@ namespace viennamath
                             );
     }
 
+    expression_interface * optimize(const expression_interface * lhs,
+                                    const expression_interface * rhs) const
+    {
+        if (lhs->is_constant())
+        {
+          numeric_type val = lhs->unwrap();
+          if (val == 0.0)
+            return new constant<numeric_type>(0.0);
+          if (val == 1.0)
+            return rhs->optimize();
+          
+          return new binary_expr(new constant<numeric_type>(val),
+                                 new op_mult(),
+                                 rhs->optimize());
+        }
+        else if (rhs->is_constant())
+        {
+          numeric_type val = rhs->unwrap();
+          if (val == 0.0)
+            return new constant<numeric_type>(0.0);
+          if (val == 1.0)
+            return lhs->optimize();
+          
+          return new binary_expr(lhs->optimize(),
+                                 new op_mult(),
+                                 new constant<numeric_type>(val));
+        }
+        
+        return new binary_expr(lhs->optimize(),
+                               new op_mult(),
+                               rhs->optimize());
+    }
+    
+    bool optimizable(const expression_interface * lhs,
+                     const expression_interface * rhs) const
+    {
+      if (lhs->is_constant())
+      {
+        numeric_type val = lhs->unwrap();
+        if (val == 0.0)
+          return true;
+        if (val == 1.0)
+          return true;
+      }
+      if (rhs->is_constant())
+      {
+        numeric_type val = rhs->unwrap();
+        if (val == 0.0)
+          return true;
+        if (val == 1.0)
+          return true;
+      }
+      
+      return lhs->optimizable() || rhs->optimizable();
+    }      
+    
   };
 
   
@@ -192,6 +326,47 @@ namespace viennamath
                                               rhs->clone())
                             );
     }
+
+    expression_interface * optimize(const expression_interface * lhs,
+                                    const expression_interface * rhs) const
+    {
+        if (lhs->is_constant())
+        {
+          numeric_type val = lhs->unwrap();
+          if (val == 0.0)
+            return new constant<numeric_type>(0.0);
+          
+          return new binary_expr(new constant<numeric_type>(val),
+                                 new op_div(),
+                                 rhs->optimize());
+        }
+        else if (rhs->is_constant())
+        {
+          numeric_type val = rhs->unwrap();
+          if (val == 1.0)
+            return lhs->optimize();
+          
+          return new binary_expr(lhs->optimize(),
+                                 new op_div(),
+                                 new constant<numeric_type>(val));
+        }
+        
+        return new binary_expr(lhs->optimize(),
+                               new op_div(),
+                               rhs->optimize());
+    }
+
+    bool optimizable(const expression_interface * lhs,
+                     const expression_interface * rhs) const
+    {
+      if (lhs->is_constant())
+        if (lhs->unwrap() == 0.0)
+          return true;
+      if (rhs->is_constant())
+        if (rhs->unwrap() == 1.0)
+          return true;
+      return lhs->optimizable() || rhs->optimizable();
+    }      
 
   };
   

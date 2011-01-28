@@ -27,21 +27,30 @@ namespace viennamath
   expr diff(binary_expr const & e,
             variable<id> const & var)
   {
-    return expr(e.diff(var));
+    expr temp(e.diff(var));
+    while (temp.get()->optimizable())
+      temp = temp.get()->optimize();
+    return temp;
   }
   
   template <unsigned long id>
   expr diff(unary_expr const & e,
             variable<id> const & var)
   {
-    return expr(e.diff(var));
+    expr temp(e.diff(var));
+    while (temp.get()->optimizable())
+      temp = temp.get()->optimize();
+    return temp;
   }
 
   template <unsigned long id>
   expr diff(expr const & e,
             variable<id> const & var)
   {
-    return expr(e.get()->diff(var));
+    expr temp(e.get()->diff(var));
+    while (temp.get()->optimizable())
+      temp = temp.get()->optimize();
+    return temp;
   }
 
 

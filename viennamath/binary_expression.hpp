@@ -249,31 +249,17 @@ namespace viennamath
       expression_interface * optimize() const
       {
         if (lhs_->is_constant() && rhs_->is_constant())
-        {
           return new constant<numeric_type>( unwrap() );
-        }
-        else if (lhs_->is_constant())
-        {
-          return new binary_expr(new constant<numeric_type>(lhs_->unwrap()),
-                                 op_->clone(),
-                                 rhs_->optimize());
-        }
-        else if (rhs_->is_constant())
-        {
-          return new binary_expr(lhs_->optimize(),
-                                 op_->clone(),
-                                 new constant<numeric_type>(rhs_->unwrap()));
-        }
         
-        else
-        {
-          return new binary_expr(lhs_->optimize(),
-                                 op_->clone(),
-                                 rhs_->optimize() );
-        }
-        
-        throw "Must not be reached";
-        return NULL;
+        //std::cout << "Optimization forwarded to " << op_->str() << std::endl;
+        return op_->optimize(lhs_.get(), rhs_.get());
+      }
+      
+      bool optimizable() const
+      {
+        if (lhs_->is_constant() && rhs_->is_constant())
+          return true;
+        return op_->optimizable(lhs_.get(), rhs_.get());
       }
       
       ///////// other interface requirements ////////////////////////
@@ -345,6 +331,15 @@ namespace viennamath
   {
     return binary_expr(*this).clone();
   }
+  
+  expression_interface * op_interface::optimize(const expression_interface * lhs,
+                                                const expression_interface * rhs) const
+  {
+    return new binary_expr(lhs->optimize(),
+                           clone(),
+                           rhs->optimize());
+  }
+  
   
 }
 

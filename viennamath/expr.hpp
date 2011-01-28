@@ -56,6 +56,12 @@ namespace viennamath
   }
 
   //assignments:                           
+  expr & expr::operator=(expression_interface * other) 
+  {
+    expr_ = std::auto_ptr<expression_interface>(other);
+    return *this;
+  }
+  
   template <typename LHS, typename OP, typename RHS>
   expr & expr::operator=(expression<LHS, OP, RHS> const & other) 
   {

@@ -38,6 +38,11 @@ std::vector<double> newton_solve_impl(std::vector<viennamath::equation> const & 
   viennamath::expr df2_dx = viennamath::diff(f2, x);
   viennamath::expr df2_dy = viennamath::diff(f2, y);
   
+  //std::cout << df1_dx << std::endl;
+  //std::cout << df1_dy << std::endl;
+  //std::cout << df2_dx << std::endl;
+  //std::cout << df2_dy << std::endl;
+  
   //TODO Solver for general linear system here
   
   //In the meanwhile, we use the solution formula for a 2-by-2 system:
