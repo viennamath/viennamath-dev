@@ -29,7 +29,8 @@
 
 #include "viennamath/op_tags.hpp"
 #include "viennamath/expression_compile_time_operations.hpp"
-#include "viennamath/binary_expression.hpp"
+#include "viennamath/binary_expression_operations.hpp"
+#include "viennamath/expr_operations.hpp"
 #include "viennamath/constant_operations.hpp"
 #include "viennamath/ct_constant_operations.hpp"
 #include "viennamath/variable_operations.hpp"

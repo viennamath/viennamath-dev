@@ -109,20 +109,17 @@ namespace viennamath
       template <unsigned long id>
       expr(variable<id> const & other)
       {
-        expr_ = std::auto_ptr<expression_interface>(new unary_expr(other));
+        expr_ = std::auto_ptr<expression_interface>(other.clone());
       }
 
       template <typename T>
       expr(constant<T> const & other)
       {
-        expr_ = std::auto_ptr<expression_interface>(new unary_expr(other));
+        expr_ = std::auto_ptr<expression_interface>(other.clone());
       }
 
       template <long value>
-      expr(ct_constant<value> const & other)
-      {
-        expr_ = std::auto_ptr<expression_interface>(new unary_expr(other));
-      }
+      expr(ct_constant<value> const & other);
 
       //Copy CTOR:
       expr(expr const & other);
@@ -185,7 +182,7 @@ namespace viennamath
       virtual std::string str() const = 0;
       virtual numeric_type eval(std::vector<double> const & v) const = 0;
       virtual numeric_type eval(numeric_type val) const = 0;
-      virtual expression_interface * optimize() { return this; }  //receiver owns pointer!
+      virtual expression_interface * optimize() const { return clone(); }  //receiver owns pointer!
       virtual bool is_unary() const { return true; }
       
       /** @brief Returns true, if the expression can be evaluated without providing values for variables (i.e. the expression is a constant) */
@@ -269,7 +266,7 @@ namespace viennamath
       }
     
     private:
-      //We use a unary_operation member, because the unary_operation tag might have a state -> pure static tag dispatch not enough.
+      //We use an unary_operation member, because the unary_operation tag might have a state -> pure static tag dispatch not enough.
       unary_operation unary_op_;
   };
 

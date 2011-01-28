@@ -17,7 +17,6 @@
 
 #include <ostream>
 #include "viennamath/forwards.h"
-#include "viennamath/binary_expression.hpp"
 
 namespace viennamath
 {

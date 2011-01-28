@@ -221,12 +221,39 @@ namespace viennamath
     }
   };
   
-  binary_expr exp(binary_expr const & other)
+  unary_expr exp(binary_expr const & other)
   {
-    return binary_expr(other.clone(), op_unary<op_exp>().clone(), other.clone()); 
+    return unary_expr(other.clone(), new op_unary<op_exp>()); 
   }
 
+  unary_expr exp(unary_expr const & other)
+  {
+    return unary_expr(other.clone(), new op_unary<op_exp>()); 
+  }
 
+  unary_expr exp(expr const & other)
+  {
+    return unary_expr(other.get()->clone(), new op_unary<op_exp>()); 
+  }
+
+  //NOTE: No compile-time expression supported at this point yet
+  template <unsigned long id>
+  unary_expr exp(variable<id> const & other)
+  {
+    return unary_expr(other.clone(), new op_unary<op_exp>()); 
+  }
+
+  template <typename ScalarType>
+  expr exp(constant<ScalarType> const & other)
+  {
+    return expr(new constant<numeric_type>(::exp(other()))); 
+  }
+
+  template <long value>
+  expr exp(ct_constant<value> const & other)
+  {
+    return expr(new constant<numeric_type>(::exp(value))); 
+  }
 
   
   //
@@ -241,12 +268,39 @@ namespace viennamath
                                        const expr &  diff_var); //defined after cosinus
   };
   
-  binary_expr sin(binary_expr const & other)
+  unary_expr sin(binary_expr const & other)
   {
-    return binary_expr(other.clone(), op_unary<op_sin>().clone(), other.clone()); 
+    return unary_expr(other.clone(), new op_unary<op_sin>()); 
   }
   
-  
+  unary_expr sin(unary_expr const & other)
+  {
+    return unary_expr(other.clone(), new op_unary<op_sin>()); 
+  }
+
+  unary_expr sin(expr const & other)
+  {
+    return unary_expr(other.get()->clone(), new op_unary<op_sin>()); 
+  }
+
+  //NOTE: No compile-time expression supported at this point yet
+  template <unsigned long id>
+  unary_expr sin(variable<id> const & other)
+  {
+    return unary_expr(other.clone(), new op_unary<op_sin>()); 
+  }
+
+  template <typename ScalarType>
+  expr sin(constant<ScalarType> const & other)
+  {
+    return expr(new constant<numeric_type>(::sin(other()))); 
+  }
+
+  template <long value>
+  expr sin(ct_constant<value> const & other)
+  {
+    return expr(new constant<numeric_type>(::sin(value))); 
+  }
   
   
   //
@@ -279,9 +333,38 @@ namespace viennamath
   }
 
 
-  binary_expr cos(binary_expr const & other)
+  unary_expr cos(binary_expr const & other)
   {
-    return binary_expr(other.clone(), op_unary<op_cos>().clone(), other.clone()); 
+    return unary_expr(other.clone(), new op_unary<op_cos>()); 
+  }
+  
+  unary_expr cos(unary_expr const & other)
+  {
+    return unary_expr(other.clone(), new op_unary<op_cos>()); 
+  }
+
+  unary_expr cos(expr const & other)
+  {
+    return unary_expr(other.get()->clone(), new op_unary<op_cos>()); 
+  }
+
+  //NOTE: No compile-time expression supported at this point yet
+  template <unsigned long id>
+  unary_expr cos(variable<id> const & other)
+  {
+    return unary_expr(other.clone(), new op_unary<op_cos>()); 
+  }
+
+  template <typename ScalarType>
+  expr cos(constant<ScalarType> const & other)
+  {
+    return expr(new constant<numeric_type>(::cos(other()))); 
+  }
+
+  template <long value>
+  expr cos(ct_constant<value> const & other)
+  {
+    return expr(new constant<numeric_type>(::cos(value))); 
   }
   
 
@@ -308,12 +391,41 @@ namespace viennamath
     
   };
   
-  binary_expr tan(binary_expr const & other)
+  unary_expr tan(binary_expr const & other)
   {
-    return binary_expr(other.clone(), op_unary<op_tan>().clone(), other.clone()); 
+    return unary_expr(other.clone(), new op_unary<op_tan>()); 
   }
   
+  unary_expr tan(unary_expr const & other)
+  {
+    return unary_expr(other.clone(), new op_unary<op_tan>()); 
+  }
+
+  unary_expr tan(expr const & other)
+  {
+    return unary_expr(other.get()->clone(), new op_unary<op_tan>()); 
+  }
   
+  //NOTE: No compile-time expression supported at this point yet
+  template <unsigned long id>
+  unary_expr tan(variable<id> const & other)
+  {
+    return unary_expr(other.clone(), new op_unary<op_tan>()); 
+  }
+
+  template <typename ScalarType>
+  expr tan(constant<ScalarType> const & other)
+  {
+    return expr(new constant<numeric_type>(::tan(other()))); 
+  }
+
+  template <long value>
+  expr tan(ct_constant<value> const & other)
+  {
+    return expr(new constant<numeric_type>(::tan(value))); 
+  }
+  
+
   //
   // absolute value
   //
@@ -331,11 +443,39 @@ namespace viennamath
 
   };
   
-  binary_expr fabs(binary_expr const & other)
+  unary_expr fabs(binary_expr const & other)
   {
-    return binary_expr(other.clone(), op_unary<op_fabs>().clone(), other.clone()); 
+    return unary_expr(other.clone(), new op_unary<op_fabs>()); 
   }
   
+  unary_expr fabs(unary_expr const & other)
+  {
+    return unary_expr(other.clone(), new op_unary<op_fabs>()); 
+  }
+
+  unary_expr fabs(expr const & other)
+  {
+    return unary_expr(other.get()->clone(), new op_unary<op_fabs>()); 
+  }
+
+  //NOTE: No compile-time expression supported at this point yet
+  template <unsigned long id>
+  unary_expr fabs(variable<id> const & other)
+  {
+    return unary_expr(other.clone(), new op_unary<op_fabs>()); 
+  }
+
+  template <typename ScalarType>
+  expr fabs(constant<ScalarType> const & other)
+  {
+    return expr(new constant<numeric_type>(::fabs(other()))); 
+  }
+
+  template <long value>
+  expr fabs(ct_constant<value> const & other)
+  {
+    return expr(new constant<numeric_type>(::fabs(value))); 
+  }
 
   //
   // square root
@@ -360,12 +500,39 @@ namespace viennamath
     
   };
 
-  binary_expr sqrt(binary_expr const & other)
+  unary_expr sqrt(binary_expr const & other)
   {
-    return binary_expr(other.clone(), op_unary<op_sqrt>().clone(), other.clone()); 
+    return unary_expr(other.clone(), new op_unary<op_sqrt>()); 
   }
   
+  unary_expr sqrt(unary_expr const & other)
+  {
+    return unary_expr(other.clone(), new op_unary<op_sqrt>()); 
+  }
   
+  unary_expr sqrt(expr const & other)
+  {
+    return unary_expr(other.get()->clone(), new op_unary<op_sqrt>()); 
+  }
+  
+  //NOTE: No compile-time expression supported at this point yet
+  template <unsigned long id>
+  unary_expr sqrt(variable<id> const & other)
+  {
+    return unary_expr(other.clone(), new op_unary<op_sqrt>()); 
+  }
+
+  template <typename ScalarType>
+  expr sqrt(constant<ScalarType> const & other)
+  {
+    return expr(new constant<numeric_type>(::sqrt(other()))); 
+  }
+
+  template <long value>
+  expr sqrt(ct_constant<value> const & other)
+  {
+    return expr(new constant<numeric_type>(::sqrt(value))); 
+  }
   
   //
   // natural logarithm (aka ln())
@@ -386,10 +553,40 @@ namespace viennamath
     
   };
 
-  binary_expr log(binary_expr const & other)
+  unary_expr log(binary_expr const & other)
   {
-    return binary_expr(other.clone(), op_unary<op_log>().clone(), other.clone()); 
+    return unary_expr(other.clone(), new op_unary<op_log>()); 
   }
+  
+  unary_expr log(unary_expr const & other)
+  {
+    return unary_expr(other.clone(), new op_unary<op_log>()); 
+  }
+  
+  unary_expr log(expr const & other)
+  {
+    return unary_expr(other.get()->clone(), new op_unary<op_log>()); 
+  }
+  
+  //NOTE: No compile-time expression supported at this point yet
+  template <unsigned long id>
+  unary_expr log(variable<id> const & other)
+  {
+    return unary_expr(other.clone(), new op_unary<op_log>()); 
+  }
+
+  template <typename ScalarType>
+  expr log(constant<ScalarType> const & other)
+  {
+    return expr(new constant<numeric_type>(::log(other()))); 
+  }
+
+  template <long value>
+  expr log(ct_constant<value> const & other)
+  {
+    return expr(new constant<numeric_type>(::log(value))); 
+  }
+  
   
   
   //
@@ -415,15 +612,39 @@ namespace viennamath
 
   };
   
-  binary_expr log10(binary_expr const & other)
+  unary_expr log10(binary_expr const & other)
   {
-    return binary_expr(other.clone(), op_unary<op_log10>().clone(), other.clone()); 
+    return unary_expr(other.clone(), new op_unary<op_log10>()); 
   }
   
+  unary_expr log10(unary_expr const & other)
+  {
+    return unary_expr(other.clone(), new op_unary<op_log10>()); 
+  }
   
+  unary_expr log10(expr const & other)
+  {
+    return unary_expr(other.get()->clone(), new op_unary<op_log10>()); 
+  }
   
-  
-  
+  //NOTE: No compile-time expression supported at this point yet
+  template <unsigned long id>
+  unary_expr log10(variable<id> const & other)
+  {
+    return unary_expr(other.clone(), new op_unary<op_log10>()); 
+  }
+
+  template <typename ScalarType>
+  expr log10(constant<ScalarType> const & other)
+  {
+    return expr(new constant<numeric_type>(::log10(other()))); 
+  }
+
+  template <long value>
+  expr log10(ct_constant<value> const & other)
+  {
+    return expr(new constant<numeric_type>(::log10(value))); 
+  }
   
   
   

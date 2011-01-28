@@ -82,7 +82,7 @@ void unary_test(E const & e, double ref_solution)
   assert(viennamath::eval(e, viennamath::make_vector(c4, c6, c8)) == ref_solution);
 }
 
-void unary_test(viennamath::binary_expr const & e)
+void unary_test(viennamath::expr const & e)
 {
   std::vector<double> p(2);
   p[0] = 4;
@@ -109,10 +109,10 @@ int main()
   viennamath::constant<double> c4(4.0);
   viennamath::constant<long> c6(6);
   viennamath::ct_constant<8> c8;
-  viennamath::binary_expr e1 = x + y;
-  viennamath::binary_expr e2 = c4 + c8;
-  viennamath::binary_expr e3 = e1 + e2;
-  viennamath::binary_expr e;
+  viennamath::expr e1 = x + y;
+  viennamath::expr e2 = c4 + c8;
+  viennamath::expr e3 = e1 + e2;
+  viennamath::expr e;
   
   //compilation checks:
   operations_test(e, e1, e2);  

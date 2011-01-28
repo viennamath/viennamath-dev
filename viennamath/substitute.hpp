@@ -22,7 +22,7 @@ namespace viennamath
 {
   
   
-  
+  //TODO: compile time substitution
   
   
   
@@ -35,8 +35,8 @@ namespace viennamath
                   ReplacementType const & repl,
                   ExpressionType const & e)
   {
-    //generic approach: use operator() and hope the best:
-    return expr(e.substitute(u, repl));
+    expr temp(e.substitute(expr(u), repl));
+    return expr(temp.get()->optimize());
   }
 
   /** @brief Replaces all occurances of the variable u in the expression 'e' with 'u'. */
@@ -45,8 +45,8 @@ namespace viennamath
                   ReplacementType const & repl,
                   expr const & e)
   {
-    //generic approach: use operator() and hope the best:
-    return expr(e.get()->substitute(u, repl));
+    expr temp(e.get()->substitute(expr(u), repl));
+    return expr(temp.get()->optimize());
   }
 
   

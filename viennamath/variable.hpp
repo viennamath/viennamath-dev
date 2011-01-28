@@ -266,10 +266,10 @@ namespace viennamath
     {
       if (dynamic_cast< const variable<id> *>(diff_var.get()) != NULL)
       {
-        //std::cout << "TRUE, replacing with " << repl->str() << std::endl;
+        //std::cout << "diff variable<" << id << ">: TRUE" << std::endl;
         return new constant<numeric_type>(1);
       }
-      //std::cout << "FALSE" << std::endl;
+      //std::cout << "diff variable<" << id << ">: FALSE, is: " << diff_var.get()->str() << std::endl;
       return new constant<numeric_type>(0);
     }
     

@@ -20,6 +20,7 @@
 #include <memory>
 #include "viennamath/forwards.h"
 #include "viennamath/constant.hpp"
+#include "viennamath/ct_constant.hpp"
 #include "viennamath/expression_compile_time.hpp"
 #include "viennamath/expression.hpp"
 
@@ -35,6 +36,13 @@ namespace viennamath
   {
     expr_ = std::auto_ptr<expression_interface>(other.clone());
   }
+  
+  template <long value>
+  expr::expr(ct_constant<value> const & other)
+  {
+    expr_ = std::auto_ptr<expression_interface>(new constant<numeric_type>(value));
+  }
+  
   
   //Copy CTOR
   expr::expr(expr const & other)
@@ -59,14 +67,14 @@ namespace viennamath
   template <typename ScalarType>
   expr & expr::operator=(constant<ScalarType> const & other)
   {
-    expr_ = std::auto_ptr<expression_interface>(new unary_expr(other));
+    expr_ = std::auto_ptr<expression_interface>(other.clone());
     return *this;
   }
 
   template <long value>
   expr & expr::operator=(ct_constant<value> const & other)
   {
-    expr_ = std::auto_ptr<expression_interface>(new unary_expr(other));
+    expr_ = std::auto_ptr<expression_interface>(new constant<numeric_type>(value));
     return *this;
   }
 

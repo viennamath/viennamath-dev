@@ -25,220 +25,235 @@ namespace viennamath
   
   /////////////////////////////////// operator+ ///////////////////////////////////
   
-  //with other expression:
+  //with other binary expression:
   binary_expr operator+(binary_expr const & lhs, binary_expr const & rhs)
   {
-    return binary_expr(lhs.clone(), op_plus().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_plus(), rhs.clone());
   }
   
+  //with unary expression:
+  binary_expr operator+(binary_expr const & lhs, unary_expr const & rhs)
+  {
+    return binary_expr(lhs.clone(), new op_plus(), rhs.clone());
+  }
   
   //with expression:
   template <typename LHS, typename OP, typename RHS>
   binary_expr operator+(binary_expr const & lhs, expression<LHS, OP, RHS> const & rhs)
   {
-    return binary_expr(lhs.clone(), op_plus().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_plus(), rhs.clone());
   }
   
   template <typename LHS, typename OP, typename RHS>
   binary_expr operator+(expression<LHS, OP, RHS> const & lhs, binary_expr const & rhs)
   {
-    return binary_expr(lhs.clone(), op_plus().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_plus(), rhs.clone());
   }
 
   //with constant:
   template <typename T>
   binary_expr operator+(binary_expr const & lhs, constant<T> const & rhs)
   {
-    return binary_expr(lhs.clone(), op_plus().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_plus(), rhs.clone());
   }
 
   template <typename T>
   binary_expr operator+(constant<T> const & lhs, binary_expr const & rhs)
   {
-    return binary_expr(lhs.clone(), op_plus().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_plus(), rhs.clone());
   }
 
   //with ct_constant:
   template <unsigned long value>
   binary_expr operator+(binary_expr const & lhs, ct_constant<value> const & rhs)
   {
-    return binary_expr(lhs.clone(), op_plus().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_plus(), rhs.clone());
   }
 
   template <unsigned long value>
   binary_expr operator+(ct_constant<value> const & lhs, binary_expr const & rhs)
   {
-    return binary_expr(lhs.clone(), op_plus().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_plus(), rhs.clone());
   }
 
   //with variable:
   template <unsigned long id>
   binary_expr operator+(binary_expr const & lhs, variable<id> const & rhs)
   {
-    return binary_expr(lhs.clone(), op_plus().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_plus(), rhs.clone());
   }
 
   template <unsigned long id>
   binary_expr operator+(variable<id> const & lhs, binary_expr const & rhs)
   {
     //std::cout << "Generating compound: " << lhs << "+" << rhs << std::endl;
-    return binary_expr(lhs.clone(), op_plus().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_plus(), rhs.clone());
   }
   
   //with plain numeric type (see notes on numeric_type_proxy)
   binary_expr operator+(binary_expr const & lhs, numeric_type_proxy rhs)
   {
-    return binary_expr(lhs.clone(), op_plus().clone(), constant<numeric_type>(rhs.get()).clone());
+    return binary_expr(lhs.clone(), new op_plus(), constant<numeric_type>(rhs.get()).clone());
   }
 
   binary_expr operator+(numeric_type_proxy lhs, binary_expr const & rhs)
   {
-    return binary_expr(constant<numeric_type>(lhs.get()).clone(), op_plus().clone(), rhs.clone());
+    return binary_expr(constant<numeric_type>(lhs.get()).clone(), new op_plus(), rhs.clone());
   }
 
   /////////////////////////////////// operator- ///////////////////////////////////
 
-  //with other expression:
+  //with other binary expression:
   binary_expr operator-(binary_expr const & lhs, binary_expr const & rhs)
   {
-    return binary_expr(lhs.clone(), op_minus().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_minus(), rhs.clone());
   }
   
+  //with unary expression:
+  binary_expr operator-(binary_expr const & lhs, unary_expr const & rhs)
+  {
+    return binary_expr(lhs.clone(), new op_minus(), rhs.clone());
+  }
   
   //with expression:
   template <typename LHS, typename OP, typename RHS>
   binary_expr operator-(binary_expr const & lhs, expression<LHS, OP, RHS> const & rhs)
   {
-    return binary_expr(lhs.clone(), op_minus().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_minus(), rhs.clone());
   }
   
   template <typename LHS, typename OP, typename RHS>
   binary_expr operator-(expression<LHS, OP, RHS> const & lhs, binary_expr const & rhs)
   {
-    return binary_expr(lhs.clone(), op_minus().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_minus(), rhs.clone());
   }
 
   //with constant:
   template <typename T>
   binary_expr operator-(binary_expr const & lhs, constant<T> const & rhs)
   {
-    return binary_expr(lhs.clone(), op_minus().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_minus(), rhs.clone());
   }
 
   template <typename T>
   binary_expr operator-(constant<T> const & lhs, binary_expr const & rhs)
   {
-    return binary_expr(lhs.clone(), op_minus().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_minus(), rhs.clone());
   }
 
   //with ct_constant:
   template <unsigned long value>
   binary_expr operator-(binary_expr const & lhs, ct_constant<value> const & rhs)
   {
-    return binary_expr(lhs.clone(), op_minus().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_minus(), rhs.clone());
   }
 
   template <unsigned long value>
   binary_expr operator-(ct_constant<value> const & lhs, binary_expr const & rhs)
   {
-    return binary_expr(lhs.clone(), op_minus().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_minus(), rhs.clone());
   }
 
   //with variable:
   template <unsigned long id>
   binary_expr operator-(binary_expr const & lhs, variable<id> const & rhs)
   {
-    return binary_expr(lhs.clone(), op_minus().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_minus(), rhs.clone());
   }
 
   template <unsigned long id>
   binary_expr operator-(variable<id> const & lhs, binary_expr const & rhs)
   {
-    return binary_expr(lhs.clone(), op_minus().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_minus(), rhs.clone());
   }
 
   //with plain numeric type (see notes on numeric_type_proxy)
   binary_expr operator-(binary_expr const & lhs, numeric_type_proxy rhs)
   {
-    return binary_expr(lhs.clone(), op_minus().clone(), constant<numeric_type>(rhs.get()).clone());
+    return binary_expr(lhs.clone(), new op_minus(), constant<numeric_type>(rhs.get()).clone());
   }
 
   binary_expr operator-(numeric_type_proxy lhs, binary_expr const & rhs)
   {
-    return binary_expr(constant<numeric_type>(lhs.get()).clone(), op_minus().clone(), rhs.clone());
+    return binary_expr(constant<numeric_type>(lhs.get()).clone(), new op_minus(), rhs.clone());
   }
 
 
   /////////////////////////////////// operator* ///////////////////////////////////
 
-  //with other expression:
+  //with other binary expression:
   binary_expr operator*(binary_expr const & lhs, binary_expr const & rhs)
   {
-    return binary_expr(lhs.clone(), op_mult().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_mult(), rhs.clone());
   }
   
+  //with unary expression:
+  binary_expr operator*(binary_expr const & lhs, unary_expr const & rhs)
+  {
+    return binary_expr(lhs.clone(), new op_mult(), rhs.clone());
+  }
   
   //with expression:
   template <typename LHS, typename OP, typename RHS>
   binary_expr operator*(binary_expr const & lhs, expression<LHS, OP, RHS> const & rhs)
   {
-    return binary_expr(lhs.clone(), op_mult().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_mult(), rhs.clone());
   }
   
   template <typename LHS, typename OP, typename RHS>
   binary_expr operator*(expression<LHS, OP, RHS> const & lhs, binary_expr const & rhs)
   {
-    return binary_expr(lhs.clone(), op_mult().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_mult(), rhs.clone());
   }
 
   //with constant:
   template <typename T>
   binary_expr operator*(binary_expr const & lhs, constant<T> const & rhs)
   {
-    return binary_expr(lhs.clone(), op_mult().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_mult(), rhs.clone());
   }
 
   template <typename T>
   binary_expr operator*(constant<T> const & lhs, binary_expr const & rhs)
   {
-    return binary_expr(lhs.clone(), op_mult().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_mult(), rhs.clone());
   }
 
   //with ct_constant:
   template <unsigned long value>
   binary_expr operator*(binary_expr const & lhs, ct_constant<value> const & rhs)
   {
-    return binary_expr(lhs.clone(), op_mult().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_mult(), rhs.clone());
   }
 
   template <unsigned long value>
   binary_expr operator*(ct_constant<value> const & lhs, binary_expr const & rhs)
   {
-    return binary_expr(lhs.clone(), op_mult().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_mult(), rhs.clone());
   }
 
   //with variable:
   template <unsigned long id>
   binary_expr operator*(binary_expr const & lhs, variable<id> const & rhs)
   {
-    return binary_expr(lhs.clone(), op_mult().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_mult(), rhs.clone());
   }
 
   template <unsigned long id>
   binary_expr operator*(variable<id> const & lhs, binary_expr const & rhs)
   {
-    return binary_expr(lhs.clone(), op_mult().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_mult(), rhs.clone());
   }
 
   //with plain numeric type (see notes on numeric_type_proxy)
   binary_expr operator*(binary_expr const & lhs, numeric_type_proxy rhs)
   {
-    return binary_expr(lhs.clone(), op_mult().clone(), constant<numeric_type>(rhs.get()).clone());
+    return binary_expr(lhs.clone(), new op_mult(), constant<numeric_type>(rhs.get()).clone());
   }
 
   binary_expr operator*(numeric_type_proxy lhs, binary_expr const & rhs)
   {
-    return binary_expr(constant<numeric_type>(lhs.get()).clone(), op_mult().clone(), rhs.clone());
+    return binary_expr(constant<numeric_type>(lhs.get()).clone(), new op_mult(), rhs.clone());
   }
 
 
@@ -246,10 +261,16 @@ namespace viennamath
 
   /////////////////////////////////// operator/ ///////////////////////////////////
 
-  //with other expression:
+  //with other binary expression:
   binary_expr operator/(binary_expr const & lhs, binary_expr const & rhs)
   {
-    return binary_expr(lhs.clone(), op_div().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_div(), rhs.clone());
+  }
+  
+  //with unary expression:
+  binary_expr operator/(binary_expr const & lhs, unary_expr const & rhs)
+  {
+    return binary_expr(lhs.clone(), new op_div(), rhs.clone());
   }
   
   
@@ -257,63 +278,63 @@ namespace viennamath
   template <typename LHS, typename OP, typename RHS>
   binary_expr operator/(binary_expr const & lhs, expression<LHS, OP, RHS> const & rhs)
   {
-    return binary_expr(lhs.clone(), op_div().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_div(), rhs.clone());
   }
   
   template <typename LHS, typename OP, typename RHS>
   binary_expr operator/(expression<LHS, OP, RHS> const & lhs, binary_expr const & rhs)
   {
-    return binary_expr(lhs.clone(), op_div().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_div(), rhs.clone());
   }
 
   //with constant:
   template <typename T>
   binary_expr operator/(binary_expr const & lhs, constant<T> const & rhs)
   {
-    return binary_expr(lhs.clone(), op_div().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_div(), rhs.clone());
   }
 
   template <typename T>
   binary_expr operator/(constant<T> const & lhs, binary_expr const & rhs)
   {
-    return binary_expr(lhs.clone(), op_div().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_div(), rhs.clone());
   }
 
   //with ct_constant:
   template <unsigned long value>
   binary_expr operator/(binary_expr const & lhs, ct_constant<value> const & rhs)
   {
-    return binary_expr(lhs.clone(), op_div().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_div(), rhs.clone());
   }
 
   template <unsigned long value>
   binary_expr operator/(ct_constant<value> const & lhs, binary_expr const & rhs)
   {
-    return binary_expr(lhs.clone(), op_div().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_div(), rhs.clone());
   }
 
   //with variable:
   template <unsigned long id>
   binary_expr operator/(binary_expr const & lhs, variable<id> const & rhs)
   {
-    return binary_expr(lhs.clone(), op_div().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_div(), rhs.clone());
   }
 
   template <unsigned long id>
   binary_expr operator/(variable<id> const & lhs, binary_expr const & rhs)
   {
-    return binary_expr(lhs.clone(), op_div().clone(), rhs.clone());
+    return binary_expr(lhs.clone(), new op_div(), rhs.clone());
   }
 
   //with plain numeric type (see notes on numeric_type_proxy)
   binary_expr operator/(binary_expr const & lhs, numeric_type_proxy rhs)
   {
-    return binary_expr(lhs.clone(), op_div().clone(), constant<numeric_type>(rhs.get()).clone());
+    return binary_expr(lhs.clone(), new op_div(), constant<numeric_type>(rhs.get()).clone());
   }
 
   binary_expr operator/(numeric_type_proxy lhs, binary_expr const & rhs)
   {
-    return binary_expr(constant<numeric_type>(lhs.get()).clone(), op_div().clone(), rhs.clone());
+    return binary_expr(constant<numeric_type>(lhs.get()).clone(), new op_div(), rhs.clone());
   }
 
 

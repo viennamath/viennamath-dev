@@ -25,14 +25,25 @@ namespace viennamath
   /////////////////// derivative of runtime expression /////////////////////
 
   template <unsigned long id>
-  unary_expr diff(binary_expr const & e,
-                  variable<id> const & var)
+  expr diff(binary_expr const & e,
+            variable<id> const & var)
   {
-    //generic approach: use operator() and hope the best:
-    return unary_expr(e.diff(var));
+    return expr(e.diff(var));
   }
   
+  template <unsigned long id>
+  expr diff(unary_expr const & e,
+            variable<id> const & var)
+  {
+    return expr(e.diff(var));
+  }
 
+  template <unsigned long id>
+  expr diff(expr const & e,
+            variable<id> const & var)
+  {
+    return expr(e.get()->diff(var));
+  }
 
 
 

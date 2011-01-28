@@ -48,22 +48,22 @@ namespace viennamath
       }*/
 
       template <typename LHS, typename OP, typename RHS>
-      unary_expr(expression<LHS, OP, RHS> const & other) : op_(new OP())
+      explicit unary_expr(expression<LHS, OP, RHS> const & other) : op_(new OP())
       {
         std::cout << "Constructing from expression " << other << std::endl;
         expr_ = std::auto_ptr<expression_interface>(other.lhs().clone());
       }
 
       template <unsigned long id>
-      unary_expr(variable<id> const & other) : expr_(other.clone()),
+      explicit unary_expr(variable<id> const & other) : expr_(other.clone()),
                                                  op_(new op_unary<op_id>())  {}
 
       template <typename T>
-      unary_expr(constant<T> const & other) : expr_(other.clone()),
+      explicit unary_expr(constant<T> const & other) : expr_(other.clone()),
                                               op_(op_unary<op_id>().clone()) {}
 
       template <long value>
-      unary_expr(ct_constant<value> const & other) : expr_(other.clone()),
+      explicit unary_expr(ct_constant<value> const & other) : expr_(other.clone()),
                                                      op_(new op_unary<op_id>()) {}
 
       //Copy CTOR:
@@ -186,31 +186,17 @@ namespace viennamath
       ///////////////////// substitution /////////////////////////////
       
       
-      expression_interface * optimize()  //TODO: think: does optimize() modify an existing expression, or does it create a new expression??
+      expression_interface * optimize() const
       {
-        expr_ = std::auto_ptr<expression_interface>( expr_->optimize() );
-        
         if (expr_->is_constant())
-          return new constant<numeric_type>(expr_->unwrap());
+          return new constant<numeric_type>(op_->apply(expr_->unwrap(), 
+                                                       numeric_type() //argument is ignored, since constant expression
+                                                      ) 
+                                           );
+
+        //TODO: Unwrap op_id()
         
-        return this;        
-      }
-      
-      template <unsigned long id, typename ReplacementType>
-      unary_expr substitute(variable<id> const & u,
-                      ReplacementType const & repl) const
-      {
-        //TODO: Remove dynamic_casts!!
-        expression_interface * ret = this->substitute(&u, &repl);
-        if (dynamic_cast<unary_expr *>(ret) != NULL)
-        {
-          expression_interface * ret2 = ret->optimize();
-          if (dynamic_cast<unary_expr *>(ret) != NULL)
-            return dynamic_cast<unary_expr &>(*ret);
-          return unary_expr(ret2, op_unary< op_id >().clone(), ret2);
-        }
-        
-        return unary_expr(ret, op_unary< op_id >().clone(), ret);
+        return clone();
       }
       
     

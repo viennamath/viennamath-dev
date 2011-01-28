@@ -112,10 +112,10 @@ int main()
   viennamath::constant<double> c4(4.0);
   viennamath::constant<long> c6(6);
   viennamath::ct_constant<8> c8;
-  viennamath::binary_expr e1 = x + y;
-  viennamath::binary_expr e2 = x*y+c8;
-  viennamath::binary_expr e3 = x/y-c8;
-  viennamath::binary_expr e;
+  viennamath::expr e1 = x + y;
+  viennamath::expr e2 = x*y+c8;
+  viennamath::expr e3 = x/y-c8;
+  viennamath::expr e;
 
   //compile time:
   std::cout << viennamath::diff(x+y, x) << std::endl;

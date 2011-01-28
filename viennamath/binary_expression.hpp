@@ -43,7 +43,7 @@ namespace viennamath
                                                          rhs_(rhs) {}
                     
       template <typename LHS, typename OP, typename RHS>
-      binary_expr(expression<LHS, OP, RHS> const & other) : op_(OP().clone())
+      explicit binary_expr(expression<LHS, OP, RHS> const & other) : op_(OP().clone())
       {
         //std::cout << "Constructing from expression " << other << std::endl;
         lhs_ = std::auto_ptr<expression_interface>(other.lhs().clone());
@@ -51,7 +51,7 @@ namespace viennamath
       }
 
       template <typename LHS, typename OP, long value>
-      binary_expr(expression<LHS, OP, ct_constant<value> > const & other) : op_(new OP())
+      explicit binary_expr(expression<LHS, OP, ct_constant<value> > const & other) : op_(new OP())
       {
         //std::cout << "Constructing from expression " << other << std::endl;
         lhs_ = std::auto_ptr<expression_interface>(other.lhs().clone());
@@ -59,7 +59,7 @@ namespace viennamath
       }
 
       template <long value, typename OP, typename RHS>
-      binary_expr(expression<ct_constant<value>, OP, RHS > const & other) : op_(new OP())
+      explicit binary_expr(expression<ct_constant<value>, OP, RHS > const & other) : op_(new OP())
       {
         //std::cout << "Constructing from expression " << other << std::endl;
         lhs_ = std::auto_ptr<expression_interface>(new constant<numeric_type>(value));
@@ -67,7 +67,7 @@ namespace viennamath
       }
 
       template <long value1, typename OP, long value2>
-      binary_expr(expression<ct_constant<value1>, OP, ct_constant<value2> > const & other) : op_(new op_unary<op_id>())
+      explicit binary_expr(expression<ct_constant<value1>, OP, ct_constant<value2> > const & other) : op_(new op_unary<op_id>())
       {
         //std::cout << "Constructing from expression " << other << std::endl;
         lhs_ = std::auto_ptr<expression_interface>(new constant<numeric_type>(OP().apply(value1, value2)));
@@ -75,17 +75,17 @@ namespace viennamath
       }
 
       template <unsigned long id>
-      binary_expr(variable<id> const & other) : lhs_(other.clone()),
+      explicit binary_expr(variable<id> const & other) : lhs_(other.clone()),
                                                   op_(new op_unary<op_id>()),
                                                   rhs_(other.clone()) {}
 
       template <typename T>
-      binary_expr(constant<T> const & other) : lhs_(other.clone()),
+      explicit binary_expr(constant<T> const & other) : lhs_(other.clone()),
                                                op_(new op_unary<op_id>()),
                                                rhs_(other.clone()) {}
 
       template <long value>
-      binary_expr(ct_constant<value> const & other) : lhs_(new constant<numeric_type>(value)),
+      explicit binary_expr(ct_constant<value> const & other) : lhs_(new constant<numeric_type>(value)),
                                                       op_(new op_unary<op_id>()),
                                                       rhs_(new constant<numeric_type>(value)) {}
 
@@ -246,7 +246,7 @@ namespace viennamath
       ///////////////////// substitution /////////////////////////////
       
       
-      expression_interface * optimize()
+      expression_interface * optimize() const
       {
         if (lhs_->is_constant() && rhs_->is_constant())
         {
@@ -254,40 +254,28 @@ namespace viennamath
         }
         else if (lhs_->is_constant())
         {
-          lhs_ = std::auto_ptr<expression_interface>( new constant<numeric_type>(lhs_->unwrap()) );
-          rhs_ = std::auto_ptr<expression_interface>( rhs_->optimize() );
+          return new binary_expr(new constant<numeric_type>(lhs_->unwrap()),
+                                 op_->clone(),
+                                 rhs_->optimize());
         }
         else if (rhs_->is_constant())
         {
-          lhs_ = std::auto_ptr<expression_interface>(lhs_->optimize());
-          rhs_ = std::auto_ptr<expression_interface>( new constant<numeric_type>(rhs_->unwrap()) );
+          return new binary_expr(lhs_->optimize(),
+                                 op_->clone(),
+                                 new constant<numeric_type>(rhs_->unwrap()));
         }
         
         else
         {
-          lhs_ = std::auto_ptr<expression_interface>( lhs_->optimize() );
-          rhs_ = std::auto_ptr<expression_interface>( rhs_->optimize() );
+          return new binary_expr(lhs_->optimize(),
+                                 op_->clone(),
+                                 rhs_->optimize() );
         }
         
-        return this;        
+        throw "Must not be reached";
+        return NULL;
       }
       
-      template <unsigned long id, typename ReplacementType>
-      expression_interface * substitute(variable<id> const & u,
-                                        ReplacementType const & repl) const
-      {
-        expression_interface * ret = this->substitute(expr(u.clone()), expr(repl.clone()));
-        if (dynamic_cast<const binary_expr *>(ret) != NULL)
-        {
-          //TODO: Remove mem leak!
-          expression_interface * ret2 = ret->optimize();
-          return new unary_expr(ret2, new op_unary< op_id >());
-        }
-        
-        return new binary_expr(ret, new op_unary< op_id >(), ret);
-      }
-      
-    
       ///////// other interface requirements ////////////////////////
       expression_interface * clone() const { return new binary_expr(lhs_->clone(), op_->clone(), rhs_->clone()); }
       std::string str() const
@@ -325,8 +313,8 @@ namespace viennamath
                                         const expr & repl) const
       {
         return new binary_expr(lhs_->substitute(e, repl),
-                                    op_->clone(),
-                                    rhs_->substitute(e, repl) ); 
+                               op_->clone(),
+                               rhs_->substitute(e, repl) ); 
       };
       
       bool equal(const expr & other) const
@@ -337,6 +325,7 @@ namespace viennamath
       template <unsigned long id>
       expression_interface * diff(variable<id> const & diff_var) const
       {
+        std::cout << "Wrapping diff_var: " << diff_var << std::endl;
         return diff(expr(diff_var.clone())); 
       }
       
