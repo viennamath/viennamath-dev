@@ -29,79 +29,79 @@ namespace viennamath
   
   //operator+
   template <long value, typename LHS, typename OP, typename RHS>
-  expression<ct_constant<value>,
+  ct_expr<ct_constant<value>,
             op_plus,
-            expression<LHS, OP, RHS> >
+            ct_expr<LHS, OP, RHS> >
   operator+(ct_constant<value> const & lhs, 
-            expression<LHS, OP, RHS> const & other)
+            ct_expr<LHS, OP, RHS> const & other)
   {
-    return expression<ct_constant<value>,
+    return ct_expr<ct_constant<value>,
                       op_plus,
-                      expression<LHS, OP, RHS> >(lhs, other);
+                      ct_expr<LHS, OP, RHS> >(lhs, other);
   }
   
   // ct_c1 + (c2 + X) -> [ct_c1 + c2] + X, where X is anything:
   template <long value, typename ScalarType, typename RHS>
-  expression<constant< typename promote_traits<long, op_plus, ScalarType>::result_type >,
+  ct_expr<constant< typename promote_traits<long, op_plus, ScalarType>::result_type >,
               op_plus,
               RHS >
   operator+(ct_constant<value> const & lhs, 
-            expression<constant<ScalarType>, op_plus, RHS> const & other)
+            ct_expr<constant<ScalarType>, op_plus, RHS> const & other)
   {
     typedef constant< typename promote_traits<long, op_plus, ScalarType>::result_type >   result_constant;
-    return expression<result_constant,
+    return ct_expr<result_constant,
                       op_plus,
                       RHS >(result_constant(value + other.lhs()), other.rhs());
   }
   
   // ct_c1 + (ct_c2 + X) -> [ct_c1 + ct_c2] + X, where X is anything:
   template <long value, long value2, typename RHS>
-  expression<ct_constant<value + value2>,
+  ct_expr<ct_constant<value + value2>,
             op_plus,
             RHS >
   operator+(ct_constant<value> const & lhs, 
-            expression<ct_constant<value2>, op_plus, RHS> const & other)
+            ct_expr<ct_constant<value2>, op_plus, RHS> const & other)
   {
-    return expression<ct_constant<value + value2>,
+    return ct_expr<ct_constant<value + value2>,
                       op_plus,
                       RHS >(ct_constant<value + value2>(), other.rhs());
   }
   
   // ct_c1 + (c2 - X)    -> [ct_c1 + c2]    - X, where X is anything:
   template <long value, typename ScalarType, typename RHS>
-  expression<constant< typename promote_traits<long, op_plus, ScalarType>::result_type >,
+  ct_expr<constant< typename promote_traits<long, op_plus, ScalarType>::result_type >,
               op_minus,
               RHS >
   operator+(ct_constant<value> const & lhs, 
-            expression<constant<ScalarType>, op_minus, RHS> const & other)
+            ct_expr<constant<ScalarType>, op_minus, RHS> const & other)
   {
     typedef constant< typename promote_traits<long, op_plus, ScalarType>::result_type >   result_constant;
-    return expression<result_constant,
+    return ct_expr<result_constant,
                       op_minus,
                       RHS >(result_constant(value + other.lhs()), other.rhs());
   }
   
   // ct_c1 + (ct_c2 - X) -> [ct_c1 + ct_c2] - X, where X is anything:
   template <long value, long value2, typename RHS>
-  expression<ct_constant<value + value2>,
+  ct_expr<ct_constant<value + value2>,
             op_minus,
             RHS >
   operator+(ct_constant<value> const & lhs, 
-            expression<ct_constant<value2>, op_minus, RHS> const & other)
+            ct_expr<ct_constant<value2>, op_minus, RHS> const & other)
   {
-    return expression<ct_constant<value + value2>,
+    return ct_expr<ct_constant<value + value2>,
                       op_minus,
                       RHS >(ct_constant<value + value2>(), other.rhs());
   }
   
   template <long value, unsigned long other_id>
-  expression<ct_constant<value>,
+  ct_expr<ct_constant<value>,
             op_plus,
             variable<other_id> >
   operator+(ct_constant<value> const & lhs, 
             variable<other_id> const & other)
   {
-    return expression<ct_constant<value>,
+    return ct_expr<ct_constant<value>,
                       op_plus,
                       variable<other_id> >(lhs, other);
   }
@@ -125,80 +125,80 @@ namespace viennamath
 
   //operator-
   template <long value, typename LHS, typename OP, typename RHS>
-  expression<ct_constant<value>,
+  ct_expr<ct_constant<value>,
             op_minus,
-            expression<LHS, OP, RHS> >
+            ct_expr<LHS, OP, RHS> >
   operator-(ct_constant<value> const & lhs, 
-            expression<LHS, OP, RHS> const & other)
+            ct_expr<LHS, OP, RHS> const & other)
   {
-    return expression<ct_constant<value>,
+    return ct_expr<ct_constant<value>,
                       op_minus,
-                      expression<LHS, OP, RHS> >(lhs, other);
+                      ct_expr<LHS, OP, RHS> >(lhs, other);
   }
   
   // ct_c1 - (c2 + X) -> [ct_c1 - c2] - X, where X is anything:
   template <long value, typename ScalarType, typename RHS>
-  expression<constant< typename promote_traits<long, op_minus, ScalarType>::result_type >,
+  ct_expr<constant< typename promote_traits<long, op_minus, ScalarType>::result_type >,
               op_minus,
               RHS >
   operator-(ct_constant<value> const & lhs, 
-            expression<constant<ScalarType>, op_plus, RHS> const & other)
+            ct_expr<constant<ScalarType>, op_plus, RHS> const & other)
   {
     typedef constant< typename promote_traits<long, op_minus, ScalarType>::result_type >   result_constant;
-    return expression<result_constant,
+    return ct_expr<result_constant,
                       op_minus,
                       RHS >(result_constant(value - other.lhs()), other.rhs());
   }
   
   // ct_c1 - (ct_c2 + X) -> [ct_c1 - ct_c2] - X, where X is anything:
   template <long value, long value2, typename RHS>
-  expression<ct_constant<value - value2>,
+  ct_expr<ct_constant<value - value2>,
             op_minus,
             RHS >
   operator-(ct_constant<value> const & lhs, 
-            expression<ct_constant<value2>, op_plus, RHS> const & other)
+            ct_expr<ct_constant<value2>, op_plus, RHS> const & other)
   {
-    return expression<ct_constant<value - value2>,
+    return ct_expr<ct_constant<value - value2>,
                       op_minus,
                       RHS >(ct_constant<value - value2>(), other.rhs());
   }
   
   // ct_c1 - (c2 - X)    -> [ct_c1 - c2] + X, where X is anything:
   template <long value, typename ScalarType, typename RHS>
-  expression<constant< typename promote_traits<long, op_minus, ScalarType>::result_type >,
+  ct_expr<constant< typename promote_traits<long, op_minus, ScalarType>::result_type >,
               op_plus,
               RHS >
   operator-(ct_constant<value> const & lhs, 
-            expression<constant<ScalarType>, op_minus, RHS> const & other)
+            ct_expr<constant<ScalarType>, op_minus, RHS> const & other)
   {
     typedef constant< typename promote_traits<long, op_minus, ScalarType>::result_type >   result_constant;
-    return expression<result_constant,
+    return ct_expr<result_constant,
                       op_plus,
                       RHS >(result_constant(value - other.lhs()), other.rhs());
   }
   
   // ct_c1 - (ct_c2 - X) -> [ct_c1 - ct_c2] + X, where X is anything:
   template <long value, long value2, typename RHS>
-  expression<ct_constant<value - value2>,
+  ct_expr<ct_constant<value - value2>,
             op_plus,
             RHS >
   operator-(ct_constant<value> const & lhs, 
-            expression<ct_constant<value2>, op_minus, RHS> const & other)
+            ct_expr<ct_constant<value2>, op_minus, RHS> const & other)
   {
-    return expression<ct_constant<value - value2>,
+    return ct_expr<ct_constant<value - value2>,
                       op_plus,
                       RHS >(ct_constant<value - value2>(), other.rhs());
   }
   
   
   template <long value, unsigned long other_id>
-  expression<ct_constant<value>,
+  ct_expr<ct_constant<value>,
             op_minus,
             variable<other_id> >
   operator-(ct_constant<value> const & lhs, 
             variable<other_id> const & other)
   {
-    return expression<ct_constant<value>,
+    return ct_expr<ct_constant<value>,
                       op_minus,
                       variable<other_id> >(lhs, other);
   }
@@ -222,25 +222,25 @@ namespace viennamath
 
   //operator*
   template <long value, typename LHS, typename OP, typename RHS>
-  expression<ct_constant<value>,
+  ct_expr<ct_constant<value>,
             op_mult,
-            expression<LHS, OP, RHS> >
+            ct_expr<LHS, OP, RHS> >
   operator*(ct_constant<value> const & lhs, 
-            expression<LHS, OP, RHS> const & other)
+            ct_expr<LHS, OP, RHS> const & other)
   {
-    return expression<ct_constant<value>,
+    return ct_expr<ct_constant<value>,
                       op_mult,
-                      expression<LHS, OP, RHS> >(lhs, other);
+                      ct_expr<LHS, OP, RHS> >(lhs, other);
   }
   
   template <long value, unsigned long other_id>
-  expression<ct_constant<value>,
+  ct_expr<ct_constant<value>,
             op_mult,
             variable<other_id> >
   operator*(ct_constant<value> const & lhs, 
             variable<other_id> const & other)
   {
-    return expression<ct_constant<value>,
+    return ct_expr<ct_constant<value>,
                       op_mult,
                       variable<other_id> >(lhs, other);
   }
@@ -264,25 +264,25 @@ namespace viennamath
 
   //operator/
   template <long value, typename LHS, typename OP, typename RHS>
-  expression<ct_constant<value>,
+  ct_expr<ct_constant<value>,
             op_div,
-            expression<LHS, OP, RHS> >
+            ct_expr<LHS, OP, RHS> >
   operator/(ct_constant<value> const & lhs, 
-            expression<LHS, OP, RHS> const & other)
+            ct_expr<LHS, OP, RHS> const & other)
   {
-    return expression<ct_constant<value>,
+    return ct_expr<ct_constant<value>,
                       op_div,
-                      expression<LHS, OP, RHS> >(lhs, other);
+                      ct_expr<LHS, OP, RHS> >(lhs, other);
   }
   
   template <long value, unsigned long other_id>
-  expression<ct_constant<value>,
+  ct_expr<ct_constant<value>,
             op_div,
             variable<other_id> >
   operator/(ct_constant<value> const & lhs, 
             variable<other_id> const & other)
   {
-    return expression<ct_constant<value>,
+    return ct_expr<ct_constant<value>,
                       op_div,
                       variable<other_id> >(lhs, other);
   }
@@ -298,13 +298,13 @@ namespace viennamath
   }
   
   template <long value, long other_value>
-  expression<ct_constant<value>,
+  ct_expr<ct_constant<value>,
             op_div,
             ct_constant<other_value> >
   operator/(ct_constant<value> const & lhs, 
             ct_constant<other_value> const & other)
   {
-    return expression<ct_constant<value>,
+    return ct_expr<ct_constant<value>,
                       op_div,
                       ct_constant<other_value> >(lhs, other);
   }

@@ -103,34 +103,34 @@ namespace viennamath
   
   // (u + v)' = u' + v'
   template <typename LHS, typename RHS, unsigned long id>
-  struct ct_diff<expression<LHS, op_plus, RHS>,
+  struct ct_diff<ct_expr<LHS, op_plus, RHS>,
                  variable<id> >
   {
-    typedef expression< typename ct_diff<LHS, variable<id> >::result_type,
+    typedef ct_expr< typename ct_diff<LHS, variable<id> >::result_type,
                         op_plus,
                         typename ct_diff<RHS, variable<id> >::result_type >     result_type;    
   };
   
   // (u - v)' = u' - v'
   template <typename LHS, typename RHS, unsigned long id>
-  struct ct_diff<expression<LHS, op_minus, RHS>,
+  struct ct_diff<ct_expr<LHS, op_minus, RHS>,
                  variable<id> >
   {
-    typedef expression< typename ct_diff<LHS, variable<id> >::result_type,
+    typedef ct_expr< typename ct_diff<LHS, variable<id> >::result_type,
                         op_minus,
                         typename ct_diff<RHS, variable<id> >::result_type >     result_type;    
   };
   
   // (u * v)' = u'*v + u*v'
   template <typename LHS, typename RHS, unsigned long id>
-  struct ct_diff<expression<LHS, op_mult, RHS>,
+  struct ct_diff<ct_expr<LHS, op_mult, RHS>,
                  variable<id> >
   {
-    typedef expression< expression< typename ct_diff<LHS, variable<id> >::result_type,
+    typedef ct_expr< ct_expr< typename ct_diff<LHS, variable<id> >::result_type,
                                     op_mult,
                                     RHS>,
                         op_plus,            
-                        expression< LHS,
+                        ct_expr< LHS,
                                     op_mult,
                                     typename ct_diff<RHS, variable<id> >::result_type >
                       >                                                      result_type;    
@@ -138,19 +138,19 @@ namespace viennamath
 
   // (u/v)' = (u'*v - u*v') / v^2
   template <typename LHS, typename RHS, unsigned long id>
-  struct ct_diff<expression<LHS, op_div, RHS>,
+  struct ct_diff<ct_expr<LHS, op_div, RHS>,
                  variable<id> >
   {
-    typedef expression< expression< expression< typename ct_diff<LHS, variable<id> >::result_type,
+    typedef ct_expr< ct_expr< ct_expr< typename ct_diff<LHS, variable<id> >::result_type,
                                                 op_mult,
                                                 RHS>,
                                     op_minus,            
-                                    expression< LHS,
+                                    ct_expr< LHS,
                                                 op_mult,
                                                 typename ct_diff<RHS, variable<id> >::result_type >
                                    >,
                       op_div,             
-                      expression< RHS,
+                      ct_expr< RHS,
                                   op_mult,
                                   RHS >
                       >                    result_type;    
@@ -183,12 +183,12 @@ namespace viennamath
   //interface function
   template <typename LHS, typename OP, typename RHS,
             unsigned long id>
-  typename ct_diff<expression<LHS, OP, RHS>,
+  typename ct_diff<ct_expr<LHS, OP, RHS>,
                    variable<id> >::result_type
-  diff(expression<LHS, OP, RHS> const & c,
+  diff(ct_expr<LHS, OP, RHS> const & c,
        variable<id> const & var)
   {
-    return typename ct_diff<expression<LHS, OP, RHS>,
+    return typename ct_diff<ct_expr<LHS, OP, RHS>,
                             variable<id> >::result_type();
   }
 }

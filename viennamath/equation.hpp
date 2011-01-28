@@ -95,34 +95,34 @@ namespace viennamath
   //first argument: expression
   template <typename LHS1, typename OP1, typename RHS1,
             typename LHS2, typename OP2, typename RHS2>
-  ct_equation<expression<LHS1, OP1, RHS1>,
-              expression<LHS2, OP2, RHS2> > 
-  make_equation(expression<LHS1, OP1, RHS1> const & lhs,
-                expression<LHS2, OP2, RHS2> const & rhs)
+  ct_equation<ct_expr<LHS1, OP1, RHS1>,
+              ct_expr<LHS2, OP2, RHS2> > 
+  make_equation(ct_expr<LHS1, OP1, RHS1> const & lhs,
+                ct_expr<LHS2, OP2, RHS2> const & rhs)
   {
-    return ct_equation<expression<LHS1, OP1, RHS1>,
-                       expression<LHS2, OP2, RHS2> >(); 
+    return ct_equation<ct_expr<LHS1, OP1, RHS1>,
+                       ct_expr<LHS2, OP2, RHS2> >(); 
   }
   
   template <typename LHS1, typename OP1, typename RHS1,
             long value>
-  ct_equation<expression<LHS1, OP1, RHS1>,
+  ct_equation<ct_expr<LHS1, OP1, RHS1>,
               ct_constant<value> > 
-  make_equation(expression<LHS1, OP1, RHS1> const & lhs,
+  make_equation(ct_expr<LHS1, OP1, RHS1> const & lhs,
                 ct_constant<value> const & rhs)
   {
-    return ct_equation<expression<LHS1, OP1, RHS1>,
+    return ct_equation<ct_expr<LHS1, OP1, RHS1>,
                        ct_constant<value> >(); 
   }
 
   template <typename LHS1, typename OP1, typename RHS1,
             unsigned long id>
-  ct_equation<expression<LHS1, OP1, RHS1>,
+  ct_equation<ct_expr<LHS1, OP1, RHS1>,
               variable<id> > 
-  make_equation(expression<LHS1, OP1, RHS1> const & lhs,
+  make_equation(ct_expr<LHS1, OP1, RHS1> const & lhs,
                 variable<id> const & rhs)
   {
-    return ct_equation<expression<LHS1, OP1, RHS1>,
+    return ct_equation<ct_expr<LHS1, OP1, RHS1>,
                        variable<id> >(); 
   }
 
@@ -133,12 +133,12 @@ namespace viennamath
   template <long value1,
             typename LHS2, typename OP2, typename RHS2>
   ct_equation<ct_constant<value1>,
-              expression<LHS2, OP2, RHS2> > 
+              ct_expr<LHS2, OP2, RHS2> > 
   make_equation(ct_constant<value1> const & lhs,
-                expression<LHS2, OP2, RHS2> const & rhs)
+                ct_expr<LHS2, OP2, RHS2> const & rhs)
   {
     return ct_equation<ct_constant<value1>,
-                       expression<LHS2, OP2, RHS2> >(); 
+                       ct_expr<LHS2, OP2, RHS2> >(); 
   }
   
   template <long value1,
@@ -168,12 +168,12 @@ namespace viennamath
   template <unsigned long id1,
             typename LHS2, typename OP2, typename RHS2>
   ct_equation<variable<id1>,
-              expression<LHS2, OP2, RHS2> > 
+              ct_expr<LHS2, OP2, RHS2> > 
   make_equation(variable<id1> const & lhs,
-                expression<LHS2, OP2, RHS2> const & rhs)
+                ct_expr<LHS2, OP2, RHS2> const & rhs)
   {
     return ct_equation<variable<id1>,
-                       expression<LHS2, OP2, RHS2> >(); 
+                       ct_expr<LHS2, OP2, RHS2> >(); 
   }
   
   template <unsigned long id1,

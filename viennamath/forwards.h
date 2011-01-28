@@ -51,7 +51,7 @@ namespace viennamath
   template <typename LHS,
             typename OP,
             typename RHS>
-  class expression;
+  class ct_expr;
   
   /////// variable ///////
   template <unsigned long id = 0>
@@ -101,7 +101,7 @@ namespace viennamath
       expr(unary_expr const & other);
 
       template <typename LHS, typename OP, typename RHS>
-      expr(expression<LHS, OP, RHS> const & other)
+      expr(ct_expr<LHS, OP, RHS> const & other)
       {
         expr_ = std::auto_ptr<expression_interface>(new binary_expr(other));
       }
@@ -130,7 +130,7 @@ namespace viennamath
       expr & operator=(expression_interface * other);
       
       template <typename LHS, typename OP, typename RHS>
-      expr & operator=(expression<LHS, OP, RHS> const & other); 
+      expr & operator=(ct_expr<LHS, OP, RHS> const & other); 
 
       expr & operator=(binary_expr const & other);
 

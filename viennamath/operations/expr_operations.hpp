@@ -46,13 +46,13 @@ namespace viennamath
   
   //with expression:
   template <typename LHS, typename OP, typename RHS>
-  binary_expr operator+(expr const & lhs, expression<LHS, OP, RHS> const & rhs)
+  binary_expr operator+(expr const & lhs, ct_expr<LHS, OP, RHS> const & rhs)
   {
     return binary_expr(lhs.get()->clone(), new op_plus(), rhs.clone());
   }
   
   template <typename LHS, typename OP, typename RHS>
-  binary_expr operator+(expression<LHS, OP, RHS> const & lhs, expr const & rhs)
+  binary_expr operator+(ct_expr<LHS, OP, RHS> const & lhs, expr const & rhs)
   {
     return binary_expr(lhs.clone(), new op_plus(), rhs.get()->clone());
   }
@@ -130,13 +130,13 @@ namespace viennamath
 
   //with expression:
   template <typename LHS, typename OP, typename RHS>
-  binary_expr operator-(expr const & lhs, expression<LHS, OP, RHS> const & rhs)
+  binary_expr operator-(expr const & lhs, ct_expr<LHS, OP, RHS> const & rhs)
   {
     return binary_expr(lhs.get()->clone(), new op_minus(), rhs.clone());
   }
   
   template <typename LHS, typename OP, typename RHS>
-  binary_expr operator-(expression<LHS, OP, RHS> const & lhs, expr const & rhs)
+  binary_expr operator-(ct_expr<LHS, OP, RHS> const & lhs, expr const & rhs)
   {
     return binary_expr(lhs.clone(), new op_minus(), rhs.get()->clone());
   }
@@ -215,13 +215,13 @@ namespace viennamath
   
   //with expression:
   template <typename LHS, typename OP, typename RHS>
-  binary_expr operator*(expr const & lhs, expression<LHS, OP, RHS> const & rhs)
+  binary_expr operator*(expr const & lhs, ct_expr<LHS, OP, RHS> const & rhs)
   {
     return binary_expr(lhs.get()->clone(), new op_mult(), rhs.clone());
   }
   
   template <typename LHS, typename OP, typename RHS>
-  binary_expr operator*(expression<LHS, OP, RHS> const & lhs, expr const & rhs)
+  binary_expr operator*(ct_expr<LHS, OP, RHS> const & lhs, expr const & rhs)
   {
     return binary_expr(lhs.clone(), new op_mult(), rhs.get()->clone());
   }
@@ -301,13 +301,13 @@ namespace viennamath
   
   //with expression:
   template <typename LHS, typename OP, typename RHS>
-  binary_expr operator/(expr const & lhs, expression<LHS, OP, RHS> const & rhs)
+  binary_expr operator/(expr const & lhs, ct_expr<LHS, OP, RHS> const & rhs)
   {
     return binary_expr(lhs.get()->clone(), new op_div(), rhs.clone());
   }
   
   template <typename LHS, typename OP, typename RHS>
-  binary_expr operator/(expression<LHS, OP, RHS> const & lhs, expr const & rhs)
+  binary_expr operator/(ct_expr<LHS, OP, RHS> const & lhs, expr const & rhs)
   {
     return binary_expr(lhs.clone(), new op_div(), rhs.get()->clone());
   }

@@ -63,7 +63,7 @@ namespace viennamath
   }
   
   template <typename LHS, typename OP, typename RHS>
-  expr & expr::operator=(expression<LHS, OP, RHS> const & other) 
+  expr & expr::operator=(ct_expr<LHS, OP, RHS> const & other) 
   {
     expr_ = std::auto_ptr<expression_interface>(new binary_expr(other));
     return *this;

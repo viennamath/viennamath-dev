@@ -14,14 +14,15 @@ INCLUDE_DIRECTORIES(".")
 ADD_DEFINITIONS(-Wall -pedantic -O3)
 #ADD_DEFINITIONS(-Wall -pedantic -O0 -g)
 
-#list all source files here
+# examples:
 ADD_EXECUTABLE(basic_test examples/basic_test.cpp)
-ADD_EXECUTABLE(runtime_test examples/runtime_test.cpp)
-ADD_EXECUTABLE(compiletime_test examples/compiletime_test.cpp)
-ADD_EXECUTABLE(compiletime_evaluation examples/compiletime_evaluation.cpp)
 ADD_EXECUTABLE(model_benchmark examples/model_benchmark.cpp)
-ADD_EXECUTABLE(diff_test examples/diff_test.cpp)
-ADD_EXECUTABLE(equation_test examples/equation_test.cpp)
 ADD_EXECUTABLE(newton_solve examples/newton_solve.cpp)
 
+# tests:
+ADD_EXECUTABLE(runtime_test tests/runtime_test.cpp)
+ADD_EXECUTABLE(compiletime_test tests/compiletime_test.cpp)
+ADD_EXECUTABLE(compiletime_evaluation tests/compiletime_evaluation.cpp)
+ADD_EXECUTABLE(diff_test tests/diff_test.cpp)
+ADD_EXECUTABLE(equation_test tests/equation_test.cpp)
  

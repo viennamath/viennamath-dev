@@ -12,8 +12,8 @@
 
 
 
-#ifndef VIENNAMATH_EXPRESSION_COMPILE_TIME_CPP
-#define VIENNAMATH_EXPRESSION_COMPILE_TIME_CPP
+#ifndef VIENNAMATH_CT_EXPR_CPP
+#define VIENNAMATH_CT_EXPR_CPP
 
 #include <ostream>
 #include "viennamath/forwards.h"
@@ -45,7 +45,7 @@ namespace viennamath
   template <typename LHS,
             typename OP,
             typename RHS>
-  class expression
+  class ct_expr
   {
       typedef typename expression_traits<LHS>::const_reference_type    internal_lhs_type;
       typedef typename expression_traits<RHS>::const_reference_type    internal_rhs_type;
@@ -54,10 +54,10 @@ namespace viennamath
       typedef OP     op_type;
       typedef RHS    rhs_type;
       
-      explicit expression() : lhs_(LHS()), rhs_(RHS()) {} 
+      explicit ct_expr() : lhs_(LHS()), rhs_(RHS()) {} 
       
-      explicit expression(internal_lhs_type lhs,
-                          internal_rhs_type rhs) : lhs_(lhs), rhs_(rhs) {}
+      explicit ct_expr(internal_lhs_type lhs,
+                       internal_rhs_type rhs) : lhs_(lhs), rhs_(rhs) {}
                           
       expression_interface * clone() const;
                     
@@ -79,7 +79,7 @@ namespace viennamath
   
   //stream operator for output:
   template <typename LHS, typename OP, typename RHS>
-  std::ostream& operator<<(std::ostream & stream, expression<LHS, OP, RHS> const & other)
+  std::ostream& operator<<(std::ostream & stream, ct_expr<LHS, OP, RHS> const & other)
   {
     stream << "[" << other.lhs() << OP().str() << other.rhs() << "]";
     return stream;

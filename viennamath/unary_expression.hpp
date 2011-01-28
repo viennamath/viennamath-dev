@@ -48,7 +48,7 @@ namespace viennamath
       }*/
 
       template <typename LHS, typename OP, typename RHS>
-      explicit unary_expr(expression<LHS, OP, RHS> const & other) : op_(new OP())
+      explicit unary_expr(ct_expr<LHS, OP, RHS> const & other) : op_(new OP())
       {
         std::cout << "Constructing from expression " << other << std::endl;
         expr_ = std::auto_ptr<expression_interface>(other.lhs().clone());
@@ -72,7 +72,7 @@ namespace viennamath
 
       //assignments:                           
       template <typename LHS, typename OP, typename RHS>
-      unary_expr & operator=(expression<LHS, OP, RHS> const & other) 
+      unary_expr & operator=(ct_expr<LHS, OP, RHS> const & other) 
       {
         expr_ = std::auto_ptr<expression_interface>(other.lhs().clone());
         op_ = std::auto_ptr<op_interface>(new OP());

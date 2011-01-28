@@ -31,61 +31,61 @@ namespace viennamath
   
   //operator+
   template <unsigned long id, typename LHS, typename OP, typename RHS>
-  expression<variable<id>,
+  ct_expr<variable<id>,
               op_plus,
-              expression<LHS, OP, RHS> >
+              ct_expr<LHS, OP, RHS> >
   operator+(variable<id> const & lhs,
-            expression<LHS, OP, RHS> const & other)
+            ct_expr<LHS, OP, RHS> const & other)
   {
-    return expression<variable<id>,
+    return ct_expr<variable<id>,
                       op_plus,
-                      expression<LHS, OP, RHS> >(lhs, other);
+                      ct_expr<LHS, OP, RHS> >(lhs, other);
   }
   
   template <unsigned long id, unsigned long other_id>
-  expression<variable<id>,
+  ct_expr<variable<id>,
               op_plus,
               variable<other_id> >
   operator+(variable<id> const & lhs,
             variable<other_id> const & other)
   {
-    return expression<variable<id>,
+    return ct_expr<variable<id>,
                       op_plus,
                       variable<other_id> >(lhs, other);
   }
 
   template <unsigned long id>
-  expression<ct_constant<2>,
+  ct_expr<ct_constant<2>,
               op_mult,
               variable<id> >
   operator+(variable<id> const & lhs,
             variable<id> const & other)
   {
-    return expression<ct_constant<2>,
+    return ct_expr<ct_constant<2>,
                       op_mult,
                       variable<id> >(ct_constant<2>(), lhs);
   }
 
   template <unsigned long id, typename OtherScalarType>
-  expression<variable<id>,
+  ct_expr<variable<id>,
               op_plus,
               constant<OtherScalarType> >
   operator+(variable<id> const & lhs,
             constant<OtherScalarType> const & other)
   {
-    return expression<variable<id>,
+    return ct_expr<variable<id>,
                       op_plus,
                       constant<OtherScalarType> >(lhs, other);
   }
 
   template <unsigned long id, long value>
-  expression<variable<id>,
+  ct_expr<variable<id>,
               op_plus,
               ct_constant<value> >
   operator+(variable<id> const & lhs,
             ct_constant<value> const & other)
   {
-    return expression<variable<id>,
+    return ct_expr<variable<id>,
                       op_plus,
                       ct_constant<value> >(lhs, other);
   }
@@ -93,25 +93,25 @@ namespace viennamath
 
   //operator-
   template <unsigned long id, typename LHS, typename OP, typename RHS>
-  expression<variable<id>,
+  ct_expr<variable<id>,
               op_minus,
-              expression<LHS, OP, RHS> >
+              ct_expr<LHS, OP, RHS> >
   operator-(variable<id> const & lhs,
-            expression<LHS, OP, RHS> const & other)
+            ct_expr<LHS, OP, RHS> const & other)
   {
-    return expression<variable<id>,
+    return ct_expr<variable<id>,
                       op_minus,
-                      expression<LHS, OP, RHS> >(lhs, other);
+                      ct_expr<LHS, OP, RHS> >(lhs, other);
   }
   
   template <unsigned long id, unsigned long other_id>
-  expression<variable<id>,
+  ct_expr<variable<id>,
               op_minus,
               variable<other_id> >
   operator-(variable<id> const & lhs,
             variable<other_id> const & other)
   {
-    return expression<variable<id>,
+    return ct_expr<variable<id>,
                       op_minus,
                       variable<other_id> >(lhs, other);
   }
@@ -125,25 +125,25 @@ namespace viennamath
   }
 
   template <unsigned long id, typename OtherScalarType>
-  expression<variable<id>,
+  ct_expr<variable<id>,
               op_minus,
               constant<OtherScalarType> >
   operator-(variable<id> const & lhs,
             constant<OtherScalarType> const & other)
   {
-    return expression<variable<id>,
+    return ct_expr<variable<id>,
                       op_minus,
                       constant<OtherScalarType> >(lhs, other);
   }
   
   template <unsigned long id, long value>
-  expression<variable<id>,
+  ct_expr<variable<id>,
               op_minus,
               ct_constant<value> >
   operator-(variable<id> const & lhs,
             ct_constant<value> const & other)
   {
-    return expression<variable<id>,
+    return ct_expr<variable<id>,
                       op_minus,
                       ct_constant<value> >(lhs, other);
   }
@@ -151,49 +151,49 @@ namespace viennamath
 
   //operator*
   template <unsigned long id, typename LHS, typename OP, typename RHS>
-  expression<variable<id>,
+  ct_expr<variable<id>,
               op_mult,
-              expression<LHS, OP, RHS> >
+              ct_expr<LHS, OP, RHS> >
   operator*(variable<id> const & lhs,
-            expression<LHS, OP, RHS> const & other)
+            ct_expr<LHS, OP, RHS> const & other)
   {
-    return expression<variable<id>,
+    return ct_expr<variable<id>,
                       op_mult,
-                      expression<LHS, OP, RHS> >(lhs, other);
+                      ct_expr<LHS, OP, RHS> >(lhs, other);
   }
   
   template <unsigned long id, unsigned long other_id>
-  expression<variable<id>,
+  ct_expr<variable<id>,
               op_mult,
               variable<other_id> >
   operator*(variable<id> const & lhs,
             variable<other_id> const & other)
   {
-    return expression<variable<id>,
+    return ct_expr<variable<id>,
                       op_mult,
                       variable<other_id> >(lhs, other);
   }
 
   template <unsigned long id, typename OtherScalarType>
-  expression<variable<id>,
+  ct_expr<variable<id>,
               op_mult,
               constant<OtherScalarType> >
   operator*(variable<id> const & lhs,
             constant<OtherScalarType> const & other)
   {
-    return expression<variable<id>,
+    return ct_expr<variable<id>,
                       op_mult,
                       constant<OtherScalarType> >(lhs, other);
   }
 
   template <unsigned long id, long value>
-  expression<variable<id>,
+  ct_expr<variable<id>,
               op_mult,
               ct_constant<value> >
   operator*(variable<id> const & lhs,
             ct_constant<value> const & other)
   {
-    return expression<variable<id>,
+    return ct_expr<variable<id>,
                       op_mult,
                       ct_constant<value> >(lhs, other);
   }
@@ -221,25 +221,25 @@ namespace viennamath
 
   //operator/
   template <unsigned long id, typename LHS, typename OP, typename RHS>
-  expression<variable<id>,
+  ct_expr<variable<id>,
               op_div,
-              expression<LHS, OP, RHS> >
+              ct_expr<LHS, OP, RHS> >
   operator/(variable<id> const & lhs,
-            expression<LHS, OP, RHS> const & other)
+            ct_expr<LHS, OP, RHS> const & other)
   {
-    return expression<variable<id>,
+    return ct_expr<variable<id>,
                       op_div,
-                      expression<LHS, OP, RHS> >(lhs, other);
+                      ct_expr<LHS, OP, RHS> >(lhs, other);
   }
   
   template <unsigned long id, unsigned long other_id>
-  expression<variable<id>,
+  ct_expr<variable<id>,
               op_div,
               variable<other_id> >
   operator/(variable<id> const & lhs,
             variable<other_id> const & other)
   {
-    return expression<variable<id>,
+    return ct_expr<variable<id>,
                       op_div,
                       variable<other_id> >(lhs, other);
   }
@@ -253,25 +253,25 @@ namespace viennamath
   }
 
   template <unsigned long id, typename OtherScalarType>
-  expression<variable<id>,
+  ct_expr<variable<id>,
               op_div,
               constant<OtherScalarType> >
   operator/(variable<id> const & lhs,
             constant<OtherScalarType> const & other)
   {
-    return expression<variable<id>,
+    return ct_expr<variable<id>,
                       op_div,
                       constant<OtherScalarType> >(lhs, other);
   }
   
   template <unsigned long id, long value>
-  expression<variable<id>,
+  ct_expr<variable<id>,
               op_div,
               ct_constant<value> >
   operator/(variable<id> const & lhs,
             ct_constant<value> const & other)
   {
-    return expression<variable<id>,
+    return ct_expr<variable<id>,
                       op_div,
                       ct_constant<value> >(lhs, other);
   }

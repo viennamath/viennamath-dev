@@ -29,9 +29,9 @@ namespace viennamath
   
 
   template <typename LHS, typename OP, typename RHS>
-  struct rational_evaluation < expression<LHS, OP, RHS> >
+  struct rational_evaluation < ct_expr<LHS, OP, RHS> >
   {
-    typedef expression< typename rational_evaluation<LHS>::result_type,
+    typedef ct_expr< typename rational_evaluation<LHS>::result_type,
                         OP,
                         typename rational_evaluation<RHS>::result_type>  result_type;
   };
@@ -41,39 +41,39 @@ namespace viennamath
   // A + B:
   template <long numerator_1, long denominator_1,
             long numerator_2, long denominator_2>
-  struct rational_evaluation< expression<expression<ct_constant<numerator_1>,
+  struct rational_evaluation< ct_expr<ct_expr<ct_constant<numerator_1>,
                                                     op_div,
                                                     ct_constant<denominator_1> >,
                                          op_plus,
-                                         expression<ct_constant<numerator_2>,
+                                         ct_expr<ct_constant<numerator_2>,
                                                     op_div,
                                                     ct_constant<denominator_2> >
                                          >
                             >
   {
-    typedef expression< ct_constant<numerator_1 * denominator_2 + numerator_2 * denominator_1>,
+    typedef ct_expr< ct_constant<numerator_1 * denominator_2 + numerator_2 * denominator_1>,
                         op_div,
                         ct_constant<denominator_1 * denominator_2> >        result_type;
   };
 
   template <long value_1,
             long numerator_2, long denominator_2>
-  struct rational_evaluation< expression<ct_constant<value_1>,
+  struct rational_evaluation< ct_expr<ct_constant<value_1>,
                                          op_plus,
-                                         expression<ct_constant<numerator_2>,
+                                         ct_expr<ct_constant<numerator_2>,
                                                     op_div,
                                                     ct_constant<denominator_2> >
                                          >
                             >
   {
-    typedef expression< ct_constant<value_1 * denominator_2 + numerator_2>,
+    typedef ct_expr< ct_constant<value_1 * denominator_2 + numerator_2>,
                         op_div,
                         ct_constant<denominator_2> >        result_type;
   };
 
   template <long numerator_1, long denominator_1,
             long value_2>
-  struct rational_evaluation< expression<expression<ct_constant<numerator_1>,
+  struct rational_evaluation< ct_expr<ct_expr<ct_constant<numerator_1>,
                                                     op_div,
                                                     ct_constant<denominator_1> >,
                                          op_plus,
@@ -81,7 +81,7 @@ namespace viennamath
                                          >
                             >
   {
-    typedef expression< ct_constant<numerator_1 + value_2 * denominator_1>,
+    typedef ct_expr< ct_constant<numerator_1 + value_2 * denominator_1>,
                         op_div,
                         ct_constant<denominator_1> >        result_type;
   };
@@ -91,39 +91,39 @@ namespace viennamath
   // A - B:
   template <long numerator_1, long denominator_1,
             long numerator_2, long denominator_2>
-  struct rational_evaluation< expression<expression<ct_constant<numerator_1>,
+  struct rational_evaluation< ct_expr<ct_expr<ct_constant<numerator_1>,
                                                     op_div,
                                                     ct_constant<denominator_1> >,
                                          op_minus,
-                                         expression<ct_constant<numerator_2>,
+                                         ct_expr<ct_constant<numerator_2>,
                                                     op_div,
                                                     ct_constant<denominator_2> >
                                          >
                             >
   {
-    typedef expression< ct_constant<numerator_1 * denominator_2 - numerator_2 * denominator_1>,
+    typedef ct_expr< ct_constant<numerator_1 * denominator_2 - numerator_2 * denominator_1>,
                         op_div,
                         ct_constant<denominator_1 * denominator_2> >        result_type;
   };
   
   template <long value_1,
             long numerator_2, long denominator_2>
-  struct rational_evaluation< expression<ct_constant<value_1>,
+  struct rational_evaluation< ct_expr<ct_constant<value_1>,
                                          op_minus,
-                                         expression<ct_constant<numerator_2>,
+                                         ct_expr<ct_constant<numerator_2>,
                                                     op_div,
                                                     ct_constant<denominator_2> >
                                          >
                             >
   {
-    typedef expression< ct_constant<value_1 * denominator_2 - numerator_2>,
+    typedef ct_expr< ct_constant<value_1 * denominator_2 - numerator_2>,
                         op_div,
                         ct_constant<denominator_2> >        result_type;
   };
 
   template <long numerator_1, long denominator_1,
             long value_2>
-  struct rational_evaluation< expression<expression<ct_constant<numerator_1>,
+  struct rational_evaluation< ct_expr<ct_expr<ct_constant<numerator_1>,
                                                     op_div,
                                                     ct_constant<denominator_1> >,
                                          op_minus,
@@ -131,7 +131,7 @@ namespace viennamath
                                          >
                             >
   {
-    typedef expression< ct_constant<numerator_1 - value_2 * denominator_1>,
+    typedef ct_expr< ct_constant<numerator_1 - value_2 * denominator_1>,
                         op_div,
                         ct_constant<denominator_1> >        result_type;
   };
@@ -139,39 +139,39 @@ namespace viennamath
   // A * B:
   template <long numerator_1, long denominator_1,
             long numerator_2, long denominator_2>
-  struct rational_evaluation< expression<expression<ct_constant<numerator_1>,
+  struct rational_evaluation< ct_expr<ct_expr<ct_constant<numerator_1>,
                                                     op_div,
                                                     ct_constant<denominator_1> >,
                                          op_mult,
-                                         expression<ct_constant<numerator_2>,
+                                         ct_expr<ct_constant<numerator_2>,
                                                     op_div,
                                                     ct_constant<denominator_2> >
                                          >
                             >
   {
-    typedef expression< ct_constant<numerator_1 * numerator_2>,
+    typedef ct_expr< ct_constant<numerator_1 * numerator_2>,
                         op_div,
                         ct_constant<denominator_1 * denominator_2> >        result_type;
   };
   
   template <long value_1,
             long numerator_2, long denominator_2>
-  struct rational_evaluation< expression<ct_constant<value_1>,
+  struct rational_evaluation< ct_expr<ct_constant<value_1>,
                                          op_mult,
-                                         expression<ct_constant<numerator_2>,
+                                         ct_expr<ct_constant<numerator_2>,
                                                     op_div,
                                                     ct_constant<denominator_2> >
                                          >
                             >
   {
-    typedef expression< ct_constant<value_1 * numerator_2>,
+    typedef ct_expr< ct_constant<value_1 * numerator_2>,
                         op_div,
                         ct_constant<denominator_2> >        result_type;
   };
 
   template <long numerator_1, long denominator_1,
             long value_2>
-  struct rational_evaluation< expression<expression<ct_constant<numerator_1>,
+  struct rational_evaluation< ct_expr<ct_expr<ct_constant<numerator_1>,
                                                     op_div,
                                                     ct_constant<denominator_1> >,
                                          op_mult,
@@ -179,7 +179,7 @@ namespace viennamath
                                          >
                             >
   {
-    typedef expression< ct_constant<numerator_1 * value_2>,
+    typedef ct_expr< ct_constant<numerator_1 * value_2>,
                         op_div,
                         ct_constant<denominator_1> >        result_type;
   };
@@ -187,39 +187,39 @@ namespace viennamath
   // A / B:
   template <long numerator_1, long denominator_1,
             long numerator_2, long denominator_2>
-  struct rational_evaluation< expression<expression<ct_constant<numerator_1>,
+  struct rational_evaluation< ct_expr<ct_expr<ct_constant<numerator_1>,
                                                     op_div,
                                                     ct_constant<denominator_1> >,
                                          op_div,
-                                         expression<ct_constant<numerator_2>,
+                                         ct_expr<ct_constant<numerator_2>,
                                                     op_div,
                                                     ct_constant<denominator_2> >
                                          >
                             >
   {
-    typedef expression< ct_constant<numerator_1 * denominator_2>,
+    typedef ct_expr< ct_constant<numerator_1 * denominator_2>,
                         op_div,
                         ct_constant<denominator_1 * numerator_2> >        result_type;
   };
   
   template <long value_1,
             long numerator_2, long denominator_2>
-  struct rational_evaluation< expression<ct_constant<value_1>,
+  struct rational_evaluation< ct_expr<ct_constant<value_1>,
                                          op_div,
-                                         expression<ct_constant<numerator_2>,
+                                         ct_expr<ct_constant<numerator_2>,
                                                     op_div,
                                                     ct_constant<denominator_2> >
                                          >
                             >
   {
-    typedef expression< ct_constant<value_1 * denominator_2>,
+    typedef ct_expr< ct_constant<value_1 * denominator_2>,
                         op_div,
                         ct_constant<numerator_2> >        result_type;
   };
 
   template <long numerator_1, long denominator_1,
             long value_2>
-  struct rational_evaluation< expression<expression<ct_constant<numerator_1>,
+  struct rational_evaluation< ct_expr<ct_expr<ct_constant<numerator_1>,
                                                     op_div,
                                                     ct_constant<denominator_1> >,
                                          op_div,
@@ -227,14 +227,14 @@ namespace viennamath
                                          >
                             >
   {
-    typedef expression< ct_constant<numerator_1>,
+    typedef ct_expr< ct_constant<numerator_1>,
                         op_div,
                         ct_constant<denominator_1 * value_2> >        result_type;
   };
   
   //primitive expressions
   template <long value_1, long value_2>
-  struct rational_evaluation< expression<ct_constant<value_1>,
+  struct rational_evaluation< ct_expr<ct_constant<value_1>,
                                          op_plus,
                                          ct_constant<value_2>
                                         >
@@ -244,7 +244,7 @@ namespace viennamath
   };
   
   template <long value_1, long value_2>
-  struct rational_evaluation< expression<ct_constant<value_1>,
+  struct rational_evaluation< ct_expr<ct_constant<value_1>,
                                          op_minus,
                                          ct_constant<value_2>
                                         >
@@ -254,7 +254,7 @@ namespace viennamath
   };
 
   template <long value_1, long value_2>
-  struct rational_evaluation< expression<ct_constant<value_1>,
+  struct rational_evaluation< ct_expr<ct_constant<value_1>,
                                          op_mult,
                                          ct_constant<value_2>
                                         >
@@ -264,20 +264,20 @@ namespace viennamath
   };
   
   template <long value_1, long value_2>
-  struct rational_evaluation< expression<ct_constant<value_1>,
+  struct rational_evaluation< ct_expr<ct_constant<value_1>,
                                          op_div,
                                          ct_constant<value_2>
                                         >
                             >
   {
-    typedef expression<ct_constant<value_1>,
+    typedef ct_expr<ct_constant<value_1>,
                        op_div,
                        ct_constant<value_2>
                       >                      result_type;
   };
   
   template <long value_1>
-  struct rational_evaluation< expression<ct_constant<value_1>,
+  struct rational_evaluation< ct_expr<ct_constant<value_1>,
                                          op_div,
                                          ct_constant<1>
                                         >
@@ -322,9 +322,9 @@ namespace viennamath
 
   //valid arguments:
   template <typename LHS, typename OP, typename RHS, typename VectorType>
-  struct ct_evaluation< expression<LHS, OP, RHS>, VectorType>
+  struct ct_evaluation< ct_expr<LHS, OP, RHS>, VectorType>
   {
-    typedef expression< typename ct_evaluation<LHS, VectorType>::result_type,
+    typedef ct_expr< typename ct_evaluation<LHS, VectorType>::result_type,
                         OP,
                         typename ct_evaluation<RHS, VectorType>::result_type >  intermediate_type;
                         
@@ -362,7 +362,7 @@ namespace viennamath
   };
   
   template <typename LHS, typename OP, typename RHS>
-  struct is_ct_evaluable< expression<LHS, OP, RHS> >
+  struct is_ct_evaluable< ct_expr<LHS, OP, RHS> >
   {
     enum { return_value = is_ct_evaluable<LHS>::return_value * is_ct_evaluable<RHS>::return_value };
   };

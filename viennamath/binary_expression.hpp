@@ -43,7 +43,7 @@ namespace viennamath
                                                          rhs_(rhs) {}
                     
       template <typename LHS, typename OP, typename RHS>
-      explicit binary_expr(expression<LHS, OP, RHS> const & other) : op_(OP().clone())
+      explicit binary_expr(ct_expr<LHS, OP, RHS> const & other) : op_(OP().clone())
       {
         //std::cout << "Constructing from expression " << other << std::endl;
         lhs_ = std::auto_ptr<expression_interface>(other.lhs().clone());
@@ -51,7 +51,7 @@ namespace viennamath
       }
 
       template <typename LHS, typename OP, long value>
-      explicit binary_expr(expression<LHS, OP, ct_constant<value> > const & other) : op_(new OP())
+      explicit binary_expr(ct_expr<LHS, OP, ct_constant<value> > const & other) : op_(new OP())
       {
         //std::cout << "Constructing from expression " << other << std::endl;
         lhs_ = std::auto_ptr<expression_interface>(other.lhs().clone());
@@ -59,7 +59,7 @@ namespace viennamath
       }
 
       template <long value, typename OP, typename RHS>
-      explicit binary_expr(expression<ct_constant<value>, OP, RHS > const & other) : op_(new OP())
+      explicit binary_expr(ct_expr<ct_constant<value>, OP, RHS > const & other) : op_(new OP())
       {
         //std::cout << "Constructing from expression " << other << std::endl;
         lhs_ = std::auto_ptr<expression_interface>(new constant<numeric_type>(value));
@@ -67,7 +67,7 @@ namespace viennamath
       }
 
       template <long value1, typename OP, long value2>
-      explicit binary_expr(expression<ct_constant<value1>, OP, ct_constant<value2> > const & other) : op_(new op_unary<op_id>())
+      explicit binary_expr(ct_expr<ct_constant<value1>, OP, ct_constant<value2> > const & other) : op_(new op_unary<op_id>())
       {
         //std::cout << "Constructing from expression " << other << std::endl;
         lhs_ = std::auto_ptr<expression_interface>(new constant<numeric_type>(OP().apply(value1, value2)));
@@ -96,7 +96,7 @@ namespace viennamath
 
       //assignments:                           
       template <typename LHS, typename OP, typename RHS>
-      binary_expr & operator=(expression<LHS, OP, RHS> const & other) 
+      binary_expr & operator=(ct_expr<LHS, OP, RHS> const & other) 
       {
         lhs_ = std::auto_ptr<expression_interface>(other.lhs().clone());
         op_ = std::auto_ptr<op_interface>(OP().clone());
@@ -105,7 +105,7 @@ namespace viennamath
       }
       
       template <typename LHS, typename OP, long value>
-      binary_expr & operator=(expression<LHS, OP, ct_constant<value> > const & other)
+      binary_expr & operator=(ct_expr<LHS, OP, ct_constant<value> > const & other)
       {
         //std::cout << "Constructing from expression " << other << std::endl;
         lhs_ = std::auto_ptr<expression_interface>(other.lhs().clone());
@@ -115,7 +115,7 @@ namespace viennamath
       }
 
       template <long value, typename OP, typename RHS>
-      binary_expr & operator=(expression<ct_constant<value>, OP, RHS > const & other)
+      binary_expr & operator=(ct_expr<ct_constant<value>, OP, RHS > const & other)
       {
         //std::cout << "Constructing from expression " << other << std::endl;
         lhs_ = std::auto_ptr<expression_interface>(new constant<numeric_type>(value));
@@ -125,7 +125,7 @@ namespace viennamath
       }
 
       template <long value1, typename OP, long value2>
-      binary_expr & operator=(expression<ct_constant<value1>, OP, ct_constant<value2> > const & other)
+      binary_expr & operator=(ct_expr<ct_constant<value1>, OP, ct_constant<value2> > const & other)
       {
         std::cout << "Constructing from expression " << other << std::endl;
         lhs_ = std::auto_ptr<expression_interface>(new constant<numeric_type>(OP().apply(value1, value2)));
@@ -327,7 +327,7 @@ namespace viennamath
   }
   
   template <typename LHS, typename OP, typename RHS>
-  expression_interface * expression<LHS, OP, RHS>::clone() const
+  expression_interface * ct_expr<LHS, OP, RHS>::clone() const
   {
     return binary_expr(*this).clone();
   }
