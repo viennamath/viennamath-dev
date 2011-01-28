@@ -16,7 +16,6 @@
 #define VIENNAMATH_SUBSTITUTE_HPP
 
 #include "viennamath/forwards.h"
-#include "viennamath/binary_expression_operations.hpp"
 
 namespace viennamath
 {

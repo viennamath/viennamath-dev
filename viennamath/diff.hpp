@@ -16,7 +16,6 @@
 #define VIENNAMATH_DIFF_HPP
 
 #include "viennamath/forwards.h"
-#include "viennamath/binary_expression_operations.hpp"
 #include "viennamath/unary_expression.hpp"
 
 namespace viennamath

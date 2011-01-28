@@ -213,7 +213,6 @@ namespace viennamath
         ss << ")";
         return ss.str();        
       }
-      bool is_unary() const { return false; }
       
       numeric_type unwrap() const
       {

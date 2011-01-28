@@ -121,6 +121,8 @@ namespace viennamath
       template <long value>
       expr(ct_constant<value> const & other);
 
+      expr(numeric_type_proxy const & other);
+      
       //Copy CTOR:
       expr(expr const & other);
 
@@ -222,7 +224,7 @@ namespace viennamath
                                  numeric_type val) const  = 0;
                          
       virtual numeric_type apply(numeric_type lhs, numeric_type rhs) const = 0;                   
-      virtual bool is_unary() const { return false; }
+      virtual bool is_unary() const { return true; }
       
       virtual expression_interface * diff(const expression_interface * lhs,
                                           const expression_interface * rhs,
@@ -318,6 +320,13 @@ namespace viennamath
     
   
   
+  
+  /////// equation types /////////
+  template <typename LHS, typename RHS>
+  class ct_equation;
+  
+  
+  class equation;
   
   
   

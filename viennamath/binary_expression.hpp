@@ -282,19 +282,9 @@ namespace viennamath
       {
         std::stringstream ss;
         ss << "(";
-        if (op_->is_unary())
-        {
-          ss << op_->str();
-          ss << "(";
-          ss << lhs_->str();
-          ss << ")";
-        }
-        else
-        {
-          ss << lhs_->str();
-          ss << op_->str();
-          ss << rhs_->str();
-        }
+        ss << lhs_->str();
+        ss << op_->str();
+        ss << rhs_->str();
         ss << ")";
         return ss.str();        
       }

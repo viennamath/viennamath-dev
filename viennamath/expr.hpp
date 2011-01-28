@@ -43,6 +43,11 @@ namespace viennamath
     expr_ = std::auto_ptr<expression_interface>(new constant<numeric_type>(value));
   }
   
+  expr::expr(numeric_type_proxy const & other)
+  {
+    expr_ = std::auto_ptr<expression_interface>(new constant<numeric_type>(other.get()));
+  }
+  
   
   //Copy CTOR
   expr::expr(expr const & other)
@@ -118,6 +123,7 @@ namespace viennamath
 
   numeric_type expr::operator()(std::vector<numeric_type> const & stl_v) const
   {
+    //std::cout << "operator() with STL vector!" << std::endl;
     return expr_.get()->eval(stl_v);
   }
 
@@ -152,9 +158,19 @@ namespace viennamath
   
   std::ostream& operator<<(std::ostream & stream, expr const & e)
   {
-    stream << "expr" 
-           << e.get()->str()
-           << "";
+    if (e.get()->is_unary())
+    {
+      stream << "expr" 
+            << "("
+            << e.get()->str()
+            << ")";
+    }
+    else
+    {
+      stream << "expr" 
+            << e.get()->str();
+    }
+      
     return stream;
   }
   

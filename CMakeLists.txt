@@ -1,6 +1,8 @@
 
 PROJECT(viennamath)
 
+cmake_minimum_required(VERSION 2.6)
+
 #if you don't want the full compiler output, remove the following line
 SET(CMAKE_VERBOSE_MAKEFILE ON)
 
@@ -19,5 +21,7 @@ ADD_EXECUTABLE(compiletime_test examples/compiletime_test.cpp)
 ADD_EXECUTABLE(compiletime_evaluation examples/compiletime_evaluation.cpp)
 ADD_EXECUTABLE(model_benchmark examples/model_benchmark.cpp)
 ADD_EXECUTABLE(diff_test examples/diff_test.cpp)
+ADD_EXECUTABLE(equation_test examples/equation_test.cpp)
+ADD_EXECUTABLE(newton_solve examples/newton_solve.cpp)
 
  
