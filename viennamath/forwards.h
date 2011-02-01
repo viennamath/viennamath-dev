@@ -139,10 +139,15 @@ namespace viennamath
       //assignments:    
       expr & operator=(expression_interface * other);
       
+      expr & operator=(expr const & other);
+      
       template <typename LHS, typename OP, typename RHS>
       expr & operator=(ct_expr<LHS, OP, RHS> const & other); 
 
       expr & operator=(binary_expr const & other);
+      
+      template <unsigned long id>
+      expr & operator=(variable<id> const & other);
 
       template <typename ScalarType>
       expr & operator=(constant<ScalarType> const & other);

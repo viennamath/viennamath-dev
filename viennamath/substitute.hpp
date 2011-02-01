@@ -57,7 +57,7 @@ namespace viennamath
                   ReplacementType const & repl,
                   expr const & e)
   {
-    expr temp(e.get()->substitute(expr(search), repl));
+    expr temp(e.get()->substitute(search, repl));
     return expr(temp.get()->optimize());
   }
 

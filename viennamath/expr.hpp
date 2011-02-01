@@ -52,7 +52,8 @@ namespace viennamath
   //Copy CTOR
   expr::expr(expr const & other)
   {
-    expr_ = std::auto_ptr<expression_interface>(other.get()->clone());
+    if (other.get() != NULL)
+     expr_ = std::auto_ptr<expression_interface>(other.get()->clone());
   }
 
   //assignments:                           
@@ -61,6 +62,13 @@ namespace viennamath
     expr_ = std::auto_ptr<expression_interface>(other);
     return *this;
   }
+  
+  expr & expr::operator=(expr const & other)
+  {
+    expr_ = std::auto_ptr<expression_interface>(other.get()->clone()); 
+    return *this;
+  }
+  
   
   template <typename LHS, typename OP, typename RHS>
   expr & expr::operator=(ct_expr<LHS, OP, RHS> const & other) 
@@ -74,6 +82,14 @@ namespace viennamath
     expr_ = std::auto_ptr<expression_interface>(other.clone());
     return *this;
   }
+  
+  template <unsigned long id>
+  expr & expr::operator=(variable<id> const & other)
+  {
+    expr_ = std::auto_ptr<expression_interface>(other.clone());
+    return *this;
+  }
+  
 
   template <typename ScalarType>
   expr & expr::operator=(constant<ScalarType> const & other)
