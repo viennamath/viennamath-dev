@@ -127,7 +127,7 @@ namespace viennamath
       template <long value1, typename OP, long value2>
       binary_expr & operator=(ct_expr<ct_constant<value1>, OP, ct_constant<value2> > const & other)
       {
-        std::cout << "Constructing from expression " << other << std::endl;
+        //std::cout << "Constructing from expression " << other << std::endl;
         lhs_ = std::auto_ptr<expression_interface>(new constant<numeric_type>(OP().apply(value1, value2)));
         op_  = std::auto_ptr<op_interface>(new op_unary<op_id>());
         rhs_ = std::auto_ptr<expression_interface>(new constant<numeric_type>(OP().apply(value1, value2)));
@@ -288,13 +288,23 @@ namespace viennamath
       expression_interface * substitute(const expr & e,
                                         const expr & repl) const
       {
+        if (equal(e.get()))
+          return repl.get()->clone();
+        
         return new binary_expr(lhs_->substitute(e, repl),
                                op_->clone(),
                                rhs_->substitute(e, repl) ); 
       };
       
-      bool equal(const expr & other) const
+      bool equal(const expression_interface * other) const
       {
+        if (dynamic_cast< const binary_expr * >(other) != NULL)
+        {
+          const binary_expr * temp = dynamic_cast< const binary_expr * >(other);
+          return lhs_->equal(temp->lhs())
+                 && op_->equal(temp->op())
+                 && rhs_->equal(temp->rhs());
+        }
         return lhs_->equal(other) && rhs_->equal(other);
       }
       

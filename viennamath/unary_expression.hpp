@@ -205,11 +205,9 @@ namespace viennamath
       std::string str() const
       {
         std::stringstream ss;
-        ss << "(";
         ss << op_->str();
         ss << "(";
         ss << expr_->str();
-        ss << ")";
         ss << ")";
         return ss.str();        
       }
@@ -224,14 +222,24 @@ namespace viennamath
       bool is_constant() const { return expr_->is_constant(); };
       
       expression_interface * substitute(const expr & e,
-                                                const expr & repl) const
+                                        const expr & repl) const
       {
+        if (equal(e.get()))
+          return repl.get()->clone();
+        
         return new unary_expr(expr_->substitute(e, repl),
                               op_->clone());
       };
       
-      bool equal(const expr & other) const
+      bool equal(const expression_interface * other) const
       {
+        if (dynamic_cast<const unary_expr *>(other) != NULL)
+        {
+           const unary_expr * temp = dynamic_cast<const unary_expr *>(other);
+           
+           return expr_->equal(temp->lhs())
+                       && op_->equal(temp->op());
+        }
         return expr_->equal(other); 
       }
       

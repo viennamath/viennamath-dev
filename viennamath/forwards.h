@@ -77,7 +77,11 @@ namespace viennamath
   template <typename T0, typename T1, typename T2>
   class vector_3;
  
-  
+  template <unsigned long id>
+  class unknown_func;
+
+  template <unsigned long id>
+  class test_func;
   
   /////// run time expression ///////
     
@@ -114,6 +118,12 @@ namespace viennamath
 
       template <typename T>
       expr(constant<T> const & other)
+      {
+        expr_ = std::auto_ptr<expression_interface>(other.clone());
+      }
+      
+      template <unsigned long id>
+      expr(test_func<id> const & other)
       {
         expr_ = std::auto_ptr<expression_interface>(other.clone());
       }
@@ -198,7 +208,7 @@ namespace viennamath
       virtual expression_interface * substitute(const expr & e,
                                                 const expr & repl) const = 0;  //receiver owns pointer!
                                                 
-      virtual bool equal(const expr & e) const = 0;
+      virtual bool equal(const expression_interface * other) const = 0;
       
       virtual const expression_interface * lhs() const { return this; };
       virtual const op_interface * op() { return NULL; }  //primitives do not have an operator
@@ -241,7 +251,9 @@ namespace viennamath
       //optimization for unary operators:
       //virtual expression_interface * optimize(const expression_interface * lhs) const { return lhs->optimize(); }
       virtual bool optimizable(const expression_interface * lhs,
-                               const expression_interface * rhs) const { return false; }      
+                               const expression_interface * rhs) const { return false; }    
+                               
+      virtual bool equal(const op_interface * other) const = 0;
   };
   
   //binary operator tags:  
@@ -279,6 +291,12 @@ namespace viennamath
       {
         return unary_operation::diff(lhs, diff_var);
       }
+      
+      bool equal(const op_interface * other) const
+      {
+        return (dynamic_cast<const op_unary<unary_operation> *>(other) != NULL); 
+      }
+      
     
     private:
       //We use an unary_operation member, because the unary_operation tag might have a state -> pure static tag dispatch not enough.
@@ -311,6 +329,12 @@ namespace viennamath
     expression_interface * diff(const expression_interface * lhs,
                                 const expression_interface * rhs,
                                 const expr & diff_var) const { return lhs->diff(diff_var); }
+                                
+    bool equal(const op_interface * other) const
+    {
+      return (dynamic_cast<const op_unary<op_id> *>(other) != NULL); 
+    }
+                                
   };
 
   
@@ -323,6 +347,8 @@ namespace viennamath
   struct op_log; //natural logarithm
   struct op_log10;
 
+  template <unsigned long id>
+  struct op_partial_deriv;
   
   //helper: deduce return type:
   template <typename RHS, typename LHS>

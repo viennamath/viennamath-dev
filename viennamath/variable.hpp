@@ -257,9 +257,9 @@ namespace viennamath
       return clone();
     };    
     
-    bool equal(const expr & other) const
+    bool equal(const expression_interface * other) const
     {
-      return dynamic_cast< const variable<id> *>(other.get()) != NULL;
+      return dynamic_cast< const variable<id> *>(other) != NULL;
     }
     
     expression_interface * diff(const expr & diff_var) const

@@ -12,8 +12,8 @@
 
 
 
-#ifndef VIENNAMATH_CONSTANT_HPP
-#define VIENNAMATH_CONSTANT_HPP
+#ifndef VIENNAMATH_TEST_FUNC_HPP
+#define VIENNAMATH_TEST_FUNC_HPP
 
 #include <ostream>
 #include "viennamath/forwards.h"
@@ -24,38 +24,24 @@ namespace viennamath
 {
   
   //per default, we assume floating point constants, which cannot be tackled with template arguments
-  template <typename ScalarType>
-  class constant : public expression_interface
+  template <unsigned long id>
+  class test_func : public expression_interface
   {
-      typedef constant<ScalarType>     self_type;
+      typedef test_func<id>     self_type;
     public:
-      explicit constant(ScalarType s_) : s(s_) {};
+      explicit test_func() {};
 
-      self_type operator() () const
-      {
-        return *this;
-      }
-
-      template <typename VectorType>
-      self_type operator() (const VectorType & p) const
-      {
-        return *this;
-      }
-      
-      operator ScalarType() const { return s; }
-      
       //interface requirements:
-      expression_interface * clone() const { return new constant<ScalarType>(s); }
-      numeric_type eval(std::vector<double> const & v) const { return s; }
-      numeric_type eval(numeric_type v) const { return s; }
-      bool is_constant() const { return true; }
+      expression_interface * clone() const { return new self_type(); }
+      numeric_type eval(std::vector<double> const & v) const { throw "Cannot evaluate unknown_func!"; return 0; }
+      numeric_type eval(numeric_type v) const { throw "Cannot evaluate unknown_func!"; return 0; }
       std::string str() const
       {
         std::stringstream ss;
-        ss << "constant(" << s << ")";
+        ss << "test_func<" << id << ">";
         return ss.str();      
       }
-      numeric_type unwrap() const { return s; }
+      numeric_type unwrap() const { throw "Cannot evaluate unknown_func!"; }
       
       expression_interface * substitute(const expr & e,
                                         const expr & repl) const
@@ -65,16 +51,14 @@ namespace viennamath
       
       bool equal(const expression_interface * other) const
       {
-        return dynamic_cast< const constant<ScalarType> *>(other) != NULL;
+        return dynamic_cast< const self_type *>(other) != NULL;
       }
       
       expression_interface * diff(const expr & diff_var) const
       {
-        return new constant<ScalarType>(0);
+        throw "Cannot differentiate unknown_func!";
+        return NULL;
       }
-      
-    private:
-      ScalarType s;
   };
 
   

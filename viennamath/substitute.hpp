@@ -48,7 +48,18 @@ namespace viennamath
     return expr(temp.get()->optimize());
   }
 
-  
+
+
+
+  //substitute binary_expressions (for fem):
+  template <typename ReplacementType>
+  expr substitute(expr const & search,
+                  ReplacementType const & repl,
+                  expr const & e)
+  {
+    expr temp(e.get()->substitute(expr(search), repl));
+    return expr(temp.get()->optimize());
+  }
 
 }
 

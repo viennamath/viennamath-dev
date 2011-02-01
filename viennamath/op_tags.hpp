@@ -112,6 +112,11 @@ namespace viennamath
       return lhs->optimizable() || rhs->optimizable();
     }      
     
+    bool equal(const op_interface * other) const
+    {
+      return (dynamic_cast<const op_plus *>(other) != NULL); 
+    }
+    
   };
   
   
@@ -183,6 +188,10 @@ namespace viennamath
       return lhs->optimizable() || rhs->optimizable();
     }      
     
+    bool equal(const op_interface * other) const
+    {
+      return (dynamic_cast<const op_minus *>(other) != NULL); 
+    }
   };
 
   
@@ -280,6 +289,10 @@ namespace viennamath
       return lhs->optimizable() || rhs->optimizable();
     }      
     
+    bool equal(const op_interface * other) const
+    {
+      return (dynamic_cast<const op_mult *>(other) != NULL); 
+    }
   };
 
   
@@ -367,6 +380,11 @@ namespace viennamath
           return true;
       return lhs->optimizable() || rhs->optimizable();
     }      
+
+    bool equal(const op_interface * other) const
+    {
+      return (dynamic_cast<const op_div *>(other) != NULL); 
+    }
 
   };
   
@@ -822,6 +840,122 @@ namespace viennamath
   }
   
   
+  
+  
+  //formal stuff:
+
+  struct op_gradient
+  {
+    static std::string str() { return "grad"; }
+    
+    numeric_type apply(numeric_type value) const
+    {
+      throw "Cannot evaluate formal gradient. Use transformations first.";
+      return 0;
+    }
+
+    static expression_interface * diff(const expression_interface * e,
+                                       const expr & diff_var)
+    {
+      throw "Cannot differentiate gradient!";
+      return NULL;
+    }
+  };
+  
+  template <unsigned long id>
+  unary_expr grad(unknown_func<id> const & other)
+  {
+    return unary_expr(other.clone(), new op_unary<op_gradient>()); 
+  }
+  
+  template <unsigned long id>
+  unary_expr grad(test_func<id> const & other)
+  {
+    return unary_expr(other.clone(), new op_unary<op_gradient>()); 
+  }
+
+  
+  
+  struct op_divergence
+  {
+    static std::string str() { return "div"; }
+    
+    numeric_type apply(numeric_type value) const
+    {
+      throw "Cannot evaluate formal divergence. Use transformations first.";
+      return 0;
+    }
+
+    static expression_interface * diff(const expression_interface * e,
+                                       const expr & diff_var)
+    {
+      throw "Cannot differentiate divergence!";
+      return NULL;
+    }
+  };
+  
+  unary_expr div(unary_expr const & other)
+  {
+    return unary_expr(other.clone(), new op_unary<op_divergence>()); 
+  }
+
+
+  
+  //convenience function: laplace:
+  template <unsigned long id>
+  unary_expr laplace(unknown_func<id> const & other)
+  {
+    return div(grad(other));
+  }
+  
+
+
+
+  //partial derivative with respect to variable<id>:
+  template <unsigned long id>
+  struct op_partial_deriv
+  {
+    static std::string str()
+    {
+      std::stringstream ss;
+      ss << "partial_deriv<" << id << ">";
+      return ss.str();
+    }
+    
+    numeric_type apply(numeric_type value) const
+    {
+      throw "Cannot evaluate formal partial derivative. Use transformations first.";
+      return 0;
+    }
+
+    static expression_interface * diff(const expression_interface * e,
+                                       const expr & diff_var)
+    {
+      throw "Cannot differentiate formal partial derivative!";
+      return NULL;
+    }
+  };
+  
+  
+  
+  //integral:
+  struct op_symbolic_integration
+  {
+    static std::string str() { return "symb_integral"; }
+    
+    numeric_type apply(numeric_type value) const
+    {
+      throw "Cannot evaluate symbolic_integration. Use transformations first.";
+      return 0;
+    }
+
+    static expression_interface * diff(const expression_interface * e,
+                                       const expr & diff_var)
+    {
+      throw "Cannot differentiate symbolic_integration!";
+      return NULL;
+    }
+  };
   
   
 }
