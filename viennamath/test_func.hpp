@@ -46,6 +46,8 @@ namespace viennamath
       expression_interface * substitute(const expr & e,
                                         const expr & repl) const
       {
+        if (dynamic_cast<const self_type *>(e.get()) != NULL)
+          return repl.get()->clone();
         return clone();
       };    
       
