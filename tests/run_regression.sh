@@ -3,6 +3,7 @@
 INPUT=$1
 BUILDFOLDER=build
 
+./clean.sh
 if [ "$INPUT" != "" ]; then
    if [ "$INPUT" == "help" ] ; then
       echo "usage: ./run_regression.sh [options]"
@@ -20,7 +21,7 @@ if [ "$INPUT" != "" ]; then
       echo ""
       echo "regression result is available here:"
       echo "----------------------------------------------"
-      echo "http://my.cdash.org/index.php?project=ViennaCL"
+      echo "http://my.cdash.org/index.php?project=ViennaMath"
       echo "----------------------------------------------"
       echo ""
    else 

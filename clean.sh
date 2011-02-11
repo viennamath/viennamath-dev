@@ -7,3 +7,6 @@ rm viennamath/old/*.*~
 rm tests/*.*~
 rm examples/*.*~
 rm doc/*.*~
+
+cd tests
+./clean.sh

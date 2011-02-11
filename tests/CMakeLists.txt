@@ -32,7 +32,7 @@ SET(PROGS runtime_test compiletime_test compiletime_evaluation diff_test equatio
 
 #-----------------------------------------------------------------------------
 FOREACH(PROG ${PROGS})
-   ADD_EXECUTABLE(${PROG} ../${PROG}.cpp)
+   ADD_EXECUTABLE(${PROG} ../src/${PROG}.cpp)
    ADD_test(${PROG} ${PROG})
 ENDFOREACH(PROG)
 #-----------------------------------------------------------------------------
