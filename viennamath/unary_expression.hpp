@@ -15,6 +15,7 @@
 #ifndef VIENNAMATH_UNARY_EXPRESSION_CPP
 #define VIENNAMATH_UNARY_EXPRESSION_CPP
 
+#include <iostream>
 #include <ostream>
 #include <sstream>
 #include <memory>

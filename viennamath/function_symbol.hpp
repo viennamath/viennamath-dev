@@ -12,10 +12,11 @@
 
 
 
-#ifndef VIENNAMATH_UNKNOWN_FUNC_HPP
-#define VIENNAMATH_UNKNOWN_FUNC_HPP
+#ifndef VIENNAMATH_FUNCTION_SYMBOL_HPP
+#define VIENNAMATH_FUNCTION_SYMBOL_HPP
 
 #include <ostream>
+#include <sstream>
 #include "viennamath/forwards.h"
 #include "viennamath/expression_compile_time.hpp"
 //#include "viennamath/expression_run_time.hpp"
@@ -23,13 +24,48 @@
 namespace viennamath
 {
   
-  //per default, we assume floating point constants, which cannot be tackled with template arguments
+  /////// two common tags:
+  
+  //tag for an unknown function:
   template <unsigned long id>
-  class unknown_func : public expression_interface
+  struct unknown_tag
   {
-      typedef unknown_func<id>     self_type;
+    static std::string str()
+    {
+      std::stringstream ss;
+      ss << "unknown[" << id << "]";
+      return ss.str();
+    }
+  };
+    
+  //tag for test function:
+  template <unsigned long id>
+  struct test_tag
+  {
+    static std::string str()
+    {
+      std::stringstream ss;
+      ss << "test[" << id << "]";
+      return ss.str();
+    }
+  };
+  
+  
+  
+  
+  
+  
+
+  /** @brief A function symbol. Can be used for unknown functions, test functions, etc. Cannot be evaluated, but substituted with an evaluable object 
+   *
+   * @tparam Tag    A tag class that is typically used to distinguish between different function symbols. Tag requirements: 'static std::string str();' which returns an identification string
+   */
+  template <typename Tag>
+  class function_symbol : public expression_interface
+  {
+      typedef function_symbol<Tag>     self_type;
     public:
-      explicit unknown_func() {};
+      explicit function_symbol() {};
 
       //interface requirements:
       expression_interface * clone() const { return new self_type(); }
@@ -38,14 +74,16 @@ namespace viennamath
       std::string str() const
       {
         std::stringstream ss;
-        ss << "unknown_func<" << id << ">";
+        ss << "function_symbol<" << Tag::str() << ">";
         return ss.str();      
       }
-      numeric_type unwrap() const { throw "Cannot evaluate unknown_func!"; }
+      numeric_type unwrap() const { throw "Cannot evaluate unknown_func to a number!"; }
       
       expression_interface * substitute(const expr & e,
                                         const expr & repl) const
       {
+        if (dynamic_cast<const self_type *>(e.get()) != NULL)
+          return repl.get()->clone();
         return clone();
       };    
       
@@ -56,6 +94,7 @@ namespace viennamath
       
       expression_interface * diff(const expr & diff_var) const
       {
+        //this code should not be reached, because function_symbol is symbolically differentiated at a higher level
         throw "Cannot differentiate unknown_func!";
         return NULL;
       }

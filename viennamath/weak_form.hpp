@@ -17,13 +17,14 @@
 
 #include "viennamath/forwards.h"
 #include "viennamath/op_tags.hpp"
-#include "viennamath/unknown_func.hpp"
 #include "viennamath/integral.hpp"
 #include "viennamath/substitute.hpp"
 #include "viennamath/equation.hpp"
+#include "viennamath/function_symbol.hpp"
 
 namespace viennamath
 {
+  //TODO: Is this the right place for the derivation of a weak formulation? Shouldn't this go into ViennaFEM or ViennaFVM?
   
   
   //TODO: compile time derivation
@@ -34,13 +35,13 @@ namespace viennamath
   equation weak_form(equation const & strong_formulation)
   {
     //TODO: More general derivations: Transform div(expr) to expr * grad(v)
-    expr new_lhs(substitute( laplace(unknown_func<0>()),
-                             constant<double>(-1) * (grad(unknown_func<0>()) * grad(test_func<0>())),
+    expr new_lhs(substitute( laplace(function_symbol<unknown_tag<0> >()),
+                             constant<double>(-1) * (grad(function_symbol<unknown_tag<0> >()) * grad(function_symbol<test_tag<0> >())),
                              strong_formulation.lhs()
                            )
                 );
     return equation( integral(Omega(), new_lhs, symbolic_tag()),
-                     integral(Omega(), strong_formulation.rhs() * test_func<0>(), symbolic_tag())
+                     integral(Omega(), strong_formulation.rhs() * function_symbol<test_tag<0> >(), symbolic_tag())
                    );
   }
 

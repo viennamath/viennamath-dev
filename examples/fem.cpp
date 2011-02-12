@@ -23,8 +23,8 @@ int main()
   std::cout << "*****     Demo for ViennaMath with FEM     *****" << std::endl;
   std::cout << "************************************************" << std::endl;
 
-  unknown_func<0> u;   //an unknown function
-  test_func<0>    v;   //a test function (typical for FEM and FVM)
+  function_symbol<unknown_tag<0> > u;   //an unknown function
+  function_symbol<test_tag<0> >    v;   //a test function (typical for FEM and FVM)
 
   //
   // Step 1: Define the classical Poisson equation

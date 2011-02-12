@@ -77,11 +77,8 @@ namespace viennamath
   template <typename T0, typename T1, typename T2>
   class vector_3;
  
-  template <unsigned long id>
-  class unknown_func;
-
-  template <unsigned long id>
-  class test_func;
+  template <typename Tag>
+  class function_symbol;
   
   /////// run time expression ///////
     
@@ -122,8 +119,8 @@ namespace viennamath
         expr_ = std::auto_ptr<expression_interface>(other.clone());
       }
       
-      template <unsigned long id>
-      expr(test_func<id> const & other)
+      template <typename T>
+      expr(function_symbol<T> const & other)
       {
         expr_ = std::auto_ptr<expression_interface>(other.clone());
       }

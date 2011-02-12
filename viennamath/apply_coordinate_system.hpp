@@ -17,11 +17,11 @@
 
 #include "viennamath/forwards.h"
 #include "viennamath/op_tags.hpp"
-#include "viennamath/unknown_func.hpp"
 #include "viennamath/integral.hpp"
 #include "viennamath/substitute.hpp"
 #include "viennamath/diff.hpp"
 #include "viennamath/equation.hpp"
+#include "viennamath/function_symbol.hpp"
 
 namespace viennamath
 {
@@ -37,8 +37,8 @@ namespace viennamath
   equation apply_coordinate_system(cartesian<1>,
                                    equation const & equ)
   {
-    unknown_func<0> u;
-    test_func<0> v;
+    function_symbol<unknown_tag<0> > u;
+    function_symbol<test_tag<0> > v;
     variable<0> x;
     
     //TODO: More general applications -> requires vector of expressions
@@ -56,8 +56,8 @@ namespace viennamath
   equation apply_coordinate_system(cartesian<2>,
                                    equation const & equ)
   {
-    unknown_func<0> u;
-    test_func<0> v;
+    function_symbol<unknown_tag<0> > u;
+    function_symbol<test_tag<0> > v;
     variable<0> x;
     variable<1> y;
     
@@ -75,8 +75,8 @@ namespace viennamath
   equation apply_coordinate_system(cartesian<3>,
                                    equation const & equ)
   {
-    unknown_func<0> u;
-    test_func<0> v;
+    function_symbol<unknown_tag<0> > u;
+    function_symbol<test_tag<0> > v;
     variable<0> x;
     variable<1> y;
     variable<2> z;

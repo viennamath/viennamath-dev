@@ -53,6 +53,24 @@ namespace viennamath
     return temp;
   }
 
+  
+  
+  //
+  // Symbolic differentiation:
+  // TODO: Improve for compile time compatibility
+  //
+  template <typename Tag,
+            unsigned long id_variable>
+  expr diff(function_symbol<Tag> const & other,
+            variable<id_variable> const & var)
+  {
+    return expr(new unary_expr(other.clone(), 
+                               new op_unary<op_partial_deriv<id_variable> >()
+                              )
+               );
+  }
+  
+
 
 
   /////////////////// derivative of compiletime expression /////////////////////
@@ -193,35 +211,6 @@ namespace viennamath
   }
   
   
-  
-  
-  
-  
-  //
-  // Symbolic differentiation:
-  // TODO: Improve for compile time compatibility
-  //
-  template <unsigned long id_unknown,
-            unsigned long id_variable>
-  expr diff(unknown_func<id_unknown> const & other,
-            variable<id_variable> const & var)
-  {
-    return expr(new unary_expr(other.clone(), 
-                               new op_unary<op_partial_deriv<id_variable> >()
-                              )
-               );
-  }
-  
-  template <unsigned long id_unknown,
-            unsigned long id_variable>
-  expr diff(test_func<id_unknown> const & other,
-            variable<id_variable> const & var)
-  {
-    return expr(new unary_expr(other.clone(), 
-                               new op_unary<op_partial_deriv<id_variable> >()
-                              )
-               );
-  }
   
 }
 

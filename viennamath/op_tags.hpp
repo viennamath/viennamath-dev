@@ -862,18 +862,11 @@ namespace viennamath
     }
   };
   
-  template <unsigned long id>
-  unary_expr grad(unknown_func<id> const & other)
+  template <typename T>
+  unary_expr grad(function_symbol<T> const & other)
   {
     return unary_expr(other.clone(), new op_unary<op_gradient>()); 
   }
-  
-  template <unsigned long id>
-  unary_expr grad(test_func<id> const & other)
-  {
-    return unary_expr(other.clone(), new op_unary<op_gradient>()); 
-  }
-
   
   
   struct op_divergence
@@ -902,8 +895,8 @@ namespace viennamath
 
   
   //convenience function: laplace:
-  template <unsigned long id>
-  unary_expr laplace(unknown_func<id> const & other)
+  template <typename T>
+  unary_expr laplace(T const & other)
   {
     return div(grad(other));
   }

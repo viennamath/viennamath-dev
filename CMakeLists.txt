@@ -21,9 +21,9 @@ ADD_EXECUTABLE(newton_solve examples/newton_solve.cpp)
 ADD_EXECUTABLE(fem examples/fem.cpp)
 
 # tests:
-ADD_EXECUTABLE(runtime_test tests/runtime_test.cpp)
-ADD_EXECUTABLE(compiletime_test tests/compiletime_test.cpp)
-ADD_EXECUTABLE(compiletime_evaluation tests/compiletime_evaluation.cpp)
-ADD_EXECUTABLE(diff_test tests/diff_test.cpp)
-ADD_EXECUTABLE(equation_test tests/equation_test.cpp)
+ADD_EXECUTABLE(runtime_test tests/src/runtime_test.cpp)
+ADD_EXECUTABLE(compiletime_test tests/src/compiletime_test.cpp)
+ADD_EXECUTABLE(compiletime_evaluation tests/src/compiletime_evaluation.cpp)
+ADD_EXECUTABLE(diff_test tests/src/diff_test.cpp)
+ADD_EXECUTABLE(equation_test tests/src/equation_test.cpp)
  

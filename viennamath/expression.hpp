@@ -20,8 +20,7 @@
 
 #include "viennamath/vector.hpp"
 #include "viennamath/ct_constant.hpp"
-#include "viennamath/unknown_func.hpp"
-#include "viennamath/test_func.hpp"
+#include "viennamath/function_symbol.hpp"
 #include "viennamath/constant.hpp"
 #include "viennamath/variable.hpp"
 #include "viennamath/expression_compile_time.hpp"
