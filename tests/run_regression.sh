@@ -3,6 +3,10 @@
 INPUT=$1
 BUILDFOLDER=build
 
+# extract number of cores on the system
+CORES=`grep -c ^processor /proc/cpuinfo`
+echo "building with " $CORES "cores " 
+
 ./clean.sh
 if [ "$INPUT" != "" ]; then
    if [ "$INPUT" == "help" ] ; then
@@ -17,7 +21,7 @@ if [ "$INPUT" != "" ]; then
       cd $BUILDFOLDER
       cmake ..
       # build and submit results to online cdash service
-      make Experimental MAKE="make -j"
+      make Nightly -j$CORES
       echo ""
       echo "regression result is available here:"
       echo "----------------------------------------------"
@@ -40,7 +44,7 @@ else
    cd $BUILDFOLDER
    cmake ..
    # plain build without submit
-   make MAKE="make -j"
+   make -j$CORES
    make test
 fi
 
