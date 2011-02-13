@@ -17,18 +17,28 @@
 
 #include "viennamath/forwards.h"
 #include "viennamath/unary_expression.hpp"
-#include "viennamath/op_tags.hpp"
+#include "viennamath/unary_op_tags.hpp"
 
 namespace viennamath
 {
   struct Omega {};
   struct symbolic_tag {};
   
-  expr integral(Omega, expr const & integrand, symbolic_tag)
+  template <typename InterfaceType>
+  expr<InterfaceType> integral(Omega, expr<InterfaceType> const & integrand, symbolic_tag)
   {
-    return expr(new unary_expr(integrand.get()->clone(), new op_unary<op_symbolic_integration>()));
+    return expr<InterfaceType>(new unary_expr<InterfaceType>(integrand.get()->clone(),
+                                                             new op_unary<op_symbolic_integration<typename InterfaceType::numeric_type>, InterfaceType>())
+                              );
   }
   
+  template <typename InterfaceType>
+  expr<InterfaceType> integral(Omega, binary_expr<InterfaceType> const & integrand, symbolic_tag)
+  {
+    return expr<InterfaceType>(new unary_expr<InterfaceType>(integrand.clone(),
+                                                             new op_unary<op_symbolic_integration<typename InterfaceType::numeric_type>, InterfaceType>())
+                              );
+  }
   
 }
 

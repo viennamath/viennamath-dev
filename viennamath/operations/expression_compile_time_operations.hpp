@@ -19,7 +19,7 @@
 #include "viennamath/constant.hpp"
 #include "viennamath/variable.hpp"
 #include "viennamath/expression_compile_time.hpp"
-#include "viennamath/op_tags.hpp"
+#include "viennamath/binary_operators.hpp"
 
 namespace viennamath
 {
@@ -28,172 +28,173 @@ namespace viennamath
       template <typename LHS, typename OP, typename RHS,
                 typename LHS2, typename OP2, typename RHS2>
       ct_expr<ct_expr<LHS, OP, RHS>,
-                 op_plus,
-                 ct_expr<LHS2, OP2, RHS2> >
+              op_plus<typename ct_expr<LHS, OP, RHS>::numeric_type>,
+              ct_expr<LHS2, OP2, RHS2> >
       operator+(ct_expr<LHS, OP, RHS> const & lhs,
                 ct_expr<LHS2, OP2, RHS2> const & other)
       {
         return ct_expr<ct_expr<LHS, OP, RHS>,
-                          op_plus,
-                          ct_expr<LHS2, OP2, RHS2> >(lhs, other);
+                       op_plus<typename ct_expr<LHS, OP, RHS>::numeric_type>,
+                       ct_expr<LHS2, OP2, RHS2> >(lhs, other);
       }
       
-      template <typename LHS, typename OP, typename RHS, unsigned long id>
+      template <typename LHS, typename OP, typename RHS, unsigned long id, typename InterfaceType>
       ct_expr<ct_expr<LHS, OP, RHS>,
-                 op_plus,
-                 variable<id> >
+              op_plus<typename InterfaceType::numeric_type>,
+              variable<id, InterfaceType> >
       operator+(ct_expr<LHS, OP, RHS> const & lhs,
-                variable<id> const & other)
+                variable<id, InterfaceType> const & other)
       {
         return ct_expr<ct_expr<LHS, OP, RHS>,
-                          op_plus,
-                          variable<id> >(lhs, other);
+                       op_plus<typename InterfaceType::numeric_type>,
+                       variable<id, InterfaceType> >(lhs, other);
       }
       
       //with constant:
-      template <typename LHS, typename OP, typename RHS, typename ScalarType>
+      template <typename LHS, typename OP, typename RHS, typename ScalarType, typename InterfaceType>
       ct_expr<ct_expr<LHS, OP, RHS>,
-                 op_plus,
-                 constant<ScalarType> >
+              op_plus<typename InterfaceType::numeric_type>,
+              constant<ScalarType, InterfaceType> >
       operator+(ct_expr<LHS, OP, RHS> const & lhs,
-                constant<ScalarType> const & other)
+                constant<ScalarType, InterfaceType> const & other)
       {
         return ct_expr<ct_expr<LHS, OP, RHS>,
-                          op_plus,
-                          constant<ScalarType> >(lhs, other);
+                       op_plus<typename InterfaceType::numeric_type>,
+                       constant<ScalarType, InterfaceType> >(lhs, other);
       }
 
       // (c1 + X) + c2 -> [c1 + c2] + X
-      template <typename OtherScalarType, typename RHS, typename ScalarType>
-      ct_expr< constant<typename promote_traits<OtherScalarType, op_plus, ScalarType>::result_type >,
-                 op_plus,
-                 RHS >
-      operator+(ct_expr<constant<OtherScalarType>, op_plus, RHS> const & lhs,
-                constant<ScalarType> const & other)
+      template <typename OtherScalarType, typename RHS, typename ScalarType, typename T, typename InterfaceType>
+      ct_expr< constant<typename promote_traits<OtherScalarType, op_plus<T>, ScalarType>::result_type >,
+               op_plus<T>,
+               RHS >
+      operator+(ct_expr<constant<OtherScalarType>, op_plus<T>, RHS> const & lhs,
+                constant<ScalarType, InterfaceType> const & other)
       {
-        typedef constant< typename promote_traits<OtherScalarType, op_plus, ScalarType>::result_type >    result_constant;
+        typedef constant< typename promote_traits<OtherScalarType, op_plus<T>, ScalarType>::result_type >    result_constant;
         return ct_expr<result_constant,
-                          op_plus,
-                          RHS >(lhs.lhs() + other,
-                                lhs.rhs());
+                       op_plus<T>,
+                       RHS >(lhs.lhs() + other,
+                             lhs.rhs());
       }
 
       // (ct_c1 + X) + c2 -> [ct_c1 + c2] + X
-      template <long value, typename RHS, typename ScalarType>
-      ct_expr< constant<typename promote_traits<long, op_plus, ScalarType>::result_type >,
-                 op_plus,
-                 RHS >
-      operator+(ct_expr<ct_constant<value>, op_plus, RHS> const & lhs,
-                constant<ScalarType> const & other)
+      template <long value, typename RHS, typename ScalarType, typename T, typename InterfaceType>
+      ct_expr< constant<typename promote_traits<long, op_plus<T>, ScalarType>::result_type >,
+               op_plus<T>,
+               RHS >
+      operator+(ct_expr<ct_constant<value>, op_plus<T>, RHS> const & lhs,
+                constant<ScalarType, InterfaceType> const & other)
       {
-        typedef constant< typename promote_traits<long, op_plus, ScalarType>::result_type >    result_constant;
+        typedef constant< typename promote_traits<long, op_plus<T>, ScalarType>::result_type >    result_constant;
         return ct_expr<result_constant,
-                          op_plus,
-                          RHS >(result_constant(value + other),
-                                lhs.rhs());
+                       op_plus<T>,
+                       RHS >(result_constant(value + other),
+                             lhs.rhs());
       }
 
 
       // (c1 - X) + c2 -> [c1 + c2] - X
-      template <typename OtherScalarType, typename RHS, typename ScalarType>
-      ct_expr< constant<typename promote_traits<OtherScalarType, op_plus, ScalarType>::result_type >,
-                 op_minus,
-                 RHS >
-      operator+(ct_expr<constant<OtherScalarType>, op_minus, RHS> const & lhs,
-                constant<ScalarType> const & other)
+      template <typename OtherScalarType, typename RHS, typename ScalarType, typename InterfaceType>
+      ct_expr< constant<typename InterfaceType::numeric_type, InterfaceType>,
+               op_minus<typename InterfaceType::numeric_type>,
+               RHS >
+      operator+(ct_expr<constant<OtherScalarType, InterfaceType>, op_minus<typename InterfaceType::numeric_type>, RHS> const & lhs,
+                constant<ScalarType, InterfaceType> const & other)
       {
-        typedef constant< typename promote_traits<OtherScalarType, op_plus, ScalarType>::result_type >    result_constant;
+        typedef constant<typename InterfaceType::numeric_type, InterfaceType>    result_constant;
+        
         return ct_expr<result_constant,
-                          op_minus,
-                          RHS >(lhs.lhs() + other,
-                                lhs.rhs());
+                       op_minus<typename InterfaceType::numeric_type>,
+                       RHS >(result_constant(lhs.lhs().unwrap() + other.unwrap()),
+                             lhs.rhs());
       }
 
       // (ct_c1 - X) + c2 -> [ct_c1 + c2] - X
-      template <long value, typename RHS, typename ScalarType>
-      ct_expr< constant<typename promote_traits<long, op_plus, ScalarType>::result_type >,
-                 op_minus,
-                 RHS >
-      operator+(ct_expr<ct_constant<value>, op_minus, RHS> const & lhs,
-                constant<ScalarType> const & other)
+      template <long value, typename RHS, typename ScalarType, typename InterfaceType>
+      ct_expr< constant<typename InterfaceType::numeric_type, InterfaceType >,
+               op_minus<typename InterfaceType::numeric_type>,
+               RHS >
+      operator+(ct_expr<ct_constant<value>, op_minus<typename InterfaceType::numeric_type>, RHS> const & lhs,
+                constant<ScalarType, InterfaceType> const & other)
       {
-        typedef constant< typename promote_traits<long, op_plus, ScalarType>::result_type >    result_constant;
+        typedef constant<ScalarType, InterfaceType>    result_constant;
         return ct_expr<result_constant,
-                          op_minus,
-                          RHS >(result_constant(value + other),
-                                lhs.rhs());
+                       op_minus<typename InterfaceType::numeric_type>,
+                       RHS >(result_constant(value + other),
+                             lhs.rhs());
       }
 
       //with ct_constant:
       template <typename LHS, typename OP, typename RHS, long value>
       ct_expr<ct_expr<LHS, OP, RHS>,
-                 op_plus,
-                 ct_constant<value> >
+              op_plus<typename ct_expr<LHS, OP, RHS>::numeric_type>,
+              ct_constant<value> >
       operator+(ct_expr<LHS, OP, RHS> const & lhs,
                 ct_constant<value> const & other)
       {
         return ct_expr<ct_expr<LHS, OP, RHS>,
-                          op_plus,
-                          ct_constant<value> >(lhs, other);
+                       op_plus<typename ct_expr<LHS, OP, RHS>::numeric_type>,
+                       ct_constant<value> >(lhs, other);
       }
       
       
       // (ct_c1 + X) + ct_c2 -> [ct_c1 + ct_c2] + X
-      template <long value_1, typename RHS, long value_2>
+      template <typename ScalarType, long value_1, typename RHS, long value_2>
       ct_expr<ct_constant< value_1 + value_2 >,
-                 op_plus,
-                 RHS >
-      operator+(ct_expr<ct_constant<value_1>, op_plus, RHS> const & lhs,
+              op_plus<ScalarType>,
+              RHS >
+      operator+(ct_expr<ct_constant<value_1>, op_plus<ScalarType>, RHS> const & lhs,
                 ct_constant<value_2> const & other)
       {
         return ct_expr<ct_constant< value_1 + value_2 >,
-                          op_plus,
-                          RHS >(ct_constant< value_1 + value_2 >(),
-                                lhs.rhs());
+                       op_plus<ScalarType>,
+                       RHS >(ct_constant< value_1 + value_2 >(),
+                             lhs.rhs());
       }
 
       // (c1 + X) + ct_c2 -> [c1 + ct_c2] + X
-      template <typename OtherScalarType, typename RHS, long value>
-      ct_expr< constant<typename promote_traits<OtherScalarType, op_plus, long>::result_type >,
-                 op_plus,
-                 RHS >
-      operator+(ct_expr<constant<OtherScalarType>, op_plus, RHS> const & lhs,
+      template <typename ScalarType, typename OtherScalarType, typename RHS, long value, typename InterfaceType>
+      ct_expr< constant<typename promote_traits<OtherScalarType, op_plus<ScalarType>, long>::result_type, InterfaceType>,
+               op_plus<ScalarType>,
+               RHS >
+      operator+(ct_expr<constant<OtherScalarType>, op_plus<ScalarType>, RHS> const & lhs,
                 ct_constant<value> const & other)
       {
-        typedef constant< typename promote_traits<OtherScalarType, op_plus, long>::result_type >    result_constant;
+        typedef constant< typename promote_traits<OtherScalarType, op_plus<ScalarType>, long>::result_type, InterfaceType>    result_constant;
         return ct_expr<result_constant,
-                          op_plus,
-                          RHS >(result_constant(static_cast<OtherScalarType>(lhs.lhs()) + value),
-                                lhs.rhs());
+                       op_plus<ScalarType>,
+                       RHS >(result_constant(static_cast<OtherScalarType>(lhs.lhs()) + value),
+                             lhs.rhs());
       }
 
       // (ct_c1 - X) + ct_c2 -> [ct_c1 + ct_c2] - X
-      template <long value_1, typename RHS, long value_2>
+      template <typename ScalarType, long value_1, typename RHS, long value_2>
       ct_expr<ct_constant< value_1 + value_2 >,
-                 op_minus,
-                 RHS >
-      operator+(ct_expr<ct_constant<value_1>, op_minus, RHS> const & lhs,
+              op_minus<ScalarType>,
+              RHS >
+      operator+(ct_expr<ct_constant<value_1>, op_minus<ScalarType>, RHS> const & lhs,
                 ct_constant<value_2> const & other)
       {
         return ct_expr<ct_constant< value_1 + value_2 >,
-                          op_minus,
-                          RHS >(ct_constant< value_1 + value_2 >(),
-                                lhs.rhs());
+                       op_minus<ScalarType>,
+                       RHS >(ct_constant< value_1 + value_2 >(),
+                             lhs.rhs());
       }
 
       // (c1 - X) + ct_c2 -> [c1 + ct_c2] - X
-      template <typename OtherScalarType, typename RHS, long value>
-      ct_expr< constant<typename promote_traits<OtherScalarType, op_plus, long>::result_type >,
-                 op_minus,
+      template <typename ScalarType, typename OtherScalarType, typename RHS, long value>
+      ct_expr< constant<typename promote_traits<OtherScalarType, op_plus<ScalarType>, long>::result_type >,
+                 op_minus<ScalarType>,
                  RHS >
-      operator+(ct_expr<constant<OtherScalarType>, op_minus, RHS> const & lhs,
+      operator+(ct_expr<constant<OtherScalarType>, op_minus<ScalarType>, RHS> const & lhs,
                 ct_constant<value> const & other)
       {
-        typedef constant< typename promote_traits<OtherScalarType, op_plus, long>::result_type >    result_constant;
+        typedef constant< typename promote_traits<OtherScalarType, op_plus<ScalarType>, long>::result_type >    result_constant;
         return ct_expr<result_constant,
-                          op_minus,
-                          RHS >(result_constant(static_cast<OtherScalarType>(lhs.lhs()) + value),
-                                lhs.rhs());
+                       op_minus<ScalarType>,
+                       RHS >(result_constant(static_cast<OtherScalarType>(lhs.lhs()) + value),
+                             lhs.rhs());
       }
   
 
@@ -201,183 +202,183 @@ namespace viennamath
 
       template <typename LHS, typename OP, typename RHS, typename LHS2, typename OP2, typename RHS2>
       ct_expr<ct_expr<LHS, OP, RHS>,
-                 op_minus,
-                 ct_expr<LHS2, OP2, RHS2> >
+              op_minus<typename ct_expr<LHS, OP, RHS>::numeric_type>,
+              ct_expr<LHS2, OP2, RHS2> >
       operator-(ct_expr<LHS, OP, RHS> const & lhs,
                 ct_expr<LHS2, OP2, RHS2> const & other)
       {
         return ct_expr<ct_expr<LHS, OP, RHS>,
-                          op_minus,
-                          ct_expr<LHS2, OP2, RHS2> >(lhs, other);
+                       op_minus<typename ct_expr<LHS, OP, RHS>::numeric_type>,
+                       ct_expr<LHS2, OP2, RHS2> >(lhs, other);
       }
 
       //with variable:
-      template <typename LHS, typename OP, typename RHS, unsigned long id>
+      template <typename LHS, typename OP, typename RHS, unsigned long id, typename InterfaceType>
       ct_expr<ct_expr<LHS, OP, RHS>,
-                 op_minus,
-                 variable<id> >
+              op_minus<typename InterfaceType::numeric_type>,
+              variable<id, InterfaceType> >
       operator-(ct_expr<LHS, OP, RHS> const & lhs,
-                variable<id> const & other)
+                variable<id, InterfaceType> const & other)
       {
         return ct_expr<ct_expr<LHS, OP, RHS>,
-                          op_minus,
-                          variable<id> >(lhs, other);
+                       op_minus<typename InterfaceType::numeric_type>,
+                       variable<id, InterfaceType> >(lhs, other);
       }
 
       // (A + B) - A  -> B, where A is an variable:
-      template <unsigned long id, typename RHS>
+      template <typename ScalarType, unsigned long id, typename RHS, typename InterfaceType>
       RHS
-      operator-(ct_expr<variable<id>, op_plus, RHS> const & lhs,
-                variable<id> const & other)
+      operator-(ct_expr<variable<id, InterfaceType>, op_plus<ScalarType>, RHS> const & lhs,
+                variable<id, InterfaceType> const & other)
       {
         return lhs.rhs();
       }
       
 
       //with constant:
-      template <typename LHS, typename OP, typename RHS, typename ScalarType>
+      template <typename LHS, typename OP, typename RHS, typename ScalarType, typename InterfaceType>
       ct_expr<ct_expr<LHS, OP, RHS>,
-                 op_minus,
-                 constant<ScalarType> >
+              op_minus< typename InterfaceType::numeric_type >,
+              constant<ScalarType, InterfaceType> >
       operator-(ct_expr<LHS, OP, RHS> const & lhs,
-                constant<ScalarType> const & other)
+                constant<ScalarType, InterfaceType> const & other)
       {
         return ct_expr<ct_expr<LHS, OP, RHS>,
-                          op_minus,
-                          constant<ScalarType> >(lhs, other);
+                       op_minus< typename InterfaceType::numeric_type >,
+                       constant<ScalarType, InterfaceType> >(lhs, other);
       }
       
       // (c1 + X) - c2 -> [c1 - c2] + X
-      template <typename OtherScalarType, typename RHS, typename ScalarType>
-      ct_expr< constant<typename promote_traits<OtherScalarType, op_minus, ScalarType>::result_type >,
-                 op_plus,
-                 RHS >
-      operator-(ct_expr<constant<OtherScalarType>, op_plus, RHS> const & lhs,
-                constant<ScalarType> const & other)
+      template <typename OtherScalarType, typename RHS, typename ScalarType, typename InterfaceType, typename T>
+      ct_expr< constant<typename promote_traits<OtherScalarType, op_minus<ScalarType>, ScalarType>::result_type >,
+               op_plus<T>,
+               RHS >
+      operator-(ct_expr<constant<OtherScalarType>, op_plus<T>, RHS> const & lhs,
+                constant<ScalarType, InterfaceType> const & other)
       {
-        typedef constant< typename promote_traits<OtherScalarType, op_minus, ScalarType>::result_type >    result_constant;
+        typedef constant< typename promote_traits<OtherScalarType, op_minus<ScalarType>, ScalarType>::result_type >    result_constant;
         return ct_expr<result_constant,
-                          op_plus,
-                          RHS >(lhs.lhs() - other,
-                                lhs.rhs());
+                       op_plus<T>,
+                       RHS >(lhs.lhs() - other,
+                             lhs.rhs());
       }
 
       // (ct_c1 + X) - c2 -> [ct_c1 - c2] + X
-      template <long value, typename RHS, typename ScalarType>
-      ct_expr< constant<typename promote_traits<long, op_minus, ScalarType>::result_type >,
-                 op_plus,
-                 RHS >
-      operator-(ct_expr<ct_constant<value>, op_plus, RHS> const & lhs,
-                constant<ScalarType> const & other)
+      template <long value, typename RHS, typename ScalarType, typename OtherScalarType, typename InterfaceType>
+      ct_expr< constant<typename promote_traits<long, op_minus<ScalarType>, ScalarType>::result_type, InterfaceType >,
+               op_plus<typename promote_traits<long, op_minus<ScalarType>, ScalarType>::result_type >,
+               RHS >
+      operator-(ct_expr<ct_constant<value>, op_plus<OtherScalarType>, RHS> const & lhs,
+                constant<ScalarType, InterfaceType> const & other)
       {
-        typedef constant< typename promote_traits<long, op_minus, ScalarType>::result_type >    result_constant;
+        typedef constant< typename promote_traits<long, op_minus<ScalarType>, ScalarType>::result_type >    result_constant;
         return ct_expr<result_constant,
-                          op_plus,
-                          RHS >(result_constant(value - other),
-                                lhs.rhs());
+                       op_plus<ScalarType>,
+                       RHS >(result_constant(value - other),
+                             lhs.rhs());
       }
 
       // (c1 - X) - c2 -> [c1 - c2] - X
-      template <typename OtherScalarType, typename RHS, typename ScalarType>
-      ct_expr< constant<typename promote_traits<OtherScalarType, op_minus, ScalarType>::result_type >,
-                 op_minus,
-                 RHS >
-      operator-(ct_expr<constant<OtherScalarType>, op_minus, RHS> const & lhs,
-                constant<ScalarType> const & other)
+      template <typename OtherScalarType, typename RHS, typename ScalarType, typename InterfaceType, typename T>
+      ct_expr< constant<typename promote_traits<OtherScalarType, op_minus<T>, ScalarType>::result_type >,
+               op_minus<typename promote_traits<OtherScalarType, op_minus<T>, ScalarType>::result_type >,
+               RHS >
+      operator-(ct_expr<constant<OtherScalarType>, op_minus<T>, RHS> const & lhs,
+                constant<ScalarType, InterfaceType> const & other)
       {
-        typedef constant< typename promote_traits<OtherScalarType, op_minus, ScalarType>::result_type >    result_constant;
+        typedef constant< typename promote_traits<OtherScalarType, op_minus<T>, ScalarType>::result_type >    result_constant;
         return ct_expr<result_constant,
-                          op_minus,
-                          RHS >(lhs.lhs() - other,
-                                lhs.rhs());
+                       op_minus<typename promote_traits<OtherScalarType, op_minus<T>, ScalarType>::result_type >,
+                       RHS >(lhs.lhs() - other,
+                             lhs.rhs());
       }
 
       // (ct_c1 - X) - c2 -> [c1 - c2] - X
-      template <long value, typename RHS, typename ScalarType>
-      ct_expr< constant<typename promote_traits<long, op_minus, ScalarType>::result_type >,
-                 op_minus,
-                 RHS >
-      operator-(ct_expr<ct_constant<value>, op_minus, RHS> const & lhs,
-                constant<ScalarType> const & other)
+      template <long value, typename RHS, typename ScalarType, typename T, typename InterfaceType>
+      ct_expr< constant<typename promote_traits<long, op_minus<T>, ScalarType>::result_type >,
+               op_minus<typename promote_traits<long, op_minus<T>, ScalarType>::result_type>,
+               RHS >
+      operator-(ct_expr<ct_constant<value>, op_minus<T>, RHS> const & lhs,
+                constant<ScalarType, InterfaceType> const & other)
       {
-        typedef constant< typename promote_traits<long, op_minus, ScalarType>::result_type >    result_constant;
+        typedef constant< typename promote_traits<long, op_minus<T>, ScalarType>::result_type >    result_constant;
         return ct_expr<result_constant,
-                          op_minus,
-                          RHS >(result_constant(value - other),
-                                lhs.rhs());
+                       op_minus<typename promote_traits<long, op_minus<T>, ScalarType>::result_type>,
+                       RHS >(result_constant(value - other),
+                             lhs.rhs());
       }
 
       
       //with ct_constant:
       template <typename LHS, typename OP, typename RHS, long value>
-      ct_expr<ct_expr<LHS, OP, RHS>,
-                 op_minus,
-                 ct_constant<value> >
+      ct_expr< ct_expr<LHS, OP, RHS>,
+               op_minus<default_numeric_type>,
+               ct_constant<value> >
       operator-(ct_expr<LHS, OP, RHS> const & lhs,
                 ct_constant<value> const & other)
       {
         return ct_expr<ct_expr<LHS, OP, RHS>,
-                          op_minus,
-                          ct_constant<value> >(lhs, other);
+                       op_minus<default_numeric_type>,
+                       ct_constant<value> >(lhs, other);
       }
       
 
       // (ct_c1 + X) - ct_c2 -> [ct_c1 - ct_c2] + X
-      template <long value_1, typename RHS, long value_2>
-      ct_expr<ct_constant< value_1 - value_2 >,
-                 op_plus,
-                 RHS >
-      operator-(ct_expr<ct_constant<value_1>, op_plus, RHS> const & lhs,
+      template <long value_1, typename RHS, long value_2, typename T>
+      ct_expr< ct_constant< value_1 - value_2 >,
+               op_plus<T>,
+               RHS >
+      operator-(ct_expr<ct_constant<value_1>, op_plus<T>, RHS> const & lhs,
                 ct_constant<value_2> const & other)
       {
         return ct_expr<ct_constant< value_1 - value_2 >,
-                          op_plus,
-                          RHS >(ct_constant< value_1 - value_2 >(),
-                                lhs.rhs());
+                       op_plus<T>,
+                       RHS >(ct_constant< value_1 - value_2 >(),
+                             lhs.rhs());
       }
 
       // (c1 + X) - ct_c2 -> [c1 - ct_c2] + X
-      template <typename OtherScalarType, typename RHS, long value>
-      ct_expr< constant<typename promote_traits<OtherScalarType, op_plus, long>::result_type >,
-                 op_plus,
-                 RHS >
-      operator-(ct_expr<constant<OtherScalarType>, op_plus, RHS> const & lhs,
+      template <typename OtherScalarType, typename RHS, long value, typename T>
+      ct_expr< constant<typename promote_traits<OtherScalarType, op_plus<T>, long>::result_type >,
+               op_plus<T>,
+               RHS >
+      operator-(ct_expr<constant<OtherScalarType>, op_plus<T>, RHS> const & lhs,
                 ct_constant<value> const & other)
       {
-        typedef constant< typename promote_traits<OtherScalarType, op_plus, long>::result_type >    result_constant;
+        typedef constant< typename promote_traits<OtherScalarType, op_plus<T>, long>::result_type >    result_constant;
         return ct_expr<result_constant,
-                          op_plus,
-                          RHS >(result_constant(static_cast<OtherScalarType>(lhs.lhs()) - value),
-                                lhs.rhs());
+                       op_plus<T>,
+                       RHS >(result_constant(static_cast<OtherScalarType>(lhs.lhs()) - value),
+                             lhs.rhs());
       }
 
       // (ct_c1 - X) - ct_c2 -> [ct_c1 - ct_c2] - X
-      template <long value_1, typename RHS, long value_2>
-      ct_expr<ct_constant< value_1 - value_2 >,
-                 op_minus,
-                 RHS >
-      operator-(ct_expr<ct_constant<value_1>, op_minus, RHS> const & lhs,
+      template <long value_1, typename RHS, long value_2, typename T>
+      ct_expr< ct_constant< value_1 - value_2 >,
+               op_minus<T>,
+               RHS >
+      operator-(ct_expr<ct_constant<value_1>, op_minus<T>, RHS> const & lhs,
                 ct_constant<value_2> const & other)
       {
         return ct_expr<ct_constant< value_1 - value_2 >,
-                          op_minus,
-                          RHS >(ct_constant< value_1 - value_2 >(),
-                                lhs.rhs());
+                       op_minus<T>,
+                       RHS >(ct_constant< value_1 - value_2 >(),
+                             lhs.rhs());
       }
 
       // (c1 - X) - ct_c2 -> [c1 - ct_c2] - X
-      template <typename OtherScalarType, typename RHS, long value>
-      ct_expr< constant<typename promote_traits<OtherScalarType, op_plus, long>::result_type >,
-                 op_minus,
+      template <typename OtherScalarType, typename RHS, long value, typename T>
+      ct_expr< constant<typename promote_traits<OtherScalarType, op_plus<T>, long>::result_type >,
+                 op_minus<T>,
                  RHS >
-      operator-(ct_expr<constant<OtherScalarType>, op_minus, RHS> const & lhs,
+      operator-(ct_expr<constant<OtherScalarType>, op_minus<T>, RHS> const & lhs,
                 ct_constant<value> const & other)
       {
-        typedef constant< typename promote_traits<OtherScalarType, op_plus, long>::result_type >    result_constant;
+        typedef constant< typename promote_traits<OtherScalarType, op_plus<T>, long>::result_type >    result_constant;
         return ct_expr<result_constant,
-                          op_minus,
-                          RHS >(result_constant(static_cast<OtherScalarType>(lhs.lhs()) - value),
-                                lhs.rhs());
+                       op_minus<T>,
+                       RHS >(result_constant(static_cast<OtherScalarType>(lhs.lhs()) - value),
+                             lhs.rhs());
       }
   
 
@@ -385,51 +386,51 @@ namespace viennamath
   /////////////////////////////////// operator* ///////////////////////////////////
 
       template <typename LHS, typename OP, typename RHS, typename LHS2, typename OP2, typename RHS2>
-      ct_expr<ct_expr<LHS, OP, RHS>,
-                 op_mult,
-                 ct_expr<LHS2, OP2, RHS2> >
+      ct_expr< ct_expr<LHS, OP, RHS>,
+               op_mult<default_numeric_type>,
+               ct_expr<LHS2, OP2, RHS2> >
       operator*(ct_expr<LHS, OP, RHS> const & lhs,
                 ct_expr<LHS2, OP2, RHS2> const & other)
       {
         return ct_expr<ct_expr<LHS, OP, RHS>,
-                          op_mult,
-                          ct_expr<LHS2, OP2, RHS2> >(lhs, other);
+                       op_mult<default_numeric_type>,
+                       ct_expr<LHS2, OP2, RHS2> >(lhs, other);
       }
       
-      template <typename LHS, typename OP, typename RHS, unsigned long id>
-      ct_expr<ct_expr<LHS, OP, RHS>,
-                 op_mult,
-                 variable<id> >
+      template <typename LHS, typename OP, typename RHS, unsigned long id, typename InterfaceType>
+      ct_expr< ct_expr<LHS, OP, RHS>,
+               op_mult<default_numeric_type>,
+               variable<id, InterfaceType> >
       operator*(ct_expr<LHS, OP, RHS> const & lhs,
-                variable<id> const & other)
+                variable<id, InterfaceType> const & other)
       {
         return ct_expr<ct_expr<LHS, OP, RHS>,
-                          op_mult,
-                          variable<id> >(lhs, other);
+                       op_mult<default_numeric_type>,
+                       variable<id, InterfaceType> >(lhs, other);
       }
       
-      template <typename LHS, typename OP, typename RHS, typename ScalarType>
-      ct_expr<ct_expr<LHS, OP, RHS>,
-                 op_mult,
-                 constant<ScalarType> >
+      template <typename LHS, typename OP, typename RHS, typename ScalarType, typename InterfaceType>
+      ct_expr< ct_expr<LHS, OP, RHS>,
+               op_mult<default_numeric_type>,
+               constant<ScalarType, InterfaceType> >
       operator*(ct_expr<LHS, OP, RHS> const & lhs,
-                constant<ScalarType> const & other)
+                constant<ScalarType, InterfaceType> const & other)
       {
         return ct_expr<ct_expr<LHS, OP, RHS>,
-                          op_mult,
-                          constant<ScalarType> >(lhs, other);
+                       op_mult<default_numeric_type>,
+                       constant<ScalarType, InterfaceType> >(lhs, other);
       }
       
       template <typename LHS, typename OP, typename RHS, long value>
-      ct_expr<ct_expr<LHS, OP, RHS>,
-                 op_mult,
-                 ct_constant<value> >
+      ct_expr< ct_expr<LHS, OP, RHS>,
+               op_mult<default_numeric_type>,
+               ct_constant<value> >
       operator*(ct_expr<LHS, OP, RHS> const & lhs,
                 ct_constant<value> const & other)
       {
         return ct_expr<ct_expr<LHS, OP, RHS>,
-                          op_mult,
-                          ct_constant<value> >(lhs, other);
+                       op_mult<default_numeric_type>,
+                       ct_constant<value> >(lhs, other);
       }
 
 
@@ -438,15 +439,15 @@ namespace viennamath
   /////////////////////////////////// operator/ ///////////////////////////////////
 
       template <typename LHS, typename OP, typename RHS, typename LHS2, typename OP2, typename RHS2>
-      ct_expr<ct_expr<LHS, OP, RHS>,
-                 op_div,
-                 ct_expr<LHS2, OP2, RHS2> >
+      ct_expr< ct_expr<LHS, OP, RHS>,
+               op_div<default_numeric_type>,
+               ct_expr<LHS2, OP2, RHS2> >
       operator/(ct_expr<LHS, OP, RHS> const & lhs,
                 ct_expr<LHS2, OP2, RHS2> const & other)
       {
         return ct_expr<ct_expr<LHS, OP, RHS>,
-                          op_div,
-                          ct_expr<LHS2, OP2, RHS2> >(lhs, other);
+                       op_div<default_numeric_type>,
+                       ct_expr<LHS2, OP2, RHS2> >(lhs, other);
       }
       
       //division of the same thing leads to '1':
@@ -458,40 +459,40 @@ namespace viennamath
         return ct_constant<1>();
       }
       
-      template <typename LHS, typename OP, typename RHS, unsigned long id>
-      ct_expr<ct_expr<LHS, OP, RHS>,
-                 op_div,
-                 variable<id> >
+      template <typename LHS, typename OP, typename RHS, unsigned long id, typename InterfaceType>
+      ct_expr< ct_expr<LHS, OP, RHS>,
+               op_div<default_numeric_type>,
+               variable<id, InterfaceType> >
       operator/(ct_expr<LHS, OP, RHS> const & lhs,
-                variable<id> const & other)
+                variable<id, InterfaceType> const & other)
       {
         return ct_expr<ct_expr<LHS, OP, RHS>,
-                          op_div,
-                          variable<id> >(lhs, other);
+                       op_div<default_numeric_type>,
+                       variable<id> >(lhs, other);
       }
       
-      template <typename LHS, typename OP, typename RHS, typename ScalarType>
-      ct_expr<ct_expr<LHS, OP, RHS>,
-                 op_div,
-                 constant<ScalarType> >
+      template <typename LHS, typename OP, typename RHS, typename ScalarType, typename InterfaceType>
+      ct_expr< ct_expr<LHS, OP, RHS>,
+               op_div<default_numeric_type>,
+               constant<ScalarType, InterfaceType> >
       operator/(ct_expr<LHS, OP, RHS> const & lhs,
-                constant<ScalarType> const & other)
+                constant<ScalarType, InterfaceType> const & other)
       {
         return ct_expr<ct_expr<LHS, OP, RHS>,
-                          op_div,
-                          constant<ScalarType> >(lhs, other);
+                       op_div<default_numeric_type>,
+                       constant<ScalarType, InterfaceType> >(lhs, other);
       }
       
       template <typename LHS, typename OP, typename RHS, long value>
-      ct_expr<ct_expr<LHS, OP, RHS>,
-                 op_div,
-                 ct_constant<value> >
+      ct_expr< ct_expr<LHS, OP, RHS>,
+               op_div<default_numeric_type>,
+               ct_constant<value> >
       operator/(ct_expr<LHS, OP, RHS> const & lhs,
                 ct_constant<value> const & other)
       {
         return ct_expr<ct_expr<LHS, OP, RHS>,
-                          op_div,
-                          ct_constant<value> >(lhs, other);
+                       op_div<default_numeric_type>,
+                       ct_constant<value> >(lhs, other);
       }
   
 }

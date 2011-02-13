@@ -17,6 +17,7 @@
 
 #include <ostream>
 #include "viennamath/forwards.h"
+#include "viennamath/binary_op_tags.hpp"
 
 namespace viennamath
 {
@@ -24,7 +25,7 @@ namespace viennamath
   template <typename T>
   struct expression_traits
   {
-    typedef T const &   const_reference_type; 
+    typedef T   const_reference_type; 
   };
   
   //for compile time constants, we have to copy in order to circumvent problems with temporaries
@@ -34,10 +35,10 @@ namespace viennamath
      typedef ct_constant<value>    const_reference_type;
   };
 
-  template <typename T>
-  struct expression_traits < constant<T> >
+  template <typename T, typename InterfaceType>
+  struct expression_traits < constant<T, InterfaceType> >
   {
-     typedef constant<T>    const_reference_type;
+     typedef constant<T, InterfaceType>    const_reference_type;
   };
   
   
@@ -50,6 +51,8 @@ namespace viennamath
       typedef typename expression_traits<LHS>::const_reference_type    internal_lhs_type;
       typedef typename expression_traits<RHS>::const_reference_type    internal_rhs_type;
     public:
+      typedef typename OP::numeric_type            numeric_type;
+      
       typedef LHS    lhs_type;
       typedef OP     op_type;
       typedef RHS    rhs_type;
@@ -59,16 +62,14 @@ namespace viennamath
       explicit ct_expr(internal_lhs_type lhs,
                        internal_rhs_type rhs) : lhs_(lhs), rhs_(rhs) {}
                           
-      expression_interface * clone() const;
-                    
-      
       internal_lhs_type lhs() const { return lhs_; }
       internal_rhs_type rhs() const { return rhs_; }
       
       template <typename VectorType>
-      typename op_return_type<LHS, RHS>::return_type operator()(VectorType const & v) const
+      numeric_type operator()(VectorType const & v) const
       {
-        return OP::static_apply(static_cast<numeric_type>(lhs_(v)), static_cast<numeric_type>(rhs_(v)));
+        //std::cout << "ct_expr::operator()" << std::endl;
+        return OP::apply(static_cast<numeric_type>(lhs_(v)), static_cast<numeric_type>(rhs_(v)));
       }
       
     private:

@@ -23,7 +23,7 @@ namespace viennamath
    template <typename T, typename OP, typename U>
    struct promote_traits
    {
-     typedef numeric_type  result_type;
+     typedef default_numeric_type  result_type;
    };
 
    /** @brief The result type of two operands of the same type is of the same type again (cf. standard C/C++ behavior for integers) */
@@ -96,22 +96,22 @@ namespace viennamath
    };
    
    //special case: integer division:
-   template <>
-   struct promote_traits <long, op_div, long>
+   template <typename NumericType>
+   struct promote_traits <long, op_div<NumericType>, long>
    {
-      typedef numeric_type      result_type;
+      typedef default_numeric_type      result_type;
    };
 
-   template <>
-   struct promote_traits <long, op_div, int>
+   template <typename NumericType>
+   struct promote_traits <long, op_div<NumericType>, int>
    {
-      typedef numeric_type      result_type;
+      typedef default_numeric_type      result_type;
    };
    
-   template <>
-   struct promote_traits <int, op_div, long>
+   template <typename NumericType>
+   struct promote_traits <int, op_div<NumericType>, long>
    {
-      typedef numeric_type      result_type;
+      typedef default_numeric_type      result_type;
    };
    
    

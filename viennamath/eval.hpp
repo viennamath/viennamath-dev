@@ -20,14 +20,14 @@
 namespace viennamath
 {
   template <typename ExpressionType, typename VectorType>
-  numeric_type eval(ExpressionType const & e, VectorType const & v)
+  typename ExpressionType::numeric_type eval(ExpressionType const & e, VectorType const & v)
   {
     //generic approach: use operator() and hope the best:
     return e(v);
   }
 
   template <typename VectorType>
-  numeric_type eval(numeric_type value, VectorType const & v)
+  default_numeric_type eval(default_numeric_type value, VectorType const & v)
   {
     //generic approach: use operator() and hope the best:
     return value;
@@ -40,8 +40,8 @@ namespace viennamath
     return value;
   }
 
-  template <typename VectorType>
-  long eval(constant<long> c, VectorType const & v)
+  template <typename InterfaceType, typename VectorType>
+  long eval(constant<long, InterfaceType> c, VectorType const & v)
   {
     //generic approach: use operator() and hope the best:
     return c();
@@ -54,8 +54,8 @@ namespace viennamath
     return value;
   }
 
-  template <typename VectorType>
-  numeric_type eval(binary_expr const & e, VectorType const & v)
+  template <typename InterfaceType, typename VectorType>
+  typename InterfaceType::numeric_type eval(binary_expr<InterfaceType> const & e, VectorType const & v)
   {
     //we have unwrap the runtime expression:
     return e(v);

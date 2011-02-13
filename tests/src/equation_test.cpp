@@ -21,7 +21,8 @@ int main()
   viennamath::constant<double> c4(4.0);
   viennamath::constant<long> c6(6);
   viennamath::ct_constant<8> c8;
-  viennamath::expr x_pow_4 = (x*x)*(x*x);
+  viennamath::expr<> x_pow_4 = (x*x)*(x*x);
+  viennamath::expr<> test(2.0);
 
   //compile time:
   std::cout << viennamath::make_equation(x*x + y, x + y) << std::endl;

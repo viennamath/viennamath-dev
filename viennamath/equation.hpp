@@ -38,24 +38,27 @@ namespace viennamath
   
   
   /** @brief A runtime equation */
+  template <typename InterfaceType>
   class equation
   {
 
     public:
       equation() {};
       
-      equation(const expr & lhs,
-               const expr & rhs) : lhs_(lhs.get()->clone()), rhs_(rhs.get()->clone()) {}
       
-      expr const & lhs() const { return lhs_; }
-      expr const & rhs() const { return rhs_; }
+      equation(const expr<InterfaceType> & lhs,
+               const expr<InterfaceType> & rhs) : lhs_(lhs.get()->clone()), rhs_(rhs.get()->clone()) {}
+      
+      expr<InterfaceType> const & lhs() const { return lhs_; }
+      expr<InterfaceType> const & rhs() const { return rhs_; }
       
     private:
-      expr lhs_;
-      expr rhs_;
+      expr<InterfaceType> lhs_;
+      expr<InterfaceType> rhs_;
   };
 
-  std::ostream& operator<<(std::ostream & stream, equation const & e)
+  template <typename InterfaceType>
+  std::ostream& operator<<(std::ostream & stream, equation<InterfaceType> const & e)
   {
     stream << "equation(" << e.lhs() << " = " << e.rhs() << ")";
     return stream;
@@ -70,22 +73,92 @@ namespace viennamath
   //
   // run time
   //
-  equation make_equation(expr const & lhs, expr const & rhs)
+  
+  ////// scalar is first argument:
+  template <typename NumericT, typename InterfaceType, typename RHSType>
+  equation<InterfaceType> make_equation(typename InterfaceType::numeric_type lhs, constant<NumericT, InterfaceType> const & rhs)
   {
-    return equation(lhs, rhs); 
+    return equation<InterfaceType>(lhs, rhs); 
   }
   
-  equation make_equation(expr const & lhs, numeric_type_proxy const & rhs)
+  template <unsigned long id, typename InterfaceType>
+  equation<InterfaceType> make_equation(typename InterfaceType::numeric_type lhs, variable<id, InterfaceType> const & rhs)
   {
-    return equation(lhs, rhs); 
+    return equation<InterfaceType>(lhs, rhs); 
   }
   
-  equation make_equation(numeric_type_proxy const & lhs, expr const & rhs)
+  template <typename InterfaceType>
+  equation<InterfaceType> make_equation(typename InterfaceType::numeric_type lhs, unary_expr<InterfaceType> const & rhs)
   {
-    return equation(lhs, rhs); 
+    return equation<InterfaceType>(lhs, rhs); 
   }
+
+  template <typename InterfaceType>
+  equation<InterfaceType> make_equation(typename InterfaceType::numeric_type lhs, binary_expr<InterfaceType> const & rhs)
+  {
+    return equation<InterfaceType>(lhs, rhs); 
+  }
+
+  template <typename InterfaceType>
+  equation<InterfaceType> make_equation(typename InterfaceType::numeric_type lhs, expr<InterfaceType> const & rhs)
+  {
+    return equation<InterfaceType>(lhs, rhs); 
+  }
+
   
-  
+  //constant:
+  template <typename NumericT, typename InterfaceType, typename RHSType>
+  equation<InterfaceType> make_equation(constant<NumericT, InterfaceType> const & lhs, RHSType const & rhs)
+  {
+    return equation<InterfaceType>(lhs, rhs); 
+  }
+
+  //variable:
+  template <unsigned long id, typename InterfaceType, typename RHSType>
+  equation<InterfaceType> make_equation(variable<id, InterfaceType> const & lhs, RHSType const & rhs)
+  {
+    return equation<InterfaceType>(lhs, rhs); 
+  }
+
+  //function_symbol:
+  template <typename T, typename InterfaceType, typename RHSType>
+  equation<InterfaceType> make_equation(function_symbol<T, InterfaceType> const & lhs, RHSType const & rhs)
+  {
+    return equation<InterfaceType>(lhs, rhs); 
+  }
+
+  //unary:
+  template <typename InterfaceType, typename RHSType>
+  equation<InterfaceType> make_equation(unary_expr<InterfaceType> const & lhs, RHSType const & rhs)
+  {
+    return equation<InterfaceType>(lhs, rhs); 
+  }
+
+
+  //binary
+  template <typename InterfaceType, typename RHSType>
+  equation<InterfaceType> make_equation(binary_expr<InterfaceType> const & lhs, RHSType const & rhs)
+  {
+    return equation<InterfaceType>(lhs, rhs); 
+  }
+
+  //expr
+  template <typename InterfaceType, typename RHSType>
+  equation<InterfaceType> make_equation(expr<InterfaceType> const & lhs, RHSType const & rhs)
+  {
+    return equation<InterfaceType>(lhs, rhs); 
+  }
+
+  //compile time with run time stuff also possible:
+  template <typename LHS, typename OP, typename RHS, typename RHSType>
+  equation<> make_equation(ct_expr<LHS, OP, RHS> const & lhs, RHSType const & rhs)
+  {
+    return equation<>(lhs, rhs); 
+  }
+
+
+
+
   //
   // compile time 
   // [expression, ct_constant, variable] for each argument -> 9 overloads

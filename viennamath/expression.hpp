@@ -28,13 +28,18 @@
 #include "viennamath/unary_expression.hpp"
 #include "viennamath/expr.hpp"
 
-#include "viennamath/op_tags.hpp"
+#include "viennamath/unary_operators.hpp"
+#include "viennamath/unary_operators_manipulation.hpp"
+#include "viennamath/binary_operators.hpp"
+#include "viennamath/binary_operators_manipulation.hpp"
 #include "viennamath/operations/expression_compile_time_operations.hpp"
 #include "viennamath/operations/binary_expression_operations.hpp"
+#include "viennamath/operations/unary_expression_operations.hpp"
 #include "viennamath/operations/expr_operations.hpp"
 #include "viennamath/operations/constant_operations.hpp"
 #include "viennamath/operations/ct_constant_operations.hpp"
 #include "viennamath/operations/variable_operations.hpp"
+#include "viennamath/operations/function_symbol_operations.hpp"
 
 
 #endif

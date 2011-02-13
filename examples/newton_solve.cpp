@@ -11,8 +11,8 @@
 
 #include "viennamath/equation.hpp"
 
-
-std::vector<double> newton_solve_impl(std::vector<viennamath::equation> const & equations,
+template <typename InterfaceType>
+std::vector<double> newton_solve_impl(std::vector<viennamath::equation<InterfaceType> > const & equations,
                                       std::vector<double> guess)
 {
   viennamath::variable<0> x;
@@ -23,8 +23,8 @@ std::vector<double> newton_solve_impl(std::vector<viennamath::equation> const & 
   //   f1(x,y) = 0
   //   f2(x,y) = 0
   //
-  viennamath::expr f1 = equations[0].lhs() - equations[0].rhs();
-  viennamath::expr f2 = equations[1].lhs() - equations[1].rhs();
+  viennamath::expr<InterfaceType> f1 = equations[0].lhs() - equations[0].rhs();
+  viennamath::expr<InterfaceType> f2 = equations[1].lhs() - equations[1].rhs();
   
   // compute residuals:
   double res_f1 = f1(guess);
@@ -33,15 +33,21 @@ std::vector<double> newton_solve_impl(std::vector<viennamath::equation> const & 
   //
   // Entries of Jacobian matrix:
   //
-  viennamath::expr df1_dx = viennamath::diff(f1, x);
-  viennamath::expr df1_dy = viennamath::diff(f1, y);
-  viennamath::expr df2_dx = viennamath::diff(f2, x);
-  viennamath::expr df2_dy = viennamath::diff(f2, y);
+  viennamath::expr<InterfaceType> df1_dx = viennamath::diff(f1, x);
+  viennamath::expr<InterfaceType> df1_dy = viennamath::diff(f1, y);
+  viennamath::expr<InterfaceType> df2_dx = viennamath::diff(f2, x);
+  viennamath::expr<InterfaceType> df2_dy = viennamath::diff(f2, y);
   
   //std::cout << df1_dx << std::endl;
   //std::cout << df1_dy << std::endl;
   //std::cout << df2_dx << std::endl;
   //std::cout << df2_dy << std::endl;
+  //std::cout << std::endl;
+  //std::cout << df1_dx(guess) << std::endl;
+  //std::cout << df1_dy(guess) << std::endl;
+  //std::cout << df2_dx(guess) << std::endl;
+  //std::cout << df2_dy(guess) << std::endl;
+  //exit(0);
   
   //TODO Solver for general linear system here
   
@@ -57,7 +63,8 @@ std::vector<double> newton_solve_impl(std::vector<viennamath::equation> const & 
   return ret;
 }
 
-std::vector<double> newton_solve(std::vector<viennamath::equation> const & equations,
+template <typename InterfaceType>
+std::vector<double> newton_solve(std::vector<viennamath::equation<InterfaceType> > const & equations,
                                  std::vector<double> init_guess)
 {
   viennamath::variable<0> x;
@@ -71,8 +78,8 @@ std::vector<double> newton_solve(std::vector<viennamath::equation> const & equat
   //   f1(x,y) = 0
   //   f2(x,y) = 0
   //
-  viennamath::expr f1 = equations[0].lhs() - equations[0].rhs();
-  viennamath::expr f2 = equations[1].lhs() - equations[1].rhs();
+  viennamath::expr<InterfaceType> f1 = equations[0].lhs() - equations[0].rhs();
+  viennamath::expr<InterfaceType> f2 = equations[1].lhs() - equations[1].rhs();
   
   //iterate until convergence:
   while (norm_res > 1e-10 && norm_res < 1e10)
@@ -96,7 +103,7 @@ int main()
   viennamath::constant<double> c4(4.0);
   viennamath::constant<long> c6(6);
   viennamath::ct_constant<8> c8;
-  viennamath::expr x_pow_4 = (x*x)*(x*x);
+  viennamath::expr<> x_pow_4 = (x*x)*(x*x);
 
   //
   // Set up nonlinear system:
@@ -104,7 +111,7 @@ int main()
   //   x^4 - y^2 = 3.0
   // Solution is known to be (sqrt(2), 1)
   //
-  std::vector<viennamath::equation> equ_system;
+  std::vector<viennamath::equation<> > equ_system;
   equ_system.push_back(viennamath::make_equation(x*x + y, 3.0));
   equ_system.push_back(viennamath::make_equation(x_pow_4 - y*y, 3.0));
   

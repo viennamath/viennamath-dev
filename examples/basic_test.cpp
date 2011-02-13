@@ -15,7 +15,7 @@ int main()
   viennamath::constant<long> c6(6);
   viennamath::ct_constant<8> c8;
   
-  std::vector<double> p(2);
+  std::vector<double> p(3);
   p[0] = 1;
   p[1] = 2;
   p[2] = 3;

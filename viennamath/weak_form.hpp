@@ -16,7 +16,9 @@
 #define VIENNAMATH_WEAK_FORM_HPP
 
 #include "viennamath/forwards.h"
-#include "viennamath/op_tags.hpp"
+#include "viennamath/unary_op_tags.hpp"
+#include "viennamath/unary_operators.hpp"
+#include "viennamath/unary_operators_manipulation.hpp"
 #include "viennamath/integral.hpp"
 #include "viennamath/substitute.hpp"
 #include "viennamath/equation.hpp"
@@ -32,17 +34,18 @@ namespace viennamath
 
 
   //tries to automatically derive the weak formulation from the strong formulation
-  equation weak_form(equation const & strong_formulation)
+  template <typename InterfaceType>
+  equation<InterfaceType> weak_form(equation<InterfaceType> const & strong_formulation)
   {
     //TODO: More general derivations: Transform div(expr) to expr * grad(v)
-    expr new_lhs(substitute( laplace(function_symbol<unknown_tag<0> >()),
-                             constant<double>(-1) * (grad(function_symbol<unknown_tag<0> >()) * grad(function_symbol<test_tag<0> >())),
-                             strong_formulation.lhs()
-                           )
-                );
-    return equation( integral(Omega(), new_lhs, symbolic_tag()),
-                     integral(Omega(), strong_formulation.rhs() * function_symbol<test_tag<0> >(), symbolic_tag())
-                   );
+    expr<InterfaceType> new_lhs(substitute( laplace(function_symbol<unknown_tag<0>, InterfaceType>()),
+                                            constant<typename InterfaceType::numeric_type, InterfaceType>(-1) * (grad(function_symbol<unknown_tag<0>, InterfaceType>()) * grad(function_symbol<test_tag<0>, InterfaceType>())),
+                                            strong_formulation.lhs()
+                                          )
+                               );
+    return equation<InterfaceType>( integral(Omega(), new_lhs, symbolic_tag()),
+                                    integral(Omega(), strong_formulation.rhs() * function_symbol<test_tag<0>, InterfaceType>(), symbolic_tag())
+                                  );
   }
 
 }

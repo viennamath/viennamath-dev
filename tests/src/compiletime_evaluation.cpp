@@ -71,7 +71,7 @@ struct evaluation_compiletime
   {
     std::cout.precision(17);
     std::cout << viennamath::ct_eval(e, v);
-    viennamath::binary_expr temp(viennamath::ct_eval(e, v));
+    viennamath::binary_expr<> temp(viennamath::ct_eval(e, v));
     std::cout <<  "(should: " << ref_solution << ", is: " << temp(1.0) << ")" << std::endl;
     fuzzy_check(temp(1.0), ref_solution);
   }

@@ -18,7 +18,7 @@
 #include <ostream>
 #include <sstream>
 #include "viennamath/forwards.h"
-#include "viennamath/expression_compile_time.hpp"
+//#include "viennamath/expression_compile_time.hpp"
 //#include "viennamath/expression_run_time.hpp"
 
 namespace viennamath
@@ -60,15 +60,17 @@ namespace viennamath
    *
    * @tparam Tag    A tag class that is typically used to distinguish between different function symbols. Tag requirements: 'static std::string str();' which returns an identification string
    */
-  template <typename Tag>
-  class function_symbol : public expression_interface
+  template <typename Tag, typename InterfaceType>
+  class function_symbol : public InterfaceType
   {
       typedef function_symbol<Tag>     self_type;
     public:
+      typedef typename InterfaceType::numeric_type      numeric_type;
+      
       explicit function_symbol() {};
 
       //interface requirements:
-      expression_interface * clone() const { return new self_type(); }
+      InterfaceType * clone() const { return new self_type(); }
       numeric_type eval(std::vector<double> const & v) const { throw "Cannot evaluate unknown_func!"; return 0; }
       numeric_type eval(numeric_type v) const { throw "Cannot evaluate unknown_func!"; return 0; }
       std::string str() const
@@ -79,20 +81,20 @@ namespace viennamath
       }
       numeric_type unwrap() const { throw "Cannot evaluate unknown_func to a number!"; }
       
-      expression_interface * substitute(const expr & e,
-                                        const expr & repl) const
+      InterfaceType * substitute(const InterfaceType * e,
+                                 const InterfaceType * repl) const
       {
-        if (dynamic_cast<const self_type *>(e.get()) != NULL)
-          return repl.get()->clone();
+        if (dynamic_cast<const self_type *>(e) != NULL)
+          return repl->clone();
         return clone();
       };    
       
-      bool equal(const expression_interface * other) const
+      bool equal(const InterfaceType * other) const
       {
         return dynamic_cast< const self_type *>(other) != NULL;
       }
       
-      expression_interface * diff(const expr & diff_var) const
+      InterfaceType * diff(const InterfaceType * diff_var) const
       {
         //this code should not be reached, because function_symbol is symbolically differentiated at a higher level
         throw "Cannot differentiate unknown_func!";

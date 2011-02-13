@@ -30,7 +30,7 @@ int main()
   // Step 1: Define the classical Poisson equation
   //             laplace(u) = 1
   //
-  equation strong_form = make_equation( laplace(u), 1);
+  equation<> strong_form = make_equation( laplace(u), 1);
   std::cout << "Strong (classical) form of equation:" << std::endl;
   std::cout << "  " << strong_form << std::endl;
   
@@ -45,7 +45,7 @@ int main()
   //         Integral form of Poisson equation:
   //         \int_\Omega grad(u) * grad(v) dx  = \int_\Omega v dx
   //
-  equation weak_form_general = weak_form(strong_form);
+  equation<> weak_form_general = weak_form(strong_form);
   
   std::cout << "General weak form: " << std::endl;
   std::cout << "  " << weak_form_general << std::endl;
@@ -55,15 +55,15 @@ int main()
   //
   //         Example in 2d:  grad(u) * grad(v)  is transformed to u_x * v_x + u_y * v_y
   //
-  equation weak_form_1d = apply_coordinate_system(cartesian<1>(), weak_form_general);
+  equation<> weak_form_1d = apply_coordinate_system(cartesian<1>(), weak_form_general);
   std::cout << "Weak form in 1d:" << std::endl;
   std::cout << "  " << weak_form_1d << std::endl;
   
-  equation weak_form_2d = apply_coordinate_system(cartesian<2>(), weak_form_general);
+  equation<> weak_form_2d = apply_coordinate_system(cartesian<2>(), weak_form_general);
   std::cout << "Weak form in 2d:" << std::endl;
   std::cout << "  " << weak_form_2d << std::endl;
   
-  equation weak_form_3d = apply_coordinate_system(cartesian<3>(), weak_form_general);
+  equation<> weak_form_3d = apply_coordinate_system(cartesian<3>(), weak_form_general);
   std::cout << "Weak form in 3d:" << std::endl;
   std::cout << "  " << weak_form_3d << std::endl;
   

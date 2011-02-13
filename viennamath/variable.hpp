@@ -17,9 +17,7 @@
 
 #include "viennamath/constant.hpp"
 #include "viennamath/vector.hpp"
-#include "viennamath/op_tags.hpp"
-#include "viennamath/binary_expression.hpp"
-#include "viennamath/expression_compile_time.hpp"
+#include "viennamath/expression_interface.hpp"
 
 #include <assert.h>
 
@@ -52,7 +50,7 @@ namespace viennamath
             long id>
   struct variable_traits
   {
-    typedef numeric_type          return_type;
+    typedef default_numeric_type          return_type;
     
     //per default, access id-th element;
     static return_type get(VectorType const & v)
@@ -169,9 +167,12 @@ namespace viennamath
    * @tparam ScalarType        the underlying numerical type (typically float, double)
    * @tparam id                the component of the vector for which 'variable' is evaluated
    */
-  template <unsigned long id /* see forwards.h for default argument */>
-  struct variable : public expression_interface
+  template <unsigned long id /* see forwards.h for default argument */,
+            typename InterfaceType /* see forwards.h for default argument */>
+  struct variable : public InterfaceType
   {
+    typedef typename InterfaceType::numeric_type    numeric_type;
+    
     explicit variable() {};
 
     std::ostream & operator<<(std::ostream & stream) const
@@ -214,7 +215,7 @@ namespace viennamath
     }
     
     //interface requirements:
-    expression_interface * clone() const { return new variable(); }
+    InterfaceType * clone() const { return new variable(); }
     numeric_type eval(std::vector<double> const & v) const
     {
       if (id >= v.size())
@@ -244,39 +245,39 @@ namespace viennamath
     }
       
     //protected:
-    expression_interface * substitute(const expr & e,
-                                      const expr & repl) const
+    InterfaceType * substitute(const InterfaceType * e,
+                               const InterfaceType * repl) const
     {
       //std::cout << "Comparing variable<" << id << "> with " << e->str() << ", result: ";
-      if (dynamic_cast< const variable<id> *>(e.get()) != NULL)
+      if (dynamic_cast< const variable<id, InterfaceType> *>(e) != NULL)
       {
         //std::cout << "TRUE, replacing with " << repl->str() << std::endl;
-        return repl.get()->clone();
+        return repl->clone();
       }
       //std::cout << "FALSE" << std::endl;
       return clone();
     };    
     
-    bool equal(const expression_interface * other) const
+    bool equal(const InterfaceType * other) const
     {
-      return dynamic_cast< const variable<id> *>(other) != NULL;
+      return dynamic_cast< const variable<id, InterfaceType> *>(other) != NULL;
     }
     
-    expression_interface * diff(const expr & diff_var) const
+    InterfaceType * diff(const InterfaceType * diff_var) const
     {
-      if (dynamic_cast< const variable<id> *>(diff_var.get()) != NULL)
+      if (dynamic_cast< const variable<id, InterfaceType> *>(diff_var) != NULL)
       {
         //std::cout << "diff variable<" << id << ">: TRUE" << std::endl;
-        return new constant<numeric_type>(1);
+        return new constant<numeric_type, InterfaceType>(1);
       }
       //std::cout << "diff variable<" << id << ">: FALSE, is: " << diff_var.get()->str() << std::endl;
-      return new constant<numeric_type>(0);
+      return new constant<numeric_type, InterfaceType>(0);
     }
     
   }; //variable
 
-  template <unsigned long id>
-  std::ostream& operator<<(std::ostream & stream, variable<id> const & u)
+  template <unsigned long id, typename InterfaceType>
+  std::ostream& operator<<(std::ostream & stream, variable<id, InterfaceType> const & u)
   {
     stream << "variable<" << id << ">";
     return stream;

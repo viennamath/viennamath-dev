@@ -18,7 +18,7 @@
 #include "viennamath/forwards.h"
 #include "viennamath/expression_compile_time.hpp"
 #include "viennamath/binary_expression.hpp"
-#include "viennamath/op_tags.hpp"
+#include "viennamath/binary_operators.hpp"
 
 namespace viennamath
 {
@@ -26,234 +26,246 @@ namespace viennamath
   /////////////////////////////////// operator+ ///////////////////////////////////
   
   //with other binary expression:
-  binary_expr operator+(binary_expr const & lhs, binary_expr const & rhs)
+  template <typename InterfaceType>
+  binary_expr<InterfaceType> operator+(binary_expr<InterfaceType> const & lhs, binary_expr<InterfaceType> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_plus(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_plus<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
   
   //with unary expression:
-  binary_expr operator+(binary_expr const & lhs, unary_expr const & rhs)
+  template <typename InterfaceType>
+  binary_expr<InterfaceType> operator+(binary_expr<InterfaceType> const & lhs, unary_expr<InterfaceType> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_plus(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_plus<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
   
   //with expression:
-  template <typename LHS, typename OP, typename RHS>
-  binary_expr operator+(binary_expr const & lhs, ct_expr<LHS, OP, RHS> const & rhs)
+  template <typename LHS, typename OP, typename RHS, typename InterfaceType>
+  binary_expr<InterfaceType> operator+(binary_expr<InterfaceType> const & lhs, ct_expr<LHS, OP, RHS> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_plus(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_plus<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
   
-  template <typename LHS, typename OP, typename RHS>
-  binary_expr operator+(ct_expr<LHS, OP, RHS> const & lhs, binary_expr const & rhs)
+  template <typename LHS, typename OP, typename RHS, typename InterfaceType>
+  binary_expr<InterfaceType> operator+(ct_expr<LHS, OP, RHS> const & lhs, binary_expr<InterfaceType> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_plus(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_plus<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
   //with constant:
-  template <typename T>
-  binary_expr operator+(binary_expr const & lhs, constant<T> const & rhs)
+  template <typename T, typename InterfaceType>
+  binary_expr<InterfaceType> operator+(binary_expr<InterfaceType> const & lhs, constant<T> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_plus(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_plus<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
-  template <typename T>
-  binary_expr operator+(constant<T> const & lhs, binary_expr const & rhs)
+  template <typename T, typename InterfaceType>
+  binary_expr<InterfaceType> operator+(constant<T> const & lhs, binary_expr<InterfaceType> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_plus(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_plus<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
   //with ct_constant:
-  template <unsigned long value>
-  binary_expr operator+(binary_expr const & lhs, ct_constant<value> const & rhs)
+  template <long value, typename InterfaceType>
+  binary_expr<InterfaceType> operator+(binary_expr<InterfaceType> const & lhs, ct_constant<value> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_plus(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_plus<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
-  template <unsigned long value>
-  binary_expr operator+(ct_constant<value> const & lhs, binary_expr const & rhs)
+  template <long value, typename InterfaceType>
+  binary_expr<InterfaceType> operator+(ct_constant<value> const & lhs, binary_expr<InterfaceType> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_plus(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_plus<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
   //with variable:
-  template <unsigned long id>
-  binary_expr operator+(binary_expr const & lhs, variable<id> const & rhs)
+  template <unsigned long id, typename InterfaceType>
+  binary_expr<InterfaceType> operator+(binary_expr<InterfaceType> const & lhs, variable<id> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_plus(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_plus<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
-  template <unsigned long id>
-  binary_expr operator+(variable<id> const & lhs, binary_expr const & rhs)
+  template <unsigned long id, typename InterfaceType>
+  binary_expr<InterfaceType> operator+(variable<id> const & lhs, binary_expr<InterfaceType> const & rhs)
   {
     //std::cout << "Generating compound: " << lhs << "+" << rhs << std::endl;
-    return binary_expr(lhs.clone(), new op_plus(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_plus<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
   
   //with plain numeric type (see notes on numeric_type_proxy)
-  binary_expr operator+(binary_expr const & lhs, numeric_type_proxy rhs)
+  template <typename InterfaceType, typename NumericT>
+  binary_expr<InterfaceType> operator+(binary_expr<InterfaceType> const & lhs, numeric_type_proxy<NumericT> rhs)
   {
-    return binary_expr(lhs.clone(), new op_plus(), constant<numeric_type>(rhs.get()).clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_plus<typename InterfaceType::numeric_type>, InterfaceType>(), constant<NumericT>(rhs.get()).clone());
   }
 
-  binary_expr operator+(numeric_type_proxy lhs, binary_expr const & rhs)
+  template <typename InterfaceType, typename NumericT>
+  binary_expr<InterfaceType> operator+(numeric_type_proxy<NumericT> lhs, binary_expr<InterfaceType> const & rhs)
   {
-    return binary_expr(constant<numeric_type>(lhs.get()).clone(), new op_plus(), rhs.clone());
+    return binary_expr<InterfaceType>(constant<NumericT>(lhs.get()).clone(), new op_binary<op_plus<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
   /////////////////////////////////// operator- ///////////////////////////////////
 
   //with other binary expression:
-  binary_expr operator-(binary_expr const & lhs, binary_expr const & rhs)
+  template <typename InterfaceType>
+  binary_expr<InterfaceType> operator-(binary_expr<InterfaceType> const & lhs, binary_expr<InterfaceType> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_minus(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_minus<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
   
   //with unary expression:
-  binary_expr operator-(binary_expr const & lhs, unary_expr const & rhs)
+  template <typename InterfaceType>
+  binary_expr<InterfaceType> operator-(binary_expr<InterfaceType> const & lhs, unary_expr<InterfaceType> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_minus(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_minus<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
   
   //with expression:
-  template <typename LHS, typename OP, typename RHS>
-  binary_expr operator-(binary_expr const & lhs, ct_expr<LHS, OP, RHS> const & rhs)
+  template <typename LHS, typename OP, typename RHS, typename InterfaceType>
+  binary_expr<InterfaceType> operator-(binary_expr<InterfaceType> const & lhs, ct_expr<LHS, OP, RHS> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_minus(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_minus<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
   
-  template <typename LHS, typename OP, typename RHS>
-  binary_expr operator-(ct_expr<LHS, OP, RHS> const & lhs, binary_expr const & rhs)
+  template <typename LHS, typename OP, typename RHS, typename InterfaceType>
+  binary_expr<InterfaceType> operator-(ct_expr<LHS, OP, RHS> const & lhs, binary_expr<InterfaceType> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_minus(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_minus<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
   //with constant:
-  template <typename T>
-  binary_expr operator-(binary_expr const & lhs, constant<T> const & rhs)
+  template <typename T, typename InterfaceType>
+  binary_expr<InterfaceType> operator-(binary_expr<InterfaceType> const & lhs, constant<T> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_minus(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_minus<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
-  template <typename T>
-  binary_expr operator-(constant<T> const & lhs, binary_expr const & rhs)
+  template <typename T, typename InterfaceType>
+  binary_expr<InterfaceType> operator-(constant<T> const & lhs, binary_expr<InterfaceType> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_minus(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_minus<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
   //with ct_constant:
-  template <unsigned long value>
-  binary_expr operator-(binary_expr const & lhs, ct_constant<value> const & rhs)
+  template <long value, typename InterfaceType>
+  binary_expr<InterfaceType> operator-(binary_expr<InterfaceType> const & lhs, ct_constant<value> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_minus(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_minus<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
-  template <unsigned long value>
-  binary_expr operator-(ct_constant<value> const & lhs, binary_expr const & rhs)
+  template <long value, typename InterfaceType>
+  binary_expr<InterfaceType> operator-(ct_constant<value> const & lhs, binary_expr<InterfaceType> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_minus(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_minus<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
   //with variable:
-  template <unsigned long id>
-  binary_expr operator-(binary_expr const & lhs, variable<id> const & rhs)
+  template <unsigned long id, typename InterfaceType>
+  binary_expr<InterfaceType> operator-(binary_expr<InterfaceType> const & lhs, variable<id> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_minus(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_minus<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
-  template <unsigned long id>
-  binary_expr operator-(variable<id> const & lhs, binary_expr const & rhs)
+  template <unsigned long id, typename InterfaceType>
+  binary_expr<InterfaceType> operator-(variable<id> const & lhs, binary_expr<InterfaceType> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_minus(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_minus<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
   //with plain numeric type (see notes on numeric_type_proxy)
-  binary_expr operator-(binary_expr const & lhs, numeric_type_proxy rhs)
+  template <typename InterfaceType, typename NumericT>
+  binary_expr<InterfaceType> operator-(binary_expr<InterfaceType> const & lhs, numeric_type_proxy<NumericT> rhs)
   {
-    return binary_expr(lhs.clone(), new op_minus(), constant<numeric_type>(rhs.get()).clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_minus<typename InterfaceType::numeric_type>, InterfaceType>(), constant<NumericT>(rhs.get()).clone());
   }
 
-  binary_expr operator-(numeric_type_proxy lhs, binary_expr const & rhs)
+  template <typename InterfaceType, typename NumericT>
+  binary_expr<InterfaceType> operator-(numeric_type_proxy<NumericT> lhs, binary_expr<InterfaceType> const & rhs)
   {
-    return binary_expr(constant<numeric_type>(lhs.get()).clone(), new op_minus(), rhs.clone());
+    return binary_expr<InterfaceType>(constant<NumericT>(lhs.get()).clone(), new op_binary<op_minus<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
 
   /////////////////////////////////// operator* ///////////////////////////////////
 
   //with other binary expression:
-  binary_expr operator*(binary_expr const & lhs, binary_expr const & rhs)
+  template <typename InterfaceType>
+  binary_expr<InterfaceType> operator*(binary_expr<InterfaceType> const & lhs, binary_expr<InterfaceType> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_mult(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
   
   //with unary expression:
-  binary_expr operator*(binary_expr const & lhs, unary_expr const & rhs)
+  template <typename InterfaceType>
+  binary_expr<InterfaceType> operator*(binary_expr<InterfaceType> const & lhs, unary_expr<InterfaceType> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_mult(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
   
   //with expression:
-  template <typename LHS, typename OP, typename RHS>
-  binary_expr operator*(binary_expr const & lhs, ct_expr<LHS, OP, RHS> const & rhs)
+  template <typename LHS, typename OP, typename RHS, typename InterfaceType>
+  binary_expr<InterfaceType> operator*(binary_expr<InterfaceType> const & lhs, ct_expr<LHS, OP, RHS> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_mult(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
   
-  template <typename LHS, typename OP, typename RHS>
-  binary_expr operator*(ct_expr<LHS, OP, RHS> const & lhs, binary_expr const & rhs)
+  template <typename LHS, typename OP, typename RHS, typename InterfaceType>
+  binary_expr<InterfaceType> operator*(ct_expr<LHS, OP, RHS> const & lhs, binary_expr<InterfaceType> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_mult(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
   //with constant:
-  template <typename T>
-  binary_expr operator*(binary_expr const & lhs, constant<T> const & rhs)
+  template <typename T, typename InterfaceType>
+  binary_expr<InterfaceType> operator*(binary_expr<InterfaceType> const & lhs, constant<T> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_mult(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
-  template <typename T>
-  binary_expr operator*(constant<T> const & lhs, binary_expr const & rhs)
+  template <typename T, typename InterfaceType>
+  binary_expr<InterfaceType> operator*(constant<T> const & lhs, binary_expr<InterfaceType> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_mult(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
   //with ct_constant:
-  template <unsigned long value>
-  binary_expr operator*(binary_expr const & lhs, ct_constant<value> const & rhs)
+  template <long value, typename InterfaceType>
+  binary_expr<InterfaceType> operator*(binary_expr<InterfaceType> const & lhs, ct_constant<value> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_mult(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
-  template <unsigned long value>
-  binary_expr operator*(ct_constant<value> const & lhs, binary_expr const & rhs)
+  template <long value, typename InterfaceType>
+  binary_expr<InterfaceType> operator*(ct_constant<value> const & lhs, binary_expr<InterfaceType> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_mult(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
   //with variable:
-  template <unsigned long id>
-  binary_expr operator*(binary_expr const & lhs, variable<id> const & rhs)
+  template <unsigned long id, typename InterfaceType>
+  binary_expr<InterfaceType> operator*(binary_expr<InterfaceType> const & lhs, variable<id> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_mult(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
-  template <unsigned long id>
-  binary_expr operator*(variable<id> const & lhs, binary_expr const & rhs)
+  template <unsigned long id, typename InterfaceType>
+  binary_expr<InterfaceType> operator*(variable<id> const & lhs, binary_expr<InterfaceType> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_mult(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
   //with plain numeric type (see notes on numeric_type_proxy)
-  binary_expr operator*(binary_expr const & lhs, numeric_type_proxy rhs)
+  template <typename InterfaceType, typename NumericT>
+  binary_expr<InterfaceType> operator*(binary_expr<InterfaceType> const & lhs, numeric_type_proxy<NumericT> rhs)
   {
-    return binary_expr(lhs.clone(), new op_mult(), constant<numeric_type>(rhs.get()).clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(), constant<NumericT>(rhs.get()).clone());
   }
 
-  binary_expr operator*(numeric_type_proxy lhs, binary_expr const & rhs)
+  template <typename InterfaceType, typename NumericT>
+  binary_expr<InterfaceType> operator*(numeric_type_proxy<NumericT> lhs, binary_expr<InterfaceType> const & rhs)
   {
-    return binary_expr(constant<numeric_type>(lhs.get()).clone(), new op_mult(), rhs.clone());
+    return binary_expr<InterfaceType>(constant<NumericT>(lhs.get()).clone(), new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
 
@@ -262,79 +274,87 @@ namespace viennamath
   /////////////////////////////////// operator/ ///////////////////////////////////
 
   //with other binary expression:
-  binary_expr operator/(binary_expr const & lhs, binary_expr const & rhs)
+  template <typename InterfaceType>
+  binary_expr<InterfaceType> operator/(binary_expr<InterfaceType> const & lhs, binary_expr<InterfaceType> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_div(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_div<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
   
   //with unary expression:
-  binary_expr operator/(binary_expr const & lhs, unary_expr const & rhs)
+  template <typename InterfaceType>
+  binary_expr<InterfaceType> operator/(binary_expr<InterfaceType> const & lhs, unary_expr<InterfaceType> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_div(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_div<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
   
   
   //with expression:
-  template <typename LHS, typename OP, typename RHS>
-  binary_expr operator/(binary_expr const & lhs, ct_expr<LHS, OP, RHS> const & rhs)
+  template <typename LHS, typename OP, typename RHS, typename InterfaceType>
+  binary_expr<InterfaceType> operator/(binary_expr<InterfaceType> const & lhs, ct_expr<LHS, OP, RHS> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_div(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_div<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
   
-  template <typename LHS, typename OP, typename RHS>
-  binary_expr operator/(ct_expr<LHS, OP, RHS> const & lhs, binary_expr const & rhs)
+  template <typename LHS, typename OP, typename RHS, typename InterfaceType>
+  binary_expr<InterfaceType> operator/(ct_expr<LHS, OP, RHS> const & lhs, binary_expr<InterfaceType> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_div(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_div<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
   //with constant:
-  template <typename T>
-  binary_expr operator/(binary_expr const & lhs, constant<T> const & rhs)
+  template <typename T, typename InterfaceType>
+  binary_expr<InterfaceType> operator/(binary_expr<InterfaceType> const & lhs, constant<T> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_div(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_div<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
-  template <typename T>
-  binary_expr operator/(constant<T> const & lhs, binary_expr const & rhs)
+  template <typename T, typename InterfaceType>
+  binary_expr<InterfaceType> operator/(constant<T> const & lhs, binary_expr<InterfaceType> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_div(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_div<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
   //with ct_constant:
-  template <unsigned long value>
-  binary_expr operator/(binary_expr const & lhs, ct_constant<value> const & rhs)
+  template <long value, typename InterfaceType>
+  binary_expr<InterfaceType> operator/(binary_expr<InterfaceType> const & lhs, ct_constant<value> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_div(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_div<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
-  template <unsigned long value>
-  binary_expr operator/(ct_constant<value> const & lhs, binary_expr const & rhs)
+  template <long value, typename InterfaceType>
+  binary_expr<InterfaceType> operator/(ct_constant<value> const & lhs, binary_expr<InterfaceType> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_div(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_div<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
   //with variable:
-  template <unsigned long id>
-  binary_expr operator/(binary_expr const & lhs, variable<id> const & rhs)
+  template <unsigned long id, typename InterfaceType>
+  binary_expr<InterfaceType> operator/(binary_expr<InterfaceType> const & lhs, variable<id> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_div(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_div<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
-  template <unsigned long id>
-  binary_expr operator/(variable<id> const & lhs, binary_expr const & rhs)
+  template <unsigned long id, typename InterfaceType>
+  binary_expr<InterfaceType> operator/(variable<id> const & lhs, binary_expr<InterfaceType> const & rhs)
   {
-    return binary_expr(lhs.clone(), new op_div(), rhs.clone());
+    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_div<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
   }
 
   //with plain numeric type (see notes on numeric_type_proxy)
-  binary_expr operator/(binary_expr const & lhs, numeric_type_proxy rhs)
+  template <typename InterfaceType>
+  binary_expr<InterfaceType> operator/(binary_expr<InterfaceType> const & lhs, default_numeric_type rhs)
   {
-    return binary_expr(lhs.clone(), new op_div(), constant<numeric_type>(rhs.get()).clone());
+    return binary_expr<InterfaceType>(lhs.clone(),
+                                      new op_binary<op_div<typename InterfaceType::numeric_type>, InterfaceType>(),
+                                      constant<typename InterfaceType::numeric_type>(rhs).clone());
   }
 
-  binary_expr operator/(numeric_type_proxy lhs, binary_expr const & rhs)
+  template <typename InterfaceType>
+  binary_expr<InterfaceType> operator/(default_numeric_type lhs, binary_expr<InterfaceType> const & rhs)
   {
-    return binary_expr(constant<numeric_type>(lhs.get()).clone(), new op_div(), rhs.clone());
+    return binary_expr<InterfaceType>(new constant<typename InterfaceType::numeric_type>(lhs),
+                                      new op_binary<op_div<typename InterfaceType::numeric_type>, InterfaceType>(),
+                                      rhs.clone());
   }
 
 

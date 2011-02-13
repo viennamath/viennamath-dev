@@ -17,18 +17,22 @@
 
 #include <ostream>
 #include "viennamath/forwards.h"
-#include "viennamath/expression_compile_time.hpp"
+//#include "viennamath/expression_compile_time.hpp"
+#include "viennamath/expression_interface.hpp"
 //#include "viennamath/expression_run_time.hpp"
 
 namespace viennamath
 {
   
   //per default, we assume floating point constants, which cannot be tackled with template arguments
-  template <typename ScalarType>
-  class constant : public expression_interface
+  template <typename ScalarType, /* see forwards.h for default argument */
+            typename InterfaceType /* see forwards.h for default argument */>
+  class constant : public InterfaceType
   {
-      typedef constant<ScalarType>     self_type;
+      typedef constant<ScalarType, InterfaceType>     self_type;
     public:
+      typedef typename InterfaceType::numeric_type    numeric_type;
+      
       explicit constant(ScalarType s_) : s(s_) {};
 
       self_type operator() () const
@@ -45,8 +49,8 @@ namespace viennamath
       operator ScalarType() const { return s; }
       
       //interface requirements:
-      expression_interface * clone() const { return new constant<ScalarType>(s); }
-      numeric_type eval(std::vector<double> const & v) const { return s; }
+      InterfaceType * clone() const { return new constant<ScalarType>(s); }
+      numeric_type eval(std::vector<numeric_type> const & v) const { return s; }
       numeric_type eval(numeric_type v) const { return s; }
       bool is_constant() const { return true; }
       std::string str() const
@@ -57,18 +61,18 @@ namespace viennamath
       }
       numeric_type unwrap() const { return s; }
       
-      expression_interface * substitute(const expr & e,
-                                        const expr & repl) const
+      InterfaceType * substitute(const InterfaceType * e,
+                                 const InterfaceType * repl) const
       {
         return clone();
       };    
       
-      bool equal(const expression_interface * other) const
+      bool equal(const InterfaceType * other) const
       {
-        return dynamic_cast< const constant<ScalarType> *>(other) != NULL;
+        return dynamic_cast< const self_type *>(other) != NULL;
       }
       
-      expression_interface * diff(const expr & diff_var) const
+      InterfaceType * diff(const InterfaceType * diff_var) const
       {
         return new constant<ScalarType>(0);
       }

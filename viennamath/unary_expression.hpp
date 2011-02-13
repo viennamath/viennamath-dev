@@ -21,26 +21,35 @@
 #include <memory>
 #include "viennamath/forwards.h"
 #include "viennamath/constant.hpp"
+#include "viennamath/unary_op_tags.hpp"
 #include "viennamath/expression_compile_time.hpp"
+#include "viennamath/op_interface.hpp"
+#include "viennamath/expression_interface.hpp"
 
 namespace viennamath
 {
   
   //A run time expression
-  class unary_expr : public expression_interface
+  template <typename InterfaceType /* see forwards.h for default argument */>
+  class unary_expr : public InterfaceType
   {
+    typedef op_interface<InterfaceType>                    op_interface_type;
+    typedef op_unary<op_id<typename InterfaceType::numeric_type>, InterfaceType>  op_unary_id_type;
+    
     public:
-//       explicit expr(expression_interface * lhs,
+      typedef typename InterfaceType::numeric_type         numeric_type;
+      
+//       explicit expr(InterfaceType * lhs,
 //                     op_interface         * op,
-//                     expression_interface * rhs) : lhs_(lhs), op_(op), rhs_(rhs) {}
+//                     InterfaceType * rhs) : lhs_(lhs), op_(op), rhs_(rhs) {}
       unary_expr() {}
 
-      explicit unary_expr(expression_interface * lhs,
-                          op_interface         * op) : expr_(lhs),
-                                                       op_(op) {}
+      explicit unary_expr(InterfaceType * lhs,
+                          op_interface_type * op) : expr_(lhs),
+                                                    op_(op) {}
                                                   
-      explicit unary_expr(expression_interface * lhs) : expr_(lhs), 
-                                                        op_(new op_unary<op_id>()) {}
+      explicit unary_expr(InterfaceType * lhs) : expr_(lhs), 
+                                                 op_(new op_unary_id_type()) {}
                     
       /*template <typename LHS, typename OP, typename RHS>
       explicit expr(LHS const & lhs, OP const & op, RHS const & rhs) 
@@ -52,20 +61,20 @@ namespace viennamath
       explicit unary_expr(ct_expr<LHS, OP, RHS> const & other) : op_(new OP())
       {
         std::cout << "Constructing from expression " << other << std::endl;
-        expr_ = std::auto_ptr<expression_interface>(other.lhs().clone());
+        expr_ = std::auto_ptr<InterfaceType>(other.lhs().clone());
       }
 
       template <unsigned long id>
       explicit unary_expr(variable<id> const & other) : expr_(other.clone()),
-                                                 op_(new op_unary<op_id>())  {}
+                                                        op_(new op_unary_id_type())  {}
 
       template <typename T>
       explicit unary_expr(constant<T> const & other) : expr_(other.clone()),
-                                              op_(op_unary<op_id>().clone()) {}
+                                                       op_(new op_unary_id_type()) {}
 
       template <long value>
       explicit unary_expr(ct_constant<value> const & other) : expr_(other.clone()),
-                                                     op_(new op_unary<op_id>()) {}
+                                                              op_(new op_unary_id_type()) {}
 
       //Copy CTOR:
       unary_expr(unary_expr const & other) : expr_(other.expr_->clone()), 
@@ -75,23 +84,23 @@ namespace viennamath
       template <typename LHS, typename OP, typename RHS>
       unary_expr & operator=(ct_expr<LHS, OP, RHS> const & other) 
       {
-        expr_ = std::auto_ptr<expression_interface>(other.lhs().clone());
-        op_ = std::auto_ptr<op_interface>(new OP());
+        expr_ = std::auto_ptr<InterfaceType>(other.lhs().clone());
+        op_ = std::auto_ptr<op_interface_type>(new OP());
         return *this;
       }
 
       unary_expr & operator=(unary_expr const & other) 
       {
-        expr_ = std::auto_ptr<expression_interface>(other.lhs()->clone());
-        op_  = std::auto_ptr<op_interface>(other.op()->clone());
+        expr_ = std::auto_ptr<InterfaceType>(other.lhs_->clone());
+        op_  = std::auto_ptr<op_interface_type>(other.op_->clone());
         return *this;
       }
 
       template <typename ScalarType>
       unary_expr & operator=(constant<ScalarType> const & other)
       {
-        expr_ = std::auto_ptr<expression_interface>(other.clone());
-        op_  = std::auto_ptr<op_interface>(new op_unary<op_id>());
+        expr_ = std::auto_ptr<InterfaceType>(other.clone());
+        op_  = std::auto_ptr<op_interface_type>(new op_unary_id_type());
         return *this;
       }
 
@@ -103,13 +112,13 @@ namespace viennamath
 
       unary_expr & operator=(numeric_type value)
       {
-        expr_ = std::auto_ptr<expression_interface>(new constant<numeric_type>(value));
-        op_  = std::auto_ptr<op_interface>(new op_unary<op_id>());
+        expr_ = std::auto_ptr<InterfaceType>(new constant<numeric_type>(value));
+        op_  = std::auto_ptr<op_interface_type>(new op_unary_id_type());
         return *this;
       }
 
-      const expression_interface   * lhs() const { return expr_.get(); }
-      const op_interface           * op()  const { return op_.get(); }
+      //const InterfaceType     * lhs() const { return expr_.get(); }
+      //const op_interface_type * op()  const { return op_.get(); }
       
       ///////////////// evaluation: ///////////////////////////////
       
@@ -176,24 +185,21 @@ namespace viennamath
       //virtual functions for evaluations
       numeric_type eval(std::vector<double> const & v) const
       {
-        return op_->apply(expr_.get(), expr_.get(), v);
+        return op_->apply(expr_.get()->eval(v));
       }
 
       numeric_type eval(numeric_type val) const
       {
-        return op_->apply(expr_.get(), expr_.get(), val);
+        return op_->apply(expr_.get()->eval(val));
       }
 
       ///////////////////// substitution /////////////////////////////
       
       
-      expression_interface * optimize() const
+      InterfaceType * optimize() const
       {
         if (expr_->is_constant())
-          return new constant<numeric_type>(op_->apply(expr_->unwrap(), 
-                                                       numeric_type() //argument is ignored, since constant expression
-                                                      ) 
-                                           );
+          return new constant<numeric_type>( op_->apply(expr_->unwrap()) );
 
         //TODO: Unwrap op_id()
         
@@ -202,7 +208,7 @@ namespace viennamath
       
     
       ///////// other interface requirements ////////////////////////
-      expression_interface * clone() const { return new unary_expr(expr_->clone(), op_->clone()); }
+      InterfaceType * clone() const { return new unary_expr(expr_->clone(), op_->clone()); }
       std::string str() const
       {
         std::stringstream ss;
@@ -217,45 +223,46 @@ namespace viennamath
       {
         //if (op_->is_unary())
         //  return lhs_->unwrap();
-        return op_->apply(expr_->unwrap(), expr_->unwrap());
+        return op_->apply(expr_->unwrap());
       }
       
-      bool is_constant() const { return expr_->is_constant(); };
+      //bool is_constant() const { return expr_->is_constant(); };
       
-      expression_interface * substitute(const expr & e,
-                                        const expr & repl) const
+      InterfaceType * substitute(const InterfaceType * e,
+                                 const InterfaceType * repl) const
       {
-        if (equal(e.get()))
-          return repl.get()->clone();
+        if (equal(e))
+          return repl->clone();
         
         return new unary_expr(expr_->substitute(e, repl),
                               op_->clone());
       };
       
-      bool equal(const expression_interface * other) const
+      bool equal(const InterfaceType * other) const
       {
         if (dynamic_cast<const unary_expr *>(other) != NULL)
         {
            const unary_expr * temp = dynamic_cast<const unary_expr *>(other);
            
-           return expr_->equal(temp->lhs())
-                       && op_->equal(temp->op());
+           return expr_->equal(temp->expr_.get())
+                  && op_->equal(temp->op_.get());
         }
         return expr_->equal(other); 
       }
       
-      expression_interface * diff(const expr & diff_var) const
+      InterfaceType * diff(const InterfaceType * diff_var) const
       {
-        return op_->diff(expr_.get(), expr_.get(), diff_var);
+        return op_->diff(expr_.get(), diff_var);
       }
       
     private:
-      std::auto_ptr<expression_interface>  expr_;
-      std::auto_ptr<op_interface>          op_;
+      std::auto_ptr<InterfaceType>      expr_;
+      std::auto_ptr<op_interface_type>  op_;
   };
   
   
-  std::ostream& operator<<(std::ostream & stream, unary_expr const & e)
+  template <typename InterfaceType>
+  std::ostream& operator<<(std::ostream & stream, unary_expr<InterfaceType> const & e)
   {
     stream << "unary" 
            << e.str()
