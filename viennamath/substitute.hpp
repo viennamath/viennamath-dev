@@ -61,12 +61,30 @@ namespace viennamath
     return expr<InterfaceType>(temp.get()->optimize());
   }
 
+  template <typename InterfaceType>
+  expr<InterfaceType> substitute(unary_expr<InterfaceType> const & search,
+                                 expr<InterfaceType> const & repl,
+                                 expr<InterfaceType> const & e)
+  {
+    expr<InterfaceType> temp(e.get()->substitute(&search, repl.get()));
+    return expr<InterfaceType>(temp.get()->optimize());
+  }
+
   template <typename InterfaceType, typename ReplacementType>
   expr<InterfaceType> substitute(binary_expr<InterfaceType> const & search,
                                  ReplacementType const & repl,
                                  expr<InterfaceType> const & e)
   {
     expr<InterfaceType> temp(e.get()->substitute(&search, &repl));
+    return expr<InterfaceType>(temp.get()->optimize());
+  }
+
+  template <typename InterfaceType>
+  expr<InterfaceType> substitute(expr<InterfaceType> const & search,
+                                 expr<InterfaceType> const & repl,
+                                 expr<InterfaceType> const & e)
+  {
+    expr<InterfaceType> temp(e.get()->substitute(search.get(), repl.get()));
     return expr<InterfaceType>(temp.get()->optimize());
   }
 

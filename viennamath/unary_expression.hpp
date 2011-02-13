@@ -255,6 +255,8 @@ namespace viennamath
         return op_->diff(expr_.get(), diff_var);
       }
       
+      const InterfaceType * lhs() const { return expr_.get(); }
+      
     private:
       std::auto_ptr<InterfaceType>      expr_;
       std::auto_ptr<op_interface_type>  op_;

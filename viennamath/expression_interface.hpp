@@ -49,7 +49,7 @@ namespace viennamath
                                                 
       virtual bool equal(const expression_interface * other) const = 0;
       
-      //virtual const expression_interface               * lhs() const { return this; };
+      virtual const expression_interface               * lhs() const { return this; };
       //virtual const op_interface<expression_interface> *          op() const { return NULL; }  //primitives do not have an operator   //TODO: This is a showstopper! Provide something better here!
       //virtual const expression_interface               * rhs() const { return NULL; } //unary expressions do not have a right-hand side
 

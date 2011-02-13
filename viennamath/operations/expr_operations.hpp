@@ -35,7 +35,16 @@ namespace viennamath
                                       new op_binary<op_plus<typename InterfaceType::numeric_type>, InterfaceType>(),
                                       rhs.clone());
   }
-  
+
+  template <typename InterfaceType>
+  binary_expr<InterfaceType> operator+(binary_expr<InterfaceType> const & lhs,
+                                       expr<InterfaceType> const & rhs)
+  {
+    return binary_expr<InterfaceType>(lhs.clone(),
+                                      new op_binary<op_plus<typename InterfaceType::numeric_type>, InterfaceType>(),
+                                      rhs.get()->clone());
+  }
+
   //with unary expression:
   template <typename InterfaceType>
   binary_expr<InterfaceType> operator+(expr<InterfaceType> const & lhs,
