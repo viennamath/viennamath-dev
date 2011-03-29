@@ -16,7 +16,7 @@
 #define VIENNAMATH_VARIABLE_OPERATION_CPP
 
 #include "viennamath/constant.hpp"
-#include "viennamath/vector.hpp"
+#include "viennamath/ct_vector.hpp"
 #include "viennamath/binary_expression.hpp"
 #include "viennamath/expression_compile_time.hpp"
 #include "viennamath/variable.hpp"

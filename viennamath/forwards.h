@@ -62,13 +62,13 @@ namespace viennamath
   struct ct_index {};
   
   template <typename T0>
-  class vector_1;
+  class ct_vector_1;
   
   template <typename T0, typename T1>
-  class vector_2;
+  class ct_vector_2;
   
   template <typename T0, typename T1, typename T2>
-  class vector_3;
+  class ct_vector_3;
  
   
   /////// run time expression stuff ///////

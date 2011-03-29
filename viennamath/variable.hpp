@@ -16,7 +16,7 @@
 #define VIENNAMATH_VARIABLE_CPP
 
 #include "viennamath/constant.hpp"
-#include "viennamath/vector.hpp"
+#include "viennamath/ct_vector.hpp"
 #include "viennamath/expression_interface.hpp"
 
 #include <assert.h>
@@ -63,13 +63,13 @@ namespace viennamath
   //vector_1:
   template <typename T0,
             long id>
-  struct variable_traits <vector_1<T0>, 
+  struct variable_traits <ct_vector_1<T0>, 
                           id>
   {
-    typedef typename type_by_index<vector_1<T0>, id>::result_type   return_type;
+    typedef typename type_by_index<ct_vector_1<T0>, id>::result_type   return_type;
     
     //per default, access id-th element;
-    static return_type get(vector_1<T0> const & v)
+    static return_type get(ct_vector_1<T0> const & v)
     {
       return v[ct_index<id>()];
     }
@@ -78,13 +78,13 @@ namespace viennamath
   //vector_2:
   template <typename T0, typename T1,
             long id>
-  struct variable_traits <vector_2<T0, T1>, 
+  struct variable_traits <ct_vector_2<T0, T1>, 
                           id>
   {
-    typedef typename type_by_index<vector_2<T0, T1>, id>::result_type   return_type;
+    typedef typename type_by_index<ct_vector_2<T0, T1>, id>::result_type   return_type;
     
     //per default, access id-th element;
-    static return_type get(vector_2<T0, T1> const & v)
+    static return_type get(ct_vector_2<T0, T1> const & v)
     {
       return v[ct_index<id>()];
     }
@@ -93,13 +93,13 @@ namespace viennamath
   //vector_3:
   template <typename T0, typename T1, typename T2,
             long id>
-  struct variable_traits <vector_3<T0, T1, T2>, 
+  struct variable_traits <ct_vector_3<T0, T1, T2>, 
                           id>
   {
-    typedef typename type_by_index<vector_3<T0, T1, T2>, id>::result_type   return_type;
+    typedef typename type_by_index<ct_vector_3<T0, T1, T2>, id>::result_type   return_type;
     
     //per default, access id-th element;
-    static return_type get(vector_3<T0, T1, T2> const & v)
+    static return_type get(ct_vector_3<T0, T1, T2> const & v)
     {
       return v[ct_index<id>()];
     }

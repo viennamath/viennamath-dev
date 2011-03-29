@@ -12,8 +12,8 @@
 
 
 
-#ifndef VIENNAMATH_VECTOR_CPP
-#define VIENNAMATH_VECTOR_CPP
+#ifndef VIENNAMATH_CT_VECTOR_HPP
+#define VIENNAMATH_CT_VECTOR_HPP
 
 #include <ostream>
 #include "viennamath/forwards.h"
@@ -22,12 +22,12 @@ namespace viennamath
 {
   //compile time vector with one element
   template <typename T0>
-  class vector_1
+  class ct_vector_1
   {
     public:
       typedef T0   type_0;
       
-      vector_1(T0 const & t0) : t0_(t0) {};
+      ct_vector_1(T0 const & t0) : t0_(t0) {};
     
       T0 const & operator[](ct_index<0>) const { return t0_; }
       
@@ -45,7 +45,7 @@ namespace viennamath
   };
   
   template <typename T0>
-  std::ostream& operator<<(std::ostream & stream, vector_1<T0> const & v)
+  std::ostream& operator<<(std::ostream & stream, ct_vector_1<T0> const & v)
   {
     stream << "vector<" << v[ct_index<0>()] << ">";
     return stream;
@@ -55,13 +55,13 @@ namespace viennamath
   
   //compile time vector with two elements
   template <typename T0, typename T1>
-  class vector_2
+  class ct_vector_2
   {
     public:
       typedef T0   type_0;
       typedef T1   type_1;
       
-      vector_2(T0 const & t0, T1 const & t1) : t0_(t0), t1_(t1) {};
+      ct_vector_2(T0 const & t0, T1 const & t1) : t0_(t0), t1_(t1) {};
     
       T0 const & operator[](ct_index<0>) const { return t0_; }
       T1 const & operator[](ct_index<1>) const { return t1_; }
@@ -81,7 +81,7 @@ namespace viennamath
   };
 
   template <typename T0, typename T1>
-  std::ostream& operator<<(std::ostream & stream, vector_2<T0, T1> const & v)
+  std::ostream& operator<<(std::ostream & stream, ct_vector_2<T0, T1> const & v)
   {
     stream << "vector<" << v[ct_index<0>()] << ", " << v[ct_index<1>()] << ">";
     return stream;
@@ -90,14 +90,17 @@ namespace viennamath
   
   //compile time vector with three elements
   template <typename T0, typename T1, typename T2>
-  class vector_3
+  class ct_vector_3
   {
     public:
       typedef T0   type_0;
       typedef T1   type_1;
       typedef T2   type_2;
+      //typedef typename type_0::numeric_type  numeric_type;
       
-      vector_3(T0 const & t0, T1 const & t1, T2 const & t2) : t0_(t0), t1_(t1), t2_(t2) {};
+      ct_vector_3(T0 const & t0, T1 const & t1, T2 const & t2) : t0_(t0), t1_(t1), t2_(t2) {};
+      
+      ct_vector_3(const ct_vector_3 & other) : t0_(other.t0_), t1_(other.t1_), t2_(other.t2_) {}
     
       T0 const & operator[](ct_index<0>) const { return t0_; }
       T1 const & operator[](ct_index<1>) const { return t1_; }
@@ -113,13 +116,13 @@ namespace viennamath
       size_t size() const { return 3; }
 
     private:
-      T0 const & t0_;
-      T1 const & t1_;
-      T2 const & t2_;
+      T0 t0_;
+      T1 t1_;
+      T2 t2_;
   };
   
   template <typename T0, typename T1, typename T2>
-  std::ostream& operator<<(std::ostream & stream, vector_3<T0, T1, T2> const & v)
+  std::ostream& operator<<(std::ostream & stream, ct_vector_3<T0, T1, T2> const & v)
   {
     stream << "vector<" << v[ct_index<0>()] << ", "
                         << v[ct_index<1>()] << ", "                            
@@ -130,21 +133,21 @@ namespace viennamath
   
   /***************** make_vector() - A helper function for creation vector_X types */
   template <typename T0>
-  vector_1<T0> make_vector(T0 const & t0)
+  ct_vector_1<T0> make_vector(T0 const & t0)
   {
-    return vector_1<T0>(t0);
+    return ct_vector_1<T0>(t0);
   }
   
   template <typename T0, typename T1>
-  vector_2<T0, T1> make_vector(T0 const & t0, T1 const & t1)
+  ct_vector_2<T0, T1> make_vector(T0 const & t0, T1 const & t1)
   {
-    return vector_2<T0, T1>(t0, t1);
+    return ct_vector_2<T0, T1>(t0, t1);
   }
   
   template <typename T0, typename T1, typename T2>
-  vector_3<T0, T1, T2> make_vector(T0 const & t0, T1 const & t1, T2 const & t2)
+  ct_vector_3<T0, T1, T2> make_vector(T0 const & t0, T1 const & t1, T2 const & t2)
   {
-    return vector_3<T0, T1, T2>(t0, t1, t2);
+    return ct_vector_3<T0, T1, T2>(t0, t1, t2);
   }
   
 } //namespace viennamath

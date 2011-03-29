@@ -45,7 +45,7 @@ int main()
   //         Integral form of Poisson equation:
   //         \int_\Omega grad(u) * grad(v) dx  = \int_\Omega v dx
   //
-  equation<> weak_form_general = weak_form(strong_form);
+  equation<> weak_form_general = make_weak_form(strong_form);
   
   std::cout << "General weak form: " << std::endl;
   std::cout << "  " << weak_form_general << std::endl;

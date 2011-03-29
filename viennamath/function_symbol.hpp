@@ -27,27 +27,43 @@ namespace viennamath
   /////// two common tags:
   
   //tag for an unknown function:
-  template <unsigned long id>
-  struct unknown_tag
+  template <unsigned long ct_id = 0>
+  class unknown_tag
   {
-    static std::string str()
-    {
-      std::stringstream ss;
-      ss << "unknown[" << id << "]";
-      return ss.str();
-    }
+    public:
+      unknown_tag(unsigned long rt_id) : id_(rt_id) {}
+      
+      static std::string str()
+      {
+        std::stringstream ss;
+        ss << "unknown[" << ct_id << "]";
+        return ss.str();
+      }
+      
+      unsigned long id() { return id_; }  //retrieve runtime ID
+      
+    private:
+      unsigned long id_;
   };
     
   //tag for test function:
-  template <unsigned long id>
-  struct test_tag
+  template <unsigned long ct_id = 0>
+  class test_tag
   {
-    static std::string str()
-    {
-      std::stringstream ss;
-      ss << "test[" << id << "]";
-      return ss.str();
-    }
+    public:
+      test_tag(unsigned long rt_id) : id_(rt_id) {}
+      
+      static std::string str()
+      {
+        std::stringstream ss;
+        ss << "test[" << ct_id << "]";
+        return ss.str();
+      }
+      
+      unsigned long id() { return id_; }  //retrieve runtime ID
+      
+    private:
+      unsigned long id_;
   };
   
   
@@ -66,6 +82,7 @@ namespace viennamath
       typedef function_symbol<Tag>     self_type;
     public:
       typedef typename InterfaceType::numeric_type      numeric_type;
+      typedef InterfaceType                             interface_type;
       
       explicit function_symbol() {};
 
@@ -102,6 +119,16 @@ namespace viennamath
       }
   };
 
+  
+  
+  template <typename Tag, typename InterfaceType>
+  std::ostream& operator<<(std::ostream & stream, function_symbol<Tag, InterfaceType> const & v)
+  {
+    stream << v.str();
+    return stream;
+  }
+  
+  
   
 }
 

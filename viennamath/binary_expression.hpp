@@ -214,7 +214,7 @@ namespace viennamath
       }
 
       template <typename T0>
-      numeric_type operator()(viennamath::vector_1<T0> const & v) const
+      numeric_type operator()(viennamath::ct_vector_1<T0> const & v) const
       {
         std::vector<double> stl_v(1);
         stl_v[0] = v[ct_index<0>()];
@@ -222,7 +222,7 @@ namespace viennamath
       }
 
       template <typename T0, typename T1>
-      numeric_type operator()(viennamath::vector_2<T0, T1> const & v) const
+      numeric_type operator()(viennamath::ct_vector_2<T0, T1> const & v) const
       {
         std::vector<double> stl_v(2);
         stl_v[0] = v[ct_index<0>()];
@@ -231,7 +231,7 @@ namespace viennamath
       }
       
       template <typename T0, typename T1, typename T2>
-      numeric_type operator()(viennamath::vector_3<T0, T1, T2> const & v) const
+      numeric_type operator()(viennamath::ct_vector_3<T0, T1, T2> const & v) const
       {
         std::vector<double> stl_v(3);
         stl_v[0] = v[ct_index<0>()];

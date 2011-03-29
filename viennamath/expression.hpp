@@ -18,7 +18,7 @@
 #include "viennamath/forwards.h"
 #include "viennamath/promote_traits.hpp"
 
-#include "viennamath/vector.hpp"
+#include "viennamath/ct_vector.hpp"
 #include "viennamath/ct_constant.hpp"
 #include "viennamath/function_symbol.hpp"
 #include "viennamath/constant.hpp"

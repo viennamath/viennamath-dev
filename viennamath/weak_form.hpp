@@ -35,7 +35,7 @@ namespace viennamath
 
   //tries to automatically derive the weak formulation from the strong formulation
   template <typename InterfaceType>
-  equation<InterfaceType> weak_form(equation<InterfaceType> const & strong_formulation)
+  equation<InterfaceType> make_weak_form(equation<InterfaceType> const & strong_formulation)
   {
     //TODO: More general derivations: Transform div(expr) to expr * grad(v)
     expr<InterfaceType> new_lhs(substitute( laplace(function_symbol<unknown_tag<0>, InterfaceType>()),

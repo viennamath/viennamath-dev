@@ -377,7 +377,13 @@ namespace viennamath
   {
     return unary_expr<InterfaceType>(other.clone(), new op_unary<op_gradient<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
-  
+
+  template <typename InterfaceType>
+  unary_expr<InterfaceType> grad(unary_expr<InterfaceType> const & other)
+  {
+    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_gradient<typename InterfaceType::numeric_type>, InterfaceType>()); 
+  }
+
 
   //
   // divergence 
@@ -407,9 +413,20 @@ namespace viennamath
   {
     return unary_expr<InterfaceType>(other.clone(), new op_unary<op_divergence<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
-
   
-  //convenience function: laplace:
+  template <typename T, typename InterfaceType>
+  unary_expr<InterfaceType> div(function_symbol<T, InterfaceType> const & other)
+  {
+    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_divergence<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    
+    //return unary_expr<typename T1::interface_type>(other.clone(), new op_unary<op_divergence<typename T1::numeric_type>, typename T1::interface_type>()); 
+  }
+  
+  
+  
+  //  
+  // Convenience Function: Laplace operator
+  //
   template <typename InterfaceType>
   unary_expr<InterfaceType> laplace(expr<InterfaceType> const & other)
   {
