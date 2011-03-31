@@ -5,14 +5,14 @@
 #include <assert.h>
 
 #include "viennamath/expression.hpp"
-#include "viennamath/eval.hpp"
-#include "viennamath/substitute.hpp"
-#include "viennamath/diff.hpp"
+#include "viennamath/manipulation/eval.hpp"
+#include "viennamath/manipulation/substitute.hpp"
+#include "viennamath/manipulation/diff.hpp"
 
-#include "viennamath/equation.hpp"
-#include "viennamath/integral.hpp"
+#include "viennamath/runtime/equation.hpp"
+#include "viennamath/manipulation/integral.hpp"
 #include "viennamath/weak_form.hpp"
-#include "viennamath/apply_coordinate_system.hpp"
+#include "viennamath/manipulation/apply_coordinate_system.hpp"
 
 
 using namespace viennamath;

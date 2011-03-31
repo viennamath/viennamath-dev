@@ -19,9 +19,9 @@
 #include <vector>
 #include <math.h>
 #include "viennamath/forwards.h"
-#include "viennamath/unary_op_tags.hpp"
-#include "viennamath/unary_expression.hpp"
-#include "viennamath/binary_expression.hpp"
+#include "viennamath/compiletime/unary_op_tags.hpp"
+#include "viennamath/runtime/unary_expression.hpp"
+#include "viennamath/runtime/binary_expression.hpp"
 
 namespace viennamath
 {

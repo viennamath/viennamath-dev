@@ -5,8 +5,8 @@
 #include <assert.h>
 
 #include "viennamath/expression.hpp"
-#include "viennamath/eval.hpp"
-#include "viennamath/substitute.hpp"
+#include "viennamath/manipulation/eval.hpp"
+#include "viennamath/manipulation/substitute.hpp"
 
 template <typename E, typename T, typename U>
 void operations_test(E & e, T const & t, U const & u, double t2, double u2)

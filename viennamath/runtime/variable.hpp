@@ -15,9 +15,10 @@
 #ifndef VIENNAMATH_VARIABLE_CPP
 #define VIENNAMATH_VARIABLE_CPP
 
-#include "viennamath/constant.hpp"
-#include "viennamath/ct_vector.hpp"
-#include "viennamath/expression_interface.hpp"
+#include "viennamath/compiletime/ct_vector.hpp"
+
+#include "viennamath/runtime/constant.hpp"
+#include "viennamath/runtime/expression_interface.hpp"
 
 #include <assert.h>
 

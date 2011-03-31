@@ -18,7 +18,7 @@
 #include <ostream>
 #include "viennamath/forwards.h"
 //#include "viennamath/expression_compile_time.hpp"
-#include "viennamath/expression_interface.hpp"
+#include "viennamath/runtime/expression_interface.hpp"
 //#include "viennamath/expression_run_time.hpp"
 
 namespace viennamath

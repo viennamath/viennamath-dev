@@ -16,9 +16,9 @@
 #define VIENNAMATH_UNARY_EXPRESSION_OPERATIONS_CPP
 
 #include "viennamath/forwards.h"
-#include "viennamath/expression_compile_time.hpp"
-#include "viennamath/binary_expression.hpp"
-#include "viennamath/binary_operators.hpp"
+#include "viennamath/compiletime/ct_expr.hpp"
+#include "viennamath/runtime/binary_expression.hpp"
+#include "viennamath/runtime/binary_operators.hpp"
 
 namespace viennamath
 {

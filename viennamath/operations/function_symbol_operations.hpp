@@ -17,8 +17,7 @@
 
 #include <ostream>
 #include "viennamath/forwards.h"
-#include "viennamath/promote_traits.hpp"
-#include "viennamath/binary_operators.hpp"
+#include "viennamath/runtime/binary_operators.hpp"
 
 namespace viennamath
 {

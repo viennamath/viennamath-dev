@@ -16,22 +16,24 @@
 #define VIENNAMATH_EXPRESSION_CPP
 
 #include "viennamath/forwards.h"
-#include "viennamath/promote_traits.hpp"
+#include "viennamath/compiletime/promote_traits.hpp"
 
-#include "viennamath/ct_vector.hpp"
-#include "viennamath/ct_constant.hpp"
-#include "viennamath/function_symbol.hpp"
-#include "viennamath/constant.hpp"
-#include "viennamath/variable.hpp"
-#include "viennamath/expression_compile_time.hpp"
-#include "viennamath/binary_expression.hpp"
-#include "viennamath/unary_expression.hpp"
-#include "viennamath/expr.hpp"
+#include "viennamath/compiletime/ct_vector.hpp"
+#include "viennamath/compiletime/ct_constant.hpp"
+//#include "viennamath/compiletime/ct_function_symbol.hpp"
+#include "viennamath/compiletime/ct_constant.hpp"
+#include "viennamath/compiletime/ct_expr.hpp"
 
-#include "viennamath/unary_operators.hpp"
-#include "viennamath/unary_operators_manipulation.hpp"
-#include "viennamath/binary_operators.hpp"
-#include "viennamath/binary_operators_manipulation.hpp"
+#include "viennamath/runtime/variable.hpp"
+#include "viennamath/runtime/binary_expression.hpp"
+#include "viennamath/runtime/binary_operators.hpp"
+#include "viennamath/runtime/unary_expression.hpp"
+#include "viennamath/runtime/unary_operators.hpp"
+#include "viennamath/runtime/expr.hpp"
+
+#include "viennamath/manipulation/unary_operators_manipulation.hpp"
+#include "viennamath/manipulation/binary_operators_manipulation.hpp"
+
 #include "viennamath/operations/expression_compile_time_operations.hpp"
 #include "viennamath/operations/binary_expression_operations.hpp"
 #include "viennamath/operations/unary_expression_operations.hpp"

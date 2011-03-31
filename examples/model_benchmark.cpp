@@ -5,8 +5,8 @@
 #include <math.h>
 
 #include "viennamath/expression.hpp"
-#include "viennamath/eval.hpp"
-#include "viennamath/substitute.hpp"
+#include "viennamath/manipulation/eval.hpp"
+#include "viennamath/manipulation/substitute.hpp"
 
 #include "examples/benchmark-utils.hpp"
 

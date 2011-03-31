@@ -16,8 +16,8 @@
 #define VIENNAMATH_INTEGRAL_HPP
 
 #include "viennamath/forwards.h"
-#include "viennamath/unary_expression.hpp"
-#include "viennamath/unary_op_tags.hpp"
+#include "viennamath/runtime/unary_expression.hpp"
+#include "viennamath/compiletime/unary_op_tags.hpp"
 
 namespace viennamath
 {

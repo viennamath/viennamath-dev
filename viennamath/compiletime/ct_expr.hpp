@@ -12,12 +12,12 @@
 
 
 
-#ifndef VIENNAMATH_CT_EXPR_CPP
-#define VIENNAMATH_CT_EXPR_CPP
+#ifndef VIENNAMATH_CT_EXPR_HPP
+#define VIENNAMATH_CT_EXPR_HPP
 
 #include <ostream>
 #include "viennamath/forwards.h"
-#include "viennamath/binary_op_tags.hpp"
+#include "viennamath/compiletime/binary_op_tags.hpp"
 
 namespace viennamath
 {

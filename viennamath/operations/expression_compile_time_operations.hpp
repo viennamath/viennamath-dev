@@ -16,10 +16,10 @@
 #define VIENNAMATH_EXPRESSION_COMPILE_TIME_OPERATIONS_CPP
 
 #include "viennamath/forwards.h"
-#include "viennamath/constant.hpp"
-#include "viennamath/variable.hpp"
-#include "viennamath/expression_compile_time.hpp"
-#include "viennamath/binary_operators.hpp"
+#include "viennamath/runtime/constant.hpp"
+#include "viennamath/runtime/variable.hpp"
+#include "viennamath/compiletime/ct_expr.hpp"
+#include "viennamath/runtime/binary_operators.hpp"
 
 namespace viennamath
 {

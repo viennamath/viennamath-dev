@@ -19,10 +19,9 @@
 #include <sstream>
 #include <memory>
 #include "viennamath/forwards.h"
-#include "viennamath/constant.hpp"
-#include "viennamath/ct_constant.hpp"
-#include "viennamath/expression_compile_time.hpp"
-#include "viennamath/expression.hpp"
+#include "viennamath/runtime/constant.hpp"
+#include "viennamath/compiletime/ct_constant.hpp"
+#include "viennamath/compiletime/ct_expr.hpp"
 
 namespace viennamath
 {

@@ -16,7 +16,7 @@
 #define VIENNAMATH_CT_EVAL_HPP
 
 #include "viennamath/forwards.h"
-#include "viennamath/variable.hpp"
+#include "viennamath/runtime/variable.hpp"
 
 namespace viennamath
 {

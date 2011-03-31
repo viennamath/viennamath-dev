@@ -5,8 +5,8 @@
 #include <assert.h>
 
 #include "viennamath/expression.hpp"
-#include "viennamath/eval.hpp"
-#include "viennamath/ct_eval.hpp"
+#include "viennamath/manipulation/eval.hpp"
+#include "viennamath/compiletime/ct_eval.hpp"
 
 
 template <typename T, typename U>

@@ -16,12 +16,12 @@
 #define VIENNAMATH_APPLY_COORDINATE_SYSTEM_HPP
 
 #include "viennamath/forwards.h"
-#include "viennamath/unary_operators_manipulation.hpp"
-#include "viennamath/integral.hpp"
-#include "viennamath/substitute.hpp"
-#include "viennamath/diff.hpp"
-#include "viennamath/equation.hpp"
-#include "viennamath/function_symbol.hpp"
+#include "viennamath/manipulation/unary_operators_manipulation.hpp"
+#include "viennamath/manipulation/integral.hpp"
+#include "viennamath/manipulation/substitute.hpp"
+#include "viennamath/manipulation/diff.hpp"
+#include "viennamath/runtime/equation.hpp"
+#include "viennamath/runtime/function_symbol.hpp"
 
 namespace viennamath
 {

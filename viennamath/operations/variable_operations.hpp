@@ -15,11 +15,11 @@
 #ifndef VIENNAMATH_VARIABLE_OPERATION_CPP
 #define VIENNAMATH_VARIABLE_OPERATION_CPP
 
-#include "viennamath/constant.hpp"
-#include "viennamath/ct_vector.hpp"
-#include "viennamath/binary_expression.hpp"
-#include "viennamath/expression_compile_time.hpp"
-#include "viennamath/variable.hpp"
+#include "viennamath/runtime/constant.hpp"
+#include "viennamath/compiletime/ct_vector.hpp"
+#include "viennamath/runtime/binary_expression.hpp"
+#include "viennamath/compiletime/ct_expr.hpp"
+#include "viennamath/runtime/variable.hpp"
 
 #include <assert.h>
 

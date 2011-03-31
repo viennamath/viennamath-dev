@@ -19,13 +19,13 @@
 #include <sstream>
 #include <memory>
 #include "viennamath/forwards.h"
-#include "viennamath/constant.hpp"
-#include "viennamath/binary_operators.hpp"
-#include "viennamath/expression_compile_time.hpp"
-#include "viennamath/unary_expression.hpp"
-#include "viennamath/op_interface.hpp"
-#include "viennamath/expression_interface.hpp"
-#include "viennamath/unary_operators.hpp"
+#include "viennamath/runtime/constant.hpp"
+#include "viennamath/runtime/binary_operators.hpp"
+#include "viennamath/compiletime/ct_expr.hpp"
+#include "viennamath/runtime/unary_expression.hpp"
+#include "viennamath/runtime/op_interface.hpp"
+#include "viennamath/runtime/expression_interface.hpp"
+#include "viennamath/runtime/unary_operators.hpp"
 
 namespace viennamath
 {

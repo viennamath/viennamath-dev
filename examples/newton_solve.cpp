@@ -5,11 +5,11 @@
 #include <assert.h>
 
 #include "viennamath/expression.hpp"
-#include "viennamath/eval.hpp"
-#include "viennamath/substitute.hpp"
-#include "viennamath/diff.hpp"
+#include "viennamath/manipulation/eval.hpp"
+#include "viennamath/manipulation/substitute.hpp"
+#include "viennamath/manipulation/diff.hpp"
 
-#include "viennamath/equation.hpp"
+#include "viennamath/runtime/equation.hpp"
 
 template <typename InterfaceType>
 std::vector<double> newton_solve_impl(std::vector<viennamath::equation<InterfaceType> > const & equations,
