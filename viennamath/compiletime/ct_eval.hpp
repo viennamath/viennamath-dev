@@ -345,13 +345,13 @@ namespace viennamath
   };
   
   template <unsigned long id, typename VectorType>
-  struct ct_evaluation< variable<id>, VectorType>
+  struct ct_evaluation< ct_variable<id>, VectorType>
   {
     typedef typename type_by_index<VectorType, id>::result_type  result_type;
   };
   
   template <long value>
-  struct ct_evaluation< variable<0>, ct_constant<value> >
+  struct ct_evaluation< ct_variable<0>, ct_constant<value> >
   {
     typedef ct_constant<value>  result_type;
   };
@@ -380,7 +380,7 @@ namespace viennamath
   };
   
   template <unsigned long id>
-  struct is_ct_evaluable< variable<id> >
+  struct is_ct_evaluable< ct_variable<id> >
   {
     enum { return_value = 1 };
   };

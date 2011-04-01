@@ -58,6 +58,7 @@ namespace viennamath
         rhs_ = std::auto_ptr<InterfaceType>(new binary_expr<InterfaceType>(other.rhs()));
       }
 
+      /////////////// special case: ct_constant involved: ////////////////////////
       template <typename LHS, typename OP, long value>
       explicit binary_expr(ct_expr<LHS, OP, ct_constant<value> > const & other) : op_(new op_binary<OP, InterfaceType>())
       {
@@ -82,10 +83,52 @@ namespace viennamath
         rhs_ = std::auto_ptr<InterfaceType>(new constant<numeric_type, InterfaceType>(OP::apply(value1, value2)));
       }
 
-      template <unsigned long id>
-      explicit binary_expr(variable<id> const & other) : lhs_(other.clone()),
-                                                         op_(new op_unary_id_type()),
-                                                         rhs_(other.clone()) {}
+      /////////////////// special case: ct_variable involved: //////////////////////////
+      template <typename LHS, typename OP, id_type id>
+      explicit binary_expr(ct_expr<LHS, OP, ct_variable<id> > const & other) : op_(new op_binary<OP, InterfaceType>())
+      {
+        //std::cout << "Constructing from expression " << other << std::endl;
+        lhs_ = std::auto_ptr<InterfaceType>(new binary_expr<InterfaceType>(other.lhs()));
+        rhs_ = std::auto_ptr<InterfaceType>(new variable<InterfaceType>(id));
+      }
+
+      template <id_type id, typename OP, typename RHS>
+      explicit binary_expr(ct_expr<ct_variable<id>, OP, RHS > const & other) : op_(new op_binary<OP, InterfaceType>())
+      {
+        //std::cout << "Constructing from expression " << other << std::endl;
+        lhs_ = std::auto_ptr<InterfaceType>(new variable<InterfaceType>(id));
+        rhs_ = std::auto_ptr<InterfaceType>(new binary_expr<InterfaceType>(other.rhs()));
+      }
+
+      template <id_type id1, typename OP, id_type id2>
+      explicit binary_expr(ct_expr<ct_variable<id1>, OP, ct_variable<id2> > const & other) : op_(new op_binary<OP, InterfaceType>())
+      {
+        //std::cout << "Constructing from expression " << other << " to " << OP::apply(value1, value2) << std::endl;
+        lhs_ = std::auto_ptr<InterfaceType>(new variable<InterfaceType>(id1));
+        rhs_ = std::auto_ptr<InterfaceType>(new variable<InterfaceType>(id2));
+      }
+
+      //resolving ambiguities:
+      template <id_type id, typename OP, long value>
+      explicit binary_expr(ct_expr<ct_variable<id>, OP, ct_constant<value> > const & other) : op_(new op_binary<OP, InterfaceType>())
+      {
+        //std::cout << "Constructing from expression " << other << " to " << OP::apply(value1, value2) << std::endl;
+        lhs_ = std::auto_ptr<InterfaceType>(new variable<InterfaceType>(id));
+        rhs_ = std::auto_ptr<InterfaceType>(new constant<numeric_type, InterfaceType>(value));
+      }
+
+      template <id_type id, typename OP, long value>
+      explicit binary_expr(ct_expr<ct_constant<value>, OP, ct_variable<id> > const & other) : op_(new op_binary<OP, InterfaceType>())
+      {
+        //std::cout << "Constructing from expression " << other << " to " << OP::apply(value1, value2) << std::endl;
+        lhs_ = std::auto_ptr<InterfaceType>(new constant<numeric_type, InterfaceType>(value));
+        rhs_ = std::auto_ptr<InterfaceType>(new variable<InterfaceType>(id));
+      }
+
+      /*explicit binary_expr(variable<InterfaceType> const & other) : lhs_(other.clone()),
+                                                                    op_(new op_unary_id_type()),
+                                                                    rhs_(other.clone()) {}
+
 
       template <typename T>
       explicit binary_expr(constant<T> const & other) : lhs_(other.clone()),
@@ -95,7 +138,7 @@ namespace viennamath
       template <long value>
       explicit binary_expr(ct_constant<value> const & other) : lhs_(new constant<numeric_type, InterfaceType>(value)),
                                                                op_(new op_unary_id_type()),
-                                                               rhs_(new constant<numeric_type, InterfaceType>(value)) {}
+                                                               rhs_(new constant<numeric_type, InterfaceType>(value)) {}  */
 
       //Copy CTOR:
       binary_expr(binary_expr const & other) : lhs_(other.lhs_->clone()), 

@@ -25,6 +25,7 @@ namespace viennamath
 {
   //basic numeric type (customize to your needs)
   typedef double              default_numeric_type;
+  typedef unsigned long       id_type;
 
   //allows to use plain numeric_type with template operator+, operator-, operator*, operator/ without running into problems with ambiguity
   //
@@ -57,6 +58,9 @@ namespace viennamath
   template <long value_>
   class ct_constant;
 
+  template <unsigned long id = 0>
+  struct ct_variable;
+  
   // compile time vector
   template <long i>
   struct ct_index {};
@@ -78,7 +82,7 @@ namespace viennamath
   
   typedef expression_interface<default_numeric_type>     default_interface_type;
   
-  template <unsigned long id = 0, typename InterfaceType = default_interface_type>
+  template <typename InterfaceType = default_interface_type>
   struct variable;
 
   template <typename ScalarType = default_numeric_type, typename InterfaceType = default_interface_type>
@@ -155,7 +159,7 @@ namespace viennamath
   template <typename NumericT>
   struct op_log10;
 
-  template <unsigned long id, typename NumericT>
+  template <typename NumericT>
   struct op_partial_deriv;
  
   /////// equation types /////////

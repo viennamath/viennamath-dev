@@ -151,15 +151,15 @@ namespace viennamath
   };
 
   //
-  // partial derivative with respect to variable<id>:
+  // symbolic partial derivative with respect to variable<id>:
   //
-  template <unsigned long id, typename NumericT>
+  template <typename NumericT>
   struct op_partial_deriv
   {
     static std::string str()
     {
       std::stringstream ss;
-      ss << "partial_deriv<" << id << ">";
+      ss << "partial_deriv<" << 0 << ">";
       return ss.str();
     }
     

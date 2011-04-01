@@ -126,7 +126,7 @@ namespace viennamath
   //with variable:
   template <typename InterfaceType, unsigned long id>
   binary_expr<InterfaceType> operator+(expr<InterfaceType> const & lhs,
-                                       variable<id, InterfaceType> const & rhs)
+                                       variable<InterfaceType> const & rhs)
   {
     return binary_expr<InterfaceType>(lhs.get()->clone(),
                                       new op_binary<op_plus<typename InterfaceType::numeric_type>, InterfaceType>(),
@@ -134,7 +134,7 @@ namespace viennamath
   }
 
   template <typename InterfaceType, unsigned long id>
-  binary_expr<InterfaceType> operator+(variable<id, InterfaceType> const & lhs,
+  binary_expr<InterfaceType> operator+(variable<InterfaceType> const & lhs,
                                        expr<InterfaceType> const & rhs)
   {
     //std::cout << "Generating compound: " << lhs << "+" << rhs << std::endl;
@@ -264,7 +264,7 @@ namespace viennamath
   //with variable:
   template <typename InterfaceType, unsigned long id>
   binary_expr<InterfaceType> operator-(expr<InterfaceType> const & lhs,
-                                       variable<id, InterfaceType> const & rhs)
+                                       variable<InterfaceType> const & rhs)
   {
     return binary_expr<InterfaceType>(lhs.get()->clone(),
                                       new op_binary<op_minus<typename InterfaceType::numeric_type>, InterfaceType>(),
@@ -272,7 +272,7 @@ namespace viennamath
   }
 
   template <typename InterfaceType, unsigned long id>
-  binary_expr<InterfaceType> operator-(variable<id, InterfaceType> const & lhs,
+  binary_expr<InterfaceType> operator-(variable<InterfaceType> const & lhs,
                                        expr<InterfaceType> const & rhs)
   {
     return binary_expr<InterfaceType>(lhs.clone(),
@@ -402,7 +402,7 @@ namespace viennamath
   //with variable:
   template <typename InterfaceType, unsigned long id>
   binary_expr<InterfaceType> operator*(expr<InterfaceType> const & lhs,
-                                       variable<id, InterfaceType> const & rhs)
+                                       variable<InterfaceType> const & rhs)
   {
     return binary_expr<InterfaceType>(lhs.get()->clone(),
                                       new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(),
@@ -410,7 +410,7 @@ namespace viennamath
   }
 
   template <typename InterfaceType, unsigned long id>
-  binary_expr<InterfaceType> operator*(variable<id, InterfaceType> const & lhs,
+  binary_expr<InterfaceType> operator*(variable<InterfaceType> const & lhs,
                                        expr<InterfaceType> const & rhs)
   {
     return binary_expr<InterfaceType>(lhs.clone(),
@@ -537,7 +537,7 @@ namespace viennamath
   //with variable:
   template <typename InterfaceType, unsigned long id>
   binary_expr<InterfaceType> operator/(expr<InterfaceType> const & lhs,
-                                       variable<id, InterfaceType> const & rhs)
+                                       variable<InterfaceType> const & rhs)
   {
     return binary_expr<InterfaceType>(lhs.get()->clone(),
                                       new op_binary<op_div<typename InterfaceType::numeric_type>, InterfaceType>(),
@@ -545,7 +545,7 @@ namespace viennamath
   }
 
   template <typename InterfaceType, unsigned long id>
-  binary_expr<InterfaceType> operator/(variable<id, InterfaceType> const & lhs,
+  binary_expr<InterfaceType> operator/(variable<InterfaceType> const & lhs,
                                        expr<InterfaceType> const & rhs)
   {
     return binary_expr<InterfaceType>(lhs.clone(),

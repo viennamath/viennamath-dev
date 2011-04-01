@@ -56,8 +56,7 @@ namespace viennamath
         expr_ = std::auto_ptr<InterfaceType>(new binary_expr<InterfaceType>(other));
       }
 
-      template <unsigned long id>
-      expr<InterfaceType>(variable<id, InterfaceType> const & other)
+      expr<InterfaceType>(variable<InterfaceType> const & other)
       {
         expr_ = std::auto_ptr<InterfaceType>(other.clone());
       }
@@ -118,8 +117,7 @@ namespace viennamath
         return *this;
       }
       
-      template <unsigned long id>
-      expr & operator=(variable<id, InterfaceType> const & other)
+      expr & operator=(variable<InterfaceType> const & other)
       {
         expr_ = std::auto_ptr<InterfaceType>(other.clone());
         return *this;

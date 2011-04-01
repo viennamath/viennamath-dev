@@ -52,10 +52,16 @@ namespace viennamath
     return unary_expr<InterfaceType>(other.clone(), new op_unary<op_exp<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
-  template <unsigned long id, typename InterfaceType>
-  unary_expr<InterfaceType> exp(variable<id, InterfaceType> const & other)
+  template <typename InterfaceType>
+  unary_expr<InterfaceType> exp(variable<InterfaceType> const & other)
   {
     return unary_expr<InterfaceType>(other.clone(), new op_unary<op_exp<typename InterfaceType::numeric_type>, InterfaceType>()); 
+  }
+
+  template <id_type id>
+  unary_expr<> exp(ct_variable<id> const & other)
+  {
+    return unary_expr<>(new variable<>(id), new op_unary<op_exp<default_numeric_type> >()); 
   }
 
   template <typename InterfaceType>
@@ -95,10 +101,16 @@ namespace viennamath
     return unary_expr<InterfaceType>(other.clone(), new op_unary<op_sin<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
-  template <unsigned long id, typename InterfaceType>
-  unary_expr<InterfaceType> sin(variable<id, InterfaceType> const & other)
+  template <typename InterfaceType>
+  unary_expr<InterfaceType> sin(variable<InterfaceType> const & other)
   {
     return unary_expr<InterfaceType>(other.clone(), new op_unary<op_sin<typename InterfaceType::numeric_type>, InterfaceType>()); 
+  }
+
+  template <id_type id>
+  unary_expr<> sin(ct_variable<id> const & other)
+  {
+    return unary_expr<>(new variable<>(id), new op_unary<op_sin<default_numeric_type> >()); 
   }
 
   template <typename LHS, typename OP, typename RHS>
@@ -135,12 +147,18 @@ namespace viennamath
     return unary_expr<InterfaceType>(other.clone(), new op_unary<op_cos<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
-  template <unsigned long id, typename InterfaceType>
-  unary_expr<InterfaceType> cos(variable<id, InterfaceType> const & other)
+  template <typename InterfaceType>
+  unary_expr<InterfaceType> cos(variable<InterfaceType> const & other)
   {
     return unary_expr<InterfaceType>(other.clone(), new op_unary<op_cos<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
+  template <id_type id>
+  unary_expr<> cos(ct_variable<id> const & other)
+  {
+    return unary_expr<>(new variable<>(id), new op_unary<op_cos<default_numeric_type> >()); 
+  }
+  
   template <typename LHS, typename OP, typename RHS>
   unary_expr<> cos(ct_expr<LHS, OP, RHS> const & other)
   {
@@ -177,12 +195,18 @@ namespace viennamath
     return unary_expr<InterfaceType>(other.clone(), new op_unary<op_tan<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
-  template <unsigned long id, typename InterfaceType>
-  unary_expr<InterfaceType> tan(variable<id, InterfaceType> const & other)
+  template <typename InterfaceType>
+  unary_expr<InterfaceType> tan(variable<InterfaceType> const & other)
   {
     return unary_expr<InterfaceType>(other.clone(), new op_unary<op_tan<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
+  template <id_type id>
+  unary_expr<> tan(ct_variable<id> const & other)
+  {
+    return unary_expr<>(new variable<>(id), new op_unary<op_tan<default_numeric_type> >()); 
+  }
+  
   template <typename LHS, typename OP, typename RHS>
   unary_expr<> tan(ct_expr<LHS, OP, RHS> const & other)
   {
@@ -214,12 +238,18 @@ namespace viennamath
     return unary_expr<InterfaceType>(other.clone(), new op_unary<op_fabs<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
-  template <unsigned long id, typename InterfaceType>
-  unary_expr<InterfaceType> fabs(variable<id, InterfaceType> const & other)
+  template <typename InterfaceType>
+  unary_expr<InterfaceType> fabs(variable<InterfaceType> const & other)
   {
     return unary_expr<InterfaceType>(other.clone(), new op_unary<op_fabs<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
+  template <id_type id>
+  unary_expr<> fabs(ct_variable<id> const & other)
+  {
+    return unary_expr<>(new variable<>(id), new op_unary<op_fabs<default_numeric_type> >()); 
+  }
+  
   template <typename LHS, typename OP, typename RHS>
   unary_expr<> fabs(ct_expr<LHS, OP, RHS> const & other)
   {
@@ -257,12 +287,18 @@ namespace viennamath
     return unary_expr<InterfaceType>(other.clone(), new op_unary<op_sqrt<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
-  template <unsigned long id, typename InterfaceType>
-  unary_expr<InterfaceType> sqrt(variable<id, InterfaceType> const & other)
+  template <typename InterfaceType>
+  unary_expr<InterfaceType> sqrt(variable<InterfaceType> const & other)
   {
     return unary_expr<InterfaceType>(other.clone(), new op_unary<op_sqrt<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
+  template <id_type id>
+  unary_expr<> sqrt(ct_variable<id> const & other)
+  {
+    return unary_expr<>(new variable<>(id), new op_unary<op_sqrt<default_numeric_type> >()); 
+  }
+  
   template <typename LHS, typename OP, typename RHS>
   unary_expr<> sqrt(ct_expr<LHS, OP, RHS> const & other)
   {
@@ -295,12 +331,18 @@ namespace viennamath
     return unary_expr<InterfaceType>(other.clone(), new op_unary<op_log<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
-  template <unsigned long id, typename InterfaceType>
-  unary_expr<InterfaceType> log(variable<id, InterfaceType> const & other)
+  template <typename InterfaceType>
+  unary_expr<InterfaceType> log(variable<InterfaceType> const & other)
   {
     return unary_expr<InterfaceType>(other.clone(), new op_unary<op_log<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
+  template <id_type id>
+  unary_expr<> log(ct_variable<id> const & other)
+  {
+    return unary_expr<>(new variable<>(id), new op_unary<op_log<default_numeric_type> >()); 
+  }
+  
   template <typename LHS, typename OP, typename RHS>
   unary_expr<> log(ct_expr<LHS, OP, RHS> const & other)
   {
@@ -339,12 +381,18 @@ namespace viennamath
     return unary_expr<InterfaceType>(other.clone(), new op_unary<op_log10<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
-  template <unsigned long id, typename InterfaceType>
-  unary_expr<InterfaceType> log10(variable<id, InterfaceType> const & other)
+  template <typename InterfaceType>
+  unary_expr<InterfaceType> log10(variable<InterfaceType> const & other)
   {
     return unary_expr<InterfaceType>(other.clone(), new op_unary<op_log10<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
+  template <id_type id>
+  unary_expr<> log10(ct_variable<id> const & other)
+  {
+    return unary_expr<>(new variable<>(id), new op_unary<op_log10<default_numeric_type> >()); 
+  }
+  
   template <typename LHS, typename OP, typename RHS>
   unary_expr<> log10(ct_expr<LHS, OP, RHS> const & other)
   {
@@ -443,8 +491,8 @@ namespace viennamath
   //
   // partial derivative with respect to variable<id>:
   //
-  template <unsigned long id, typename InterfaceType, typename NumericT>
-  InterfaceType * diff_impl(const InterfaceType * e, op_partial_deriv<id, NumericT>, const InterfaceType * diff_var)
+  template <typename InterfaceType, typename NumericT>
+  InterfaceType * diff_impl(const InterfaceType * e, op_partial_deriv<NumericT>, const InterfaceType * diff_var)
   {
     throw "Cannot evaluate formal partial derivative. Use transformations first.";
     return NULL;

@@ -8,9 +8,9 @@
 
 int main()
 {
-  viennamath::variable<0> x;
-  viennamath::variable<1> y;
-  viennamath::variable<2> z;
+  viennamath::variable<> x(0);
+  viennamath::variable<> y(1);
+  viennamath::variable<> z(2);
   viennamath::constant<double> c4(4.0);
   viennamath::constant<long> c6(6);
   viennamath::ct_constant<8> c8;

@@ -35,9 +35,9 @@ void operations_test(T const & t, U const & u)
 template <typename T>
 void operations_test(T const & t)
 {
-  viennamath::variable<0> x;
-  viennamath::variable<1> y;
-  viennamath::variable<2> z;
+  viennamath::ct_variable<0> x;
+  viennamath::ct_variable<1> y;
+  viennamath::ct_variable<2> z;
   viennamath::ct_constant<5> c5;
   viennamath::ct_constant<7> c7;
   
@@ -71,7 +71,7 @@ struct evaluation_compiletime
   {
     std::cout.precision(17);
     std::cout << viennamath::ct_eval(e, v);
-    viennamath::binary_expr<> temp(viennamath::ct_eval(e, v));
+    viennamath::expr<> temp(viennamath::ct_eval(e, v));
     std::cout <<  "(should: " << ref_solution << ", is: " << temp(1.0) << ")" << std::endl;
     fuzzy_check(temp(1.0), ref_solution);
   }
@@ -107,9 +107,9 @@ void evaluations_test(E const & e, double ref_solution)
 
 int main()
 {
-  viennamath::variable<0> x;
-  viennamath::variable<1> y;
-  viennamath::variable<2> z;
+  viennamath::ct_variable<0> x;
+  viennamath::ct_variable<1> y;
+  viennamath::ct_variable<2> z;
   viennamath::ct_constant<5> c5;
   viennamath::ct_constant<7> c7;
   

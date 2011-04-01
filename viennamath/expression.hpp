@@ -21,7 +21,7 @@
 #include "viennamath/compiletime/ct_vector.hpp"
 #include "viennamath/compiletime/ct_constant.hpp"
 //#include "viennamath/compiletime/ct_function_symbol.hpp"
-#include "viennamath/compiletime/ct_constant.hpp"
+#include "viennamath/compiletime/ct_variable.hpp"
 #include "viennamath/compiletime/ct_expr.hpp"
 
 #include "viennamath/runtime/variable.hpp"
@@ -34,13 +34,14 @@
 #include "viennamath/manipulation/unary_operators_manipulation.hpp"
 #include "viennamath/manipulation/binary_operators_manipulation.hpp"
 
-#include "viennamath/operations/expression_compile_time_operations.hpp"
-#include "viennamath/operations/binary_expression_operations.hpp"
-#include "viennamath/operations/unary_expression_operations.hpp"
-#include "viennamath/operations/expr_operations.hpp"
-#include "viennamath/operations/constant_operations.hpp"
-#include "viennamath/operations/ct_constant_operations.hpp"
-#include "viennamath/operations/variable_operations.hpp"
+#include "viennamath/compiletime/operations/ct_constant.hpp"
+#include "viennamath/compiletime/operations/ct_variable.hpp"
+#include "viennamath/compiletime/operations/ct_expr.hpp"
+#include "viennamath/runtime/operations/binary_expression.hpp"
+#include "viennamath/runtime/operations/unary_expression.hpp"
+#include "viennamath/runtime/operations/expr.hpp"
+#include "viennamath/runtime/operations/constant.hpp"
+#include "viennamath/runtime/operations/variable.hpp"
 #include "viennamath/operations/function_symbol_operations.hpp"
 
 

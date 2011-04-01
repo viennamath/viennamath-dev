@@ -136,7 +136,11 @@ int main()
   */                                              
   
 
-  equation<> weak_form_lame = make_equation( integral(Omega(), tensor_reduce( strain_tensor(u), stress_tensor(v) ), symbolic_tag()), 0);
+  equation<> weak_form_lame = make_equation( 
+  
+  integral(Omega(), tensor_reduce( strain_tensor(u), stress_tensor(v) ), symbolic_tag()),
+   //=                                         
+   0);
   
   
   //check entries in matrix:

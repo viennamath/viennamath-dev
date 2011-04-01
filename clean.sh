@@ -4,7 +4,9 @@ rm *.*~
 rm viennamath/*.*~
 rm viennamath/operations/*.*~
 rm viennamath/compiletime/*.*~
+rm viennamath/compiletime/operations/*.*~
 rm viennamath/runtime/*.*~
+rm viennamath/runtime/operations/*.*~
 rm viennamath/manipulation/*.*~
 rm viennamath/old/*.*~
 rm tests/*.*~

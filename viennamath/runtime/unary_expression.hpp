@@ -64,13 +64,12 @@ namespace viennamath
         expr_ = std::auto_ptr<InterfaceType>(other.lhs().clone());
       }
 
-      template <unsigned long id>
-      explicit unary_expr(variable<id> const & other) : expr_(other.clone()),
-                                                        op_(new op_unary_id_type())  {}
+      explicit unary_expr(variable<InterfaceType> const & other) : expr_(other.clone()),
+                                                                   op_(new op_unary_id_type())  {}
 
       template <typename T>
-      explicit unary_expr(constant<T> const & other) : expr_(other.clone()),
-                                                       op_(new op_unary_id_type()) {}
+      explicit unary_expr(constant<T, InterfaceType> const & other) : expr_(other.clone()),
+                                                                      op_(new op_unary_id_type()) {}
 
       template <long value>
       explicit unary_expr(ct_constant<value> const & other) : expr_(other.clone()),

@@ -65,12 +65,18 @@ namespace viennamath
     return equation<InterfaceType>(lhs, rhs); 
   }
   
-  template <unsigned long id, typename InterfaceType>
-  equation<InterfaceType> make_equation(typename InterfaceType::numeric_type lhs, variable<id, InterfaceType> const & rhs)
+  template <typename InterfaceType>
+  equation<InterfaceType> make_equation(typename InterfaceType::numeric_type lhs, variable<InterfaceType> const & rhs)
   {
     return equation<InterfaceType>(lhs, rhs); 
   }
-  
+
+  template <unsigned long id>
+  equation<> make_equation(default_numeric_type lhs, ct_variable<id> const & rhs)
+  {
+    return equation<>(lhs, rhs); 
+  }
+
   template <typename InterfaceType>
   equation<InterfaceType> make_equation(typename InterfaceType::numeric_type lhs, unary_expr<InterfaceType> const & rhs)
   {
@@ -98,10 +104,16 @@ namespace viennamath
   }
 
   //variable:
-  template <unsigned long id, typename InterfaceType, typename RHSType>
-  equation<InterfaceType> make_equation(variable<id, InterfaceType> const & lhs, RHSType const & rhs)
+  template <typename InterfaceType, typename RHSType>
+  equation<InterfaceType> make_equation(variable<InterfaceType> const & lhs, RHSType const & rhs)
   {
     return equation<InterfaceType>(lhs, rhs); 
+  }
+
+  template <unsigned long id, typename RHSType>
+  equation<> make_equation(ct_variable<id> const & lhs, RHSType const & rhs)
+  {
+    return equation<>(lhs, rhs); 
   }
 
   //function_symbol:

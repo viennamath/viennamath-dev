@@ -23,9 +23,9 @@ namespace viennamath
   
   /////////////////// derivative of runtime expression /////////////////////
 
-  template <unsigned long id, typename InterfaceType>
+  template <typename InterfaceType>
   expr<InterfaceType> diff(binary_expr<InterfaceType> const & e,
-                           variable<id, InterfaceType> const & var)
+                           variable<InterfaceType> const & var)
   {
     expr<InterfaceType> temp(e.diff(&var));
     while (temp.get()->optimizable())
@@ -36,9 +36,9 @@ namespace viennamath
     return temp;
   }
   
-  template <unsigned long id, typename InterfaceType>
+  template <typename InterfaceType>
   expr<InterfaceType> diff(unary_expr<InterfaceType> const & e,
-                           variable<id, InterfaceType> const & var)
+                           variable<InterfaceType> const & var)
   {
     expr<InterfaceType> temp(e.diff(&var));
     while (temp.get()->optimizable())
@@ -49,9 +49,9 @@ namespace viennamath
     return temp;
   }
 
-  template <unsigned long id, typename InterfaceType>
+  template <typename InterfaceType>
   expr<InterfaceType> diff(expr<InterfaceType> const & e,
-                           variable<id, InterfaceType> const & var)
+                           variable<InterfaceType> const & var)
   {
     expr<InterfaceType> temp(e.get()->diff(&var));
     while (temp.get()->optimizable())
@@ -62,20 +62,43 @@ namespace viennamath
     return temp;
   }
 
-  
+  //compile time variable:
+  template <typename InterfaceType, id_type id>
+  expr<InterfaceType> diff(binary_expr<InterfaceType> const & e,
+                           ct_variable<id> const & var)
+  {
+    variable<InterfaceType> temp(id);
+    return diff(e, temp);
+  }
+
+  template <typename InterfaceType, id_type id>
+  expr<InterfaceType> diff(unary_expr<InterfaceType> const & e,
+                           ct_variable<id> const & var)
+  {
+    variable<InterfaceType> temp(id);
+    return diff(e, temp);
+  }
+
+  template <typename InterfaceType, id_type id>
+  expr<InterfaceType> diff(expr<InterfaceType> const & e,
+                           ct_variable<id> const & var)
+  {
+    variable<InterfaceType> temp(id);
+    return diff(e, temp);
+  }
+
   
   //
   // Symbolic differentiation:
   // TODO: Improve for compile time compatibility
   //
   template <typename Tag,
-            typename InterfaceType,
-            unsigned long id_variable>
+            typename InterfaceType>
   expr<InterfaceType> diff(function_symbol<Tag, InterfaceType> const & other,
-                           variable<id_variable, InterfaceType> const & var)
+                           variable<InterfaceType> const & var)
   {
     return expr<InterfaceType>(new unary_expr<InterfaceType>(other.clone(), 
-                                                             new op_unary<op_partial_deriv<id_variable, typename InterfaceType::numeric_type>, InterfaceType >()
+                                                             new op_unary<op_partial_deriv<typename InterfaceType::numeric_type>, InterfaceType >()
                                                             )
                               );
   }
@@ -87,17 +110,16 @@ namespace viennamath
   
   //////////// derivative of a constant: /////////////////////////////////
 
-  template <unsigned long id, typename InterfaceType>
+  template <typename InterfaceType>
   constant<typename InterfaceType::numeric_type> diff(typename InterfaceType::numeric_type value,
-                                                      variable<id, InterfaceType> const & var)
+                                                      variable<InterfaceType> const & var)
   {
     return constant<typename InterfaceType::numeric_type>(0);
   }
   
-  template <typename OtherScalarType, typename InterfaceType,
-            unsigned long id>
+  template <typename OtherScalarType, typename InterfaceType>
   constant<typename InterfaceType::numeric_type> diff(constant<OtherScalarType, InterfaceType> const & c,
-                                                      variable<id, InterfaceType> const & var)
+                                                      variable<InterfaceType> const & var)
   {
     return constant<typename InterfaceType::numeric_type>(0);
   }
@@ -106,19 +128,14 @@ namespace viennamath
 
   template <unsigned long other_id, typename InterfaceType,
             unsigned long id>
-  constant<typename InterfaceType::numeric_type> diff(variable<other_id, InterfaceType> const & c,
-                              variable<id, InterfaceType> const & var)
+  constant<typename InterfaceType::numeric_type> diff(variable<InterfaceType> const & c,
+                                                      variable<InterfaceType> const & var)
   {
+    if (c.id() == var.id())
+      return constant<typename InterfaceType::numeric_type>(1);
+      
     return constant<typename InterfaceType::numeric_type>(0);
   }
-
-  template <unsigned long id, typename InterfaceType>
-  constant<typename InterfaceType::numeric_type> diff(variable<id, InterfaceType> const & c,
-                              variable<id, InterfaceType> const & var)
-  {
-    return constant<typename InterfaceType::numeric_type>(1);
-  }
-
   
   //metafunctions
   
@@ -130,78 +147,78 @@ namespace viennamath
   };
   
   // (u + v)' = u' + v'
-  template <typename LHS, typename RHS, unsigned long id, typename InterfaceType>
-  struct ct_diff<ct_expr<LHS, op_plus<typename InterfaceType::numeric_type>, RHS>,
-                 variable<id, InterfaceType> >
+  template <typename LHS, typename RHS, unsigned long id>
+  struct ct_diff<ct_expr<LHS, op_plus<default_numeric_type>, RHS>,
+                 ct_variable<id> >
   {
-    typedef ct_expr< typename ct_diff<LHS, variable<id, InterfaceType> >::result_type,
-                     op_plus<typename InterfaceType::numeric_type>,
-                        typename ct_diff<RHS, variable<id, InterfaceType> >::result_type >     result_type;    
+    typedef ct_expr< typename ct_diff<LHS, ct_variable<id> >::result_type,
+                     op_plus<default_numeric_type>,
+                        typename ct_diff<RHS, ct_variable<id> >::result_type >     result_type;    
   };
   
   // (u - v)' = u' - v'
-  template <typename LHS, typename RHS, unsigned long id, typename InterfaceType>
-  struct ct_diff<ct_expr<LHS, op_minus<typename InterfaceType::numeric_type>, RHS>,
-                 variable<id, InterfaceType> >
+  template <typename LHS, typename RHS, unsigned long id>
+  struct ct_diff<ct_expr<LHS, op_minus<default_numeric_type>, RHS>,
+                 ct_variable<id> >
   {
-    typedef ct_expr< typename ct_diff<LHS, variable<id, InterfaceType> >::result_type,
-                        op_minus<typename InterfaceType::numeric_type>,
-                        typename ct_diff<RHS, variable<id, InterfaceType> >::result_type >     result_type;    
+    typedef ct_expr< typename ct_diff<LHS, ct_variable<id> >::result_type,
+                        op_minus<default_numeric_type>,
+                        typename ct_diff<RHS, ct_variable<id> >::result_type >     result_type;    
   };
   
   // (u * v)' = u'*v + u*v'
-  template <typename LHS, typename RHS, unsigned long id, typename InterfaceType>
-  struct ct_diff<ct_expr<LHS, op_mult<typename InterfaceType::numeric_type>, RHS>,
-                 variable<id, InterfaceType> >
+  template <typename LHS, typename RHS, unsigned long id>
+  struct ct_diff<ct_expr<LHS, op_mult<default_numeric_type>, RHS>,
+                 ct_variable<id> >
   {
-    typedef ct_expr< ct_expr< typename ct_diff<LHS, variable<id, InterfaceType> >::result_type,
-                                    op_mult<typename InterfaceType::numeric_type>,
+    typedef ct_expr< ct_expr< typename ct_diff<LHS, ct_variable<id> >::result_type,
+                                    op_mult<default_numeric_type>,
                                     RHS>,
-                        op_plus<typename InterfaceType::numeric_type>,            
+                        op_plus<default_numeric_type>,            
                         ct_expr< LHS,
-                                    op_mult<typename InterfaceType::numeric_type>,
-                                    typename ct_diff<RHS, variable<id, InterfaceType> >::result_type >
+                                    op_mult<default_numeric_type>,
+                                    typename ct_diff<RHS, ct_variable<id> >::result_type >
                       >                                                      result_type;    
   };
 
   // (u/v)' = (u'*v - u*v') / v^2
-  template <typename LHS, typename RHS, unsigned long id, typename InterfaceType>
-  struct ct_diff<ct_expr<LHS, op_div<typename InterfaceType::numeric_type>, RHS>,
-                 variable<id, InterfaceType> >
+  template <typename LHS, typename RHS, unsigned long id>
+  struct ct_diff<ct_expr<LHS, op_div<default_numeric_type>, RHS>,
+                 ct_variable<id> >
   {
-    typedef ct_expr< ct_expr< ct_expr< typename ct_diff<LHS, variable<id, InterfaceType> >::result_type,
-                                                op_mult<typename InterfaceType::numeric_type>,
+    typedef ct_expr< ct_expr< ct_expr< typename ct_diff<LHS, ct_variable<id> >::result_type,
+                                                op_mult<default_numeric_type>,
                                                 RHS>,
-                                    op_minus<typename InterfaceType::numeric_type>,            
+                                    op_minus<default_numeric_type>,            
                                     ct_expr< LHS,
-                                                op_mult<typename InterfaceType::numeric_type>,
-                                                typename ct_diff<RHS, variable<id, InterfaceType> >::result_type >
+                                                op_mult<default_numeric_type>,
+                                                typename ct_diff<RHS, ct_variable<id> >::result_type >
                                    >,
-                      op_div<typename InterfaceType::numeric_type>,             
+                      op_div<default_numeric_type>,             
                       ct_expr< RHS,
-                               op_mult<typename InterfaceType::numeric_type>,
+                               op_mult<default_numeric_type>,
                                RHS >
                       >                    result_type;    
   };
   
-  template <unsigned long other_id, typename InterfaceType,
+  template <unsigned long other_id,
             unsigned long id>
-  struct ct_diff< variable<other_id, InterfaceType>,
-                  variable<id, InterfaceType> >
+  struct ct_diff< ct_variable<other_id>,
+                  ct_variable<id> >
   {
     typedef ct_constant<0>    result_type;    
   };
   
-  template <unsigned long id, typename InterfaceType>
-  struct ct_diff< variable<id, InterfaceType>,
-                  variable<id, InterfaceType> >
+  template <unsigned long id>
+  struct ct_diff< ct_variable<id>,
+                  ct_variable<id> >
   {
     typedef ct_constant<1>    result_type;    
   };
   
-  template <long value, unsigned long id, typename InterfaceType>
+  template <long value, unsigned long id>
   struct ct_diff< ct_constant<value>,
-                  variable<id, InterfaceType> >
+                  ct_variable<id> >
   {
     typedef ct_constant<0>    result_type;    
   };
@@ -210,14 +227,14 @@ namespace viennamath
   
   //interface function
   template <typename LHS, typename OP, typename RHS,
-            unsigned long id, typename InterfaceType>
+            unsigned long id>
   typename ct_diff<ct_expr<LHS, OP, RHS>,
-                   variable<id, InterfaceType> >::result_type
+                   ct_variable<id> >::result_type
   diff(ct_expr<LHS, OP, RHS> const & c,
-       variable<id, InterfaceType> const & var)
+       ct_variable<id> const & var)
   {
     return typename ct_diff<ct_expr<LHS, OP, RHS>,
-                            variable<id, InterfaceType> >::result_type();
+                            ct_variable<id> >::result_type();
   }
   
   

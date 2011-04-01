@@ -29,69 +29,69 @@ namespace viennamath
   ////////////////// Operations //////////////////////////////
   
   ////////////// operator+
-  template <unsigned long id, typename InterfaceType, typename LHS, typename OP, typename RHS>
-  ct_expr<variable<id, InterfaceType>,
+  template <typename InterfaceType, typename LHS, typename OP, typename RHS>
+  ct_expr<variable<InterfaceType>,
           op_plus<typename InterfaceType::numeric_type>,
           ct_expr<LHS, OP, RHS> >
-  operator+(variable<id, InterfaceType> const & lhs,
+  operator+(variable<InterfaceType> const & lhs,
             ct_expr<LHS, OP, RHS> const & other)
   {
-    return ct_expr<variable<id, InterfaceType>,
+    return ct_expr<variable<InterfaceType>,
                    op_plus<typename InterfaceType::numeric_type>,
                    ct_expr<LHS, OP, RHS> >(lhs, other);
   }
   
-  template <unsigned long id, typename InterfaceType, unsigned long other_id>
-  ct_expr<variable<id, InterfaceType>,
+  template <typename InterfaceType>
+  ct_expr<variable<InterfaceType>,
           op_plus<typename InterfaceType::numeric_type>,
-          variable<other_id, InterfaceType> >
-  operator+(variable<id, InterfaceType> const & lhs,
-            variable<other_id, InterfaceType> const & other)
+          variable<InterfaceType> >
+  operator+(variable<InterfaceType> const & lhs,
+            variable<InterfaceType> const & other)
   {
-    return ct_expr<variable<id, InterfaceType>,
+    return ct_expr<variable<InterfaceType>,
                    op_plus<typename InterfaceType::numeric_type>,
-                   variable<other_id, InterfaceType> >(lhs, other);
+                   variable<InterfaceType> >(lhs, other);
   }
 
-  template <unsigned long id, typename InterfaceType>
+  template <typename InterfaceType>
   ct_expr<ct_constant<2>,
           op_mult<typename InterfaceType::numeric_type>,
-          variable<id, InterfaceType> >
-  operator+(variable<id, InterfaceType> const & lhs,
-            variable<id, InterfaceType> const & other)
+          variable<InterfaceType> >
+  operator+(variable<InterfaceType> const & lhs,
+            variable<InterfaceType> const & other)
   {
     return ct_expr<ct_constant<2>,
                    op_mult<typename InterfaceType::numeric_type>,
-                   variable<id, InterfaceType> >(ct_constant<2>(), lhs);
+                   variable<InterfaceType> >(ct_constant<2>(), lhs);
   }
 
-  template <unsigned long id, typename InterfaceType, typename OtherScalarType>
-  ct_expr<variable<id, InterfaceType>,
+  template <typename InterfaceType, typename OtherScalarType>
+  ct_expr<variable<InterfaceType>,
           op_plus<typename InterfaceType::numeric_type>,
           constant<OtherScalarType, InterfaceType> >
-  operator+(variable<id, InterfaceType> const & lhs,
+  operator+(variable<InterfaceType> const & lhs,
             constant<OtherScalarType, InterfaceType> const & other)
   {
-    return ct_expr<variable<id, InterfaceType>,
+    return ct_expr<variable<InterfaceType>,
                    op_plus<typename InterfaceType::numeric_type>,
                    constant<OtherScalarType, InterfaceType> >(lhs, other);
   }
 
-  template <unsigned long id, typename InterfaceType, long value>
-  ct_expr<variable<id, InterfaceType>,
+  template <typename InterfaceType, long value>
+  ct_expr<variable<InterfaceType>,
           op_plus<typename InterfaceType::numeric_type>,
           ct_constant<value> >
-  operator+(variable<id, InterfaceType> const & lhs,
+  operator+(variable<InterfaceType> const & lhs,
             ct_constant<value> const & other)
   {
-    return ct_expr<variable<id, InterfaceType>,
+    return ct_expr<variable<InterfaceType>,
                    op_plus<typename InterfaceType::numeric_type>,
                    ct_constant<value> >(lhs, other);
   }
 
   //with plain numeric type (see notes on numeric_type_proxy<NumericT>)
-  template <unsigned long id, typename InterfaceType>
-  binary_expr<InterfaceType> operator+(variable<id, InterfaceType> const & lhs,
+  template <typename InterfaceType>
+  binary_expr<InterfaceType> operator+(variable<InterfaceType> const & lhs,
                                        default_numeric_type rhs)
   {
     return binary_expr<InterfaceType>(lhs.clone(),
@@ -100,9 +100,9 @@ namespace viennamath
                                      );
   }
 
-  template <unsigned long id, typename InterfaceType>
+  template <typename InterfaceType>
   binary_expr<InterfaceType> operator+(default_numeric_type lhs,
-                                       variable<id, InterfaceType> const & rhs)
+                                       variable<InterfaceType> const & rhs)
   {
     return binary_expr<InterfaceType>(new constant<typename InterfaceType::numeric_type, InterfaceType>(lhs),
                                       new op_binary<op_plus<typename InterfaceType::numeric_type>, InterfaceType>(),
@@ -113,65 +113,65 @@ namespace viennamath
 
 
   ////////// operator-
-  template <unsigned long id, typename InterfaceType, typename LHS, typename OP, typename RHS>
-  ct_expr<variable<id, InterfaceType>,
+  template <typename InterfaceType, typename LHS, typename OP, typename RHS>
+  ct_expr<variable<InterfaceType>,
           op_minus<typename InterfaceType::numeric_type>,
           ct_expr<LHS, OP, RHS> >
-  operator-(variable<id, InterfaceType> const & lhs,
+  operator-(variable<InterfaceType> const & lhs,
             ct_expr<LHS, OP, RHS> const & other)
   {
-    return ct_expr<variable<id, InterfaceType>,
+    return ct_expr<variable<InterfaceType>,
                    op_minus<typename InterfaceType::numeric_type>,
                    ct_expr<LHS, OP, RHS> >(lhs, other);
   }
   
-  template <unsigned long id, typename InterfaceType, unsigned long other_id>
-  ct_expr<variable<id, InterfaceType>,
+  template <typename InterfaceType>
+  ct_expr<variable<InterfaceType>,
           op_minus<typename InterfaceType::numeric_type>,
-          variable<other_id, InterfaceType> >
-  operator-(variable<id, InterfaceType> const & lhs,
-            variable<other_id, InterfaceType> const & other)
+          variable<InterfaceType> >
+  operator-(variable<InterfaceType> const & lhs,
+            variable<InterfaceType> const & other)
   {
-    return ct_expr<variable<id, InterfaceType>,
+    return ct_expr<variable<InterfaceType>,
                    op_minus<typename InterfaceType::numeric_type>,
-                   variable<other_id, InterfaceType> >(lhs, other);
+                   variable<InterfaceType> >(lhs, other);
   }
 
-  template <unsigned long id, typename InterfaceType>
+  template <typename InterfaceType>
   ct_constant<0>
-  operator-(variable<id, InterfaceType> const & lhs,
-            variable<id, InterfaceType> const & other)
+  operator-(variable<InterfaceType> const & lhs,
+            variable<InterfaceType> const & other)
   {
     return ct_constant<0>();
   }
 
-  template <unsigned long id, typename InterfaceType, typename OtherScalarType>
-  ct_expr<variable<id, InterfaceType>,
+  template <typename InterfaceType, typename OtherScalarType>
+  ct_expr<variable<InterfaceType>,
           op_minus<typename InterfaceType::numeric_type>,
           constant<OtherScalarType, InterfaceType> >
-  operator-(variable<id, InterfaceType> const & lhs,
+  operator-(variable<InterfaceType> const & lhs,
             constant<OtherScalarType, InterfaceType> const & other)
   {
-    return ct_expr<variable<id, InterfaceType>,
+    return ct_expr<variable<InterfaceType>,
                    op_minus<typename InterfaceType::numeric_type>,
                    constant<OtherScalarType, InterfaceType> >(lhs, other);
   }
   
-  template <unsigned long id, typename InterfaceType, long value>
-  ct_expr<variable<id, InterfaceType>,
+  template <typename InterfaceType, long value>
+  ct_expr<variable<InterfaceType>,
           op_minus<typename InterfaceType::numeric_type>,
           ct_constant<value> >
-  operator-(variable<id, InterfaceType> const & lhs,
+  operator-(variable<InterfaceType> const & lhs,
             ct_constant<value> const & other)
   {
-    return ct_expr<variable<id, InterfaceType>,
+    return ct_expr<variable<InterfaceType>,
                    op_minus<typename InterfaceType::numeric_type>,
                    ct_constant<value> >(lhs, other);
   }
 
   //with plain numeric type (see notes on numeric_type_proxy<NumericT>)
-  template <unsigned long id, typename InterfaceType>
-  binary_expr<InterfaceType> operator-(variable<id, InterfaceType> const & lhs,
+  template <typename InterfaceType>
+  binary_expr<InterfaceType> operator-(variable<InterfaceType> const & lhs,
                                        default_numeric_type rhs)
   {
     return binary_expr<InterfaceType>(lhs.clone(),
@@ -180,9 +180,9 @@ namespace viennamath
                                      );
   }
 
-  template <unsigned long id, typename InterfaceType>
+  template <typename InterfaceType>
   binary_expr<InterfaceType> operator-(default_numeric_type lhs,
-                                       variable<id, InterfaceType> const & rhs)
+                                       variable<InterfaceType> const & rhs)
   {
     return binary_expr<InterfaceType>(new constant<typename InterfaceType::numeric_type, InterfaceType>(lhs),
                                       new op_binary<op_minus<typename InterfaceType::numeric_type>, InterfaceType>(),
@@ -195,58 +195,58 @@ namespace viennamath
 
 
   ////////////// operator*
-  template <unsigned long id, typename InterfaceType, typename LHS, typename OP, typename RHS>
-  ct_expr<variable<id, InterfaceType>,
+  template <typename InterfaceType, typename LHS, typename OP, typename RHS>
+  ct_expr<variable<InterfaceType>,
           op_mult<typename InterfaceType::numeric_type>,
           ct_expr<LHS, OP, RHS> >
-  operator*(variable<id, InterfaceType> const & lhs,
+  operator*(variable<InterfaceType> const & lhs,
             ct_expr<LHS, OP, RHS> const & other)
   {
-    return ct_expr<variable<id, InterfaceType>,
+    return ct_expr<variable<InterfaceType>,
                    op_mult<typename InterfaceType::numeric_type>,
                    ct_expr<LHS, OP, RHS> >(lhs, other);
   }
   
-  template <unsigned long id, typename InterfaceType, unsigned long other_id>
-  ct_expr<variable<id, InterfaceType>,
+  template <typename InterfaceType>
+  ct_expr<variable<InterfaceType>,
           op_mult<typename InterfaceType::numeric_type>,
-          variable<other_id, InterfaceType> >
-  operator*(variable<id, InterfaceType> const & lhs,
-            variable<other_id, InterfaceType> const & other)
+          variable<InterfaceType> >
+  operator*(variable<InterfaceType> const & lhs,
+            variable<InterfaceType> const & other)
   {
-    return ct_expr<variable<id, InterfaceType>,
+    return ct_expr<variable<InterfaceType>,
                    op_mult<typename InterfaceType::numeric_type>,
-                   variable<other_id, InterfaceType> >(lhs, other);
+                   variable<InterfaceType> >(lhs, other);
   }
 
-  template <unsigned long id, typename InterfaceType, typename OtherScalarType>
-  ct_expr<variable<id, InterfaceType>,
+  template <typename InterfaceType, typename OtherScalarType>
+  ct_expr<variable<InterfaceType>,
           op_mult<typename InterfaceType::numeric_type>,
           constant<OtherScalarType, InterfaceType> >
-  operator*(variable<id, InterfaceType> const & lhs,
+  operator*(variable<InterfaceType> const & lhs,
            constant<OtherScalarType, InterfaceType> const & other)
   {
-    return ct_expr<variable<id, InterfaceType>,
+    return ct_expr<variable<InterfaceType>,
                    op_mult<typename InterfaceType::numeric_type>,
                    constant<OtherScalarType, InterfaceType> >(lhs, other);
   }
 
-  template <unsigned long id, typename InterfaceType, long value>
-  ct_expr<variable<id, InterfaceType>,
+  template <typename InterfaceType, long value>
+  ct_expr<variable<InterfaceType>,
           op_mult<typename InterfaceType::numeric_type>,
           ct_constant<value> >
-  operator*(variable<id, InterfaceType> const & lhs,
+  operator*(variable<InterfaceType> const & lhs,
             ct_constant<value> const & other)
   {
-    return ct_expr<variable<id, InterfaceType>,
+    return ct_expr<variable<InterfaceType>,
                    op_mult<typename InterfaceType::numeric_type>,
                    ct_constant<value> >(lhs, other);
   }
 
 
   //with plain numeric type (see notes on numeric_type_proxy<NumericT>)
-  template <unsigned long id, typename InterfaceType>
-  binary_expr<InterfaceType> operator*(variable<id, InterfaceType> const & lhs,
+  template <typename InterfaceType>
+  binary_expr<InterfaceType> operator*(variable<InterfaceType> const & lhs,
                                        default_numeric_type rhs)
   {
     return binary_expr<InterfaceType>(lhs.clone(),
@@ -254,9 +254,9 @@ namespace viennamath
                                       new constant<typename InterfaceType::numeric_type, InterfaceType>(rhs));
   }
 
-  template <unsigned long id, typename InterfaceType>
+  template <typename InterfaceType>
   binary_expr<InterfaceType> operator*(default_numeric_type lhs,
-                                       variable<id, InterfaceType> const & rhs)
+                                       variable<InterfaceType> const & rhs)
   {
     return binary_expr<InterfaceType>(new constant<typename InterfaceType::numeric_type, InterfaceType>(lhs),
                                       new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(),
@@ -270,65 +270,65 @@ namespace viennamath
 
 
   //////////// operator/
-  template <unsigned long id, typename InterfaceType, typename LHS, typename OP, typename RHS>
-  ct_expr<variable<id, InterfaceType>,
+  template <typename InterfaceType, typename LHS, typename OP, typename RHS>
+  ct_expr<variable<InterfaceType>,
           op_div<typename InterfaceType::numeric_type>,
           ct_expr<LHS, OP, RHS> >
-  operator/(variable<id, InterfaceType> const & lhs,
+  operator/(variable<InterfaceType> const & lhs,
             ct_expr<LHS, OP, RHS> const & other)
   {
-    return ct_expr<variable<id, InterfaceType>,
+    return ct_expr<variable<InterfaceType>,
                    op_div<typename InterfaceType::numeric_type>,
                    ct_expr<LHS, OP, RHS> >(lhs, other);
   }
   
-  template <unsigned long id, typename InterfaceType, unsigned long other_id>
-  ct_expr<variable<id, InterfaceType>,
+  template <typename InterfaceType>
+  ct_expr<variable<InterfaceType>,
           op_div<typename InterfaceType::numeric_type>,
-          variable<other_id, InterfaceType> >
-  operator/(variable<id, InterfaceType> const & lhs,
-            variable<other_id, InterfaceType> const & other)
+          variable<InterfaceType> >
+  operator/(variable<InterfaceType> const & lhs,
+            variable<InterfaceType> const & other)
   {
-    return ct_expr<variable<id, InterfaceType>,
+    return ct_expr<variable<InterfaceType>,
                    op_div<typename InterfaceType::numeric_type>,
-                   variable<other_id, InterfaceType> >(lhs, other);
+                   variable<InterfaceType> >(lhs, other);
   }
 
-  template <unsigned long id, typename InterfaceType>
+  template <typename InterfaceType>
   ct_constant<1>
-  operator/(variable<id, InterfaceType> const & lhs,
-            variable<id, InterfaceType> const & other)
+  operator/(variable<InterfaceType> const & lhs,
+            variable<InterfaceType> const & other)
   {
     return ct_constant<1>();
   }
 
-  template <unsigned long id, typename InterfaceType, typename OtherScalarType>
-  ct_expr<variable<id, InterfaceType>,
+  template <typename InterfaceType, typename OtherScalarType>
+  ct_expr<variable<InterfaceType>,
           op_div<typename InterfaceType::numeric_type>,
           constant<OtherScalarType, InterfaceType> >
-  operator/(variable<id, InterfaceType> const & lhs,
+  operator/(variable<InterfaceType> const & lhs,
             constant<OtherScalarType, InterfaceType> const & other)
   {
-    return ct_expr<variable<id, InterfaceType>,
+    return ct_expr<variable<InterfaceType>,
                    op_div<typename InterfaceType::numeric_type>,
                    constant<OtherScalarType, InterfaceType> >(lhs, other);
   }
   
-  template <unsigned long id, typename InterfaceType, long value>
-  ct_expr<variable<id, InterfaceType>,
+  template <typename InterfaceType, long value>
+  ct_expr<variable<InterfaceType>,
           op_div<typename InterfaceType::numeric_type>,
           ct_constant<value> >
-  operator/(variable<id, InterfaceType> const & lhs,
+  operator/(variable<InterfaceType> const & lhs,
             ct_constant<value> const & other)
   {
-    return ct_expr<variable<id, InterfaceType>,
+    return ct_expr<variable<InterfaceType>,
                    op_div<typename InterfaceType::numeric_type>,
                    ct_constant<value> >(lhs, other);
   }
 
   //with plain numeric type (see notes on numeric_type_proxy<NumericT>)
-  template <unsigned long id, typename InterfaceType>
-  binary_expr<InterfaceType> operator/(variable<id, InterfaceType> const & lhs,
+  template <typename InterfaceType>
+  binary_expr<InterfaceType> operator/(variable<InterfaceType> const & lhs,
                                        default_numeric_type rhs)
   {
     return binary_expr<InterfaceType>(lhs.clone(),
@@ -337,9 +337,9 @@ namespace viennamath
                                      );
   }
 
-  template <unsigned long id, typename InterfaceType>
+  template <typename InterfaceType>
   binary_expr<InterfaceType> operator/(default_numeric_type lhs,
-                                       variable<id, InterfaceType> const & rhs)
+                                       variable<InterfaceType> const & rhs)
   {
     return binary_expr<InterfaceType>(new constant<typename InterfaceType::numeric_type, InterfaceType>(lhs),
                                       new op_binary<op_div<typename InterfaceType::numeric_type>, InterfaceType>(),
