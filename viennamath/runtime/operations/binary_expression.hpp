@@ -153,7 +153,7 @@ namespace viennamath
   {
     return binary_expr<InterfaceType>(lhs.clone(),
                                       new op_binary<op_minus<typename InterfaceType::numeric_type>, InterfaceType>(),
-                                      new binary_expr<InterfaceType>(lhs));
+                                      new binary_expr<InterfaceType>(rhs));
   }
   
   template <typename LHS, typename OP, typename RHS, typename InterfaceType>

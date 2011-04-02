@@ -33,7 +33,7 @@ namespace viennamath
   {
     function_symbol<unknown_tag<0>, InterfaceType> u;
     function_symbol<test_tag<0>, InterfaceType> v;
-    variable<0, InterfaceType> x;
+    variable<InterfaceType> x(0);
     
     //replace grad:
     expr<InterfaceType> new_ex = ex;
@@ -69,8 +69,8 @@ namespace viennamath
   {
     function_symbol<unknown_tag<0>, InterfaceType> u;
     function_symbol<test_tag<0>, InterfaceType> v;
-    variable<0, InterfaceType> x;
-    variable<1, InterfaceType> y;
+    variable<InterfaceType> x(0);
+    variable<InterfaceType> y(1);
     
     //replace grad:
     expr<InterfaceType> new_ex = ex;
@@ -106,9 +106,9 @@ namespace viennamath
   {
     function_symbol<unknown_tag<0>, InterfaceType> u;
     function_symbol<test_tag<0>, InterfaceType> v;
-    variable<0, InterfaceType> x;
-    variable<1, InterfaceType> y;
-    variable<2, InterfaceType> z;
+    variable<InterfaceType> x(0);
+    variable<InterfaceType> y(1);
+    variable<InterfaceType> z(2);
     
     //replace grad:
     expr<InterfaceType> new_ex = ex;
@@ -151,7 +151,7 @@ namespace viennamath
   {
     function_symbol<unknown_tag<0>, InterfaceType> u;
     function_symbol<test_tag<0>, InterfaceType> v;
-    variable<0, InterfaceType> x;
+    variable<InterfaceType> x(0);
     
     //TODO: More general applications -> requires vector of expressions
     expr<InterfaceType> new_lhs(substitute( grad(u) * grad(v),
@@ -171,8 +171,8 @@ namespace viennamath
   {
     function_symbol<unknown_tag<0>, InterfaceType> u;
     function_symbol<test_tag<0>, InterfaceType> v;
-    variable<0, InterfaceType> x;
-    variable<1, InterfaceType> y;
+    variable<InterfaceType> x(0);
+    variable<InterfaceType> y(1);
     
     //TODO: More general applications -> requires vector of expressions
     expr<InterfaceType> new_lhs(substitute( grad(u) * grad(v),
@@ -191,9 +191,9 @@ namespace viennamath
   {
     function_symbol<unknown_tag<0>, InterfaceType> u;
     function_symbol<test_tag<0>, InterfaceType> v;
-    variable<0, InterfaceType> x;
-    variable<1, InterfaceType> y;
-    variable<2, InterfaceType> z;
+    variable<InterfaceType> x(0);
+    variable<InterfaceType> y(1);
+    variable<InterfaceType> z(2);
     
     //TODO: More general applications -> requires vector of expressions
     expr<InterfaceType> new_lhs(substitute( grad(u) * grad(v),

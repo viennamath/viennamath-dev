@@ -29,7 +29,7 @@ namespace viennamath
   
   //public interface:
   /** @brief Replaces all occurances of the variable u in the expression 'e' with 'u'. */
-  template <unsigned long id, typename InterfaceType, typename ReplacementType, typename ExpressionType>
+  template <typename InterfaceType, typename ReplacementType, typename ExpressionType>
   expr<InterfaceType> substitute(variable<InterfaceType> const & u,
                                  ReplacementType const & repl,
                                  ExpressionType const & e)
@@ -39,7 +39,7 @@ namespace viennamath
   }
 
   /** @brief Replaces all occurances of the variable u in the expression 'e' with 'u'. */
-  template <unsigned long id, typename InterfaceType, typename ReplacementType>
+  template <typename InterfaceType, typename ReplacementType>
   expr<InterfaceType> substitute(variable<InterfaceType> const & u,
                                  ReplacementType const & repl,
                                  expr<InterfaceType> const & e)

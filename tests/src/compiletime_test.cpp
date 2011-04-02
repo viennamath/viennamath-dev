@@ -12,7 +12,7 @@
 template <typename T, typename U>
 void operations_test(T const & t, U const & u, double t2, double u2)
 {
-  std::cout << "LHS: " << t << ", RHS: " << u << std::endl; 
+  std::cout << "LHS: " << t << " (" << t2 << "), RHS: " << u << "(" << u2 << ")" << std::endl; 
   evaluations_test(t + u, t2 + u2);
   evaluations_test(u + t, u2 + t2);
   evaluations_test(t - u, t2 - u2);
@@ -39,7 +39,7 @@ void evaluations_test(E const & e, double ref_solution)
   viennamath::constant<long> c6(6);
   viennamath::ct_constant<8> c8;
 
-  std::vector<double> p(2);
+  std::vector<double> p(3);
   p[0] = 4;
   p[1] = 6;
   p[2] = 8;

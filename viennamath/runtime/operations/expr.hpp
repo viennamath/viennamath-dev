@@ -124,7 +124,7 @@ namespace viennamath
   }
 
   //with variable:
-  template <typename InterfaceType, unsigned long id>
+  template <typename InterfaceType>
   binary_expr<InterfaceType> operator+(expr<InterfaceType> const & lhs,
                                        variable<InterfaceType> const & rhs)
   {
@@ -133,7 +133,7 @@ namespace viennamath
                                       rhs.clone());
   }
 
-  template <typename InterfaceType, unsigned long id>
+  template <typename InterfaceType>
   binary_expr<InterfaceType> operator+(variable<InterfaceType> const & lhs,
                                        expr<InterfaceType> const & rhs)
   {
@@ -262,7 +262,7 @@ namespace viennamath
   }
 
   //with variable:
-  template <typename InterfaceType, unsigned long id>
+  template <typename InterfaceType>
   binary_expr<InterfaceType> operator-(expr<InterfaceType> const & lhs,
                                        variable<InterfaceType> const & rhs)
   {
@@ -271,7 +271,7 @@ namespace viennamath
                                       rhs.clone());
   }
 
-  template <typename InterfaceType, unsigned long id>
+  template <typename InterfaceType>
   binary_expr<InterfaceType> operator-(variable<InterfaceType> const & lhs,
                                        expr<InterfaceType> const & rhs)
   {
@@ -400,7 +400,7 @@ namespace viennamath
   }
 
   //with variable:
-  template <typename InterfaceType, unsigned long id>
+  template <typename InterfaceType>
   binary_expr<InterfaceType> operator*(expr<InterfaceType> const & lhs,
                                        variable<InterfaceType> const & rhs)
   {
@@ -409,7 +409,7 @@ namespace viennamath
                                       rhs.clone());
   }
 
-  template <typename InterfaceType, unsigned long id>
+  template <typename InterfaceType>
   binary_expr<InterfaceType> operator*(variable<InterfaceType> const & lhs,
                                        expr<InterfaceType> const & rhs)
   {
@@ -535,7 +535,7 @@ namespace viennamath
   }
 
   //with variable:
-  template <typename InterfaceType, unsigned long id>
+  template <typename InterfaceType>
   binary_expr<InterfaceType> operator/(expr<InterfaceType> const & lhs,
                                        variable<InterfaceType> const & rhs)
   {
@@ -544,7 +544,7 @@ namespace viennamath
                                       rhs.clone());
   }
 
-  template <typename InterfaceType, unsigned long id>
+  template <typename InterfaceType>
   binary_expr<InterfaceType> operator/(variable<InterfaceType> const & lhs,
                                        expr<InterfaceType> const & rhs)
   {

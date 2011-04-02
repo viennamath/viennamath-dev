@@ -68,12 +68,12 @@ namespace viennamath
   template <typename LHS1, typename OP1, typename RHS1,
             unsigned long id>
   ct_equation<ct_expr<LHS1, OP1, RHS1>,
-              variable<id> > 
+              ct_variable<id> > 
   make_equation(ct_expr<LHS1, OP1, RHS1> const & lhs,
-                variable<id> const & rhs)
+                ct_variable<id> const & rhs)
   {
     return ct_equation<ct_expr<LHS1, OP1, RHS1>,
-                       variable<id> >(); 
+                       ct_variable<id> >(); 
   }
 
 
@@ -105,47 +105,47 @@ namespace viennamath
   template <long value1,
             unsigned long id>
   ct_equation<ct_constant<value1>,
-              variable<id> > 
+              ct_variable<id> > 
   make_equation(ct_constant<value1> const & lhs,
-                variable<id> const & rhs)
+                ct_variable<id> const & rhs)
   {
     return ct_equation<ct_constant<value1>,
-                       variable<id> >(); 
+                       ct_variable<id> >(); 
   }
 
   
   //first argument: variable
   template <unsigned long id1,
             typename LHS2, typename OP2, typename RHS2>
-  ct_equation<variable<id1>,
+  ct_equation<ct_variable<id1>,
               ct_expr<LHS2, OP2, RHS2> > 
-  make_equation(variable<id1> const & lhs,
+  make_equation(ct_variable<id1> const & lhs,
                 ct_expr<LHS2, OP2, RHS2> const & rhs)
   {
-    return ct_equation<variable<id1>,
+    return ct_equation<ct_variable<id1>,
                        ct_expr<LHS2, OP2, RHS2> >(); 
   }
   
   template <unsigned long id1,
             long value2>
-  ct_equation<variable<id1>,
+  ct_equation<ct_variable<id1>,
               ct_constant<value2> > 
-  make_equation(variable<id1> const & lhs,
+  make_equation(ct_variable<id1> const & lhs,
                 ct_constant<value2> const & rhs)
   {
-    return ct_equation<variable<id1>,
+    return ct_equation<ct_variable<id1>,
                        ct_constant<value2> >(); 
   }
 
   template <unsigned long id1,
             unsigned long id2>
-  ct_equation<variable<id1>,
-              variable<id2> > 
-  make_equation(variable<id1> const & lhs,
-                variable<id2> const & rhs)
+  ct_equation<ct_variable<id1>,
+              ct_variable<id2> > 
+  make_equation(ct_variable<id1> const & lhs,
+                ct_variable<id2> const & rhs)
   {
-    return ct_equation<variable<id1>,
-                       variable<id2> >(); 
+    return ct_equation<ct_variable<id1>,
+                       ct_variable<id2> >(); 
   }
   
 }

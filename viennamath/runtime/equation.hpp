@@ -113,7 +113,8 @@ namespace viennamath
   template <unsigned long id, typename RHSType>
   equation<> make_equation(ct_variable<id> const & lhs, RHSType const & rhs)
   {
-    return equation<>(lhs, rhs); 
+    variable<> temp(id);
+    return equation<>(temp, rhs); 
   }
 
   //function_symbol:

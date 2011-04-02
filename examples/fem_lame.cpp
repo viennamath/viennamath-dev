@@ -25,9 +25,9 @@ std::vector< expr<> > strain_tensor(ct_vector_3<T0, T1, T2> const & u)
 {
   std::vector< expr<> > result(9);
   
-  variable<0> x;
-  variable<1> y;
-  variable<2> z;
+  variable<> x(0);
+  variable<> y(1);
+  variable<> z(2);
   
   result[0] = diff(u[ct_index<0>()], x);
   
@@ -42,7 +42,7 @@ template <typename T0, typename T1, typename T2>
 std::vector< expr<> > stress_tensor(ct_vector_3<T0, T1, T2> const & v)
 {
   std::vector< expr<> > result(9);
-  variable<0> x;
+  variable<> x(0);
 
   result[0] = diff(v[ct_index<0>()], x);
   
@@ -90,9 +90,9 @@ int main()
   typedef function_symbol<test_tag<2> >   V2;
   ct_vector_3<V0, V1, V2> v = make_vector(V0(), V1(), V2());
   
-  variable<0> x;
-  variable<1> y;
-  variable<2> z;
+  variable<> x(0);
+  variable<> y(1);
+  variable<> z(2);
   
   std::cout << "-- Printing div(u): --" << std::endl;
   std::cout << div(u1) << std::endl;
