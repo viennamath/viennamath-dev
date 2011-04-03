@@ -82,6 +82,17 @@ namespace viennamath
   };
 
   
+  template <typename ScalarType, typename InterfaceType>
+  std::ostream& operator<<(std::ostream & stream,
+                           constant<ScalarType, InterfaceType> const & c)
+  {
+    stream << c.str();
+    return stream;
+  }
+
+  
+  
+  
 }
 
 #endif

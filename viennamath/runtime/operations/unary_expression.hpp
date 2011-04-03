@@ -25,51 +25,11 @@ namespace viennamath
   
   /////////////////////////////////// operator+ ///////////////////////////////////
   
-  //with other unary expression:
-  template <typename InterfaceType>
-  binary_expr<InterfaceType> operator+(unary_expr<InterfaceType> const & lhs, unary_expr<InterfaceType> const & rhs)
-  {
-    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_plus<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
-  }
-  
-  
-
   /////////////////////////////////// operator- ///////////////////////////////////
-
-  //with other unary expression:
-  template <typename InterfaceType>
-  binary_expr<InterfaceType> operator-(unary_expr<InterfaceType> const & lhs, unary_expr<InterfaceType> const & rhs)
-  {
-    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_minus<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
-  }
-
-  template <typename InterfaceType>
-  binary_expr<InterfaceType> operator-(unary_expr<InterfaceType> const & lhs, default_numeric_type rhs)
-  {
-    return binary_expr<InterfaceType>(lhs.clone(),
-                                      new op_binary<op_minus<typename InterfaceType::numeric_type>, InterfaceType>(),
-                                      new constant<typename InterfaceType::numeric_type, InterfaceType>(rhs)
-                                     );
-  }
 
   /////////////////////////////////// operator* ///////////////////////////////////
   
-  //with other unary expression:
-  template <typename InterfaceType>
-  binary_expr<InterfaceType> operator*(unary_expr<InterfaceType> const & lhs, unary_expr<InterfaceType> const & rhs)
-  {
-    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
-  }
-
-
   /////////////////////////////////// operator/ ///////////////////////////////////
-
-  //with other unary expression:
-  template <typename InterfaceType>
-  binary_expr<InterfaceType> operator/(unary_expr<InterfaceType> const & lhs, unary_expr<InterfaceType> const & rhs)
-  {
-    return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_div<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
-  }
 
 }
 

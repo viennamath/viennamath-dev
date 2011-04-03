@@ -22,23 +22,11 @@
 
 namespace viennamath
 {
-  
       
   ////////////////// Operations //////////////////////////////
   
   //operator+
-  template <long value, typename LHS, typename OP, typename RHS>
-  ct_expr<ct_constant<value>,
-            op_plus<default_numeric_type>,
-            ct_expr<LHS, OP, RHS> >
-  operator+(ct_constant<value> const & lhs, 
-            ct_expr<LHS, OP, RHS> const & other)
-  {
-    return ct_expr<ct_constant<value>,
-                      op_plus<default_numeric_type>,
-                      ct_expr<LHS, OP, RHS> >(lhs, other);
-  }
-  
+
   // ct_c1 + (c2 + X) -> [ct_c1 + c2] + X, where X is anything:
   template <long value, typename ScalarType, typename RHS>
   ct_expr<constant< typename promote_traits<long, op_plus<default_numeric_type>, ScalarType>::result_type >,
@@ -93,18 +81,6 @@ namespace viennamath
                       RHS >(ct_constant<value + value2>(), other.rhs());
   }
   
-  template <long value, unsigned long other_id>
-  ct_expr<ct_constant<value>,
-            op_plus<default_numeric_type>,
-            ct_variable<other_id> >
-  operator+(ct_constant<value> const & lhs, 
-            ct_variable<other_id> const & other)
-  {
-    return ct_expr<ct_constant<value>,
-                      op_plus<default_numeric_type>,
-                      ct_variable<other_id> >(lhs, other);
-  }
-
   template <long value, long other_value>
   ct_constant<value + other_value>
   operator+(ct_constant<value> const & lhs, 
@@ -115,17 +91,6 @@ namespace viennamath
 
 
   //operator-
-  template <long value, typename LHS, typename OP, typename RHS>
-  ct_expr<ct_constant<value>,
-            op_minus<default_numeric_type>,
-            ct_expr<LHS, OP, RHS> >
-  operator-(ct_constant<value> const & lhs, 
-            ct_expr<LHS, OP, RHS> const & other)
-  {
-    return ct_expr<ct_constant<value>,
-                      op_minus<default_numeric_type>,
-                      ct_expr<LHS, OP, RHS> >(lhs, other);
-  }
   
   // ct_c1 - (c2 + X) -> [ct_c1 - c2] - X, where X is anything:
   template <long value, typename ScalarType, typename RHS>
@@ -182,18 +147,6 @@ namespace viennamath
   }
   
   
-  template <long value, unsigned long other_id>
-  ct_expr<ct_constant<value>,
-            op_minus<default_numeric_type>,
-            ct_variable<other_id> >
-  operator-(ct_constant<value> const & lhs, 
-            ct_variable<other_id> const & other)
-  {
-    return ct_expr<ct_constant<value>,
-                      op_minus<default_numeric_type>,
-                      ct_variable<other_id> >(lhs, other);
-  }
-
   template <long value, long other_value>
   ct_constant<value - other_value>
   operator-(ct_constant<value> const & lhs, 
@@ -204,29 +157,6 @@ namespace viennamath
 
 
   //operator*
-  template <long value, typename LHS, typename OP, typename RHS>
-  ct_expr<ct_constant<value>,
-            op_mult<default_numeric_type>,
-            ct_expr<LHS, OP, RHS> >
-  operator*(ct_constant<value> const & lhs, 
-            ct_expr<LHS, OP, RHS> const & other)
-  {
-    return ct_expr<ct_constant<value>,
-                      op_mult<default_numeric_type>,
-                      ct_expr<LHS, OP, RHS> >(lhs, other);
-  }
-  
-  template <long value, unsigned long other_id>
-  ct_expr<ct_constant<value>,
-            op_mult<default_numeric_type>,
-            ct_variable<other_id> >
-  operator*(ct_constant<value> const & lhs, 
-            ct_variable<other_id> const & other)
-  {
-    return ct_expr<ct_constant<value>,
-                      op_mult<default_numeric_type>,
-                      ct_variable<other_id> >(lhs, other);
-  }
 
   template <long value, long other_value>
   ct_constant<value * other_value>
@@ -238,44 +168,8 @@ namespace viennamath
 
 
   //operator/
-  template <long value, typename LHS, typename OP, typename RHS>
-  ct_expr<ct_constant<value>,
-            op_div<default_numeric_type>,
-            ct_expr<LHS, OP, RHS> >
-  operator/(ct_constant<value> const & lhs, 
-            ct_expr<LHS, OP, RHS> const & other)
-  {
-    return ct_expr<ct_constant<value>,
-                      op_div<default_numeric_type>,
-                      ct_expr<LHS, OP, RHS> >(lhs, other);
-  }
   
-  template <long value, unsigned long other_id>
-  ct_expr<ct_constant<value>,
-            op_div<default_numeric_type>,
-            ct_variable<other_id> >
-  operator/(ct_constant<value> const & lhs, 
-            ct_variable<other_id> const & other)
-  {
-    return ct_expr<ct_constant<value>,
-                      op_div<default_numeric_type>,
-                      ct_variable<other_id> >(lhs, other);
-  }
-
-  template <long value, long other_value>
-  ct_expr<ct_constant<value>,
-            op_div<default_numeric_type>,
-            ct_constant<other_value> >
-  operator/(ct_constant<value> const & lhs, 
-            ct_constant<other_value> const & other)
-  {
-    return ct_expr<ct_constant<value>,
-                   op_div<default_numeric_type>,
-                   ct_constant<other_value> >(lhs, other);
-  }
-
-
-  
+  // (none so far)
   
 }
 

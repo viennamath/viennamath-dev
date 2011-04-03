@@ -27,29 +27,6 @@ namespace viennamath
   ////////////////// Operations //////////////////////////////
   
   ////////////// operator+
-  template <id_type id, typename LHS, typename OP, typename RHS>
-  ct_expr<ct_variable<id>,
-          op_plus<default_numeric_type>,
-          ct_expr<LHS, OP, RHS> >
-  operator+(ct_variable<id> const & lhs, 
-            ct_expr<LHS, OP, RHS> const & other)
-  {
-    return ct_expr<ct_variable<id>,
-                   op_plus<default_numeric_type>,
-                   ct_expr<LHS, OP, RHS> >(lhs, other);
-  }
-  
-  template <id_type id1, id_type id2>
-  ct_expr<ct_variable<id1>,
-          op_plus<default_numeric_type>,
-          ct_variable<id2> >
-  operator+(ct_variable<id1> const & lhs,
-            ct_variable<id2> const & other)
-  {
-    return ct_expr<ct_variable<id1>,
-                   op_plus<default_numeric_type>,
-                   ct_variable<id2> >(lhs, other);
-  }
 
   template <id_type id>
   ct_expr<ct_constant<2>,
@@ -63,44 +40,7 @@ namespace viennamath
                    ct_variable<id> >(ct_constant<2>(), lhs);
   }
 
-  template <id_type id, long value>
-  ct_expr<ct_variable<id>,
-          op_plus<default_numeric_type>,
-          ct_constant<value> >
-  operator+(ct_variable<id> const & lhs,
-            ct_constant<value> const & other)
-  {
-    return ct_expr<ct_variable<id>,
-                   op_plus<default_numeric_type>,
-                   ct_constant<value> >(lhs, other);
-  }
-
-
-
   ////////// operator-
-  template <id_type id, typename LHS, typename OP, typename RHS>
-  ct_expr<ct_variable<id>,
-          op_minus<default_numeric_type>,
-          ct_expr<LHS, OP, RHS> >
-  operator-(ct_variable<id> const & lhs, 
-            ct_expr<LHS, OP, RHS> const & other)
-  {
-    return ct_expr<ct_variable<id>,
-                   op_minus<default_numeric_type>,
-                   ct_expr<LHS, OP, RHS> >(lhs, other);
-  }
-  
-  template <id_type id1, id_type id2>
-  ct_expr<ct_variable<id1>,
-          op_minus<default_numeric_type>,
-          ct_variable<id2> >
-  operator-(ct_variable<id1> const & lhs,
-            ct_variable<id2> const & other)
-  {
-    return ct_expr<ct_variable<id1>,
-                   op_minus<default_numeric_type>,
-                   ct_variable<id2> >(lhs, other);
-  }
 
   template <id_type id>
   ct_constant<0>
@@ -110,93 +50,12 @@ namespace viennamath
     return ct_constant<0>();
   }
 
-  template <id_type id, long value>
-  ct_expr<ct_variable<id>,
-          op_minus<default_numeric_type>,
-          ct_constant<value> >
-  operator-(ct_variable<id> const & lhs,
-            ct_constant<value> const & other)
-  {
-    return ct_expr<ct_variable<id>,
-                   op_minus<default_numeric_type>,
-                   ct_constant<value> >(lhs, other);
-  }
 
 
   ////////////// operator*
-  template <id_type id, typename LHS, typename OP, typename RHS>
-  ct_expr<ct_variable<id>,
-          op_mult<default_numeric_type>,
-          ct_expr<LHS, OP, RHS> >
-  operator*(ct_variable<id> const & lhs, 
-            ct_expr<LHS, OP, RHS> const & other)
-  {
-    return ct_expr<ct_variable<id>,
-                   op_mult<default_numeric_type>,
-                   ct_expr<LHS, OP, RHS> >(lhs, other);
-  }
-  
-  template <id_type id1, id_type id2>
-  ct_expr<ct_variable<id1>,
-          op_mult<default_numeric_type>,
-          ct_variable<id2> >
-  operator*(ct_variable<id1> const & lhs,
-            ct_variable<id2> const & other)
-  {
-    return ct_expr<ct_variable<id1>,
-                   op_mult<default_numeric_type>,
-                   ct_variable<id2> >(lhs, other);
-  }
-  
-  template <id_type id>
-  ct_expr<ct_variable<id>,
-          op_mult<default_numeric_type>,
-          ct_variable<id> >
-  operator*(ct_variable<id> const & lhs,
-            ct_variable<id> const & other)
-  {
-    return ct_expr<ct_variable<id>,
-                   op_mult<default_numeric_type>,
-                   ct_variable<id> >(lhs, other);
-  }
-
-  template <id_type id, long value>
-  ct_expr<ct_variable<id>,
-          op_mult<default_numeric_type>,
-          ct_constant<value> >
-  operator*(ct_variable<id> const & lhs,
-            ct_constant<value> const & other)
-  {
-    return ct_expr<ct_variable<id>,
-                   op_mult<default_numeric_type>,
-                   ct_constant<value> >(lhs, other);
-  }
 
 
   //////////// operator/
-  template <id_type id, typename LHS, typename OP, typename RHS>
-  ct_expr<ct_variable<id>,
-          op_div<default_numeric_type>,
-          ct_expr<LHS, OP, RHS> >
-  operator/(ct_variable<id> const & lhs, 
-            ct_expr<LHS, OP, RHS> const & other)
-  {
-    return ct_expr<ct_variable<id>,
-                   op_div<default_numeric_type>,
-                   ct_expr<LHS, OP, RHS> >(lhs, other);
-  }
-  
-  template <id_type id1, id_type id2>
-  ct_expr<ct_variable<id1>,
-          op_div<default_numeric_type>,
-          ct_variable<id2> >
-  operator/(ct_variable<id1> const & lhs,
-            ct_variable<id2> const & other)
-  {
-    return ct_expr<ct_variable<id1>,
-                   op_div<default_numeric_type>,
-                   ct_variable<id2> >(lhs, other);
-  }
 
   template <id_type id>
   ct_constant<1>
@@ -204,18 +63,6 @@ namespace viennamath
             ct_variable<id> const & other)
   {
     return ct_constant<1>();
-  }
-
-  template <id_type id, long value>
-  ct_expr<ct_variable<id>,
-          op_div<default_numeric_type>,
-          ct_constant<value> >
-  operator/(ct_variable<id> const & lhs,
-            ct_constant<value> const & other)
-  {
-    return ct_expr<ct_variable<id>,
-                   op_div<default_numeric_type>,
-                   ct_constant<value> >(lhs, other);
   }
 
 }

@@ -12,8 +12,8 @@
 
 
 
-#ifndef VIENNAMATH_EXPRESSION_CPP
-#define VIENNAMATH_EXPRESSION_CPP
+#ifndef VIENNAMATH_EXPRESSION_HPP
+#define VIENNAMATH_EXPRESSION_HPP
 
 #include "viennamath/forwards.h"
 #include "viennamath/compiletime/promote_traits.hpp"
@@ -34,9 +34,12 @@
 #include "viennamath/manipulation/unary_operators_manipulation.hpp"
 #include "viennamath/manipulation/binary_operators_manipulation.hpp"
 
+#include "viennamath/compiletime/operations/ct_ct.hpp"
 #include "viennamath/compiletime/operations/ct_constant.hpp"
 #include "viennamath/compiletime/operations/ct_variable.hpp"
 #include "viennamath/compiletime/operations/ct_expr.hpp"
+
+#include "viennamath/runtime/operations/rt_rt.hpp"
 #include "viennamath/runtime/operations/binary_expression.hpp"
 #include "viennamath/runtime/operations/unary_expression.hpp"
 #include "viennamath/runtime/operations/expr.hpp"
