@@ -118,8 +118,8 @@ namespace viennamath
   }
 
   //function_symbol:
-  template <typename T, typename InterfaceType, typename RHSType>
-  equation<InterfaceType> make_equation(function_symbol<T, InterfaceType> const & lhs, RHSType const & rhs)
+  template <typename InterfaceType, typename RHSType>
+  equation<InterfaceType> make_equation(function_symbol<InterfaceType> const & lhs, RHSType const & rhs)
   {
     return equation<InterfaceType>(lhs, rhs); 
   }

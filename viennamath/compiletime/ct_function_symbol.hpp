@@ -28,43 +28,31 @@ namespace viennamath
   /////// two common tags:
   
   //tag for an unknown function:
-  template <unsigned long ct_id = 0>
-  class unknown_tag
+  template <id_type ct_id = 0>
+  struct unknown_tag
   {
-    public:
-      unknown_tag(unsigned long rt_id) : id_(rt_id) {}
-      
-      static std::string str()
-      {
-        std::stringstream ss;
-        ss << "unknown[" << ct_id << "]";
-        return ss.str();
-      }
-      
-      unsigned long id() { return id_; }  //retrieve runtime ID
-      
-    private:
-      unsigned long id_;
+    static std::string str()
+    {
+      std::stringstream ss;
+      ss << "unknown[" << ct_id << "]";
+      return ss.str();
+    }
+    
+    static id_type tag_id() { return 0; }
   };
     
   //tag for test function:
-  template <unsigned long ct_id = 0>
-  class test_tag
+  template <id_type ct_id = 0>
+  struct test_tag
   {
-    public:
-      test_tag(unsigned long rt_id) : id_(rt_id) {}
-      
-      static std::string str()
-      {
-        std::stringstream ss;
-        ss << "test[" << ct_id << "]";
-        return ss.str();
-      }
-      
-      unsigned long id() { return id_; }  //retrieve runtime ID
-      
-    private:
-      unsigned long id_;
+    static std::string str()
+    {
+      std::stringstream ss;
+      ss << "test[" << ct_id << "]";
+      return ss.str();
+    }
+    
+    static id_type tag_id() { return 1; }
   };
   
   
@@ -77,55 +65,21 @@ namespace viennamath
    *
    * @tparam Tag    A tag class that is typically used to distinguish between different function symbols. Tag requirements: 'static std::string str();' which returns an identification string
    */
-  template <typename Tag, typename InterfaceType>
-  class function_symbol : public InterfaceType
+  template <typename Tag>
+  class ct_function_symbol
   {
-      typedef function_symbol<Tag>     self_type;
-    public:
-      typedef typename InterfaceType::numeric_type      numeric_type;
-      typedef InterfaceType                             interface_type;
-      
-      explicit function_symbol() {};
-
-      //interface requirements:
-      InterfaceType * clone() const { return new self_type(); }
-      numeric_type eval(std::vector<double> const & v) const { throw "Cannot evaluate unknown_func!"; return 0; }
-      numeric_type eval(numeric_type v) const { throw "Cannot evaluate unknown_func!"; return 0; }
-      std::string str() const
+      static std::string str()
       {
-        std::stringstream ss;
-        ss << "function_symbol<" << Tag::str() << ">";
-        return ss.str();      
-      }
-      numeric_type unwrap() const { throw "Cannot evaluate unknown_func to a number!"; }
-      
-      InterfaceType * substitute(const InterfaceType * e,
-                                 const InterfaceType * repl) const
-      {
-        if (dynamic_cast<const self_type *>(e) != NULL)
-          return repl->clone();
-        return clone();
-      };    
-      
-      bool equal(const InterfaceType * other) const
-      {
-        return dynamic_cast< const self_type *>(other) != NULL;
-      }
-      
-      InterfaceType * diff(const InterfaceType * diff_var) const
-      {
-        //this code should not be reached, because function_symbol is symbolically differentiated at a higher level
-        throw "Cannot differentiate unknown_func!";
-        return NULL;
+        return Tag::str();
       }
   };
 
   
   
-  template <typename Tag, typename InterfaceType>
-  std::ostream& operator<<(std::ostream & stream, function_symbol<Tag, InterfaceType> const & v)
+  template <typename Tag>
+  std::ostream& operator<<(std::ostream & stream, ct_function_symbol<Tag> const & v)
   {
-    stream << v.str();
+    stream << ct_function_symbol<Tag>::str();
     return stream;
   }
   

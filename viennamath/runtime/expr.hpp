@@ -67,8 +67,7 @@ namespace viennamath
         expr_ = std::auto_ptr<InterfaceType>(other.clone());
       }
       
-      template <typename T>
-      expr(function_symbol<T, InterfaceType> const & other)
+      expr(function_symbol<InterfaceType> const & other)
       {
         expr_ = std::auto_ptr<InterfaceType>(other.clone());
       }

@@ -499,8 +499,8 @@ namespace viennamath
     return NULL;
   }  
   
-  template <typename T, typename InterfaceType>
-  unary_expr<InterfaceType> grad(function_symbol<T, InterfaceType> const & other)
+  template <typename InterfaceType>
+  unary_expr<InterfaceType> grad(function_symbol<InterfaceType> const & other)
   {
     return unary_expr<InterfaceType>(other.clone(), new op_unary<op_gradient<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
@@ -541,8 +541,8 @@ namespace viennamath
     return unary_expr<InterfaceType>(other.clone(), new op_unary<op_divergence<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
   
-  template <typename T, typename InterfaceType>
-  unary_expr<InterfaceType> div(function_symbol<T, InterfaceType> const & other)
+  template <typename InterfaceType>
+  unary_expr<InterfaceType> div(function_symbol<InterfaceType> const & other)
   {
     return unary_expr<InterfaceType>(other.clone(), new op_unary<op_divergence<typename InterfaceType::numeric_type>, InterfaceType>()); 
     
@@ -560,8 +560,8 @@ namespace viennamath
     return div(grad(other));
   }
   
-  template <typename T, typename InterfaceType>
-  unary_expr<InterfaceType> laplace(function_symbol<T, InterfaceType> const & other)
+  template <typename InterfaceType>
+  unary_expr<InterfaceType> laplace(function_symbol<InterfaceType> const & other)
   {
     return div(grad(other));
   }

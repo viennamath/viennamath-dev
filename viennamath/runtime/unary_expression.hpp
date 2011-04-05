@@ -202,7 +202,7 @@ namespace viennamath
 
         //TODO: Unwrap op_id()
         
-        return clone();
+        return new unary_expr(expr_->optimize(), op_->clone());
       }
       
     

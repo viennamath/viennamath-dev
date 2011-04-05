@@ -20,8 +20,7 @@ using namespace viennamath;
 //
 // The strain tensor: eps_ij = 0.5 * (du_i/dx_j + du_j/dx_i)
 // 
-template <typename T0, typename T1, typename T2>
-std::vector< expr<> > strain_tensor(ct_vector_3<T0, T1, T2> const & u)
+std::vector< expr<> > strain_tensor(std::vector< function_symbol<> > const & u)
 {
   std::vector< expr<> > result(9);
   
@@ -29,8 +28,22 @@ std::vector< expr<> > strain_tensor(ct_vector_3<T0, T1, T2> const & u)
   variable<> y(1);
   variable<> z(2);
   
-  result[0] = diff(u[ct_index<0>()], x);
+  //first row:
+  result[0] =        diff(u[0], x);
+  result[1] = 0.5 * (diff(u[0], y) + diff(u[1], x));
+  result[2] = 0.5 * (diff(u[0], z) + diff(u[2], x));
   
+  //second row:
+  result[3] = 0.5 * (diff(u[1], x) + diff(u[0], y));
+  result[4] =        diff(u[1], y);
+  result[5] = 0.5 * (diff(u[1], z) + diff(u[2], y));
+
+  //third row:
+  result[6] = 0.5 * (diff(u[2], x) + diff(u[0], z));
+  result[7] = 0.5 * (diff(u[2], y) + diff(u[1], z));
+  result[8] =        diff(u[2], z);
+
+  std::cout << "strain_tensor end" << std::endl;
   return result;
 }
 
@@ -38,27 +51,78 @@ std::vector< expr<> > strain_tensor(ct_vector_3<T0, T1, T2> const & u)
 //
 // The stress tensor: sigma = 2 \mu eps + \lambda trace(eps) Id
 // 
-template <typename T0, typename T1, typename T2>
-std::vector< expr<> > stress_tensor(ct_vector_3<T0, T1, T2> const & v)
+std::vector< expr<> > stress_tensor(std::vector< function_symbol<> > const & v)
 {
   std::vector< expr<> > result(9);
-  variable<> x(0);
+  std::vector< expr<> > strain = strain_tensor(v);
 
-  result[0] = diff(v[ct_index<0>()], x);
+  double mu = 1;
   
+  //add 2 \mu eps:
+  for (size_t i=0; i<9; ++i)
+    result[i] = (2*mu) * strain[i];
+
+  //add trace(eps) * Id:
+  result[0] = (2*mu) * strain[0] + strain[0] + strain[4] + strain[8];
+  result[4] = (2*mu) * strain[4] + strain[0] + strain[4] + strain[8];
+  result[8] = (2*mu) * strain[8] + strain[0] + strain[4] + strain[8];
+    
+  std::cout << "stress_tensor end" << std::endl;
   return result;
 }
 
 
-expr<> tensor_reduce(std::vector< expr<> > const & lhs, std::vector< expr<> > rhs)
+expr<> tensor_reduce(std::vector< expr<> > lhs, std::vector< expr<> > rhs)
 {
   expr<> ret = constant<double>(0);
   
-  for (size_t i=0; i<1; ++i)
-    ret = lhs[i] * rhs[i];
+  for (size_t i=0; i<rhs.size(); ++i)
+    ret = ret + lhs[i] * rhs[i];
   
   return ret;
 }
+
+
+
+void print_entry(expr<> const & e, size_t test_index, size_t unknown_index)
+{
+    std::vector<viennamath::expr<> > basisfuncs(4);
+    
+    function_symbol<> u1(0, unknown_tag<>());   //an unknown function
+    function_symbol<> u2(1, unknown_tag<>());   //an unknown function
+    function_symbol<> u3(2, unknown_tag<>());   //an unknown function
+    
+    function_symbol<>    v1(0, test_tag<>());   //a test function (typical for FEM and FVM)
+    function_symbol<>    v2(1, test_tag<>());   //a test function (typical for FEM and FVM)
+    function_symbol<>    v3(2, test_tag<>());   //a test function (typical for FEM and FVM)
+    
+    expr<> result = e;
+    //constant<default_numeric_type> zero(0);
+  
+    if (unknown_index != 0)
+      result = viennamath::substitute(u1, 0, result);
+    if (unknown_index != 1)
+      result = viennamath::substitute(u2, 0, result);
+    if (unknown_index != 2)
+      result = viennamath::substitute(u3, 0, result);
+
+    if (test_index != 0)
+      result = viennamath::substitute(v1, 0, result);
+    if (test_index != 1)
+      result = viennamath::substitute(v2, 0, result);
+    if (test_index != 2)
+      result = viennamath::substitute(v3, 0, result);
+    
+    //while (result.get()->optimizable())
+    for (size_t i=0; i<5; ++i)
+    {
+      std::cout << "optimizing binary_expr..." << std::endl;
+      result = result.get()->optimize();
+    }
+    
+    std::cout << result << std::endl;
+}
+
 
 
 
@@ -68,32 +132,37 @@ int main()
   std::cout << "*****     Demo for ViennaMath with FEM     *****" << std::endl;
   std::cout << "************************************************" << std::endl;
 
-  function_symbol<unknown_tag<0> > u1;   //an unknown function
-  function_symbol<unknown_tag<1> > u2;   //an unknown function
-  function_symbol<unknown_tag<2> > u3;   //an unknown function
+  function_symbol<> u1(0, unknown_tag<>());   //an unknown function
+  function_symbol<> u2(1, unknown_tag<>());   //an unknown function
+  function_symbol<> u3(2, unknown_tag<>());   //an unknown function
 
-  function_symbol<unknown_tag<42> > u_phi;   //an unknown function
+  function_symbol<> u_phi(42, unknown_tag<>());   //an unknown function
 
-  typedef function_symbol<unknown_tag<0> >   U0;
-  typedef function_symbol<unknown_tag<1> >   U1;
-  typedef function_symbol<unknown_tag<2> >   U2;
-  ct_vector_3<U0, U1, U2> u = make_vector(U0(), U1(), U2());
+  std::vector< function_symbol<> > u(3);
+  u[0] = u1;
+  u[1] = u2;
+  u[2] = u3;
   
-  function_symbol<test_tag<0> >    v1;   //a test function (typical for FEM and FVM)
-  function_symbol<test_tag<1> >    v2;   //a test function (typical for FEM and FVM)
-  function_symbol<test_tag<2> >    v3;   //a test function (typical for FEM and FVM)
+  function_symbol<>    v1(0, test_tag<>());   //a test function (typical for FEM and FVM)
+  function_symbol<>    v2(1, test_tag<>());   //a test function (typical for FEM and FVM)
+  function_symbol<>    v3(2, test_tag<>());   //a test function (typical for FEM and FVM)
   
-  function_symbol<test_tag<42> >    v_phi;   //a test function (typical for FEM and FVM)
+  function_symbol<>    v_phi(42, test_tag<>());   //a test function (typical for FEM and FVM)
   
-  typedef function_symbol<test_tag<0> >   V0;
-  typedef function_symbol<test_tag<1> >   V1;
-  typedef function_symbol<test_tag<2> >   V2;
-  ct_vector_3<V0, V1, V2> v = make_vector(V0(), V1(), V2());
+  std::vector< function_symbol<> > v(3);
+  v[0] = v1;
+  v[1] = v2;
+  v[2] = v3;
   
   variable<> x(0);
   variable<> y(1);
   variable<> z(2);
-  
+
+  std::cout << "-- Printing div(u): --" << std::endl;
+  std::cout << diff(u1, x) << std::endl;
+  std::cout << diff(u1, y) << std::endl;
+  std::cout << diff(u1, z) << std::endl;
+
   std::cout << "-- Printing div(u): --" << std::endl;
   std::cout << div(u1) << std::endl;
   std::cout << "-- Printing div(u) with coordinate system applied in 1d, 2d and 3d: --" << std::endl;
@@ -136,11 +205,21 @@ int main()
   */                                              
   
 
-  equation<> weak_form_lame = make_equation( 
+  std::vector< expr<> > strain = strain_tensor(u);
+  std::vector< expr<> > stress = stress_tensor(v);
   
-  integral(Omega(), tensor_reduce( strain_tensor(u), stress_tensor(v) ), symbolic_tag()),
-   //=                                         
-   0);
+  std::cout << "Strain: " << std::endl;
+  for (size_t i=0; i<strain.size(); ++i)
+    std::cout << strain[i] << std::endl;
+
+  std::cout << "Stress: " << std::endl;
+  for (size_t i=0; i<stress.size(); ++i)
+    std::cout << stress[i] << std::endl;
+  
+  equation<> weak_form_lame = make_equation( 
+                                 integral(Omega(), tensor_reduce( strain, stress ), symbolic_tag()),
+                                 //=                                         
+                                 0);
   
   
   //check entries in matrix:
@@ -149,7 +228,13 @@ int main()
   //expr<> lame_11_v = substitute(v1, v_phi, substitute(v2, 0, substitute(v3, 0, weak_form_lame.lhs())));
   //std::cout << substitute(u1, u_phi, substitute(u2, 0, substitute(u3, 0, lame_11_v))) << std::endl;
   
+  std::cout << "Weak form of Lame equation: " << std::endl;
   std::cout << weak_form_lame << std::endl;
+  
+  std::cout << std::endl;
+  std::cout << std::endl;
+  std::cout << "FEM-form: " << std::endl;
+  print_entry(weak_form_lame.lhs(), 0, 0);  
   
   /*
   

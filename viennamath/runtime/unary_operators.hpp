@@ -53,6 +53,9 @@ namespace viennamath
   InterfaceType * diff_impl(const InterfaceType * e, op_log10<NumericT>, const InterfaceType * diff_var);
 
   
+  template <typename T>
+  bool unary_op_equal(T const & lhs, T const & rhs) { return true; }
+  
   //
   // main class for all unary operations:
   // 
@@ -65,10 +68,15 @@ namespace viennamath
       //template <typename LHS, typename RHS>
       //static void apply(LHS const & lhs, RHS const & rhs) { return lhs; }
       
+      op_unary() {}
+      
+      op_unary(unary_operation const & uo) : unary_op_(uo) {}
+      
+      unary_operation const & op() const { return unary_op_; }
       
       //run time stuff:
-      std::string str() const { return unary_operation::str(); }
-      op_interface<InterfaceType> * clone() const { return new op_unary<unary_operation, InterfaceType>(); }
+      std::string str() const { return unary_op_.str(); }
+      op_interface<InterfaceType> * clone() const { return new op_unary<unary_operation, InterfaceType>(unary_op_); }
       numeric_type apply(numeric_type value) const { return unary_op_.apply(value); }
       numeric_type apply(numeric_type lhs, numeric_type rhs) const { return unary_op_.apply(lhs); }
       bool is_unary() const { return true; }
@@ -91,7 +99,11 @@ namespace viennamath
 
       bool equal(const op_interface<InterfaceType> * other) const
       {
-        return (dynamic_cast<const op_unary<unary_operation, InterfaceType> *>(other) != NULL); 
+        const op_unary<unary_operation, InterfaceType> * ptr = dynamic_cast<const op_unary<unary_operation, InterfaceType> *>(other);
+        if (ptr != NULL)
+          return unary_op_equal(ptr->op(), unary_op_); //needed for partial derivatives
+          
+        return false; 
       }
       
     

@@ -38,13 +38,13 @@ namespace viennamath
   equation<InterfaceType> make_weak_form(equation<InterfaceType> const & strong_formulation)
   {
     //TODO: More general derivations: Transform div(expr) to expr * grad(v)
-    expr<InterfaceType> new_lhs(substitute( laplace(function_symbol<unknown_tag<0>, InterfaceType>()),
-                                            constant<typename InterfaceType::numeric_type, InterfaceType>(-1) * (grad(function_symbol<unknown_tag<0>, InterfaceType>()) * grad(function_symbol<test_tag<0>, InterfaceType>())),
+    expr<InterfaceType> new_lhs(substitute( laplace(function_symbol<InterfaceType>(0, unknown_tag<0>())),
+                                            constant<typename InterfaceType::numeric_type, InterfaceType>(-1) * (grad(function_symbol<InterfaceType>(0, unknown_tag<0>())) * grad(function_symbol<InterfaceType>(0, test_tag<0>()))),
                                             strong_formulation.lhs()
                                           )
                                );
     return equation<InterfaceType>( integral(Omega(), new_lhs, symbolic_tag()),
-                                    integral(Omega(), strong_formulation.rhs() * function_symbol<test_tag<0>, InterfaceType>(), symbolic_tag())
+                                    integral(Omega(), strong_formulation.rhs() * function_symbol<InterfaceType>(0, test_tag<0>()), symbolic_tag())
                                   );
   }
 

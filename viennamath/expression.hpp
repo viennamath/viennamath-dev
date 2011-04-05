@@ -20,7 +20,7 @@
 
 #include "viennamath/compiletime/ct_vector.hpp"
 #include "viennamath/compiletime/ct_constant.hpp"
-//#include "viennamath/compiletime/ct_function_symbol.hpp"
+#include "viennamath/compiletime/ct_function_symbol.hpp"
 #include "viennamath/compiletime/ct_variable.hpp"
 #include "viennamath/compiletime/ct_expr.hpp"
 
@@ -30,6 +30,8 @@
 #include "viennamath/runtime/unary_expression.hpp"
 #include "viennamath/runtime/unary_operators.hpp"
 #include "viennamath/runtime/expr.hpp"
+#include "viennamath/runtime/equation.hpp"
+#include "viennamath/runtime/function_symbol.hpp"
 
 #include "viennamath/manipulation/unary_operators_manipulation.hpp"
 #include "viennamath/manipulation/binary_operators_manipulation.hpp"

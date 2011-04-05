@@ -72,7 +72,10 @@ namespace viennamath
 
   template <unsigned long id = 0>
   struct ct_variable;
-  
+
+  template <typename Tag>
+  class ct_function_symbol;
+
   // compile time vector
   template <long i>
   struct ct_index {};
@@ -109,7 +112,7 @@ namespace viennamath
   template <typename InterfaceType = default_interface_type>
   class expr;
   
-  template <typename Tag, typename InterfaceType = default_interface_type>
+  template <typename InterfaceType = default_interface_type>
   class function_symbol;
   
   

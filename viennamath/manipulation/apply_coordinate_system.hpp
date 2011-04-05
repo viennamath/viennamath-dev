@@ -31,8 +31,8 @@ namespace viennamath
   template <typename InterfaceType>
   expr<InterfaceType> apply_coordinate_system(cartesian<1>, expr<InterfaceType> const & ex)
   {
-    function_symbol<unknown_tag<0>, InterfaceType> u;
-    function_symbol<test_tag<0>, InterfaceType> v;
+    function_symbol<InterfaceType> u(0, unknown_tag<>());
+    function_symbol<InterfaceType> v(0, test_tag<>());
     variable<InterfaceType> x(0);
     
     //replace grad:
@@ -67,8 +67,8 @@ namespace viennamath
   template <typename InterfaceType>
   expr<InterfaceType> apply_coordinate_system(cartesian<2>, expr<InterfaceType> const & ex)
   {
-    function_symbol<unknown_tag<0>, InterfaceType> u;
-    function_symbol<test_tag<0>, InterfaceType> v;
+    function_symbol<InterfaceType> u(0, unknown_tag<>());
+    function_symbol<InterfaceType> v(0, test_tag<>());
     variable<InterfaceType> x(0);
     variable<InterfaceType> y(1);
     
@@ -104,8 +104,8 @@ namespace viennamath
   template <typename InterfaceType>
   expr<InterfaceType> apply_coordinate_system(cartesian<3>, expr<InterfaceType> const & ex)
   {
-    function_symbol<unknown_tag<0>, InterfaceType> u;
-    function_symbol<test_tag<0>, InterfaceType> v;
+    function_symbol<InterfaceType> u(0, unknown_tag<>());
+    function_symbol<InterfaceType> v(0, test_tag<>());
     variable<InterfaceType> x(0);
     variable<InterfaceType> y(1);
     variable<InterfaceType> z(2);
@@ -149,8 +149,8 @@ namespace viennamath
   equation<InterfaceType> apply_coordinate_system(cartesian<1>,
                                                   equation<InterfaceType> const & equ)
   {
-    function_symbol<unknown_tag<0>, InterfaceType> u;
-    function_symbol<test_tag<0>, InterfaceType> v;
+    function_symbol<InterfaceType> u(0, unknown_tag<>());
+    function_symbol<InterfaceType> v(0, test_tag<>());
     variable<InterfaceType> x(0);
     
     //TODO: More general applications -> requires vector of expressions
@@ -169,8 +169,8 @@ namespace viennamath
   equation<InterfaceType> apply_coordinate_system(cartesian<2>,
                                                   equation<InterfaceType> const & equ)
   {
-    function_symbol<unknown_tag<0>, InterfaceType> u;
-    function_symbol<test_tag<0>, InterfaceType> v;
+    function_symbol<InterfaceType> u(0, unknown_tag<>());
+    function_symbol<InterfaceType> v(0, test_tag<>());
     variable<InterfaceType> x(0);
     variable<InterfaceType> y(1);
     
@@ -189,8 +189,8 @@ namespace viennamath
   equation<InterfaceType> apply_coordinate_system(cartesian<3>,
                                                   equation<InterfaceType> const & equ)
   {
-    function_symbol<unknown_tag<0>, InterfaceType> u;
-    function_symbol<test_tag<0>, InterfaceType> v;
+    function_symbol<InterfaceType> u(0, unknown_tag<>());
+    function_symbol<InterfaceType> v(0, test_tag<>());
     variable<InterfaceType> x(0);
     variable<InterfaceType> y(1);
     variable<InterfaceType> z(2);

@@ -92,13 +92,13 @@ namespace viennamath
   // Symbolic differentiation:
   // TODO: Improve for compile time compatibility
   //
-  template <typename Tag,
-            typename InterfaceType>
-  expr<InterfaceType> diff(function_symbol<Tag, InterfaceType> const & other,
+  template <typename InterfaceType>
+  expr<InterfaceType> diff(function_symbol<InterfaceType> const & other,
                            variable<InterfaceType> const & var)
   {
+    typedef op_partial_deriv<typename InterfaceType::numeric_type> d_dx_type;
     return expr<InterfaceType>(new unary_expr<InterfaceType>(other.clone(), 
-                                                             new op_unary<op_partial_deriv<typename InterfaceType::numeric_type>, InterfaceType >()
+                                                             new op_unary<d_dx_type, InterfaceType>(d_dx_type(var.id()))
                                                             )
                               );
   }

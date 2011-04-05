@@ -48,6 +48,27 @@ namespace viennamath
     return expr<InterfaceType>(temp.get()->optimize());
   }
 
+  /** @brief Replaces all occurances of the variable u in the expression 'e' with 'u'. */
+  template <typename InterfaceType>
+  expr<InterfaceType> substitute(variable<InterfaceType> const & u,
+                                 default_numeric_type repl,
+                                 expr<InterfaceType> const & e)
+  {
+    constant<default_numeric_type, InterfaceType> c(repl);
+    expr<InterfaceType> temp(e.get()->substitute(&u, &c));
+    return expr<InterfaceType>(temp.get()->optimize());
+  }
+
+  /** @brief Replaces all occurances of the variable u in the expression 'e' with 'u'. */
+  template <typename InterfaceType>
+  expr<InterfaceType> substitute(function_symbol<InterfaceType> const & u,
+                                 default_numeric_type repl,
+                                 expr<InterfaceType> const & e)
+  {
+    constant<default_numeric_type, InterfaceType> c(repl);
+    expr<InterfaceType> temp(e.get()->substitute(&u, &c));
+    return expr<InterfaceType>(temp.get()->optimize());
+  }
 
 
 

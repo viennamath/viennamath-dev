@@ -150,25 +150,41 @@ namespace viennamath
     }
   };
 
+  
   //
   // symbolic partial derivative with respect to variable<id>:
   //
   template <typename NumericT>
-  struct op_partial_deriv
+  class op_partial_deriv
   {
-    static std::string str()
-    {
-      std::stringstream ss;
-      ss << "partial_deriv<" << 0 << ">";
-      return ss.str();
-    }
-    
-    NumericT apply(NumericT value) const
-    {
-      throw "Cannot evaluate formal partial derivative. Use transformations first.";
-      return 0;
-    }
+    public:
+      op_partial_deriv() : id_(0) {}
+      op_partial_deriv(id_type i) : id_(i) {}
+      
+      std::string str() const
+      {
+        std::stringstream ss;
+        ss << "partial_deriv<" << id_ << ">";
+        return ss.str();
+      }
+      
+      NumericT apply(NumericT value) const
+      {
+        throw "Cannot evaluate formal partial derivative. Use transformations first.";
+        return 0;
+      }
+      
+      id_type id() const { return id_; }
+      
+    private:
+      id_type id_;
   };
+
+  //needed for comparison of unary expressions:
+  template <typename T>
+  bool unary_op_equal(op_partial_deriv<T> const & lhs, op_partial_deriv<T> const & rhs) { return lhs.id() == rhs.id(); }
+  
+  
   
   //
   // integral:
