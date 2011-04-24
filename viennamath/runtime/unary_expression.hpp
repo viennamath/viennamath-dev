@@ -198,7 +198,7 @@ namespace viennamath
       InterfaceType * optimize() const
       {
         if (expr_->is_constant())
-          return new constant<numeric_type>( op_->apply(expr_->unwrap()) );
+          return new constant<numeric_type, InterfaceType>( op_->apply(expr_->unwrap()) );
 
         //TODO: Unwrap op_id()
         

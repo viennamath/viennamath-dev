@@ -35,6 +35,7 @@ namespace viennamath
   {
     public:
       typedef typename InterfaceType::numeric_type       numeric_type;
+      typedef InterfaceType                              interface_type;
       
       expr() {}
 

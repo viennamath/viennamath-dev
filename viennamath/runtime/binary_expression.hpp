@@ -300,7 +300,7 @@ namespace viennamath
       InterfaceType * optimize() const
       {
         if (lhs_->is_constant() && rhs_->is_constant())
-          return new constant<numeric_type>( unwrap() );
+          return new constant<numeric_type, InterfaceType>( unwrap() );
         
         //std::cout << "Optimization forwarded to " << op_->str() << std::endl;
         return op_->optimize(lhs_.get(), rhs_.get());

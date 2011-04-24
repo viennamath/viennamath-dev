@@ -287,8 +287,20 @@ namespace viennamath
       typedef T    type;
     };
 
+    template <typename T>
+    struct interface< double, variable<T> >
+    {
+      typedef T    type;
+    };
+
     template <typename T, typename RHS>
     struct interface< binary_expr<T>, RHS >
+    {
+      typedef T    type;
+    };
+
+    template <typename T>
+    struct interface< double, binary_expr<T> >
     {
       typedef T    type;
     };
@@ -301,6 +313,12 @@ namespace viennamath
     
     template <typename T, typename RHS>
     struct interface< expr<T>, RHS >
+    {
+      typedef T    type;
+    };
+
+    template <typename T>
+    struct interface< double,  expr<T> >
     {
       typedef T    type;
     };

@@ -27,6 +27,9 @@ namespace viennamath
   {
 
     public:
+      typedef expr<InterfaceType>     value_type;
+      typedef InterfaceType           interface_type;
+      
       equation() {};
       
       

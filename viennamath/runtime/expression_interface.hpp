@@ -27,7 +27,8 @@ namespace viennamath
   class expression_interface
   {
     public:
-      typedef NumericT         numeric_type;
+      typedef NumericT                          numeric_type;
+      typedef expression_interface<NumericT>    interface_type;
       
       virtual ~expression_interface() {}
       

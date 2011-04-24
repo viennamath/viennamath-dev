@@ -49,7 +49,7 @@ namespace viennamath
       operator ScalarType() const { return s; }
       
       //interface requirements:
-      InterfaceType * clone() const { return new constant<ScalarType>(s); }
+      InterfaceType * clone() const { return new self_type(s); }
       numeric_type eval(std::vector<numeric_type> const & v) const { return s; }
       numeric_type eval(numeric_type v) const { return s; }
       bool is_constant() const { return true; }
@@ -74,7 +74,7 @@ namespace viennamath
       
       InterfaceType * diff(const InterfaceType * diff_var) const
       {
-        return new constant<ScalarType>(0);
+        return new self_type(0);
       }
       
     private:
