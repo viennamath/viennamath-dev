@@ -196,8 +196,8 @@ namespace viennamath
     
     NumericT apply(NumericT value) const
     {
-      throw "Cannot evaluate symbolic_integration. Use transformations first.";
-      return 0;
+      //throw "Cannot evaluate symbolic_integration. Use transformations first.";
+      return value;
     }
   };
   

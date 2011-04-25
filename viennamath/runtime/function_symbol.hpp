@@ -68,7 +68,7 @@ namespace viennamath
       InterfaceType * substitute(const InterfaceType * e,
                                  const InterfaceType * repl) const
       {
-        if (equal(e))
+        if (deep_equal(e))
             return repl->clone();
         
         return clone();
