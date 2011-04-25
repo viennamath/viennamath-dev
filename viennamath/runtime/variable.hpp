@@ -93,6 +93,8 @@ namespace viennamath
   template <typename InterfaceType /* see forwards.h for default argument */>
   class variable : public InterfaceType
   {
+      typedef variable<InterfaceType>                 self_type;
+    
     public:
       typedef typename InterfaceType::numeric_type    numeric_type;
       
@@ -151,7 +153,7 @@ namespace viennamath
         return val;
       }
       
-      std::string str() const
+      std::string deep_str() const
       {
         std::stringstream ss;
         ss << "variable(" << id_ << ")";
@@ -179,7 +181,7 @@ namespace viennamath
         return clone();
       };    
       
-      bool equal(const InterfaceType * other) const
+      bool deep_equal(const InterfaceType * other) const
       {
         const variable<InterfaceType> * ptr = dynamic_cast< const variable<InterfaceType> *>(other);
         if (ptr != NULL)
@@ -188,7 +190,12 @@ namespace viennamath
         }
         return false;
       }
-      
+
+      bool shallow_equal(const InterfaceType * other) const
+      {
+        return dynamic_cast< const self_type * >(other) != NULL;
+      }
+
       InterfaceType * diff(const InterfaceType * diff_var) const
       {
         const variable<InterfaceType> * ptr = dynamic_cast< const variable<InterfaceType> *>(diff_var);

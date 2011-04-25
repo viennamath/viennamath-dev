@@ -37,6 +37,8 @@ namespace viennamath
     typedef op_interface<InterfaceType>                                           op_interface_type;
     typedef op_unary<op_id<typename InterfaceType::numeric_type>, InterfaceType>  op_unary_id_type;
     
+      typedef binary_expr<InterfaceType>    self_type;
+    
     public:
       typedef typename InterfaceType::numeric_type         numeric_type;
 //       explicit expr(InterfaceType * lhs,
@@ -318,16 +320,22 @@ namespace viennamath
       
       ///////// other interface requirements ////////////////////////
       InterfaceType * clone() const { return new binary_expr(lhs_->clone(), op_->clone(), rhs_->clone()); }
-      std::string str() const
+      std::string deep_str() const
       {
         std::stringstream ss;
         ss << "(";
-        ss << lhs_->str();
+        ss << lhs_->deep_str();
         ss << op_->str();
-        ss << rhs_->str();
+        ss << rhs_->deep_str();
         ss << ")";
         return ss.str();        
       }
+      
+      std::string shallow_str() const
+      {
+        return std::string("binary_expr");
+      }
+      
       bool is_unary() const { return false; }
       
       numeric_type unwrap() const
@@ -342,7 +350,7 @@ namespace viennamath
       InterfaceType * substitute(const InterfaceType * e,
                                  const InterfaceType * repl) const
       {
-        if (equal(e))
+        if (deep_equal(e))
           return repl->clone();
         
         return new binary_expr(lhs_->substitute(e, repl),
@@ -350,23 +358,35 @@ namespace viennamath
                                rhs_->substitute(e, repl) ); 
       };
       
-      bool equal(const InterfaceType * other) const
+      bool deep_equal(const InterfaceType * other) const
       {
         if (dynamic_cast< const binary_expr * >(other) != NULL)
         {
           const binary_expr * temp = dynamic_cast< const binary_expr * >(other);
-          return lhs_->equal(temp->lhs())
+          return lhs_->deep_equal(temp->lhs())
                  && op_->equal(temp->op())
-                 && rhs_->equal(temp->rhs());
+                 && rhs_->deep_equal(temp->rhs());
         }
-        return lhs_->equal(other) && rhs_->equal(other);
+        return lhs_->deep_equal(other) && rhs_->deep_equal(other);
       }
-      
+
+      bool shallow_equal(const InterfaceType * other) const
+      {
+        return dynamic_cast< const self_type * >(other) != NULL;
+      }
+
       InterfaceType * diff(const InterfaceType * diff_var) const
       {
         return op_->diff(lhs_.get(), rhs_.get(), diff_var);
       }
 
+      InterfaceType * recursive_action(functor_wrapper<InterfaceType> const & fw) const
+      {
+        lhs_.get()->recursive_action(fw); 
+        fw(this);
+        rhs_.get()->recursive_action(fw);
+        return NULL;
+      }
       
     private:
       std::auto_ptr<InterfaceType>         lhs_;
@@ -379,7 +399,7 @@ namespace viennamath
   std::ostream& operator<<(std::ostream & stream, binary_expr<InterfaceType> const & e)
   {
     stream << "expr" 
-           << e.str()
+           << e.deep_str()
            << "";
     return stream;
   }

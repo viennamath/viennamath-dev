@@ -32,6 +32,7 @@
 #include "viennamath/runtime/expr.hpp"
 #include "viennamath/runtime/equation.hpp"
 #include "viennamath/runtime/function_symbol.hpp"
+#include "viennamath/runtime/functor_wrapper.hpp"
 
 #include "viennamath/manipulation/unary_operators_manipulation.hpp"
 #include "viennamath/manipulation/binary_operators_manipulation.hpp"

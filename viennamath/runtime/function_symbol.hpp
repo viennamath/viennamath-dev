@@ -50,7 +50,7 @@ namespace viennamath
       InterfaceType * clone() const { return new self_type(id_, tag_id_); }
       numeric_type eval(std::vector<double> const & v) const { throw "Cannot evaluate function_symbol!"; return 0; }
       numeric_type eval(numeric_type v) const { throw "Cannot evaluate function_symbol!"; return 0; }
-      std::string str() const
+      std::string deep_str() const
       {
         std::stringstream ss;
         ss << "function_symbol<";
@@ -74,7 +74,7 @@ namespace viennamath
         return clone();
       };    
       
-      bool equal(const InterfaceType * other) const
+      bool deep_equal(const InterfaceType * other) const
       {
         const self_type * ptr = dynamic_cast< const self_type *>(other);
         if (ptr != NULL)
@@ -83,6 +83,11 @@ namespace viennamath
             return true;
         }
         return false;
+      }
+      
+      bool shallow_equal(const InterfaceType * other) const
+      {
+        return dynamic_cast< const self_type * >(other) != NULL;
       }
       
       InterfaceType * diff(const InterfaceType * diff_var) const

@@ -220,13 +220,13 @@ namespace viennamath
     {
       stream << "expr" 
             << "("
-            << e.get()->str()
+            << e.get()->deep_str()
             << ")";
     }
     else
     {
       stream << "expr" 
-            << e.get()->str();
+            << e.get()->deep_str();
     }
       
     return stream;

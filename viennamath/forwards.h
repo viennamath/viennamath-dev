@@ -116,6 +116,13 @@ namespace viennamath
   class function_symbol;
   
   
+  template <typename InterfaceType = default_interface_type>
+  class functor_interface;
+  
+  template <typename InterfaceType = default_interface_type>
+  class functor_wrapper;
+  
+  
   /////// interface for op_tags: ///////
   template <typename InterfaceType = default_interface_type>
   class op_interface;

@@ -53,7 +53,7 @@ namespace viennamath
       numeric_type eval(std::vector<numeric_type> const & v) const { return s; }
       numeric_type eval(numeric_type v) const { return s; }
       bool is_constant() const { return true; }
-      std::string str() const
+      std::string deep_str() const
       {
         std::stringstream ss;
         ss << "constant(" << s << ")";
@@ -67,9 +67,14 @@ namespace viennamath
         return clone();
       };    
       
-      bool equal(const InterfaceType * other) const
+      bool deep_equal(const InterfaceType * other) const
       {
         return dynamic_cast< const self_type *>(other) != NULL;
+      }
+      
+      bool shallow_equal(const InterfaceType * other) const
+      {
+        return dynamic_cast< const self_type * >(other) != NULL;
       }
       
       InterfaceType * diff(const InterfaceType * diff_var) const
@@ -86,7 +91,7 @@ namespace viennamath
   std::ostream& operator<<(std::ostream & stream,
                            constant<ScalarType, InterfaceType> const & c)
   {
-    stream << c.str();
+    stream << c.deep_str();
     return stream;
   }
 
