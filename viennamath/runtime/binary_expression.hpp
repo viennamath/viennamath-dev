@@ -380,14 +380,23 @@ namespace viennamath
         return op_->diff(lhs_.get(), rhs_.get(), diff_var);
       }
 
-      InterfaceType * recursive_action(functor_wrapper<InterfaceType> const & fw) const
+      InterfaceType * recursive_manipulation(manipulation_wrapper<InterfaceType> const & fw) const
       {
-        lhs_.get()->recursive_action(fw); 
-        fw(this);
-        rhs_.get()->recursive_action(fw);
-        return NULL;
+        if (fw.modifies(this))
+          return fw(this);
+
+        return new binary_expr(lhs_->recursive_manipulation(fw),
+                               op_->clone(),
+                               rhs_->recursive_manipulation(fw) ); 
       }
-      
+
+      void recursive_traversal(traversal_wrapper<InterfaceType> const & fw) const
+      {
+        lhs_->recursive_traversal(fw);
+        fw(this);
+        rhs_->recursive_traversal(fw);
+      }
+
     private:
       std::auto_ptr<InterfaceType>         lhs_;
       std::auto_ptr<op_interface_type>     op_;

@@ -52,7 +52,9 @@ namespace viennamath
       
       /** @brief Checks the current expression for being equal to 'other'. Performs a deep check for equality of members. */
       virtual bool deep_equal(const interface_type * other) const = 0;
-      
+
+      virtual interface_type * recursive_manipulation(manipulation_wrapper<interface_type> const & fw) const { return fw(this); }   
+      virtual void recursive_traversal(traversal_wrapper<interface_type> const & fw) const { fw(this); }   
 
       ////// Deprecated section: ////////////////
       
@@ -64,7 +66,6 @@ namespace viennamath
       virtual interface_type * diff(const interface_type * diff_var) const = 0;   //receiver owns pointer! Function parameter diff_var not be manipulated!
          
          
-      virtual interface_type * recursive_action(functor_wrapper<interface_type> const & fw) const { return fw(this); }   
   };
  
   

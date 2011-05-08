@@ -117,10 +117,16 @@ namespace viennamath
   
   
   template <typename InterfaceType = default_interface_type>
-  class functor_interface;
+  class manipulation_interface;
+
+  template <typename InterfaceType = default_interface_type>
+  class manipulation_wrapper;
   
   template <typename InterfaceType = default_interface_type>
-  class functor_wrapper;
+  class traversal_interface;
+  
+  template <typename InterfaceType = default_interface_type>
+  class traversal_wrapper;
   
   
   /////// interface for op_tags: ///////

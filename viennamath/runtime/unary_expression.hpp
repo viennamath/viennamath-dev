@@ -269,13 +269,20 @@ namespace viennamath
       
       const InterfaceType * lhs() const { return expr_.get(); }
       
-      InterfaceType * recursive_action(functor_wrapper<InterfaceType> const & fw) const
+      InterfaceType * recursive_manipulation(manipulation_wrapper<InterfaceType> const & fw) const
       {
-        fw(this);
-        expr_.get()->recursive_action(fw);
-        return NULL;
+        if (fw.modifies(this))
+          return fw(this);
+
+        return new unary_expr(expr_->recursive_manipulation(fw),
+                              op_->clone() ); 
       }
       
+      void recursive_traversal(traversal_wrapper<InterfaceType> const & fw) const
+      {
+        fw(this);
+        expr_->recursive_traversal(fw);
+      }
       
     private:
       std::auto_ptr<InterfaceType>      expr_;

@@ -22,33 +22,76 @@
 namespace viennamath
 {
   template <typename InterfaceType /* see forwards.h for default argument */>
-  class functor_interface
+  class manipulation_interface
   {
     public:
-      /** @brief Copy data from one object to another */
-      virtual InterfaceType * apply(InterfaceType const * e) const = 0;
+      virtual InterfaceType * operator()(InterfaceType const * e) const { return e->clone(); };
+      virtual bool modifies(InterfaceType const * e) const { return false; }
   };
-  
-  
+
   /** @brief: Type erasure for functors acting on expressions */
   
   template <typename InterfaceType /* default argument in forwards.h */>
-  class functor_wrapper
+  class manipulation_wrapper
   {
     public:
       template <typename T>
-      functor_wrapper(T const * t) : functor_(t) {}
+      manipulation_wrapper(T const * t) : functor_(t) {}
       
       InterfaceType * operator()(InterfaceType const * e) const
       {
-        return functor_.get()->apply(e); 
+        return functor_.get()->operator()(e); 
+      }
+
+      bool modifies(InterfaceType const * e) const { return functor_->modifies(e); }
+
+    private:
+      std::auto_ptr< const manipulation_interface<InterfaceType> > functor_;
+  };
+
+  
+  template <typename InterfaceType /* see forwards.h for default argument */>
+  class traversal_interface
+  {
+    public:
+      virtual void operator()(InterfaceType const * e) const = 0;
+  };
+  
+  template <typename InterfaceType /* default argument in forwards.h */>
+  class traversal_wrapper
+  {
+    public:
+      template <typename T>
+      traversal_wrapper(T const * t) : functor_(t) {}
+      
+      void operator()(InterfaceType const * e) const
+      {
+        functor_.get()->operator()(e); 
       }
 
     private:
-      std::auto_ptr< const functor_interface<InterfaceType> > functor_;
+      std::auto_ptr< const traversal_interface<InterfaceType> > functor_;
   };
 
-
+  
+  template <typename CastToType>
+  struct callback_if_castable
+  {
+    template <typename InterfaceType, typename FunctorType>
+    static bool apply(InterfaceType const * e, FunctorType const & functor)
+    {
+      CastToType const * ptr = dynamic_cast< CastToType const *>(e);
+      if (ptr != NULL)
+      {
+        functor(*ptr);
+        return true;
+      }
+      return false;
+    }
+    
+  };
+  
+    
 }
 
 #endif
