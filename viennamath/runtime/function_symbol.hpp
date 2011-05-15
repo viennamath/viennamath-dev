@@ -55,9 +55,9 @@ namespace viennamath
         std::stringstream ss;
         ss << "function_symbol<";
         if (tag_id_ == unknown_tag<>::tag_id())
-          ss << unknown_tag<>::str() << ">";
+          ss << "unknown(" << id_ << ")>";
         else if (tag_id_ == test_tag<>::tag_id())
-          ss << test_tag<>::str() << ">";
+          ss << "test(" << id_ << ")>";
         else
           ss << "invalid>";
         
@@ -74,14 +74,24 @@ namespace viennamath
         return clone();
       };    
       
+      InterfaceType * substitute(std::vector<const InterfaceType *> const &  e,
+                                 std::vector<const InterfaceType *> const &  repl) const
+      {
+        //std::cout << "Comparing variable<" << id << "> with " << e->str() << ", result: ";
+        for (size_t i=0; i<e.size(); ++i)
+          if (deep_equal(e[i]))
+            return repl[i]->clone();
+        
+        //std::cout << "FALSE" << std::endl;
+        return clone();
+      };    
+      
       bool deep_equal(const InterfaceType * other) const
       {
         const self_type * ptr = dynamic_cast< const self_type *>(other);
         if (ptr != NULL)
-        {
-          if (ptr->id() == id_ && ptr->tag_id_ == tag_id_)
-            return true;
-        }
+          return (ptr->id() == id_ && ptr->tag_id_ == tag_id_);
+
         return false;
       }
       

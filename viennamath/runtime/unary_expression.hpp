@@ -118,8 +118,8 @@ namespace viennamath
         return *this;
       }
 
-      //const InterfaceType     * lhs() const { return expr_.get(); }
-      //const op_interface_type * op()  const { return op_.get(); }
+      const InterfaceType     * lhs() const { return expr_.get(); }
+      const op_interface_type * op()  const { return op_.get(); }
       
       ///////////////// evaluation: ///////////////////////////////
       
@@ -244,6 +244,18 @@ namespace viennamath
                               op_->clone());
       };
       
+      InterfaceType * substitute(std::vector<const InterfaceType *> const &  e,
+                                 std::vector<const InterfaceType *> const &  repl) const
+      {
+        for (size_t i=0; i<e.size(); ++i)
+          if (deep_equal(e[i]))
+            return repl[i]->clone();
+        
+        return new unary_expr(expr_->substitute(e, repl),
+                              op_->clone());
+      };
+      
+      
       bool deep_equal(const InterfaceType * other) const
       {
         if (dynamic_cast<const unary_expr *>(other) != NULL)
@@ -266,8 +278,6 @@ namespace viennamath
       {
         return op_->diff(expr_.get(), diff_var);
       }
-      
-      const InterfaceType * lhs() const { return expr_.get(); }
       
       InterfaceType * recursive_manipulation(manipulation_wrapper<InterfaceType> const & fw) const
       {

@@ -60,7 +60,11 @@ namespace viennamath
       
       /** @brief Substitutes repl if the current expression equals e */
       virtual interface_type * substitute(const interface_type * e,
-                                                const interface_type * repl) const = 0;  //receiver owns pointer! Function parameters must not be manipulated!
+                                          const interface_type * repl) const = 0;  //receiver owns pointer! Function parameters must not be manipulated!
+                                          
+      virtual interface_type * substitute(std::vector<const interface_type *> const & e,
+                                          std::vector<const interface_type *> const & repl) const = 0;  //receiver owns pointer! Function parameters must not be manipulated!
+                                          
       virtual interface_type * optimize() const { return clone(); }  //receiver owns pointer!
       virtual bool optimizable() const { return false; }      
       virtual interface_type * diff(const interface_type * diff_var) const = 0;   //receiver owns pointer! Function parameter diff_var not be manipulated!

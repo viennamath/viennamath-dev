@@ -16,6 +16,7 @@
 #define VIENNAMATH_SUBSTITUTE_HPP
 
 #include "viennamath/forwards.h"
+#include <assert.h>
 
 namespace viennamath
 {
@@ -59,7 +60,7 @@ namespace viennamath
     return expr<InterfaceType>(temp.get()->optimize());
   }
 
-  /** @brief Replaces all occurances of the variable u in the expression 'e' with 'u'. */
+  /** @brief Replaces all occurances of the variable u in the expression 'e' with 'repl'. */
   template <typename InterfaceType>
   expr<InterfaceType> substitute(function_symbol<InterfaceType> const & u,
                                  default_numeric_type repl,
@@ -70,6 +71,14 @@ namespace viennamath
     return expr<InterfaceType>(temp.get()->optimize());
   }
 
+  template <typename InterfaceType>
+  expr<InterfaceType> substitute(function_symbol<InterfaceType> const & u,
+                                 expr<InterfaceType> const & repl,
+                                 expr<InterfaceType> const & e)
+  {
+    expr<InterfaceType> temp(e.get()->substitute(&u, repl.get()));
+    return expr<InterfaceType>(temp.get()->optimize());
+  }
 
 
   //substitute binary_expressions (for fem):
@@ -106,6 +115,26 @@ namespace viennamath
                                  expr<InterfaceType> const & e)
   {
     expr<InterfaceType> temp(e.get()->substitute(search.get(), repl.get()));
+    return expr<InterfaceType>(temp.get()->optimize());
+  }
+
+
+  template <typename InterfaceType>
+  expr<InterfaceType> substitute(std::vector<expr<InterfaceType> > const & search,
+                                 std::vector<expr<InterfaceType> > const & repl,
+                                 expr<InterfaceType> const & e)
+  {
+    assert(search.size() == repl.size() && "Search and replace array must have the same length!");
+    
+    std::vector<const InterfaceType *> search_ptrs(search.size());
+    for (size_t i=0; i<search_ptrs.size(); ++i)
+      search_ptrs[i] = search[i].get();
+    
+    std::vector<const InterfaceType *> repl_ptrs(repl.size());
+    for (size_t i=0; i<repl_ptrs.size(); ++i)
+      repl_ptrs[i] = repl[i].get();
+    
+    expr<InterfaceType> temp(e.get()->substitute(search_ptrs, repl_ptrs));
     return expr<InterfaceType>(temp.get()->optimize());
   }
 

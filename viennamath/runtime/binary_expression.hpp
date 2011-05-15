@@ -357,6 +357,19 @@ namespace viennamath
                                op_->clone(),
                                rhs_->substitute(e, repl) ); 
       };
+
+      InterfaceType * substitute(std::vector<const InterfaceType *> const &  e,
+                                 std::vector<const InterfaceType *> const &  repl) const
+      {
+        for (size_t i=0; i<e.size(); ++i)
+          if (deep_equal(e[i]))
+            return repl[i]->clone();
+        
+        return new binary_expr(lhs_->substitute(e, repl),
+                               op_->clone(),
+                               rhs_->substitute(e, repl) ); 
+      };
+      
       
       bool deep_equal(const InterfaceType * other) const
       {

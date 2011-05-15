@@ -19,7 +19,7 @@ ADD_EXECUTABLE(basic_test examples/basic_test.cpp)
 ADD_EXECUTABLE(model_benchmark examples/model_benchmark.cpp)
 ADD_EXECUTABLE(newton_solve examples/newton_solve.cpp)
 ADD_EXECUTABLE(functor_test examples/functor_test.cpp)
-
+ADD_EXECUTABLE(substitute_test examples/substitute_test.cpp)
 
 # tests:
 ADD_EXECUTABLE(runtime_test tests/src/runtime_test.cpp)

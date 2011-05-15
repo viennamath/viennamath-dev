@@ -167,27 +167,35 @@ namespace viennamath
         
       //protected:
       InterfaceType * substitute(const InterfaceType * e,
-                                const InterfaceType * repl) const
+                                 const InterfaceType * repl) const
       {
         //std::cout << "Comparing variable<" << id << "> with " << e->str() << ", result: ";
-        const variable<InterfaceType> * ptr = dynamic_cast< const variable<InterfaceType> *>(e);
-        if (ptr != NULL)
-        {
-          //std::cout << "TRUE, replacing with " << repl->str() << std::endl;
-          if (ptr->id() == id_)
-            return repl->clone();
-        }
+        if (deep_equal(e))
+          return repl->clone();
+        
+        //std::cout << "FALSE" << std::endl;
+        return clone();
+      };    
+
+      InterfaceType * substitute(std::vector<const InterfaceType *> const &  e,
+                                 std::vector<const InterfaceType *> const &  repl) const
+      {
+        //std::cout << "Comparing variable<" << id << "> with " << e->str() << ", result: ";
+        for (size_t i=0; i<e.size(); ++i)
+          if (deep_equal(e[i]))
+            return repl[i]->clone();
+        
         //std::cout << "FALSE" << std::endl;
         return clone();
       };    
       
+      
       bool deep_equal(const InterfaceType * other) const
       {
-        const variable<InterfaceType> * ptr = dynamic_cast< const variable<InterfaceType> *>(other);
+        const self_type * ptr = dynamic_cast< const self_type *>(other);
         if (ptr != NULL)
-        {
           return ptr->id() == id_;
-        }
+
         return false;
       }
 
