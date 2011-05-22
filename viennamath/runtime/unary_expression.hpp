@@ -207,6 +207,16 @@ namespace viennamath
         return new unary_expr(expr_->optimize(), op_->clone());
       }
       
+      bool optimizable() const
+      {
+        if (expr_->optimizable())
+        {
+          //std::cout << "optimizable(): true in binary_expr" << std::endl;
+          return true;
+        }
+        return false;
+      }
+      
     
       ///////// other interface requirements ////////////////////////
       InterfaceType * clone() const { return new unary_expr(expr_->clone(), op_->clone()); }

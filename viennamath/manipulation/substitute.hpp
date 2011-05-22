@@ -36,7 +36,10 @@ namespace viennamath
                                  ExpressionType const & e)
   {
     expr<InterfaceType> temp(e.substitute(&u, &repl));
-    return expr<InterfaceType>(temp.get()->optimize());
+    while (temp.get()->optimizable())
+      temp = temp.get()->optimize();
+    
+    return temp;
   }
 
   /** @brief Replaces all occurances of the variable u in the expression 'e' with 'u'. */
@@ -46,7 +49,10 @@ namespace viennamath
                                  expr<InterfaceType> const & e)
   {
     expr<InterfaceType> temp(e.get()->substitute(&u, &repl));
-    return expr<InterfaceType>(temp.get()->optimize());
+    while (temp.get()->optimizable())
+      temp = temp.get()->optimize();
+    
+    return temp;
   }
 
   /** @brief Replaces all occurances of the variable u in the expression 'e' with 'u'. */
@@ -57,7 +63,10 @@ namespace viennamath
   {
     constant<default_numeric_type, InterfaceType> c(repl);
     expr<InterfaceType> temp(e.get()->substitute(&u, &c));
-    return expr<InterfaceType>(temp.get()->optimize());
+    while (temp.get()->optimizable())
+      temp = temp.get()->optimize();
+    
+    return temp;
   }
 
   /** @brief Replaces all occurances of the variable u in the expression 'e' with 'repl'. */
@@ -68,7 +77,10 @@ namespace viennamath
   {
     constant<default_numeric_type, InterfaceType> c(repl);
     expr<InterfaceType> temp(e.get()->substitute(&u, &c));
-    return expr<InterfaceType>(temp.get()->optimize());
+    while (temp.get()->optimizable())
+      temp = temp.get()->optimize();
+    
+    return temp;
   }
 
   template <typename InterfaceType>
@@ -77,7 +89,10 @@ namespace viennamath
                                  expr<InterfaceType> const & e)
   {
     expr<InterfaceType> temp(e.get()->substitute(&u, repl.get()));
-    return expr<InterfaceType>(temp.get()->optimize());
+    while (temp.get()->optimizable())
+      temp = temp.get()->optimize();
+    
+    return temp;
   }
 
 
@@ -88,7 +103,10 @@ namespace viennamath
                                  expr<InterfaceType> const & e)
   {
     expr<InterfaceType> temp(e.get()->substitute(&search, &repl));
-    return expr<InterfaceType>(temp.get()->optimize());
+    while (temp.get()->optimizable())
+      temp = temp.get()->optimize();
+    
+    return temp;
   }
 
   template <typename InterfaceType>
@@ -97,7 +115,10 @@ namespace viennamath
                                  expr<InterfaceType> const & e)
   {
     expr<InterfaceType> temp(e.get()->substitute(&search, repl.get()));
-    return expr<InterfaceType>(temp.get()->optimize());
+    while (temp.get()->optimizable())
+      temp = temp.get()->optimize();
+    
+    return temp;
   }
 
   template <typename InterfaceType, typename ReplacementType>
@@ -106,7 +127,10 @@ namespace viennamath
                                  expr<InterfaceType> const & e)
   {
     expr<InterfaceType> temp(e.get()->substitute(&search, &repl));
-    return expr<InterfaceType>(temp.get()->optimize());
+    while (temp.get()->optimizable())
+      temp = temp.get()->optimize();
+    
+    return temp;
   }
 
   template <typename InterfaceType>
@@ -115,7 +139,10 @@ namespace viennamath
                                  expr<InterfaceType> const & e)
   {
     expr<InterfaceType> temp(e.get()->substitute(search.get(), repl.get()));
-    return expr<InterfaceType>(temp.get()->optimize());
+    while (temp.get()->optimizable())
+      temp = temp.get()->optimize();
+    
+    return temp;
   }
 
 
@@ -135,7 +162,15 @@ namespace viennamath
       repl_ptrs[i] = repl[i].get();
     
     expr<InterfaceType> temp(e.get()->substitute(search_ptrs, repl_ptrs));
-    return expr<InterfaceType>(temp.get()->optimize());
+    
+    while (temp.get()->optimizable())
+    {
+      //std::cout << "Optimizing " << temp << std::endl;
+      temp = temp.get()->optimize();
+    }
+    //std::cout << "Optimization end" << std::endl;
+    
+    return temp;
   }
 
 }
