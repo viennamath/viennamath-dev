@@ -36,7 +36,7 @@ void evaluations_test(E & e, double ref_solution)
   viennamath::constant<long> c6(6);
   viennamath::ct_constant<8> c8;
 
-  std::vector<double> p(2);
+  std::vector<double> p(3);
   p[0] = 4;
   p[1] = 6;
   p[2] = 8;
@@ -64,7 +64,7 @@ void unary_test(E const & e, double ref_solution)
   viennamath::constant<long> c6(6);
   viennamath::ct_constant<8> c8;
 
-  std::vector<double> p(2);
+  std::vector<double> p(3);
   p[0] = 4;
   p[1] = 6;
   p[2] = 8;
@@ -85,7 +85,7 @@ void unary_test(E const & e, double ref_solution)
 template <typename E>
 void unary_test(E const & e)
 {
-  std::vector<double> p(2);
+  std::vector<double> p(3);
   p[0] = 4;
   p[1] = 6;
   p[2] = 8;
