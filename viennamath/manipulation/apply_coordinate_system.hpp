@@ -72,6 +72,7 @@ namespace viennamath
     variable<InterfaceType> x(0);
     variable<InterfaceType> y(1);
     
+    //TODO: This does not work like this!! Gradient needs to return a vector-expression!
     //replace grad:
     expr<InterfaceType> new_ex = ex;
     expr<InterfaceType> new_ex1(substitute(grad(u), diff(u, x), new_ex) );
@@ -110,6 +111,7 @@ namespace viennamath
     variable<InterfaceType> y(1);
     variable<InterfaceType> z(2);
     
+    //TODO: This does not work like this!! Gradient needs to return a vector-expression!
     //replace grad:
     expr<InterfaceType> new_ex = ex;
     expr<InterfaceType> new_ex1(substitute(grad(u), diff(u, x), new_ex) );
