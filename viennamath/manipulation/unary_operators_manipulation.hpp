@@ -580,8 +580,8 @@ namespace viennamath
   //
   // integral:
   //
-  template <typename InterfaceType, typename NumericT>
-  InterfaceType * diff_impl(const InterfaceType * e, op_symbolic_integration<NumericT>, const InterfaceType * diff_var)
+  template <typename InterfaceType, typename NumericT, typename BoundaryTag>
+  InterfaceType * diff_impl(const InterfaceType * e, op_symbolic_integration<NumericT, BoundaryTag>, const InterfaceType * diff_var)
   {
     throw "Cannot differentiate symbolic_integration!";
     return NULL;

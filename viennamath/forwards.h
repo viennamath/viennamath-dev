@@ -59,6 +59,10 @@ namespace viennamath
       NumericT value_;
   };
 
+  // integral tags
+  struct void_ {};
+  struct Omega {};
+  struct symbolic_tag {};
   
   
   /////// compile time expression stuff ///////

@@ -21,9 +21,6 @@
 
 namespace viennamath
 {
-  struct Omega {};
-  struct symbolic_tag {};
-  
   template <typename InterfaceType>
   expr<InterfaceType> integral(Omega, expr<InterfaceType> const & integrand, symbolic_tag)
   {

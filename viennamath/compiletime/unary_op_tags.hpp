@@ -19,6 +19,7 @@
 #include <vector>
 #include <math.h>
 #include "viennamath/forwards.h"
+#include "viennamath/debug.hpp"
 
 namespace viennamath
 {
@@ -189,10 +190,23 @@ namespace viennamath
   //
   // integral:
   //
-  template <typename NumericT>
+  template <typename NumericT, typename BoundaryTag = viennamath::void_>
   struct op_symbolic_integration
   {
-    static std::string str() { return "symb_integral"; }
+    typedef BoundaryTag boundary_tag;
+  
+    static std::string str() 
+    { 
+      std::string id = "symb_integral";
+      
+      std::string type_string = viennamath::type_to_string<boundary_tag>();
+      std::size_t found = type_string.find_last_of(":");
+      type_string = type_string.substr(found+1);
+
+      if(type_string != "void_") id += "_{"+type_string+"}";
+      
+      return id;
+    }
     
     NumericT apply(NumericT value) const
     {
@@ -204,3 +218,4 @@ namespace viennamath
 }
 
 #endif
+
