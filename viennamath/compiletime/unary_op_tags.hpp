@@ -199,10 +199,12 @@ namespace viennamath
     { 
       std::string id = "symb_integral";
       
+      // get string for the type
       std::string type_string = viennamath::type_to_string<boundary_tag>();
+      // remove the namespaces
       std::size_t found = type_string.find_last_of(":");
       type_string = type_string.substr(found+1);
-
+      // only add a bundary part if there is one ...
       if(type_string != "void_") id += "_{"+type_string+"}";
       
       return id;
