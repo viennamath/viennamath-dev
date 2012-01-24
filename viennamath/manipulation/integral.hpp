@@ -22,19 +22,19 @@
 namespace viennamath
 {
   template <typename InterfaceType>
-  expr<InterfaceType> integral(Omega, expr<InterfaceType> const & integrand, symbolic_tag)
+  rt_expr<InterfaceType> integral(symbolic_interval, rt_expr<InterfaceType> const & integrand, symbolic_tag)
   {
-    return expr<InterfaceType>(new unary_expr<InterfaceType>(integrand.get()->clone(),
-                                                             new op_unary<op_symbolic_integration<typename InterfaceType::numeric_type>, InterfaceType>())
-                              );
+    return rt_expr<InterfaceType>(new rt_unary_expr<InterfaceType>(integrand.get()->clone(),
+                                                                   new op_unary<op_symbolic_integration<typename InterfaceType::numeric_type>, InterfaceType>())
+                                 );
   }
   
   template <typename InterfaceType>
-  expr<InterfaceType> integral(Omega, binary_expr<InterfaceType> const & integrand, symbolic_tag)
+  rt_expr<InterfaceType> integral(symbolic_interval, rt_binary_expr<InterfaceType> const & integrand, symbolic_tag)
   {
-    return expr<InterfaceType>(new unary_expr<InterfaceType>(integrand.clone(),
-                                                             new op_unary<op_symbolic_integration<typename InterfaceType::numeric_type>, InterfaceType>())
-                              );
+    return rt_expr<InterfaceType>(new rt_unary_expr<InterfaceType>(integrand.clone(),
+                                                                   new op_unary<op_symbolic_integration<typename InterfaceType::numeric_type>, InterfaceType>())
+                                  );
   }
   
 }

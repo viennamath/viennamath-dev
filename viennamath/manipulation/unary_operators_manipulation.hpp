@@ -41,46 +41,46 @@ namespace viennamath
   template <typename InterfaceType, typename NumericT>
   InterfaceType * diff_impl(const InterfaceType * e, op_exp<NumericT>, const InterfaceType * diff_var)
   {
-    return new binary_expr<InterfaceType>( new unary_expr<InterfaceType>(e->clone(), new op_unary<op_exp<NumericT>, InterfaceType>()),
+    return new rt_binary_expr<InterfaceType>( new rt_unary_expr<InterfaceType>(e->clone(), new op_unary<op_exp<NumericT>, InterfaceType>()),
                                            new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(),
                                            e->diff(diff_var)); 
   }
 
   template <typename NumericT, typename InterfaceType>
-  unary_expr<InterfaceType> exp(constant<NumericT, InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> exp(rt_constant<NumericT, InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_exp<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_exp<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> exp(variable<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> exp(rt_variable<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_exp<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_exp<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <id_type id>
-  unary_expr<> exp(ct_variable<id> const & other)
+  rt_unary_expr<> exp(ct_variable<id> const & other)
   {
-    return unary_expr<>(new variable<>(id), new op_unary<op_exp<default_numeric_type> >()); 
+    return rt_unary_expr<>(new rt_variable<>(id), new op_unary<op_exp<default_numeric_type> >()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> exp(binary_expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> exp(rt_binary_expr<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_exp<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_exp<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <typename LHS, typename OP, typename RHS>
-  unary_expr<> exp(ct_expr<LHS, OP, RHS> const & other)
+  rt_unary_expr<> exp(ct_expr<LHS, OP, RHS> const & other)
   {
-    return unary_expr<>(new binary_expr<>(other),
+    return rt_unary_expr<>(new rt_binary_expr<>(other),
                         new op_unary<op_exp<default_numeric_type> >()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> exp(expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> exp(rt_expr<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.get()->clone(), new op_unary<op_exp<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.get()->clone(), new op_unary<op_exp<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   
@@ -90,52 +90,52 @@ namespace viennamath
   template <typename InterfaceType, typename NumericT>
   InterfaceType * diff_impl(const InterfaceType * e, op_sin<NumericT>, const InterfaceType * diff_var)
   {
-    return new binary_expr<InterfaceType>( new unary_expr<InterfaceType>(e->clone(), new op_unary<op_cos<NumericT>, InterfaceType>()),
+    return new rt_binary_expr<InterfaceType>( new rt_unary_expr<InterfaceType>(e->clone(), new op_unary<op_cos<NumericT>, InterfaceType>()),
                                            new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(),
                                            e->diff(diff_var) );
   }
 
   template <typename NumericT, typename InterfaceType>
-  unary_expr<InterfaceType> sin(constant<NumericT, InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> sin(rt_constant<NumericT, InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_sin<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_sin<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> sin(variable<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> sin(rt_variable<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_sin<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_sin<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <id_type id>
-  unary_expr<> sin(ct_variable<id> const & other)
+  rt_unary_expr<> sin(ct_variable<id> const & other)
   {
-    return unary_expr<>(new variable<>(id), new op_unary<op_sin<default_numeric_type> >()); 
+    return rt_unary_expr<>(new rt_variable<>(id), new op_unary<op_sin<default_numeric_type> >()); 
   }
 
   template <typename LHS, typename OP, typename RHS>
-  unary_expr<> sin(ct_expr<LHS, OP, RHS> const & other)
+  rt_unary_expr<> sin(ct_expr<LHS, OP, RHS> const & other)
   {
-    return unary_expr<>(new binary_expr<>(other),
+    return rt_unary_expr<>(new rt_binary_expr<>(other),
                         new op_unary<op_sin<default_numeric_type> >()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> sin(unary_expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> sin(rt_unary_expr<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_sin<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_sin<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> sin(binary_expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> sin(rt_binary_expr<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_sin<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_sin<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> sin(expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> sin(rt_expr<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.get()->clone(), new op_unary<op_sin<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.get()->clone(), new op_unary<op_sin<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
   
   
@@ -146,55 +146,55 @@ namespace viennamath
   template <typename InterfaceType, typename NumericT>
   InterfaceType * diff_impl(const InterfaceType * e, op_cos<NumericT>, const InterfaceType * diff_var)
   {
-    return new binary_expr<InterfaceType>( new unary_expr<InterfaceType>(e->clone(), new op_unary<op_sin<NumericT>, InterfaceType>()),
+    return new rt_binary_expr<InterfaceType>( new rt_unary_expr<InterfaceType>(e->clone(), new op_unary<op_sin<NumericT>, InterfaceType>()),
                                            new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(),
-                                           new binary_expr<InterfaceType>( new constant<NumericT, InterfaceType>(-1),
-                                                                           new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(),
-                                                                           e->diff(diff_var) )
+                                           new rt_binary_expr<InterfaceType>( new rt_constant<NumericT, InterfaceType>(-1),
+                                                                              new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(),
+                                                                              e->diff(diff_var) )
                                           );
   }
 
   template <typename NumericT, typename InterfaceType>
-  unary_expr<InterfaceType> cos(constant<NumericT, InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> cos(rt_constant<NumericT, InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_cos<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_cos<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> cos(variable<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> cos(rt_variable<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_cos<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_cos<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <id_type id>
-  unary_expr<> cos(ct_variable<id> const & other)
+  rt_unary_expr<> cos(ct_variable<id> const & other)
   {
-    return unary_expr<>(new variable<>(id), new op_unary<op_cos<default_numeric_type> >()); 
+    return rt_unary_expr<>(new rt_variable<>(id), new op_unary<op_cos<default_numeric_type> >()); 
   }
   
   template <typename LHS, typename OP, typename RHS>
-  unary_expr<> cos(ct_expr<LHS, OP, RHS> const & other)
+  rt_unary_expr<> cos(ct_expr<LHS, OP, RHS> const & other)
   {
-    return unary_expr<>(new binary_expr<>(other),
+    return rt_unary_expr<>(new rt_binary_expr<>(other),
                         new op_unary<op_cos<default_numeric_type> >()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> cos(unary_expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> cos(rt_unary_expr<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_cos<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_cos<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> cos(binary_expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> cos(rt_binary_expr<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_cos<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_cos<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> cos(expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> cos(rt_expr<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.get()->clone(), new op_unary<op_cos<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.get()->clone(), new op_unary<op_cos<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   //
@@ -203,57 +203,57 @@ namespace viennamath
   template <typename InterfaceType, typename NumericT>
   InterfaceType * diff_impl(const InterfaceType * e, op_tan<NumericT>, const InterfaceType * diff_var)
   {
-    return new binary_expr<InterfaceType>( e->diff(diff_var),
+    return new rt_binary_expr<InterfaceType>( e->diff(diff_var),
                                           new op_binary<op_div<typename InterfaceType::numeric_type>, InterfaceType>(),
-                                          new binary_expr<InterfaceType>( new unary_expr<InterfaceType>(e->clone(),
+                                          new rt_binary_expr<InterfaceType>( new rt_unary_expr<InterfaceType>(e->clone(),
                                                                                                         new op_unary<op_cos<NumericT>, InterfaceType>()),
                                                                           new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(),
-                                                                          new unary_expr<InterfaceType>(e->clone(),
+                                                                          new rt_unary_expr<InterfaceType>(e->clone(),
                                                                                                         new op_unary<op_cos<NumericT>, InterfaceType>()) )
                           );
   }
 
   template <typename NumericT, typename InterfaceType>
-  unary_expr<InterfaceType> tan(constant<NumericT, InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> tan(rt_constant<NumericT, InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_tan<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_tan<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> tan(variable<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> tan(rt_variable<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_tan<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_tan<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <id_type id>
-  unary_expr<> tan(ct_variable<id> const & other)
+  rt_unary_expr<> tan(ct_variable<id> const & other)
   {
-    return unary_expr<>(new variable<>(id), new op_unary<op_tan<default_numeric_type> >()); 
+    return rt_unary_expr<>(new rt_variable<>(id), new op_unary<op_tan<default_numeric_type> >()); 
   }
   
   template <typename LHS, typename OP, typename RHS>
-  unary_expr<> tan(ct_expr<LHS, OP, RHS> const & other)
+  rt_unary_expr<> tan(ct_expr<LHS, OP, RHS> const & other)
   {
-    return unary_expr<>(new binary_expr<>(other),
+    return rt_unary_expr<>(new rt_binary_expr<>(other),
                         new op_unary<op_tan<default_numeric_type> >()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> tan(unary_expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> tan(rt_unary_expr<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_tan<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_tan<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> tan(binary_expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> tan(rt_binary_expr<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_tan<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_tan<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> tan(expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> tan(rt_expr<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.get()->clone(), new op_unary<op_tan<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.get()->clone(), new op_unary<op_tan<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
   
 
@@ -268,46 +268,46 @@ namespace viennamath
   }
 
   template <typename NumericT, typename InterfaceType>
-  unary_expr<InterfaceType> fabs(constant<NumericT, InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> fabs(rt_constant<NumericT, InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_fabs<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_fabs<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> fabs(variable<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> fabs(rt_variable<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_fabs<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_fabs<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <id_type id>
-  unary_expr<> fabs(ct_variable<id> const & other)
+  rt_unary_expr<> fabs(ct_variable<id> const & other)
   {
-    return unary_expr<>(new variable<>(id), new op_unary<op_fabs<default_numeric_type> >()); 
+    return rt_unary_expr<>(new rt_variable<>(id), new op_unary<op_fabs<default_numeric_type> >()); 
   }
   
   template <typename LHS, typename OP, typename RHS>
-  unary_expr<> fabs(ct_expr<LHS, OP, RHS> const & other)
+  rt_unary_expr<> fabs(ct_expr<LHS, OP, RHS> const & other)
   {
-    return unary_expr<>(new binary_expr<>(other),
+    return rt_unary_expr<>(new rt_binary_expr<>(other),
                         new op_unary<op_fabs<default_numeric_type> >()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> fabs(unary_expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> fabs(rt_unary_expr<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_fabs<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_fabs<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> fabs(binary_expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> fabs(rt_binary_expr<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_fabs<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_fabs<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> fabs(expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> fabs(rt_expr<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.get()->clone(), new op_unary<op_fabs<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.get()->clone(), new op_unary<op_fabs<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
 
@@ -317,57 +317,57 @@ namespace viennamath
   template <typename InterfaceType, typename NumericT>
   InterfaceType * diff_impl(const InterfaceType * e, op_sqrt<NumericT>, const InterfaceType * diff_var)
   {
-      return new binary_expr<InterfaceType>( e->diff(diff_var),
+      return new rt_binary_expr<InterfaceType>( e->diff(diff_var),
                                              new op_binary<op_div<typename InterfaceType::numeric_type>, InterfaceType>(),
-                                             new binary_expr<InterfaceType>( new constant<NumericT>(2),
+                                             new rt_binary_expr<InterfaceType>( new rt_constant<NumericT>(2),
                                                                              new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(),
-                                                                             new unary_expr<InterfaceType>(e->clone(),
+                                                                             new rt_unary_expr<InterfaceType>(e->clone(),
                                                                                                            new op_unary<op_sqrt<NumericT>, InterfaceType>())
                                                                            )
                                             );
   }
 
   template <typename NumericT, typename InterfaceType>
-  unary_expr<InterfaceType> sqrt(constant<NumericT, InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> sqrt(rt_constant<NumericT, InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_sqrt<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_sqrt<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> sqrt(variable<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> sqrt(rt_variable<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_sqrt<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_sqrt<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <id_type id>
-  unary_expr<> sqrt(ct_variable<id> const & other)
+  rt_unary_expr<> sqrt(ct_variable<id> const & other)
   {
-    return unary_expr<>(new variable<>(id), new op_unary<op_sqrt<default_numeric_type> >()); 
+    return rt_unary_expr<>(new rt_variable<>(id), new op_unary<op_sqrt<default_numeric_type> >()); 
   }
   
   template <typename LHS, typename OP, typename RHS>
-  unary_expr<> sqrt(ct_expr<LHS, OP, RHS> const & other)
+  rt_unary_expr<> sqrt(ct_expr<LHS, OP, RHS> const & other)
   {
-    return unary_expr<>(new binary_expr<>(other),
+    return rt_unary_expr<>(new rt_binary_expr<>(other),
                         new op_unary<op_sqrt<default_numeric_type> >()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> sqrt(unary_expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> sqrt(rt_unary_expr<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_sqrt<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_sqrt<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> sqrt(binary_expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> sqrt(rt_binary_expr<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_sqrt<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_sqrt<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> sqrt(expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> sqrt(rt_expr<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.get()->clone(), new op_unary<op_sqrt<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.get()->clone(), new op_unary<op_sqrt<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
   
   //
@@ -376,53 +376,53 @@ namespace viennamath
   template <typename InterfaceType, typename NumericT>
   InterfaceType * diff_impl(const InterfaceType * e, op_log<NumericT>, const InterfaceType * diff_var)
   {
-    return new binary_expr<InterfaceType>( e->diff(diff_var),
+    return new rt_binary_expr<InterfaceType>( e->diff(diff_var),
                                            new op_binary<op_div<typename InterfaceType::numeric_type>, InterfaceType>(),
-                                           new unary_expr<InterfaceType>(e->clone())
+                                           new rt_unary_expr<InterfaceType>(e->clone())
                                          );
   }  
 
   template <typename NumericT, typename InterfaceType>
-  unary_expr<InterfaceType> log(constant<NumericT, InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> log(rt_constant<NumericT, InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_log<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_log<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> log(variable<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> log(rt_variable<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_log<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_log<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <id_type id>
-  unary_expr<> log(ct_variable<id> const & other)
+  rt_unary_expr<> log(ct_variable<id> const & other)
   {
-    return unary_expr<>(new variable<>(id), new op_unary<op_log<default_numeric_type> >()); 
+    return rt_unary_expr<>(new rt_variable<>(id), new op_unary<op_log<default_numeric_type> >()); 
   }
   
   template <typename LHS, typename OP, typename RHS>
-  unary_expr<> log(ct_expr<LHS, OP, RHS> const & other)
+  rt_unary_expr<> log(ct_expr<LHS, OP, RHS> const & other)
   {
-    return unary_expr<>(new binary_expr<>(other),
+    return rt_unary_expr<>(new rt_binary_expr<>(other),
                         new op_unary<op_log<default_numeric_type> >()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> log(unary_expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> log(rt_unary_expr<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_log<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_log<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> log(binary_expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> log(rt_binary_expr<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_log<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_log<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> log(expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> log(rt_expr<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.get()->clone(), new op_unary<op_log<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.get()->clone(), new op_unary<op_log<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
   
   
@@ -434,56 +434,56 @@ namespace viennamath
   template <typename InterfaceType, typename NumericT>
   InterfaceType * diff_impl(const InterfaceType * e, op_log10<NumericT>, const InterfaceType * diff_var)
   {
-    return new binary_expr<InterfaceType>( e->diff(diff_var),
+    return new rt_binary_expr<InterfaceType>( e->diff(diff_var),
                                            new op_binary<op_div<typename InterfaceType::numeric_type>, InterfaceType>(),
-                                           new binary_expr<InterfaceType>( new constant<NumericT, InterfaceType>( ::log(10) ),
+                                           new rt_binary_expr<InterfaceType>( new rt_constant<NumericT, InterfaceType>( ::log(10) ),
                                                                            new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(),
-                                                                           new unary_expr<InterfaceType>(e->clone())
+                                                                           new rt_unary_expr<InterfaceType>(e->clone())
                                                                          )
                                           );
   }  
 
   template <typename NumericT, typename InterfaceType>
-  unary_expr<InterfaceType> log10(constant<NumericT, InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> log10(rt_constant<NumericT, InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_log10<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_log10<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> log10(variable<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> log10(rt_variable<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_log10<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_log10<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <id_type id>
-  unary_expr<> log10(ct_variable<id> const & other)
+  rt_unary_expr<> log10(ct_variable<id> const & other)
   {
-    return unary_expr<>(new variable<>(id), new op_unary<op_log10<default_numeric_type> >()); 
+    return rt_unary_expr<>(new rt_variable<>(id), new op_unary<op_log10<default_numeric_type> >()); 
   }
   
   template <typename LHS, typename OP, typename RHS>
-  unary_expr<> log10(ct_expr<LHS, OP, RHS> const & other)
+  rt_unary_expr<> log10(ct_expr<LHS, OP, RHS> const & other)
   {
-    return unary_expr<>(new binary_expr<>(other),
+    return rt_unary_expr<>(new rt_binary_expr<>(other),
                         new op_unary<op_log10<default_numeric_type> >()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> log10(unary_expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> log10(rt_unary_expr<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_log10<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_log10<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> log10(binary_expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> log10(rt_binary_expr<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_log10<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_log10<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> log10(expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> log10(rt_expr<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.get()->clone(), new op_unary<op_log10<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.get()->clone(), new op_unary<op_log10<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
   
   
@@ -500,15 +500,15 @@ namespace viennamath
   }  
   
   template <typename InterfaceType>
-  unary_expr<InterfaceType> grad(function_symbol<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> grad(rt_function_symbol<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_gradient<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_gradient<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> grad(unary_expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> grad(rt_unary_expr<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_gradient<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_gradient<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
 
@@ -524,29 +524,29 @@ namespace viennamath
   
   
   template <typename InterfaceType>
-  unary_expr<InterfaceType> div(expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> div(rt_expr<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.get()->clone(), new op_unary<op_divergence<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.get()->clone(), new op_unary<op_divergence<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> div(unary_expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> div(rt_unary_expr<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_divergence<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_divergence<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
 
   template <typename InterfaceType>
-  unary_expr<InterfaceType> div(binary_expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> div(rt_binary_expr<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_divergence<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_divergence<typename InterfaceType::numeric_type>, InterfaceType>()); 
   }
   
   template <typename InterfaceType>
-  unary_expr<InterfaceType> div(function_symbol<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> div(rt_function_symbol<InterfaceType> const & other)
   {
-    return unary_expr<InterfaceType>(other.clone(), new op_unary<op_divergence<typename InterfaceType::numeric_type>, InterfaceType>()); 
+    return rt_unary_expr<InterfaceType>(other.clone(), new op_unary<op_divergence<typename InterfaceType::numeric_type>, InterfaceType>()); 
     
-    //return unary_expr<typename T1::interface_type>(other.clone(), new op_unary<op_divergence<typename T1::numeric_type>, typename T1::interface_type>()); 
+    //return rt_unary_expr<typename T1::interface_type>(other.clone(), new op_unary<op_divergence<typename T1::numeric_type>, typename T1::interface_type>()); 
   }
   
   
@@ -555,13 +555,13 @@ namespace viennamath
   // Convenience Function: Laplace operator
   //
   template <typename InterfaceType>
-  unary_expr<InterfaceType> laplace(expr<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> laplace(rt_expr<InterfaceType> const & other)
   {
     return div(grad(other));
   }
   
   template <typename InterfaceType>
-  unary_expr<InterfaceType> laplace(function_symbol<InterfaceType> const & other)
+  rt_unary_expr<InterfaceType> laplace(rt_function_symbol<InterfaceType> const & other)
   {
     return div(grad(other));
   }
@@ -580,8 +580,8 @@ namespace viennamath
   //
   // integral:
   //
-  template <typename InterfaceType, typename NumericT, typename BoundaryTag>
-  InterfaceType * diff_impl(const InterfaceType * e, op_symbolic_integration<NumericT, BoundaryTag>, const InterfaceType * diff_var)
+  template <typename InterfaceType, typename NumericT>
+  InterfaceType * diff_impl(const InterfaceType * e, op_symbolic_integration<NumericT>, const InterfaceType * diff_var)
   {
     throw "Cannot differentiate symbolic_integration!";
     return NULL;

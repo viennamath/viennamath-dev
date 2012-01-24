@@ -32,8 +32,8 @@ void operations_test(E & e, T const & t, U const & u)
 template <typename E>
 void evaluations_test(E & e, double ref_solution)
 {
-  viennamath::constant<double> c4(4.0);
-  viennamath::constant<long> c6(6);
+  viennamath::rt_constant<double> c4(4.0);
+  viennamath::rt_constant<long> c6(6);
   viennamath::ct_constant<8> c8;
 
   std::vector<double> p(3);
@@ -60,8 +60,8 @@ void evaluations_test(E & e, double ref_solution)
 template <typename E>
 void unary_test(E const & e, double ref_solution)
 {
-  viennamath::constant<double> c4(4.0);
-  viennamath::constant<long> c6(6);
+  viennamath::rt_constant<double> c4(4.0);
+  viennamath::rt_constant<long> c6(6);
   viennamath::ct_constant<8> c8;
 
   std::vector<double> p(3);
@@ -104,16 +104,16 @@ void unary_test(E const & e)
 
 int main()
 {
-  viennamath::variable<> x(0);
-  viennamath::variable<> y(1);
-  viennamath::variable<> z(2);
-  viennamath::constant<double> c4(4.0);
-  viennamath::constant<long> c6(6);
+  viennamath::variable x(0);
+  viennamath::variable y(1);
+  viennamath::variable z(2);
+  viennamath::rt_constant<double> c4(4.0);
+  viennamath::rt_constant<long> c6(6);
   viennamath::ct_constant<8> c8;
-  viennamath::expr<> e1 = x + y;
-  viennamath::expr<> e2 = c4 + c8;
-  viennamath::expr<> e3 = e1 + e2;
-  viennamath::expr<> e;
+  viennamath::expr e1 = x + y;
+  viennamath::expr e2 = c4 + c8;
+  viennamath::expr e3 = e1 + e2;
+  viennamath::expr e;
   
   //compilation checks:
   operations_test(e, e1, e2);  

@@ -8,11 +8,11 @@
 
 int main()
 {
-  viennamath::variable<> x(0);
-  viennamath::variable<> y(1);
-  viennamath::variable<> z(2);
-  viennamath::constant<double> c4(4.0);
-  viennamath::constant<long> c6(6);
+  viennamath::variable x(0);
+  viennamath::variable y(1);
+  viennamath::variable z(2);
+  viennamath::rt_constant<double> c4(4.0);
+  viennamath::rt_constant<long> c6(6);
   viennamath::ct_constant<8> c8;
   
   std::vector<double> p(3);

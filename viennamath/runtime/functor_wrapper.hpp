@@ -22,7 +22,7 @@
 namespace viennamath
 {
   template <typename InterfaceType /* see forwards.h for default argument */>
-  class manipulation_interface
+  class rt_manipulation_interface
   {
     public:
       virtual InterfaceType * operator()(InterfaceType const * e) const { return e->clone(); };
@@ -32,11 +32,11 @@ namespace viennamath
   /** @brief: Type erasure for functors acting on expressions */
   
   template <typename InterfaceType /* default argument in forwards.h */>
-  class manipulation_wrapper
+  class rt_manipulation_wrapper
   {
     public:
       template <typename T>
-      manipulation_wrapper(T const * t) : functor_(t) {}
+      rt_manipulation_wrapper(T const * t) : functor_(t) {}
       
       InterfaceType * operator()(InterfaceType const * e) const
       {
@@ -46,23 +46,23 @@ namespace viennamath
       bool modifies(InterfaceType const * e) const { return functor_->modifies(e); }
 
     private:
-      std::auto_ptr< const manipulation_interface<InterfaceType> > functor_;
+      std::auto_ptr< const rt_manipulation_interface<InterfaceType> > functor_;
   };
 
   
   template <typename InterfaceType /* see forwards.h for default argument */>
-  class traversal_interface
+  class rt_traversal_interface
   {
     public:
       virtual void operator()(InterfaceType const * e) const = 0;
   };
   
   template <typename InterfaceType /* default argument in forwards.h */>
-  class traversal_wrapper
+  class rt_traversal_wrapper
   {
     public:
       template <typename T>
-      traversal_wrapper(T const * t) : functor_(t) {}
+      rt_traversal_wrapper(T const * t) : functor_(t) {}
       
       void operator()(InterfaceType const * e) const
       {
@@ -70,7 +70,7 @@ namespace viennamath
       }
 
     private:
-      std::auto_ptr< const traversal_interface<InterfaceType> > functor_;
+      std::auto_ptr< const rt_traversal_interface<InterfaceType> > functor_;
   };
 
   

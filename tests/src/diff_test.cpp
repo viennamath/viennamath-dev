@@ -33,8 +33,8 @@ void operations_test(E & e, T const & t, U const & u)
 template <typename E>
 void evaluations_test(E & e, double ref_solution)
 {
-  viennamath::constant<double> c4(4.0);
-  viennamath::constant<long> c6(6);
+  viennamath::rt_constant<double> c4(4.0);
+  viennamath::rt_constant<long> c6(6);
   viennamath::ct_constant<8> c8;
 
   std::vector<double> p(2);
@@ -61,8 +61,8 @@ void evaluations_test(E & e, double ref_solution)
 template <typename E>
 void unary_test(E const & e, double ref_solution)
 {
-  viennamath::constant<double> c4(4.0);
-  viennamath::constant<long> c6(6);
+  viennamath::rt_constant<double> c4(4.0);
+  viennamath::rt_constant<long> c6(6);
   viennamath::ct_constant<8> c8;
 
   std::vector<double> p(2);
@@ -84,7 +84,7 @@ void unary_test(E const & e, double ref_solution)
 }
 
 template <typename InterfaceType>
-void unary_test(viennamath::binary_expr<InterfaceType> const & e)
+void unary_test(viennamath::rt_binary_expr<InterfaceType> const & e)
 {
   std::vector<double> p(2);
   p[0] = 4;
@@ -110,13 +110,13 @@ int main()
   viennamath::ct_variable<0> x;
   viennamath::ct_variable<1> y;
   viennamath::ct_variable<2> z;
-  viennamath::constant<double> c4(4.0);
-  viennamath::constant<long> c6(6);
+  viennamath::rt_constant<double> c4(4.0);
+  viennamath::rt_constant<long> c6(6);
   viennamath::ct_constant<8> c8;
-  viennamath::expr<> e1 = x + y;
-  viennamath::expr<> e2 = x*y+c8;
-  viennamath::expr<> e3 = x/y-c8;
-  viennamath::expr<> e;
+  viennamath::expr e1 = x + y;
+  viennamath::expr e2 = x*y+c8;
+  viennamath::expr e3 = x/y-c8;
+  viennamath::expr e;
 
   //compile time:
   std::cout << viennamath::diff(x+y, x) << std::endl;

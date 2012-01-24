@@ -22,16 +22,16 @@
 namespace viennamath
 {
   
-  //class expression_interface;
+  //class rt_expression_interface;
   //interface for runtime dispatches:
   template <typename NumericT>
-  class expression_interface
+  class rt_expression_interface
   {
     public:
       typedef NumericT                          numeric_type;
-      typedef expression_interface<NumericT>    interface_type;
+      typedef rt_expression_interface<NumericT>    interface_type;
       
-      virtual ~expression_interface() {}
+      virtual ~rt_expression_interface() {}
       
       virtual interface_type * clone() const = 0;  //receiver owns pointer!
       virtual std::string deep_str() const = 0;
@@ -53,8 +53,8 @@ namespace viennamath
       /** @brief Checks the current expression for being equal to 'other'. Performs a deep check for equality of members. */
       virtual bool deep_equal(const interface_type * other) const = 0;
 
-      virtual interface_type * recursive_manipulation(manipulation_wrapper<interface_type> const & fw) const { return fw(this); }   
-      virtual void recursive_traversal(traversal_wrapper<interface_type> const & fw) const { fw(this); }   
+      virtual interface_type * recursive_manipulation(rt_manipulation_wrapper<interface_type> const & fw) const { return fw(this); }   
+      virtual void recursive_traversal(rt_traversal_wrapper<interface_type> const & fw) const { fw(this); }   
 
       ////// Deprecated section: ////////////////
       

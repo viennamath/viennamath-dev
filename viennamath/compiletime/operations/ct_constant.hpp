@@ -29,13 +29,13 @@ namespace viennamath
 
   // ct_c1 + (c2 + X) -> [ct_c1 + c2] + X, where X is anything:
   template <long value, typename ScalarType, typename RHS>
-  ct_expr<constant< typename promote_traits<long, op_plus<default_numeric_type>, ScalarType>::result_type >,
+  ct_expr<rt_constant< typename promote_traits<long, op_plus<default_numeric_type>, ScalarType>::result_type >,
               op_plus<default_numeric_type>,
               RHS >
   operator+(ct_constant<value> const & lhs, 
-            ct_expr<constant<ScalarType>, op_plus<default_numeric_type>, RHS> const & other)
+            ct_expr<rt_constant<ScalarType>, op_plus<default_numeric_type>, RHS> const & other)
   {
-    typedef constant< typename promote_traits<long, op_plus<default_numeric_type>, ScalarType>::result_type >   result_constant;
+    typedef rt_constant< typename promote_traits<long, op_plus<default_numeric_type>, ScalarType>::result_type >   result_constant;
     return ct_expr<result_constant,
                       op_plus<default_numeric_type>,
                       RHS >(result_constant(value + other.lhs()), other.rhs());
@@ -56,13 +56,13 @@ namespace viennamath
   
   // ct_c1 + (c2 - X)    -> [ct_c1 + c2]    - X, where X is anything:
   template <long value, typename ScalarType, typename RHS>
-  ct_expr<constant< typename promote_traits<long, op_plus<default_numeric_type>, ScalarType>::result_type >,
+  ct_expr<rt_constant< typename promote_traits<long, op_plus<default_numeric_type>, ScalarType>::result_type >,
               op_minus<default_numeric_type>,
               RHS >
   operator+(ct_constant<value> const & lhs, 
-            ct_expr<constant<ScalarType>, op_minus<default_numeric_type>, RHS> const & other)
+            ct_expr<rt_constant<ScalarType>, op_minus<default_numeric_type>, RHS> const & other)
   {
-    typedef constant< typename promote_traits<long, op_plus<default_numeric_type>, ScalarType>::result_type >   result_constant;
+    typedef rt_constant< typename promote_traits<long, op_plus<default_numeric_type>, ScalarType>::result_type >   result_constant;
     return ct_expr<result_constant,
                       op_minus<default_numeric_type>,
                       RHS >(result_constant(value + other.lhs()), other.rhs());
@@ -94,13 +94,13 @@ namespace viennamath
   
   // ct_c1 - (c2 + X) -> [ct_c1 - c2] - X, where X is anything:
   template <long value, typename ScalarType, typename RHS>
-  ct_expr<constant< typename promote_traits<long, op_minus<default_numeric_type>, ScalarType>::result_type >,
+  ct_expr<rt_constant< typename promote_traits<long, op_minus<default_numeric_type>, ScalarType>::result_type >,
               op_minus<default_numeric_type>,
               RHS >
   operator-(ct_constant<value> const & lhs, 
-            ct_expr<constant<ScalarType>, op_plus<default_numeric_type>, RHS> const & other)
+            ct_expr<rt_constant<ScalarType>, op_plus<default_numeric_type>, RHS> const & other)
   {
-    typedef constant< typename promote_traits<long, op_minus<default_numeric_type>, ScalarType>::result_type >   result_constant;
+    typedef rt_constant< typename promote_traits<long, op_minus<default_numeric_type>, ScalarType>::result_type >   result_constant;
     return ct_expr<result_constant,
                       op_minus<default_numeric_type>,
                       RHS >(result_constant(value - other.lhs()), other.rhs());
@@ -121,13 +121,13 @@ namespace viennamath
   
   // ct_c1 - (c2 - X)    -> [ct_c1 - c2] + X, where X is anything:
   template <long value, typename ScalarType, typename RHS>
-  ct_expr<constant< typename promote_traits<long, op_minus<default_numeric_type>, ScalarType>::result_type >,
+  ct_expr<rt_constant< typename promote_traits<long, op_minus<default_numeric_type>, ScalarType>::result_type >,
               op_plus<default_numeric_type>,
               RHS >
   operator-(ct_constant<value> const & lhs, 
-            ct_expr<constant<ScalarType>, op_minus<default_numeric_type>, RHS> const & other)
+            ct_expr<rt_constant<ScalarType>, op_minus<default_numeric_type>, RHS> const & other)
   {
-    typedef constant< typename promote_traits<long, op_minus<default_numeric_type>, ScalarType>::result_type >   result_constant;
+    typedef rt_constant< typename promote_traits<long, op_minus<default_numeric_type>, ScalarType>::result_type >   result_constant;
     return ct_expr<result_constant,
                       op_plus<default_numeric_type>,
                       RHS >(result_constant(value - other.lhs()), other.rhs());

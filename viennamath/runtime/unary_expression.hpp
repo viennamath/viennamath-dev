@@ -31,12 +31,12 @@ namespace viennamath
   
   //A run time expression
   template <typename InterfaceType /* see forwards.h for default argument */>
-  class unary_expr : public InterfaceType
+  class rt_unary_expr : public InterfaceType
   {
     typedef op_interface<InterfaceType>                    op_interface_type;
     typedef op_unary<op_id<typename InterfaceType::numeric_type>, InterfaceType>  op_unary_id_type;
     
-      typedef unary_expr<InterfaceType>                    self_type;
+      typedef rt_unary_expr<InterfaceType>                    self_type;
     
     public:
       typedef typename InterfaceType::numeric_type         numeric_type;
@@ -44,13 +44,13 @@ namespace viennamath
 //       explicit expr(InterfaceType * lhs,
 //                     op_interface         * op,
 //                     InterfaceType * rhs) : lhs_(lhs), op_(op), rhs_(rhs) {}
-      unary_expr() {}
+      rt_unary_expr() {}
 
-      explicit unary_expr(InterfaceType * lhs,
+      explicit rt_unary_expr(InterfaceType * lhs,
                           op_interface_type * op) : expr_(lhs),
                                                     op_(op) {}
                                                   
-      explicit unary_expr(InterfaceType * lhs) : expr_(lhs), 
+      explicit rt_unary_expr(InterfaceType * lhs) : expr_(lhs), 
                                                  op_(new op_unary_id_type()) {}
                     
       /*template <typename LHS, typename OP, typename RHS>
@@ -60,37 +60,37 @@ namespace viennamath
       }*/
 
       template <typename LHS, typename OP, typename RHS>
-      explicit unary_expr(ct_expr<LHS, OP, RHS> const & other) : op_(new OP())
+      explicit rt_unary_expr(ct_expr<LHS, OP, RHS> const & other) : op_(new OP())
       {
         std::cout << "Constructing from expression " << other << std::endl;
         expr_ = std::auto_ptr<InterfaceType>(other.lhs().clone());
       }
 
-      explicit unary_expr(variable<InterfaceType> const & other) : expr_(other.clone()),
+      explicit rt_unary_expr(rt_variable<InterfaceType> const & other) : expr_(other.clone()),
                                                                    op_(new op_unary_id_type())  {}
 
       template <typename T>
-      explicit unary_expr(constant<T, InterfaceType> const & other) : expr_(other.clone()),
+      explicit rt_unary_expr(rt_constant<T, InterfaceType> const & other) : expr_(other.clone()),
                                                                       op_(new op_unary_id_type()) {}
 
       template <long value>
-      explicit unary_expr(ct_constant<value> const & other) : expr_(other.clone()),
+      explicit rt_unary_expr(ct_constant<value> const & other) : expr_(other.clone()),
                                                               op_(new op_unary_id_type()) {}
 
       //Copy CTOR:
-      unary_expr(unary_expr const & other) : expr_(other.expr_->clone()), 
+      rt_unary_expr(unary_expr const & other) : expr_(other.expr_->clone()), 
                                              op_(other.op_->clone()) {};
 
       //assignments:                           
       template <typename LHS, typename OP, typename RHS>
-      unary_expr & operator=(ct_expr<LHS, OP, RHS> const & other) 
+      rt_unary_expr & operator=(ct_expr<LHS, OP, RHS> const & other) 
       {
         expr_ = std::auto_ptr<InterfaceType>(other.lhs().clone());
         op_ = std::auto_ptr<op_interface_type>(new OP());
         return *this;
       }
 
-      unary_expr & operator=(unary_expr const & other) 
+      rt_unary_expr & operator=(rt_unary_expr const & other) 
       {
         expr_ = std::auto_ptr<InterfaceType>(other.lhs_->clone());
         op_  = std::auto_ptr<op_interface_type>(other.op_->clone());
@@ -98,7 +98,7 @@ namespace viennamath
       }
 
       template <typename ScalarType>
-      unary_expr & operator=(constant<ScalarType> const & other)
+      rt_unary_expr & operator=(rt_constant<ScalarType> const & other)
       {
         expr_ = std::auto_ptr<InterfaceType>(other.clone());
         op_  = std::auto_ptr<op_interface_type>(new op_unary_id_type());
@@ -106,14 +106,14 @@ namespace viennamath
       }
 
       template <long value>
-      unary_expr & operator=(ct_constant<value> const & other)
+      rt_unary_expr & operator=(ct_constant<value> const & other)
       {
         return *this = value;
       }
 
-      unary_expr & operator=(numeric_type value)
+      rt_unary_expr & operator=(numeric_type value)
       {
-        expr_ = std::auto_ptr<InterfaceType>(new constant<numeric_type>(value));
+        expr_ = std::auto_ptr<InterfaceType>(new rt_constant<numeric_type>(value));
         op_  = std::auto_ptr<op_interface_type>(new op_unary_id_type());
         return *this;
       }
@@ -130,7 +130,7 @@ namespace viennamath
       }
 
       template <typename ScalarType>
-      numeric_type operator()(constant<ScalarType> val) const
+      numeric_type operator()(rt_constant<ScalarType> val) const
       {
         return this->eval(static_cast<numeric_type>(val));
       }
@@ -200,11 +200,11 @@ namespace viennamath
       InterfaceType * optimize() const
       {
         if (expr_->is_constant())
-          return new constant<numeric_type, InterfaceType>( op_->apply(expr_->unwrap()) );
+          return new rt_constant<numeric_type, InterfaceType>( op_->apply(expr_->unwrap()) );
 
         //TODO: Unwrap op_id()
         
-        return new unary_expr(expr_->optimize(), op_->clone());
+        return new rt_unary_expr(expr_->optimize(), op_->clone());
       }
       
       bool optimizable() const
@@ -219,7 +219,7 @@ namespace viennamath
       
     
       ///////// other interface requirements ////////////////////////
-      InterfaceType * clone() const { return new unary_expr(expr_->clone(), op_->clone()); }
+      InterfaceType * clone() const { return new rt_unary_expr(expr_->clone(), op_->clone()); }
       std::string deep_str() const
       {
         std::stringstream ss;
@@ -250,7 +250,7 @@ namespace viennamath
         if (deep_equal(e))
           return repl->clone();
         
-        return new unary_expr(expr_->substitute(e, repl),
+        return new rt_unary_expr(expr_->substitute(e, repl),
                               op_->clone());
       };
       
@@ -261,16 +261,16 @@ namespace viennamath
           if (deep_equal(e[i]))
             return repl[i]->clone();
         
-        return new unary_expr(expr_->substitute(e, repl),
+        return new rt_unary_expr(expr_->substitute(e, repl),
                               op_->clone());
       };
       
       
       bool deep_equal(const InterfaceType * other) const
       {
-        if (dynamic_cast<const unary_expr *>(other) != NULL)
+        if (dynamic_cast<const rt_unary_expr *>(other) != NULL)
         {
-           const unary_expr * temp = dynamic_cast<const unary_expr *>(other);
+           const rt_unary_expr * temp = dynamic_cast<const rt_unary_expr *>(other);
            
            return expr_->deep_equal(temp->expr_.get())
                   && op_->equal(temp->op_.get());
@@ -289,16 +289,16 @@ namespace viennamath
         return op_->diff(expr_.get(), diff_var);
       }
       
-      InterfaceType * recursive_manipulation(manipulation_wrapper<InterfaceType> const & fw) const
+      InterfaceType * recursive_manipulation(rt_manipulation_wrapper<InterfaceType> const & fw) const
       {
         if (fw.modifies(this))
           return fw(this);
 
-        return new unary_expr(expr_->recursive_manipulation(fw),
+        return new rt_unary_expr(expr_->recursive_manipulation(fw),
                               op_->clone() ); 
       }
       
-      void recursive_traversal(traversal_wrapper<InterfaceType> const & fw) const
+      void recursive_traversal(rt_traversal_wrapper<InterfaceType> const & fw) const
       {
         fw(this);
         expr_->recursive_traversal(fw);
@@ -311,7 +311,7 @@ namespace viennamath
   
   
   template <typename InterfaceType>
-  std::ostream& operator<<(std::ostream & stream, unary_expr<InterfaceType> const & e)
+  std::ostream& operator<<(std::ostream & stream, rt_unary_expr<InterfaceType> const & e)
   {
     stream << "unary" 
            << e.deep_str()

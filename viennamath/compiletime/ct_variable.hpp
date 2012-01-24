@@ -159,11 +159,11 @@ namespace viennamath
     //NumericT operator()(NumericT value) const { return value; }
 
     template <typename ScalarType>
-    constant<ScalarType> operator()(constant<ScalarType> const & other) const
+    rt_constant<ScalarType> operator()(rt_constant<ScalarType> const & other) const
     {
       if (id > 0)
         throw variable_index_out_of_bounds(id, 0);
-      return constant<ScalarType>(static_cast<ScalarType>(other));
+      return rt_constant<ScalarType>(static_cast<ScalarType>(other));
     }
 
     template <long value>

@@ -33,9 +33,9 @@ namespace viennamath
   template <typename InterfaceType, typename NumericT>
   InterfaceType * diff_impl(const InterfaceType * lhs, op_plus<NumericT>, const InterfaceType * rhs, const InterfaceType * diff_var)
   {
-      return new binary_expr<InterfaceType>( lhs->diff(diff_var),
-                                             new op_binary<op_plus<NumericT>, InterfaceType>(),
-                                             rhs->diff(diff_var) );
+      return new rt_binary_expr<InterfaceType>( lhs->diff(diff_var),
+                                                new op_binary<op_plus<NumericT>, InterfaceType>(),
+                                                rhs->diff(diff_var) );
   }
   
   template <typename InterfaceType, typename NumericT>
@@ -47,9 +47,9 @@ namespace viennamath
           if (val == 0.0)
             return rhs->optimize();
           
-          return new binary_expr<InterfaceType>(new constant<NumericT, InterfaceType>(val),
-                                                new op_binary<op_plus<NumericT>, InterfaceType>(),
-                                                rhs->optimize());
+          return new rt_binary_expr<InterfaceType>(new rt_constant<NumericT, InterfaceType>(val),
+                                                   new op_binary<op_plus<NumericT>, InterfaceType>(),
+                                                   rhs->optimize());
         }
         else if (rhs->is_constant())
         {
@@ -57,14 +57,14 @@ namespace viennamath
           if (val == 0.0)
             return lhs->optimize();
           
-          return new binary_expr<InterfaceType>(lhs->optimize(),
-                                                new op_binary<op_plus<NumericT>, InterfaceType>(),
-                                                new constant<NumericT, InterfaceType>(val));
+          return new rt_binary_expr<InterfaceType>(lhs->optimize(),
+                                                   new op_binary<op_plus<NumericT>, InterfaceType>(),
+                                                   new rt_constant<NumericT, InterfaceType>(val));
         }
         
-        return new binary_expr<InterfaceType>(lhs->optimize(),
-                                              new op_binary<op_plus<NumericT>, InterfaceType>(),
-                                              rhs->optimize());
+        return new rt_binary_expr<InterfaceType>(lhs->optimize(),
+                                                 new op_binary<op_plus<NumericT>, InterfaceType>(),
+                                                 rhs->optimize());
   }
   
   template <typename InterfaceType, typename NumericT>
@@ -98,9 +98,9 @@ namespace viennamath
   template <typename InterfaceType, typename NumericT>
   InterfaceType * diff_impl(const InterfaceType * lhs, op_minus<NumericT>, const InterfaceType * rhs, const InterfaceType * diff_var)
   {
-      return new binary_expr<InterfaceType>( lhs->diff(diff_var),
-                                             new op_binary<op_minus<NumericT>, InterfaceType>(),
-                                             rhs->diff(diff_var) );
+      return new rt_binary_expr<InterfaceType>( lhs->diff(diff_var),
+                                                new op_binary<op_minus<NumericT>, InterfaceType>(),
+                                                rhs->diff(diff_var) );
   }
   
   template <typename InterfaceType, typename NumericT>
@@ -111,14 +111,14 @@ namespace viennamath
           NumericT val = lhs->unwrap();
           if (val == 0.0)
           {
-            return new binary_expr<InterfaceType>(new constant<NumericT, InterfaceType>(-1),
-                                                  new op_binary<op_mult<NumericT>, InterfaceType>(),
-                                                  rhs->optimize());
+            return new rt_binary_expr<InterfaceType>(new rt_constant<NumericT, InterfaceType>(-1),
+                                                     new op_binary<op_mult<NumericT>, InterfaceType>(),
+                                                     rhs->optimize());
           }
           
-          return new binary_expr<InterfaceType>(new constant<NumericT, InterfaceType>(val),
-                                                new op_binary<op_minus<NumericT>, InterfaceType>(),
-                                                rhs->optimize());
+          return new rt_binary_expr<InterfaceType>(new rt_constant<NumericT, InterfaceType>(val),
+                                                   new op_binary<op_minus<NumericT>, InterfaceType>(),
+                                                   rhs->optimize());
         }
         else if (rhs->is_constant())
         {
@@ -126,14 +126,14 @@ namespace viennamath
           if (val == 0.0)
             return lhs->optimize();
           
-          return new binary_expr<InterfaceType>(lhs->optimize(),
-                                                new op_binary<op_minus<NumericT>, InterfaceType>(),
-                                                new constant<NumericT, InterfaceType>(val));
+          return new rt_binary_expr<InterfaceType>(lhs->optimize(),
+                                                   new op_binary<op_minus<NumericT>, InterfaceType>(),
+                                                   new rt_constant<NumericT, InterfaceType>(val));
         }
         
-        return new binary_expr<InterfaceType>(lhs->optimize(),
-                                              new op_binary<op_minus<NumericT>, InterfaceType>(),
-                                              rhs->optimize());
+        return new rt_binary_expr<InterfaceType>(lhs->optimize(),
+                                                 new op_binary<op_minus<NumericT>, InterfaceType>(),
+                                                 rhs->optimize());
   }
   
   template <typename InterfaceType, typename NumericT>
@@ -169,13 +169,13 @@ namespace viennamath
   template <typename InterfaceType, typename NumericT>
   InterfaceType * diff_impl(const InterfaceType * lhs, op_mult<NumericT>, const InterfaceType * rhs, const InterfaceType * diff_var)
   {
-      return new binary_expr<InterfaceType>( new binary_expr<InterfaceType>(lhs->diff(diff_var),
-                                                                            new op_binary<op_mult<NumericT>, InterfaceType>(),
-                                                                            rhs->clone()),
-                                             new op_binary<op_plus<NumericT>, InterfaceType>(),
-                                             new binary_expr<InterfaceType>(lhs->clone(),
-                                                                            new op_binary<op_mult<NumericT>, InterfaceType>(),
-                                                                            rhs->diff(diff_var) )
+      return new rt_binary_expr<InterfaceType>( new rt_binary_expr<InterfaceType>(lhs->diff(diff_var),
+                                                                                  new op_binary<op_mult<NumericT>, InterfaceType>(),
+                                                                                  rhs->clone()),
+                                                new op_binary<op_plus<NumericT>, InterfaceType>(),
+                                                new rt_binary_expr<InterfaceType>(lhs->clone(),
+                                                                                  new op_binary<op_mult<NumericT>, InterfaceType>(),
+                                                                                  rhs->diff(diff_var) )
                             );
   }
   
@@ -186,30 +186,30 @@ namespace viennamath
         {
           NumericT val = lhs->unwrap();
           if (val == 0.0)
-            return new constant<NumericT, InterfaceType>(0.0);
+            return new rt_constant<NumericT, InterfaceType>(0.0);
           if (val == 1.0)
             return rhs->optimize();
           
-          return new binary_expr<InterfaceType>(new constant<NumericT, InterfaceType>(val),
-                                                new op_binary<op_mult<NumericT>, InterfaceType>(),
-                                                rhs->optimize());
+          return new rt_binary_expr<InterfaceType>(new rt_constant<NumericT, InterfaceType>(val),
+                                                   new op_binary<op_mult<NumericT>, InterfaceType>(),
+                                                   rhs->optimize());
         }
         else if (rhs->is_constant())
         {
           NumericT val = rhs->unwrap();
           if (val == 0.0)
-            return new constant<NumericT, InterfaceType>(0.0);
+            return new rt_constant<NumericT, InterfaceType>(0.0);
           if (val == 1.0)
             return lhs->optimize();
           
-          return new binary_expr<InterfaceType>(lhs->optimize(),
-                                                new op_binary<op_mult<NumericT>, InterfaceType>(),
-                                                new constant<NumericT, InterfaceType>(val));
+          return new rt_binary_expr<InterfaceType>(lhs->optimize(),
+                                                   new op_binary<op_mult<NumericT>, InterfaceType>(),
+                                                   new rt_constant<NumericT, InterfaceType>(val));
         }
         
-        return new binary_expr<InterfaceType>(lhs->optimize(),
-                                              new op_binary<op_mult<NumericT>, InterfaceType>(),
-                                              rhs->optimize());
+        return new rt_binary_expr<InterfaceType>(lhs->optimize(),
+                                                 new op_binary<op_mult<NumericT>, InterfaceType>(),
+                                                 rhs->optimize());
   }
   
   template <typename InterfaceType, typename NumericT>
@@ -256,18 +256,18 @@ namespace viennamath
   template <typename InterfaceType, typename NumericT>
   InterfaceType * diff_impl(const InterfaceType * lhs, op_div<NumericT>, const InterfaceType * rhs, const InterfaceType * diff_var)
   {
-    return new binary_expr<InterfaceType>( new binary_expr<InterfaceType>( new binary_expr<InterfaceType>(lhs->diff(diff_var),
-                                                                                                          new op_binary<op_mult<NumericT>, InterfaceType>(),
-                                                                                                          rhs->clone()),
-                                                                           new op_binary<op_minus<NumericT>, InterfaceType>(),
-                                                                           new binary_expr<InterfaceType>(lhs->clone(),
-                                                                                                          new op_binary<op_mult<NumericT>, InterfaceType>(),
-                                                                                                          rhs->diff(diff_var))
+    return new rt_binary_expr<InterfaceType>( new rt_binary_expr<InterfaceType>( new rt_binary_expr<InterfaceType>(lhs->diff(diff_var),
+                                                                                                                   new op_binary<op_mult<NumericT>, InterfaceType>(),
+                                                                                                                   rhs->clone()),
+                                                                                 new op_binary<op_minus<NumericT>, InterfaceType>(),
+                                                                                 new rt_binary_expr<InterfaceType>(lhs->clone(),
+                                                                                                                   new op_binary<op_mult<NumericT>, InterfaceType>(),
+                                                                                                                   rhs->diff(diff_var))
                                                                          ),
-                                           new op_binary<op_div<NumericT>, InterfaceType>(),
-                                           new binary_expr<InterfaceType>(rhs->clone(),
-                                                                          new op_binary<op_mult<NumericT>, InterfaceType>(),
-                                                                          rhs->clone())
+                                              new op_binary<op_div<NumericT>, InterfaceType>(),
+                                              new rt_binary_expr<InterfaceType>(rhs->clone(),
+                                                                                new op_binary<op_mult<NumericT>, InterfaceType>(),
+                                                                                rhs->clone())
                                          );
   }
   
@@ -278,11 +278,11 @@ namespace viennamath
     {
       NumericT val = lhs->unwrap();
       if (val == 0.0)
-        return new constant<NumericT, InterfaceType>(0.0);
+        return new rt_constant<NumericT, InterfaceType>(0.0);
       
-      return new binary_expr<InterfaceType>(new constant<NumericT, InterfaceType>(val),
-                                            new op_binary<op_div<NumericT>, InterfaceType>(),
-                                            rhs->optimize());
+      return new rt_binary_expr<InterfaceType>(new rt_constant<NumericT, InterfaceType>(val),
+                                               new op_binary<op_div<NumericT>, InterfaceType>(),
+                                               rhs->optimize());
     }
     else if (rhs->is_constant())
     {
@@ -290,14 +290,14 @@ namespace viennamath
       if (val == 1.0)
         return lhs->optimize();
       
-      return new binary_expr<InterfaceType>(lhs->optimize(),
-                                            new op_binary<op_div<NumericT>, InterfaceType>(),
-                                            new constant<NumericT, InterfaceType>(val));
+      return new rt_binary_expr<InterfaceType>(lhs->optimize(),
+                                               new op_binary<op_div<NumericT>, InterfaceType>(),
+                                               new rt_constant<NumericT, InterfaceType>(val));
     }
     
-    return new binary_expr<InterfaceType>(lhs->optimize(),
-                                          new op_binary<op_div<NumericT>, InterfaceType>(),
-                                          rhs->optimize());
+    return new rt_binary_expr<InterfaceType>(lhs->optimize(),
+                                             new op_binary<op_div<NumericT>, InterfaceType>(),
+                                             rhs->optimize());
   }
   
   template <typename InterfaceType, typename NumericT>

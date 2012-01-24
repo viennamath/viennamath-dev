@@ -24,10 +24,10 @@ namespace viennamath
   /////////////////// derivative of runtime expression /////////////////////
 
   template <typename InterfaceType>
-  expr<InterfaceType> diff(binary_expr<InterfaceType> const & e,
-                           variable<InterfaceType> const & var)
+  rt_expr<InterfaceType> diff(rt_binary_expr<InterfaceType> const & e,
+                           rt_variable<InterfaceType> const & var)
   {
-    expr<InterfaceType> temp(e.diff(&var));
+    rt_expr<InterfaceType> temp(e.diff(&var));
     while (temp.get()->optimizable())
     {
       //std::cout << "optimizing binary_expr..." << std::endl;
@@ -37,10 +37,10 @@ namespace viennamath
   }
   
   template <typename InterfaceType>
-  expr<InterfaceType> diff(unary_expr<InterfaceType> const & e,
-                           variable<InterfaceType> const & var)
+  rt_expr<InterfaceType> diff(rt_unary_expr<InterfaceType> const & e,
+                           rt_variable<InterfaceType> const & var)
   {
-    expr<InterfaceType> temp(e.diff(&var));
+    rt_expr<InterfaceType> temp(e.diff(&var));
     while (temp.get()->optimizable())
     {
       //std::cout << "optimizing unary_expr..." << std::endl;
@@ -50,10 +50,10 @@ namespace viennamath
   }
 
   template <typename InterfaceType>
-  expr<InterfaceType> diff(expr<InterfaceType> const & e,
-                           variable<InterfaceType> const & var)
+  rt_expr<InterfaceType> diff(rt_expr<InterfaceType> const & e,
+                           rt_variable<InterfaceType> const & var)
   {
-    expr<InterfaceType> temp(e.get()->diff(&var));
+    rt_expr<InterfaceType> temp(e.get()->diff(&var));
     while (temp.get()->optimizable())
     {
       //std::cout << "optimizing expr:" << temp << std::endl;      
@@ -64,26 +64,26 @@ namespace viennamath
 
   //compile time variable:
   template <typename InterfaceType, id_type id>
-  expr<InterfaceType> diff(binary_expr<InterfaceType> const & e,
+  rt_expr<InterfaceType> diff(rt_binary_expr<InterfaceType> const & e,
                            ct_variable<id> const & var)
   {
-    variable<InterfaceType> temp(id);
+    rt_variable<InterfaceType> temp(id);
     return diff(e, temp);
   }
 
   template <typename InterfaceType, id_type id>
-  expr<InterfaceType> diff(unary_expr<InterfaceType> const & e,
+  rt_expr<InterfaceType> diff(rt_unary_expr<InterfaceType> const & e,
                            ct_variable<id> const & var)
   {
-    variable<InterfaceType> temp(id);
+    rt_variable<InterfaceType> temp(id);
     return diff(e, temp);
   }
 
   template <typename InterfaceType, id_type id>
-  expr<InterfaceType> diff(expr<InterfaceType> const & e,
+  rt_expr<InterfaceType> diff(rt_expr<InterfaceType> const & e,
                            ct_variable<id> const & var)
   {
-    variable<InterfaceType> temp(id);
+    rt_variable<InterfaceType> temp(id);
     return diff(e, temp);
   }
 
@@ -93,14 +93,14 @@ namespace viennamath
   // TODO: Improve for compile time compatibility
   //
   template <typename InterfaceType>
-  expr<InterfaceType> diff(function_symbol<InterfaceType> const & other,
-                           variable<InterfaceType> const & var)
+  rt_expr<InterfaceType> diff(rt_function_symbol<InterfaceType> const & other,
+                           rt_variable<InterfaceType> const & var)
   {
     typedef op_partial_deriv<typename InterfaceType::numeric_type> d_dx_type;
-    return expr<InterfaceType>(new unary_expr<InterfaceType>(other.clone(), 
-                                                             new op_unary<d_dx_type, InterfaceType>(d_dx_type(var.id()))
-                                                            )
-                              );
+    return rt_expr<InterfaceType>(new rt_unary_expr<InterfaceType>(other.clone(), 
+                                                                   new op_unary<d_dx_type, InterfaceType>(d_dx_type(var.id()))
+                                                                  )
+                                 );
   }
   
 
@@ -111,30 +111,30 @@ namespace viennamath
   //////////// derivative of a constant: /////////////////////////////////
 
   template <typename InterfaceType>
-  constant<typename InterfaceType::numeric_type> diff(typename InterfaceType::numeric_type value,
-                                                      variable<InterfaceType> const & var)
+  rt_constant<typename InterfaceType::numeric_type> diff(typename InterfaceType::numeric_type value,
+                                                         rt_variable<InterfaceType> const & var)
   {
-    return constant<typename InterfaceType::numeric_type>(0);
+    return rt_constant<typename InterfaceType::numeric_type>(0);
   }
   
   template <typename OtherScalarType, typename InterfaceType>
-  constant<typename InterfaceType::numeric_type> diff(constant<OtherScalarType, InterfaceType> const & c,
-                                                      variable<InterfaceType> const & var)
+  rt_constant<typename InterfaceType::numeric_type> diff(rt_constant<OtherScalarType, InterfaceType> const & c,
+                                                         rt_variable<InterfaceType> const & var)
   {
-    return constant<typename InterfaceType::numeric_type>(0);
+    return rt_constant<typename InterfaceType::numeric_type>(0);
   }
 
   //////////// derivative of an variable: /////////////////////////////////
 
   template <unsigned long other_id, typename InterfaceType,
             unsigned long id>
-  constant<typename InterfaceType::numeric_type> diff(variable<InterfaceType> const & c,
-                                                      variable<InterfaceType> const & var)
+  rt_constant<typename InterfaceType::numeric_type> diff(rt_variable<InterfaceType> const & c,
+                                                         rt_variable<InterfaceType> const & var)
   {
     if (c.id() == var.id())
-      return constant<typename InterfaceType::numeric_type>(1);
+      return rt_constant<typename InterfaceType::numeric_type>(1);
       
-    return constant<typename InterfaceType::numeric_type>(0);
+    return rt_constant<typename InterfaceType::numeric_type>(0);
   }
   
   //metafunctions

@@ -30,13 +30,13 @@ namespace viennamath
 
     // c1 + (c2 + X) -> [c1 + c2] + X, where X is anything:
     template <typename ScalarType, typename InterfaceType, typename OtherScalarType, typename RHS>
-    ct_expr<constant<typename promote_traits<ScalarType, op_plus<typename InterfaceType::numeric_type>, OtherScalarType>::result_type, InterfaceType >,
+    ct_expr<rt_constant<typename promote_traits<ScalarType, op_plus<typename InterfaceType::numeric_type>, OtherScalarType>::result_type, InterfaceType >,
             op_plus<typename InterfaceType::numeric_type>,
             RHS >
-    operator+(constant<ScalarType, InterfaceType> const & lhs,
-              ct_expr<constant<OtherScalarType, InterfaceType>, op_plus<typename InterfaceType::numeric_type>, RHS> const & other)
+    operator+(rt_constant<ScalarType, InterfaceType> const & lhs,
+              ct_expr<rt_constant<OtherScalarType, InterfaceType>, op_plus<typename InterfaceType::numeric_type>, RHS> const & other)
     {
-      typedef constant<typename promote_traits<ScalarType, op_plus<typename InterfaceType::numeric_type>, OtherScalarType>::result_type, InterfaceType >  ret_constant;
+      typedef rt_constant<typename promote_traits<ScalarType, op_plus<typename InterfaceType::numeric_type>, OtherScalarType>::result_type, InterfaceType >  ret_constant;
       return ct_expr<ret_constant,
                      op_plus<typename InterfaceType::numeric_type>,
                      RHS
@@ -46,13 +46,13 @@ namespace viennamath
 
     // c1 + (ct_c2 + X) -> [c1 + ct_c2] + X, where X is anything:
     template <typename ScalarType, typename InterfaceType, long value, typename RHS>
-    ct_expr<constant<typename promote_traits<ScalarType, op_plus<typename InterfaceType::numeric_type>, long>::result_type, InterfaceType >,
+    ct_expr<rt_constant<typename promote_traits<ScalarType, op_plus<typename InterfaceType::numeric_type>, long>::result_type, InterfaceType >,
             op_plus<typename InterfaceType::numeric_type>,
             RHS >
-    operator+(constant<ScalarType, InterfaceType> const & lhs,
+    operator+(rt_constant<ScalarType, InterfaceType> const & lhs,
               ct_expr<ct_constant<value>, op_plus<typename InterfaceType::numeric_type>, RHS> const & other)
     {
-      typedef constant<typename promote_traits<ScalarType, op_plus<typename InterfaceType::numeric_type>, long>::result_type, InterfaceType >  ret_constant;
+      typedef rt_constant<typename promote_traits<ScalarType, op_plus<typename InterfaceType::numeric_type>, long>::result_type, InterfaceType >  ret_constant;
       return ct_expr<ret_constant,
                      op_plus<typename InterfaceType::numeric_type>,
                      RHS
@@ -62,13 +62,13 @@ namespace viennamath
 
     // c1 + (c2 - X) -> [c1 + c2] - X, where X is anything:
     template <typename ScalarType, typename InterfaceType, typename OtherScalarType, typename RHS>
-    ct_expr<constant<typename promote_traits<ScalarType, op_plus<typename InterfaceType::numeric_type>, OtherScalarType>::result_type, InterfaceType >,
+    ct_expr<rt_constant<typename promote_traits<ScalarType, op_plus<typename InterfaceType::numeric_type>, OtherScalarType>::result_type, InterfaceType >,
             op_minus<typename InterfaceType::numeric_type>,
             RHS >
-    operator+(constant<ScalarType, InterfaceType> const & lhs,
-              ct_expr<constant<OtherScalarType, InterfaceType>, op_minus<typename InterfaceType::numeric_type>, RHS> const & other)
+    operator+(rt_constant<ScalarType, InterfaceType> const & lhs,
+              ct_expr<rt_constant<OtherScalarType, InterfaceType>, op_minus<typename InterfaceType::numeric_type>, RHS> const & other)
     {
-      typedef constant<typename promote_traits<ScalarType, op_plus<typename InterfaceType::numeric_type>, OtherScalarType>::result_type, InterfaceType >  ret_constant;
+      typedef rt_constant<typename promote_traits<ScalarType, op_plus<typename InterfaceType::numeric_type>, OtherScalarType>::result_type, InterfaceType >  ret_constant;
       return ct_expr<ret_constant,
                      op_minus<typename InterfaceType::numeric_type>,
                      RHS
@@ -78,13 +78,13 @@ namespace viennamath
 
     // c1 + (ct_c2 - X) -> [c1 + ct_c2] - X, where X is anything:
     template <typename ScalarType, typename InterfaceType, long value, typename RHS>
-    ct_expr<constant<typename promote_traits<ScalarType, op_plus<typename InterfaceType::numeric_type>, long>::result_type, InterfaceType >,
+    ct_expr<rt_constant<typename promote_traits<ScalarType, op_plus<typename InterfaceType::numeric_type>, long>::result_type, InterfaceType >,
             op_minus<typename InterfaceType::numeric_type>,
             RHS >
-    operator+(constant<ScalarType, InterfaceType> const & lhs,
+    operator+(rt_constant<ScalarType, InterfaceType> const & lhs,
               ct_expr<ct_constant<value>, op_minus<typename InterfaceType::numeric_type>, RHS> const & other)
     {
-      typedef constant<typename promote_traits<ScalarType, op_plus<typename InterfaceType::numeric_type>, long>::result_type, InterfaceType >  ret_constant;
+      typedef rt_constant<typename promote_traits<ScalarType, op_plus<typename InterfaceType::numeric_type>, long>::result_type, InterfaceType >  ret_constant;
       return ct_expr<ret_constant,
                      op_minus<typename InterfaceType::numeric_type>,
                      RHS
@@ -95,13 +95,13 @@ namespace viennamath
     
     // (ct_c1 + X) + c2 -> [ct_c1 + c2] + X
     template <long value, typename RHS, typename ScalarType, typename T, typename InterfaceType>
-    ct_expr< constant<typename promote_traits<long, op_plus<T>, ScalarType>::result_type >,
+    ct_expr< rt_constant<typename promote_traits<long, op_plus<T>, ScalarType>::result_type >,
               op_plus<T>,
               RHS >
     operator+(ct_expr<ct_constant<value>, op_plus<T>, RHS> const & lhs,
-              constant<ScalarType, InterfaceType> const & other)
+              rt_constant<ScalarType, InterfaceType> const & other)
     {
-      typedef constant< typename promote_traits<long, op_plus<T>, ScalarType>::result_type >    result_constant;
+      typedef rt_constant< typename promote_traits<long, op_plus<T>, ScalarType>::result_type >    result_constant;
       return ct_expr<result_constant,
                       op_plus<T>,
                       RHS >(result_constant(value + static_cast<ScalarType>(other)),
@@ -110,13 +110,13 @@ namespace viennamath
 
     // (ct_c1 - X) + c2 -> [ct_c1 + c2] - X
     template <long value, typename RHS, typename ScalarType, typename InterfaceType>
-    ct_expr< constant<default_numeric_type, InterfaceType >,
+    ct_expr< rt_constant<default_numeric_type, InterfaceType >,
               op_minus<default_numeric_type>,
               RHS >
     operator+(ct_expr<ct_constant<value>, op_minus<default_numeric_type>, RHS> const & lhs,
-              constant<ScalarType, InterfaceType> const & other)
+              rt_constant<ScalarType, InterfaceType> const & other)
     {
-      typedef constant<ScalarType, InterfaceType>    result_constant;
+      typedef rt_constant<ScalarType, InterfaceType>    result_constant;
       return ct_expr<result_constant,
                       op_minus<default_numeric_type>,
                       RHS >(result_constant(value + other),
@@ -129,13 +129,13 @@ namespace viennamath
     
     // c1 - (c2 + X) -> [c1 - c2] - X, where X is anything:
     template <typename ScalarType, typename InterfaceType, typename OtherScalarType, typename RHS>
-    ct_expr<constant<typename promote_traits<ScalarType, op_minus<typename InterfaceType::numeric_type>, OtherScalarType>::result_type, InterfaceType >,
+    ct_expr<rt_constant<typename promote_traits<ScalarType, op_minus<typename InterfaceType::numeric_type>, OtherScalarType>::result_type, InterfaceType >,
             op_minus<typename InterfaceType::numeric_type>,
             RHS >
-    operator-(constant<ScalarType, InterfaceType> const & lhs,
-              ct_expr<constant<OtherScalarType, InterfaceType>, op_plus<typename InterfaceType::numeric_type>, RHS> const & other)
+    operator-(rt_constant<ScalarType, InterfaceType> const & lhs,
+              ct_expr<rt_constant<OtherScalarType, InterfaceType>, op_plus<typename InterfaceType::numeric_type>, RHS> const & other)
     {
-      typedef constant<typename promote_traits<ScalarType, op_minus<typename InterfaceType::numeric_type>, OtherScalarType>::result_type, InterfaceType >  ret_constant;
+      typedef rt_constant<typename promote_traits<ScalarType, op_minus<typename InterfaceType::numeric_type>, OtherScalarType>::result_type, InterfaceType >  ret_constant;
       return ct_expr<ret_constant,
                      op_minus<typename InterfaceType::numeric_type>,
                      RHS
@@ -145,13 +145,13 @@ namespace viennamath
 
     // c1 - (ct_c2 + X) -> [c1 - ct_c2] - X, where X is anything:
     template <typename ScalarType, typename InterfaceType, long value, typename RHS>
-    ct_expr<constant<typename promote_traits<ScalarType, op_minus<typename InterfaceType::numeric_type>, long>::result_type, InterfaceType >,
+    ct_expr<rt_constant<typename promote_traits<ScalarType, op_minus<typename InterfaceType::numeric_type>, long>::result_type, InterfaceType >,
             op_minus<typename InterfaceType::numeric_type>,
             RHS >
-    operator-(constant<ScalarType, InterfaceType> const & lhs,
+    operator-(rt_constant<ScalarType, InterfaceType> const & lhs,
               ct_expr<ct_constant<value>, op_plus<typename InterfaceType::numeric_type>, RHS> const & other)
     {
-      typedef constant<typename promote_traits<ScalarType, op_minus<typename InterfaceType::numeric_type>, long>::result_type, InterfaceType >  ret_constant;
+      typedef rt_constant<typename promote_traits<ScalarType, op_minus<typename InterfaceType::numeric_type>, long>::result_type, InterfaceType >  ret_constant;
       return ct_expr<ret_constant,
                      op_minus<typename InterfaceType::numeric_type>,
                      RHS
@@ -161,13 +161,13 @@ namespace viennamath
 
     // c1 - (c2 - X) -> [c1 - c2] + X, where X is anything:
     template <typename ScalarType, typename InterfaceType, typename OtherScalarType, typename RHS>
-    ct_expr<constant<typename promote_traits<ScalarType, op_minus<typename InterfaceType::numeric_type>, OtherScalarType>::result_type, InterfaceType >,
+    ct_expr<rt_constant<typename promote_traits<ScalarType, op_minus<typename InterfaceType::numeric_type>, OtherScalarType>::result_type, InterfaceType >,
             op_plus<typename InterfaceType::numeric_type>,
             RHS >
-    operator-(constant<ScalarType, InterfaceType> const & lhs,
-              ct_expr<constant<OtherScalarType, InterfaceType>, op_minus<typename InterfaceType::numeric_type>, RHS> const & other)
+    operator-(rt_constant<ScalarType, InterfaceType> const & lhs,
+              ct_expr<rt_constant<OtherScalarType, InterfaceType>, op_minus<typename InterfaceType::numeric_type>, RHS> const & other)
     {
-      typedef constant<typename promote_traits<ScalarType, op_minus<typename InterfaceType::numeric_type>, OtherScalarType>::result_type, InterfaceType >  ret_constant;
+      typedef rt_constant<typename promote_traits<ScalarType, op_minus<typename InterfaceType::numeric_type>, OtherScalarType>::result_type, InterfaceType >  ret_constant;
       return ct_expr<ret_constant,
                      op_plus<typename InterfaceType::numeric_type>,
                      RHS
@@ -177,13 +177,13 @@ namespace viennamath
 
     // c1 - (ct_c2 - X) -> [c1 - ct_c2] + X, where X is anything:
     template <typename ScalarType, typename InterfaceType, long value, typename RHS>
-    ct_expr<constant<typename promote_traits<ScalarType, op_minus<typename InterfaceType::numeric_type>, long>::result_type, InterfaceType >,
+    ct_expr<rt_constant<typename promote_traits<ScalarType, op_minus<typename InterfaceType::numeric_type>, long>::result_type, InterfaceType >,
             op_plus<typename InterfaceType::numeric_type>,
             RHS >
-    operator-(constant<ScalarType, InterfaceType> const & lhs,
+    operator-(rt_constant<ScalarType, InterfaceType> const & lhs,
               ct_expr<ct_constant<value>, op_minus<typename InterfaceType::numeric_type>, RHS> const & other)
     {
-      typedef constant<typename promote_traits<ScalarType, op_minus<typename InterfaceType::numeric_type>, long>::result_type, InterfaceType >  ret_constant;
+      typedef rt_constant<typename promote_traits<ScalarType, op_minus<typename InterfaceType::numeric_type>, long>::result_type, InterfaceType >  ret_constant;
       return ct_expr<ret_constant,
                      op_plus<typename InterfaceType::numeric_type>,
                      RHS

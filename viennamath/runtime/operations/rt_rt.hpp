@@ -25,31 +25,31 @@ namespace viennamath
   namespace traits
   {
     template <typename InterfaceType, typename NumericT>
-    InterfaceType * clone(constant<NumericT, InterfaceType> const & c) { return c.clone(); }    
+    InterfaceType * clone(rt_constant<NumericT, InterfaceType> const & c) { return c.clone(); }    
 
     template <typename InterfaceType>
-    InterfaceType * clone(default_numeric_type d) { return new constant<default_numeric_type, InterfaceType>(d); }    
+    InterfaceType * clone(default_numeric_type d) { return new rt_constant<default_numeric_type, InterfaceType>(d); }    
 
     template <typename InterfaceType, long value>
-    InterfaceType * clone(ct_constant<value> const & c) { return new constant<default_numeric_type, InterfaceType>(value); }    
+    InterfaceType * clone(ct_constant<value> const & c) { return new rt_constant<default_numeric_type, InterfaceType>(value); }    
 
     template <typename InterfaceType>
-    InterfaceType * clone(variable<InterfaceType> const & v) { return v.clone(); }    
+    InterfaceType * clone(rt_variable<InterfaceType> const & v) { return v.clone(); }    
 
     template <typename InterfaceType, id_type id>
-    InterfaceType * clone(ct_variable<id> const & v) { return new variable<InterfaceType>(id); }    
+    InterfaceType * clone(ct_variable<id> const & v) { return new rt_variable<InterfaceType>(id); }    
 
     template <typename InterfaceType>
-    InterfaceType * clone(unary_expr<InterfaceType> const & e) { return e.clone(); }    
+    InterfaceType * clone(rt_unary_expr<InterfaceType> const & e) { return e.clone(); }    
 
     template <typename InterfaceType>
-    InterfaceType * clone(binary_expr<InterfaceType> const & e) { return e.clone(); }    
+    InterfaceType * clone(rt_binary_expr<InterfaceType> const & e) { return e.clone(); }    
 
     template <typename InterfaceType>
-    InterfaceType * clone(expr<InterfaceType> const & e) { return e.get()->clone(); }    
+    InterfaceType * clone(rt_expr<InterfaceType> const & e) { return e.get()->clone(); }    
 
     template <typename InterfaceType, typename LHS, typename OP, typename RHS>
-    InterfaceType * clone(ct_expr<LHS, OP, RHS> const & e) { return new binary_expr<InterfaceType>(e); } 
+    InterfaceType * clone(ct_expr<LHS, OP, RHS> const & e) { return new rt_binary_expr<InterfaceType>(e); } 
 
   }
   
@@ -62,7 +62,7 @@ namespace viennamath
     {
       typedef typename interface<LHS, RHS>::type     iface_type;
       typedef typename iface_type::numeric_type      numeric_type;
-      typedef binary_expr<iface_type>                type;
+      typedef rt_binary_expr<iface_type>             type;
       
       static type instance(LHS const & lhs, RHS const & rhs) { return type(traits::clone<iface_type>(lhs), new op_binary<op_plus<numeric_type>, iface_type>(), traits::clone<iface_type>(rhs)); }
     };
@@ -72,7 +72,7 @@ namespace viennamath
     {
       typedef typename interface<LHS, RHS>::type     iface_type;
       typedef typename iface_type::numeric_type      numeric_type;
-      typedef binary_expr<iface_type>                type;
+      typedef rt_binary_expr<iface_type>             type;
       
       static type instance(LHS const & lhs, RHS const & rhs) { return type(traits::clone<iface_type>(lhs), new op_binary<op_minus<numeric_type>, iface_type>(), traits::clone<iface_type>(rhs)); }
     };
@@ -82,7 +82,7 @@ namespace viennamath
     {
       typedef typename interface<LHS, RHS>::type     iface_type;
       typedef typename iface_type::numeric_type      numeric_type;
-      typedef binary_expr<iface_type>                type;
+      typedef rt_binary_expr<iface_type>             type;
       
       static type instance(LHS const & lhs, RHS const & rhs) { return type(traits::clone<iface_type>(lhs), new op_binary<op_mult<numeric_type>, iface_type>(), traits::clone<iface_type>(rhs)); }
     };
@@ -92,7 +92,7 @@ namespace viennamath
     {
       typedef typename interface<LHS, RHS>::type     iface_type;
       typedef typename iface_type::numeric_type      numeric_type;
-      typedef binary_expr<iface_type>                type;
+      typedef rt_binary_expr<iface_type>             type;
       
       static type instance(LHS const & lhs, RHS const & rhs) { return type(traits::clone<iface_type>(lhs), new op_binary<op_div<numeric_type>, iface_type>(), traits::clone<iface_type>(rhs)); }
     };

@@ -26,143 +26,143 @@
 namespace viennamath
 {
 
-  /** @brief An tweaked auto_ptr for run time expressions. 
+  /** @brief An tweaked auto_ptr for run time rt_expressions. 
    * 
    * Additionally provides the basic user-interface for evaluation using operator().
    */ 
   template <typename InterfaceType /* see forwards.h for default argument */>
-  class expr 
+  class rt_expr 
   {
     public:
       typedef typename InterfaceType::numeric_type       numeric_type;
       typedef InterfaceType                              interface_type;
       
-      expr() {}
+      rt_expr() {}
 
-      explicit expr(const InterfaceType * e) : expr_(e) {}
+      explicit rt_expr(const InterfaceType * e) : rt_expr_(e) {}
       
-      expr(binary_expr<InterfaceType> const & other)
+      rt_expr(rt_binary_expr<InterfaceType> const & other)
       {
-        expr_ = std::auto_ptr<InterfaceType>(other.clone());
+        rt_expr_ = std::auto_ptr<InterfaceType>(other.clone());
       }
 
-      expr(unary_expr<InterfaceType> const & other)
+      rt_expr(rt_unary_expr<InterfaceType> const & other)
       {
-        expr_ = std::auto_ptr<InterfaceType>(other.clone());
+        rt_expr_ = std::auto_ptr<InterfaceType>(other.clone());
       }
 
       template <typename LHS, typename OP, typename RHS>
-      expr(ct_expr<LHS, OP, RHS> const & other)
+      rt_expr(ct_expr<LHS, OP, RHS> const & other)
       {
-        expr_ = std::auto_ptr<InterfaceType>(new binary_expr<InterfaceType>(other));
+        rt_expr_ = std::auto_ptr<InterfaceType>(new rt_binary_expr<InterfaceType>(other));
       }
 
-      expr<InterfaceType>(variable<InterfaceType> const & other)
+      rt_expr<InterfaceType>(rt_variable<InterfaceType> const & other)
       {
-        expr_ = std::auto_ptr<InterfaceType>(other.clone());
+        rt_expr_ = std::auto_ptr<InterfaceType>(other.clone());
       }
 
       template <typename T>
-      expr(constant<T, InterfaceType> const & other)
+      rt_expr(rt_constant<T, InterfaceType> const & other)
       {
-        expr_ = std::auto_ptr<InterfaceType>(other.clone());
+        rt_expr_ = std::auto_ptr<InterfaceType>(other.clone());
       }
       
-      expr(function_symbol<InterfaceType> const & other)
+      rt_expr(rt_function_symbol<InterfaceType> const & other)
       {
-        expr_ = std::auto_ptr<InterfaceType>(other.clone());
+        rt_expr_ = std::auto_ptr<InterfaceType>(other.clone());
       }
 
       template <long value>
-      expr(ct_constant<value> const & other)
+      rt_expr(ct_constant<value> const & other)
       {
-        expr_ = std::auto_ptr<InterfaceType>(new constant<numeric_type>(value));
+        rt_expr_ = std::auto_ptr<InterfaceType>(new rt_constant<numeric_type>(value));
       }
 
-      expr(numeric_type const & other)
+      rt_expr(numeric_type const & other)
       {
-        expr_ = std::auto_ptr<InterfaceType>(new constant<numeric_type, InterfaceType>(other));
+        rt_expr_ = std::auto_ptr<InterfaceType>(new rt_constant<numeric_type, InterfaceType>(other));
       }
       
       //Copy CTOR:
-      expr(expr const & other)
+      rt_expr(expr const & other)
       {
         if (other.get() != NULL)
-        expr_ = std::auto_ptr<InterfaceType>(other.get()->clone());
+        rt_expr_ = std::auto_ptr<InterfaceType>(other.get()->clone());
       }
 
       //assignments:    
-      expr & operator=(InterfaceType * other)
+      rt_expr & operator=(InterfaceType * other)
       {
-        expr_ = std::auto_ptr<InterfaceType>(other);
+        rt_expr_ = std::auto_ptr<InterfaceType>(other);
         return *this;
       }
       
-      expr & operator=(expr const & other)
+      rt_expr & operator=(expr const & other)
       {
-        expr_ = std::auto_ptr<InterfaceType>(other.get()->clone()); 
+        rt_expr_ = std::auto_ptr<InterfaceType>(other.get()->clone()); 
         return *this;
       }
       
       template <typename LHS, typename OP, typename RHS>
-      expr & operator=(ct_expr<LHS, OP, RHS> const & other)
+      rt_expr & operator=(ct_expr<LHS, OP, RHS> const & other)
       {
-        expr_ = std::auto_ptr<InterfaceType>(new binary_expr<InterfaceType>(other));
+        rt_expr_ = std::auto_ptr<InterfaceType>(new rt_binary_expr<InterfaceType>(other));
         return *this;
       }
 
-      expr & operator=(binary_expr<InterfaceType> const & other)
+      rt_expr & operator=(rt_binary_expr<InterfaceType> const & other)
       {
-        expr_ = std::auto_ptr<InterfaceType>(other.clone());
+        rt_expr_ = std::auto_ptr<InterfaceType>(other.clone());
         return *this;
       }
       
-      expr & operator=(variable<InterfaceType> const & other)
+      rt_expr & operator=(rt_variable<InterfaceType> const & other)
       {
-        expr_ = std::auto_ptr<InterfaceType>(other.clone());
+        rt_expr_ = std::auto_ptr<InterfaceType>(other.clone());
         return *this;
       }
 
       template <typename ScalarType>
-      expr & operator=(constant<ScalarType, InterfaceType> const & other)
+      rt_expr & operator=(rt_constant<ScalarType, InterfaceType> const & other)
       {
-        expr_ = std::auto_ptr<InterfaceType>(other.clone());
+        rt_expr_ = std::auto_ptr<InterfaceType>(other.clone());
         return *this;
       }
 
       template <long value>
-      expr & operator=(ct_constant<value> const & other)
+      rt_expr & operator=(ct_constant<value> const & other)
       {
-        expr_ = std::auto_ptr<InterfaceType>(new constant<numeric_type>(value));
+        rt_expr_ = std::auto_ptr<InterfaceType>(new rt_constant<numeric_type>(value));
         return *this;
       }
 
-      expr & operator=(numeric_type value)
+      rt_expr & operator=(numeric_type value)
       {
-        expr_ = std::auto_ptr<InterfaceType>(new constant<numeric_type>(value));
+        rt_expr_ = std::auto_ptr<InterfaceType>(new rt_constant<numeric_type>(value));
         return *this;
       }
 
-      const InterfaceType   * get() const  { return expr_.get(); }
+      const InterfaceType   * get() const  { return rt_expr_.get(); }
       
       ///////////////// evaluation: ///////////////////////////////
       
       //operator() is a convenience layer:
       numeric_type operator()(numeric_type val) const
       {
-        return expr_.get()->eval(val);
+        return rt_expr_.get()->eval(val);
       }
 
       template <typename ScalarType>
-      numeric_type operator()(constant<ScalarType, InterfaceType> val) const
+      numeric_type operator()(rt_constant<ScalarType, InterfaceType> val) const
       {
-        return expr_.get()->eval(static_cast<numeric_type>(val));
+        return rt_expr_.get()->eval(static_cast<numeric_type>(val));
       }
       
       template <long value>
       numeric_type operator()(ct_constant<value> val) const
       {
-        return expr_.get()->eval(value);
+        return rt_expr_.get()->eval(value);
       }
 
       template <typename VectorType>
@@ -172,13 +172,13 @@ namespace viennamath
         for (size_t i=0; i<v.size(); ++i)
           stl_v[i] = v[i];
         
-        return expr_.get()->eval(stl_v);
+        return rt_expr_.get()->eval(stl_v);
       }
 
       numeric_type operator()(std::vector<numeric_type> const & stl_v) const
       {
         //std::cout << "operator() with STL vector!" << std::endl;
-        return expr_.get()->eval(stl_v);
+        return rt_expr_.get()->eval(stl_v);
       }
 
       template <typename T0>
@@ -186,7 +186,7 @@ namespace viennamath
       {
         std::vector<double> stl_v(1);
         stl_v[0] = v[ct_index<0>()];
-        return expr_.get()->eval(stl_v);
+        return rt_expr_.get()->eval(stl_v);
       }
 
       template <typename T0, typename T1>
@@ -195,7 +195,7 @@ namespace viennamath
         std::vector<double> stl_v(2);
         stl_v[0] = v[ct_index<0>()];
         stl_v[1] = v[ct_index<1>()];
-        return expr_.get()->eval(stl_v);
+        return rt_expr_.get()->eval(stl_v);
       }
       
       template <typename T0, typename T1, typename T2>
@@ -205,16 +205,16 @@ namespace viennamath
         stl_v[0] = v[ct_index<0>()];
         stl_v[1] = v[ct_index<1>()];
         stl_v[2] = v[ct_index<2>()];
-        return expr_.get()->eval(stl_v);
+        return rt_expr_.get()->eval(stl_v);
       }
       
     private:
-      std::auto_ptr<const InterfaceType>  expr_;
+      std::auto_ptr<const InterfaceType>  rt_expr_;
   };
   
   
   template <typename InterfaceType>
-  std::ostream& operator<<(std::ostream & stream, expr<InterfaceType> const & e)
+  std::ostream& operator<<(std::ostream & stream, rt_expr<InterfaceType> const & e)
   {
     if (e.get()->is_unary())
     {

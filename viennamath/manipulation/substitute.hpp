@@ -31,11 +31,11 @@ namespace viennamath
   //public interface:
   /** @brief Replaces all occurances of the variable u in the expression 'e' with 'u'. */
   template <typename InterfaceType, typename ReplacementType, typename ExpressionType>
-  expr<InterfaceType> substitute(variable<InterfaceType> const & u,
-                                 ReplacementType const & repl,
-                                 ExpressionType const & e)
+  rt_expr<InterfaceType> substitute(rt_variable<InterfaceType> const & u,
+                                    ReplacementType const & repl,
+                                    ExpressionType const & e)
   {
-    expr<InterfaceType> temp(e.substitute(&u, &repl));
+    rt_expr<InterfaceType> temp(e.substitute(&u, &repl));
     while (temp.get()->optimizable())
       temp = temp.get()->optimize();
     
@@ -44,11 +44,11 @@ namespace viennamath
 
   /** @brief Replaces all occurances of the variable u in the expression 'e' with 'u'. */
   template <typename InterfaceType, typename ReplacementType>
-  expr<InterfaceType> substitute(variable<InterfaceType> const & u,
-                                 ReplacementType const & repl,
-                                 expr<InterfaceType> const & e)
+  rt_expr<InterfaceType> substitute(rt_variable<InterfaceType> const & u,
+                                    ReplacementType const & repl,
+                                    rt_expr<InterfaceType> const & e)
   {
-    expr<InterfaceType> temp(e.get()->substitute(&u, &repl));
+    rt_expr<InterfaceType> temp(e.get()->substitute(&u, &repl));
     while (temp.get()->optimizable())
       temp = temp.get()->optimize();
     
@@ -57,12 +57,12 @@ namespace viennamath
 
   /** @brief Replaces all occurances of the variable u in the expression 'e' with 'u'. */
   template <typename InterfaceType>
-  expr<InterfaceType> substitute(variable<InterfaceType> const & u,
-                                 default_numeric_type repl,
-                                 expr<InterfaceType> const & e)
+  rt_expr<InterfaceType> substitute(rt_variable<InterfaceType> const & u,
+                                    default_numeric_type repl,
+                                    rt_expr<InterfaceType> const & e)
   {
-    constant<default_numeric_type, InterfaceType> c(repl);
-    expr<InterfaceType> temp(e.get()->substitute(&u, &c));
+    rt_constant<default_numeric_type, InterfaceType> c(repl);
+    rt_expr<InterfaceType> temp(e.get()->substitute(&u, &c));
     while (temp.get()->optimizable())
       temp = temp.get()->optimize();
     
@@ -71,12 +71,12 @@ namespace viennamath
 
   /** @brief Replaces all occurances of the variable u in the expression 'e' with 'repl'. */
   template <typename InterfaceType>
-  expr<InterfaceType> substitute(function_symbol<InterfaceType> const & u,
-                                 default_numeric_type repl,
-                                 expr<InterfaceType> const & e)
+  rt_expr<InterfaceType> substitute(rt_function_symbol<InterfaceType> const & u,
+                                    default_numeric_type repl,
+                                    rt_expr<InterfaceType> const & e)
   {
-    constant<default_numeric_type, InterfaceType> c(repl);
-    expr<InterfaceType> temp(e.get()->substitute(&u, &c));
+    rt_constant<default_numeric_type, InterfaceType> c(repl);
+    rt_expr<InterfaceType> temp(e.get()->substitute(&u, &c));
     while (temp.get()->optimizable())
       temp = temp.get()->optimize();
     
@@ -84,11 +84,11 @@ namespace viennamath
   }
 
   template <typename InterfaceType>
-  expr<InterfaceType> substitute(function_symbol<InterfaceType> const & u,
-                                 expr<InterfaceType> const & repl,
-                                 expr<InterfaceType> const & e)
+  rt_expr<InterfaceType> substitute(rt_function_symbol<InterfaceType> const & u,
+                                    rt_expr<InterfaceType> const & repl,
+                                    rt_expr<InterfaceType> const & e)
   {
-    expr<InterfaceType> temp(e.get()->substitute(&u, repl.get()));
+    rt_expr<InterfaceType> temp(e.get()->substitute(&u, repl.get()));
     while (temp.get()->optimizable())
       temp = temp.get()->optimize();
     
@@ -98,11 +98,11 @@ namespace viennamath
 
   //substitute binary_expressions (for fem):
   template <typename InterfaceType, typename ReplacementType>
-  expr<InterfaceType> substitute(unary_expr<InterfaceType> const & search,
-                                 ReplacementType const & repl,
-                                 expr<InterfaceType> const & e)
+  rt_expr<InterfaceType> substitute(rt_unary_expr<InterfaceType> const & search,
+                                    ReplacementType const & repl,
+                                    rt_expr<InterfaceType> const & e)
   {
-    expr<InterfaceType> temp(e.get()->substitute(&search, &repl));
+    rt_expr<InterfaceType> temp(e.get()->substitute(&search, &repl));
     while (temp.get()->optimizable())
       temp = temp.get()->optimize();
     
@@ -110,11 +110,11 @@ namespace viennamath
   }
 
   template <typename InterfaceType>
-  expr<InterfaceType> substitute(unary_expr<InterfaceType> const & search,
-                                 expr<InterfaceType> const & repl,
-                                 expr<InterfaceType> const & e)
+  rt_expr<InterfaceType> substitute(rt_unary_expr<InterfaceType> const & search,
+                                    rt_expr<InterfaceType> const & repl,
+                                    rt_expr<InterfaceType> const & e)
   {
-    expr<InterfaceType> temp(e.get()->substitute(&search, repl.get()));
+    rt_expr<InterfaceType> temp(e.get()->substitute(&search, repl.get()));
     while (temp.get()->optimizable())
       temp = temp.get()->optimize();
     
@@ -122,11 +122,11 @@ namespace viennamath
   }
 
   template <typename InterfaceType, typename ReplacementType>
-  expr<InterfaceType> substitute(binary_expr<InterfaceType> const & search,
-                                 ReplacementType const & repl,
-                                 expr<InterfaceType> const & e)
+  rt_expr<InterfaceType> substitute(rt_binary_expr<InterfaceType> const & search,
+                                    ReplacementType const & repl,
+                                    rt_expr<InterfaceType> const & e)
   {
-    expr<InterfaceType> temp(e.get()->substitute(&search, &repl));
+    rt_expr<InterfaceType> temp(e.get()->substitute(&search, &repl));
     while (temp.get()->optimizable())
       temp = temp.get()->optimize();
     
@@ -134,11 +134,11 @@ namespace viennamath
   }
 
   template <typename InterfaceType>
-  expr<InterfaceType> substitute(expr<InterfaceType> const & search,
-                                 expr<InterfaceType> const & repl,
-                                 expr<InterfaceType> const & e)
+  rt_expr<InterfaceType> substitute(rt_expr<InterfaceType> const & search,
+                                    rt_expr<InterfaceType> const & repl,
+                                    rt_expr<InterfaceType> const & e)
   {
-    expr<InterfaceType> temp(e.get()->substitute(search.get(), repl.get()));
+    rt_expr<InterfaceType> temp(e.get()->substitute(search.get(), repl.get()));
     while (temp.get()->optimizable())
       temp = temp.get()->optimize();
     
@@ -147,9 +147,9 @@ namespace viennamath
 
 
   template <typename InterfaceType>
-  expr<InterfaceType> substitute(std::vector<expr<InterfaceType> > const & search,
-                                 std::vector<expr<InterfaceType> > const & repl,
-                                 expr<InterfaceType> const & e)
+  rt_expr<InterfaceType> substitute(std::vector<rt_expr<InterfaceType> > const & search,
+                                    std::vector<rt_expr<InterfaceType> > const & repl,
+                                    rt_expr<InterfaceType> const & e)
   {
     assert(search.size() == repl.size() && "Search and replace array must have the same length!");
     
@@ -161,7 +161,7 @@ namespace viennamath
     for (size_t i=0; i<repl_ptrs.size(); ++i)
       repl_ptrs[i] = repl[i].get();
     
-    expr<InterfaceType> temp(e.get()->substitute(search_ptrs, repl_ptrs));
+    rt_expr<InterfaceType> temp(e.get()->substitute(search_ptrs, repl_ptrs));
     
     while (temp.get()->optimizable())
     {

@@ -29,27 +29,27 @@ namespace viennamath
    * @tparam Tag    A tag class that is typically used to distinguish between different function symbols. Tag requirements: 'static std::string str();' which returns an identification string
    */
   template <typename InterfaceType>
-  class function_symbol : public InterfaceType
+  class rt_function_symbol : public InterfaceType
   {
-      typedef function_symbol<InterfaceType>     self_type;
+      typedef rt_function_symbol<InterfaceType>     self_type;
     public:
       typedef typename InterfaceType::numeric_type      numeric_type;
       typedef InterfaceType                             interface_type;
       
       template <typename Tag>
-      function_symbol(id_type i, Tag const & t) : id_(i), tag_id_(Tag::tag_id()) {}
+      rt_function_symbol(id_type i, Tag const & t) : id_(i), tag_id_(Tag::tag_id()) {}
 
-      function_symbol(id_type i, id_type t) : id_(i), tag_id_(t) {}
+      rt_function_symbol(id_type i, id_type t) : id_(i), tag_id_(t) {}
 
-      function_symbol() : id_(0), tag_id_(unknown_tag<>::tag_id()) {}
+      rt_function_symbol() : id_(0), tag_id_(unknown_tag<>::tag_id()) {}
       
       id_type id() const { return id_; }
       id_type tag_id() const { return tag_id_; }
 
       //interface requirements:
       InterfaceType * clone() const { return new self_type(id_, tag_id_); }
-      numeric_type eval(std::vector<double> const & v) const { throw "Cannot evaluate function_symbol!"; return 0; }
-      numeric_type eval(numeric_type v) const { throw "Cannot evaluate function_symbol!"; return 0; }
+      numeric_type eval(std::vector<double> const & v) const { throw "Cannot evaluate rt_function_symbol!"; return 0; }
+      numeric_type eval(numeric_type v) const { throw "Cannot evaluate rt_function_symbol!"; return 0; }
       std::string deep_str() const
       {
         std::stringstream ss;
@@ -63,7 +63,7 @@ namespace viennamath
         
         return ss.str();      
       }
-      numeric_type unwrap() const { throw "Cannot evaluate function_symbol to a number!"; }
+      numeric_type unwrap() const { throw "Cannot evaluate rt_function_symbol to a number!"; }
       
       InterfaceType * substitute(const InterfaceType * e,
                                  const InterfaceType * repl) const
@@ -102,8 +102,8 @@ namespace viennamath
       
       InterfaceType * diff(const InterfaceType * diff_var) const
       {
-        //this code should not be reached, because function_symbol is symbolically differentiated at a higher level
-        throw "Cannot differentiate function_symbol!";
+        //this code should not be reached, because rt_function_symbol is symbolically differentiated at a higher level
+        throw "Cannot differentiate rt_function_symbol!";
         return NULL;
       }
       
@@ -115,7 +115,7 @@ namespace viennamath
   
   
   template <typename Tag, typename InterfaceType>
-  std::ostream& operator<<(std::ostream & stream, function_symbol<InterfaceType> const & v)
+  std::ostream& operator<<(std::ostream & stream, rt_function_symbol<InterfaceType> const & v)
   {
     stream << v.str();
     return stream;

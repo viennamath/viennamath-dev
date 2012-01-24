@@ -309,19 +309,19 @@ namespace viennamath
   
   
   template <typename ScalarType, typename InterfaceType, typename VectorType>
-  struct ct_evaluation < constant<ScalarType, InterfaceType>, VectorType>
+  struct ct_evaluation < rt_constant<ScalarType, InterfaceType>, VectorType>
   {
     typedef typename VectorType::ERROR_RUNTIME_CONSTANT_NOT_ALLOWED_IN_COMPILETIME_EVALUATION  error_type;
   };
 
   template <typename InterfaceType, typename VectorType>
-  struct ct_evaluation < unary_expr<InterfaceType>, VectorType>
+  struct ct_evaluation < rt_unary_expr<InterfaceType>, VectorType>
   {
     typedef typename VectorType::ERROR_RUNTIME_EXPRESSION_NOT_ALLOWED_IN_COMPILETIME_EVALUATION  error_type;
   };
   
   template <typename InterfaceType, typename VectorType>
-  struct ct_evaluation < binary_expr<InterfaceType>, VectorType>
+  struct ct_evaluation < rt_binary_expr<InterfaceType>, VectorType>
   {
     typedef typename VectorType::ERROR_RUNTIME_EXPRESSION_NOT_ALLOWED_IN_COMPILETIME_EVALUATION  error_type;
   };

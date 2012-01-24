@@ -31,15 +31,15 @@ namespace viennamath
 
     ////// operator*
     template <typename NumericT, typename InterfaceType>
-    binary_expr<InterfaceType> operator*(constant<NumericT, InterfaceType> const & lhs, function_symbol<InterfaceType> const & rhs)
+    rt_binary_expr<InterfaceType> operator*(rt_constant<NumericT, InterfaceType> const & lhs, rt_function_symbol<InterfaceType> const & rhs)
     {
-      return binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
+      return rt_binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
     }
 
     template <typename InterfaceType>
-    binary_expr<InterfaceType> operator*(expr<InterfaceType> const & lhs, function_symbol<InterfaceType> const & rhs)
+    rt_binary_expr<InterfaceType> operator*(rt_expr<InterfaceType> const & lhs, rt_function_symbol<InterfaceType> const & rhs)
     {
-      return binary_expr<InterfaceType>(lhs.get()->clone(), new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
+      return rt_binary_expr<InterfaceType>(lhs.get()->clone(), new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
     }
 
     ////// operator/

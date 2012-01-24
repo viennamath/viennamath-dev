@@ -35,8 +35,8 @@ void operations_test(T const & t, U const & u)
 template <typename E>
 void evaluations_test(E const & e, double ref_solution)
 {
-  viennamath::constant<double> c4(4.0);
-  viennamath::constant<long> c6(6);
+  viennamath::rt_constant<double> c4(4.0);
+  viennamath::rt_constant<long> c6(6);
   viennamath::ct_constant<8> c8;
 
   std::vector<double> p(3);
@@ -64,8 +64,8 @@ int main()
   viennamath::ct_variable<0> x;
   viennamath::ct_variable<1> y;
   viennamath::ct_variable<2> z;
-  viennamath::constant<double> c4(4.0);
-  viennamath::constant<long> c6(6);
+  viennamath::rt_constant<double> c4(4.0);
+  viennamath::rt_constant<long> c6(6);
   viennamath::ct_constant<8> c8;
   
   std::vector<double> p(2);

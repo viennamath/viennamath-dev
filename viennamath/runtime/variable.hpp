@@ -27,13 +27,13 @@ namespace viennamath
 
   /*********** evaluation of a run time constant: *****************/
   template <typename ScalarType>
-  struct variable_traits <constant<ScalarType>,
+  struct variable_traits <rt_constant<ScalarType>,
                           0>
   {
-    typedef viennamath::constant<ScalarType>   return_type;
+    typedef viennamath::rt_constant<ScalarType>   return_type;
     
     //per default, access id-th element;
-    static return_type get(viennamath::constant<ScalarType> const & v)
+    static return_type get(viennamath::rt_constant<ScalarType> const & v)
     {
       return v;
     }
@@ -41,11 +41,11 @@ namespace viennamath
 
   //guard: something like (x*y - z)(constant<double>(4)) is not allowed
   template <typename ScalarType, long id>
-  struct variable_traits <constant<ScalarType>,
+  struct variable_traits <rt_constant<ScalarType>,
                           id>
   {
     //try to provide a good compiler error message:
-    typedef typename viennamath::constant<ScalarType>::ERROR_PROVIDED_NOT_ENOUGH_ARGUMENTS_TO_EXPRESSION   error_type;
+    typedef typename viennamath::rt_constant<ScalarType>::ERROR_PROVIDED_NOT_ENOUGH_ARGUMENTS_TO_EXPRESSION   error_type;
     
     //providing a non-vector type is bogus -> force linker error!
   };
@@ -91,14 +91,14 @@ namespace viennamath
    * @tparam ScalarType        the underlying numerical type (typically float, double)
    */
   template <typename InterfaceType /* see forwards.h for default argument */>
-  class variable : public InterfaceType
+  class rt_variable : public InterfaceType
   {
-      typedef variable<InterfaceType>                 self_type;
+      typedef rt_variable<InterfaceType>                 self_type;
     
     public:
       typedef typename InterfaceType::numeric_type    numeric_type;
       
-      explicit variable(unsigned long my_id) : id_(my_id) {};
+      explicit rt_variable(unsigned long my_id) : id_(my_id) {};
 
       unsigned long id() const { return id_; }
       
@@ -109,11 +109,11 @@ namespace viennamath
       }
 
       template <typename ScalarType>
-      constant<ScalarType> operator()(constant<ScalarType> const & other) const
+      rt_constant<ScalarType> operator()(rt_constant<ScalarType> const & other) const
       {
         if (id_ > 0)
           throw variable_index_out_of_bounds(id_, 0);
-        return constant<ScalarType>(static_cast<ScalarType>(other));
+        return rt_constant<ScalarType>(static_cast<ScalarType>(other));
       }
 
       template <long value>
@@ -206,15 +206,15 @@ namespace viennamath
 
       InterfaceType * diff(const InterfaceType * diff_var) const
       {
-        const variable<InterfaceType> * ptr = dynamic_cast< const variable<InterfaceType> *>(diff_var);
+        const rt_variable<InterfaceType> * ptr = dynamic_cast< const rt_variable<InterfaceType> *>(diff_var);
         if (ptr != NULL)
         {
           //std::cout << "diff variable<" << id << ">: TRUE" << std::endl;
           if (ptr->id() == id_)
-            return new constant<numeric_type, InterfaceType>(1);
+            return new rt_constant<numeric_type, InterfaceType>(1);
         }
         //std::cout << "diff variable<" << id << ">: FALSE, is: " << diff_var.get()->str() << std::endl;
-        return new constant<numeric_type, InterfaceType>(0);
+        return new rt_constant<numeric_type, InterfaceType>(0);
       }
     
     private: 
@@ -222,7 +222,7 @@ namespace viennamath
   }; //variable
 
   template <typename InterfaceType>
-  std::ostream& operator<<(std::ostream & stream, variable<InterfaceType> const & u)
+  std::ostream& operator<<(std::ostream & stream, rt_variable<InterfaceType> const & u)
   {
     stream << "variable(" << u.id() << ")";
     return stream;

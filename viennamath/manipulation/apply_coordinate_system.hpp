@@ -29,35 +29,35 @@ namespace viennamath
   struct cartesian {};
   
   template <typename InterfaceType>
-  expr<InterfaceType> apply_coordinate_system(cartesian<1>, expr<InterfaceType> const & ex)
+  rt_expr<InterfaceType> apply_coordinate_system(cartesian<1>, rt_expr<InterfaceType> const & ex)
   {
-    function_symbol<InterfaceType> u(0, unknown_tag<>());
-    function_symbol<InterfaceType> v(0, test_tag<>());
-    variable<InterfaceType> x(0);
+    rt_function_symbol<InterfaceType> u(0, unknown_tag<>());
+    rt_function_symbol<InterfaceType> v(0, test_tag<>());
+    rt_variable<InterfaceType> x(0);
     
     //replace grad:
-    expr<InterfaceType> new_ex = ex;
-    expr<InterfaceType> new_ex1(substitute(grad(u), diff(u, x), new_ex) );
-    expr<InterfaceType> new_ex2(substitute(grad(v), diff(v, x), new_ex1) );
+    rt_expr<InterfaceType> new_ex = ex;
+    rt_expr<InterfaceType> new_ex1(substitute(grad(u), diff(u, x), new_ex) );
+    rt_expr<InterfaceType> new_ex2(substitute(grad(v), diff(v, x), new_ex1) );
     
     //replace div:
-    expr<InterfaceType> new_ex3(substitute(div(u), diff(u, x), new_ex2) );
-    expr<InterfaceType> new_ex4(substitute(div(v), diff(v, x), new_ex3) );
+    rt_expr<InterfaceType> new_ex3(substitute(div(u), diff(u, x), new_ex2) );
+    rt_expr<InterfaceType> new_ex4(substitute(div(v), diff(v, x), new_ex3) );
     
     return new_ex4;
   }
 
   template <typename InterfaceType>
-  expr<InterfaceType> apply_coordinate_system(cartesian<1>, unary_expr<InterfaceType> const & ex)
+  rt_expr<InterfaceType> apply_coordinate_system(cartesian<1>, rt_unary_expr<InterfaceType> const & ex)
   {
-    expr<InterfaceType> temp(ex);
+    rt_expr<InterfaceType> temp(ex);
     return apply_coordinate_system(cartesian<1>(), temp);
   }
 
   template <typename InterfaceType>
-  expr<InterfaceType> apply_coordinate_system(cartesian<1>, binary_expr<InterfaceType> const & ex)
+  rt_expr<InterfaceType> apply_coordinate_system(cartesian<1>, rt_binary_expr<InterfaceType> const & ex)
   {
-    expr<InterfaceType> temp(ex);
+    rt_expr<InterfaceType> temp(ex);
     return apply_coordinate_system(cartesian<1>(), temp);
   }
   
@@ -65,37 +65,37 @@ namespace viennamath
   /********* 2d *********/
 
   template <typename InterfaceType>
-  expr<InterfaceType> apply_coordinate_system(cartesian<2>, expr<InterfaceType> const & ex)
+  rt_expr<InterfaceType> apply_coordinate_system(cartesian<2>, rt_expr<InterfaceType> const & ex)
   {
-    function_symbol<InterfaceType> u(0, unknown_tag<>());
-    function_symbol<InterfaceType> v(0, test_tag<>());
-    variable<InterfaceType> x(0);
-    variable<InterfaceType> y(1);
+    rt_function_symbol<InterfaceType> u(0, unknown_tag<>());
+    rt_function_symbol<InterfaceType> v(0, test_tag<>());
+    rt_variable<InterfaceType> x(0);
+    rt_variable<InterfaceType> y(1);
     
     //TODO: This does not work like this!! Gradient needs to return a vector-expression!
     //replace grad:
-    expr<InterfaceType> new_ex = ex;
-    expr<InterfaceType> new_ex1(substitute(grad(u), diff(u, x), new_ex) );
-    expr<InterfaceType> new_ex2(substitute(grad(v), diff(v, x), new_ex1) );
+    rt_expr<InterfaceType> new_ex = ex;
+    rt_expr<InterfaceType> new_ex1(substitute(grad(u), diff(u, x), new_ex) );
+    rt_expr<InterfaceType> new_ex2(substitute(grad(v), diff(v, x), new_ex1) );
     
     //replace div:
-    expr<InterfaceType> new_ex3(substitute(div(u), diff(u, x) + diff(u, y), new_ex2) );
-    expr<InterfaceType> new_ex4(substitute(div(v), diff(v, x) + diff(v, y), new_ex3) );
+    rt_expr<InterfaceType> new_ex3(substitute(div(u), diff(u, x) + diff(u, y), new_ex2) );
+    rt_expr<InterfaceType> new_ex4(substitute(div(v), diff(v, x) + diff(v, y), new_ex3) );
     
     return new_ex4;
   }
   
   template <typename InterfaceType>
-  expr<InterfaceType> apply_coordinate_system(cartesian<2>, unary_expr<InterfaceType> const & ex)
+  rt_expr<InterfaceType> apply_coordinate_system(cartesian<2>, rt_unary_expr<InterfaceType> const & ex)
   {
-    expr<InterfaceType> temp(ex);
+    rt_expr<InterfaceType> temp(ex);
     return apply_coordinate_system(cartesian<2>(), temp);
   }
 
   template <typename InterfaceType>
-  expr<InterfaceType> apply_coordinate_system(cartesian<2>, binary_expr<InterfaceType> const & ex)
+  rt_expr<InterfaceType> apply_coordinate_system(cartesian<2>, rt_binary_expr<InterfaceType> const & ex)
   {
-    expr<InterfaceType> temp(ex);
+    rt_expr<InterfaceType> temp(ex);
     return apply_coordinate_system(cartesian<2>(), temp);
   }
 
@@ -103,38 +103,38 @@ namespace viennamath
   /******** 3d ***********/
 
   template <typename InterfaceType>
-  expr<InterfaceType> apply_coordinate_system(cartesian<3>, expr<InterfaceType> const & ex)
+  rt_expr<InterfaceType> apply_coordinate_system(cartesian<3>, rt_expr<InterfaceType> const & ex)
   {
-    function_symbol<InterfaceType> u(0, unknown_tag<>());
-    function_symbol<InterfaceType> v(0, test_tag<>());
-    variable<InterfaceType> x(0);
-    variable<InterfaceType> y(1);
-    variable<InterfaceType> z(2);
+    rt_function_symbol<InterfaceType> u(0, unknown_tag<>());
+    rt_function_symbol<InterfaceType> v(0, test_tag<>());
+    rt_variable<InterfaceType> x(0);
+    rt_variable<InterfaceType> y(1);
+    rt_variable<InterfaceType> z(2);
     
     //TODO: This does not work like this!! Gradient needs to return a vector-expression!
     //replace grad:
-    expr<InterfaceType> new_ex = ex;
-    expr<InterfaceType> new_ex1(substitute(grad(u), diff(u, x), new_ex) );
-    expr<InterfaceType> new_ex2(substitute(grad(v), diff(v, x), new_ex1) );
+    rt_expr<InterfaceType> new_ex = ex;
+    rt_expr<InterfaceType> new_ex1(substitute(grad(u), diff(u, x), new_ex) );
+    rt_expr<InterfaceType> new_ex2(substitute(grad(v), diff(v, x), new_ex1) );
     
     //replace div:
-    expr<InterfaceType> new_ex3(substitute(div(u), diff(u, x) + diff(u, y) + diff(u, z), new_ex2) );
-    expr<InterfaceType> new_ex4(substitute(div(v), diff(v, x) + diff(v, y) + diff(v, z), new_ex3) );
+    rt_expr<InterfaceType> new_ex3(substitute(div(u), diff(u, x) + diff(u, y) + diff(u, z), new_ex2) );
+    rt_expr<InterfaceType> new_ex4(substitute(div(v), diff(v, x) + diff(v, y) + diff(v, z), new_ex3) );
     
     return new_ex4;
   }
   
   template <typename InterfaceType>
-  expr<InterfaceType> apply_coordinate_system(cartesian<3>, unary_expr<InterfaceType> const & ex)
+  rt_expr<InterfaceType> apply_coordinate_system(cartesian<3>, rt_unary_expr<InterfaceType> const & ex)
   {
-    expr<InterfaceType> temp(ex);
+    rt_expr<InterfaceType> temp(ex);
     return apply_coordinate_system(cartesian<3>(), temp);
   }
 
   template <typename InterfaceType>
-  expr<InterfaceType> apply_coordinate_system(cartesian<3>, binary_expr<InterfaceType> const & ex)
+  rt_expr<InterfaceType> apply_coordinate_system(cartesian<3>, rt_binary_expr<InterfaceType> const & ex)
   {
-    expr<InterfaceType> temp(ex);
+    rt_expr<InterfaceType> temp(ex);
     return apply_coordinate_system(cartesian<3>(), temp);
   }
   
@@ -148,64 +148,64 @@ namespace viennamath
 
   //tries to automatically derive the weak formulation from the strong formulation
   template <typename InterfaceType>
-  equation<InterfaceType> apply_coordinate_system(cartesian<1>,
-                                                  equation<InterfaceType> const & equ)
+  rt_equation<InterfaceType> apply_coordinate_system(cartesian<1>,
+                                                     rt_equation<InterfaceType> const & equ)
   {
-    function_symbol<InterfaceType> u(0, unknown_tag<>());
-    function_symbol<InterfaceType> v(0, test_tag<>());
-    variable<InterfaceType> x(0);
+    rt_function_symbol<InterfaceType> u(0, unknown_tag<>());
+    rt_function_symbol<InterfaceType> v(0, test_tag<>());
+    rt_variable<InterfaceType> x(0);
     
     //TODO: More general applications -> requires vector of expressions
-    expr<InterfaceType> new_lhs(substitute( grad(u) * grad(v),
-                                            diff(u, x) * diff(v, x),
-                                            equ.lhs()
-                                          )
-                               );
-    return equation<InterfaceType>( new_lhs,
-                                    equ.rhs()
+    rt_expr<InterfaceType> new_lhs(substitute( grad(u) * grad(v),
+                                               diff(u, x) * diff(v, x),
+                                               equ.lhs()
+                                             )
                                   );
+    return rt_equation<InterfaceType>( new_lhs,
+                                       equ.rhs()
+                                     );
   }
 
 
   template <typename InterfaceType>
-  equation<InterfaceType> apply_coordinate_system(cartesian<2>,
-                                                  equation<InterfaceType> const & equ)
+  rt_equation<InterfaceType> apply_coordinate_system(cartesian<2>,
+                                                     rt_equation<InterfaceType> const & equ)
   {
-    function_symbol<InterfaceType> u(0, unknown_tag<>());
-    function_symbol<InterfaceType> v(0, test_tag<>());
-    variable<InterfaceType> x(0);
-    variable<InterfaceType> y(1);
+    rt_function_symbol<InterfaceType> u(0, unknown_tag<>());
+    rt_function_symbol<InterfaceType> v(0, test_tag<>());
+    rt_variable<InterfaceType> x(0);
+    rt_variable<InterfaceType> y(1);
     
     //TODO: More general applications -> requires vector of expressions
-    expr<InterfaceType> new_lhs(substitute( grad(u) * grad(v),
+    rt_expr<InterfaceType> new_lhs(substitute( grad(u) * grad(v),
                                             diff(u, x) * diff(v, x) + diff(u, y) * diff(v, y),
                                             equ.lhs()
                                           )
                                );
-    return equation<InterfaceType>( new_lhs,
-                                    equ.rhs()
-                                  );
+    return rt_equation<InterfaceType>( new_lhs,
+                                       equ.rhs()
+                                     );
   }
 
   template <typename InterfaceType>
-  equation<InterfaceType> apply_coordinate_system(cartesian<3>,
-                                                  equation<InterfaceType> const & equ)
+  rt_equation<InterfaceType> apply_coordinate_system(cartesian<3>,
+                                                     rt_equation<InterfaceType> const & equ)
   {
-    function_symbol<InterfaceType> u(0, unknown_tag<>());
-    function_symbol<InterfaceType> v(0, test_tag<>());
-    variable<InterfaceType> x(0);
-    variable<InterfaceType> y(1);
-    variable<InterfaceType> z(2);
+    rt_function_symbol<InterfaceType> u(0, unknown_tag<>());
+    rt_function_symbol<InterfaceType> v(0, test_tag<>());
+    rt_variable<InterfaceType> x(0);
+    rt_variable<InterfaceType> y(1);
+    rt_variable<InterfaceType> z(2);
     
     //TODO: More general applications -> requires vector of expressions
-    expr<InterfaceType> new_lhs(substitute( grad(u) * grad(v),
-                                            diff(u, x) * diff(v, x) + diff(u, y) * diff(v, y) + diff(u, z) * diff(v, z),
-                                            equ.lhs()
-                                          )
-                               );
-    return equation<InterfaceType>( new_lhs,
-                                    equ.rhs()
+    rt_expr<InterfaceType> new_lhs(substitute( grad(u) * grad(v),
+                                               diff(u, x) * diff(v, x) + diff(u, y) * diff(v, y) + diff(u, z) * diff(v, z),
+                                               equ.lhs()
+                                             )
                                   );
+    return rt_equation<InterfaceType>( new_lhs,
+                                       equ.rhs()
+                                     );
   }
 
 }

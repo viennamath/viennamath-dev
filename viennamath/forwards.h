@@ -60,8 +60,7 @@ namespace viennamath
   };
 
   // integral tags
-  struct void_ {};
-  struct Omega {};
+  struct symbolic_interval {};
   struct symbolic_tag {};
   
   
@@ -97,45 +96,62 @@ namespace viennamath
   /////// run time expression stuff ///////
 
   template <typename NumericT>
-  class expression_interface;
+  class rt_expression_interface;
   
-  typedef expression_interface<default_numeric_type>     default_interface_type;
+  typedef rt_expression_interface<default_numeric_type>     default_interface_type;
   
   template <typename InterfaceType = default_interface_type>
-  struct variable;
+  struct rt_variable;
+  typedef rt_variable<>                variable;
 
   template <typename ScalarType = default_numeric_type, typename InterfaceType = default_interface_type>
-  class constant;
+  class rt_constant;
+  typedef rt_constant<>                constant;
   
   template <typename InterfaceType = default_interface_type>
-  class binary_expr;  
+  class rt_binary_expr;  
+  typedef rt_binary_expr<>             binary_expr;
   
   template <typename InterfaceType = default_interface_type>
-  class unary_expr;
+  class rt_unary_expr;
+  typedef rt_unary_expr<>              unary_expr;
   
   template <typename InterfaceType = default_interface_type>
-  class expr;
+  class rt_expr;
+  typedef rt_expr<>                    expr;
   
   template <typename InterfaceType = default_interface_type>
-  class function_symbol;
-  
-  
-  template <typename InterfaceType = default_interface_type>
-  class manipulation_interface;
+  class rt_function_symbol;
+  typedef rt_function_symbol<>         function_symbol;
 
-  template <typename InterfaceType = default_interface_type>
-  class manipulation_wrapper;
+  /////// equation types /////////
+  template <typename LHS, typename RHS>
+  class ct_equation;
   
   template <typename InterfaceType = default_interface_type>
-  class traversal_interface;
+  class rt_equation;
+  typedef rt_equation<>                equation;
+
   
-  template <typename InterfaceType = default_interface_type>
-  class traversal_wrapper;
+  
+  
+  
+  template <typename InterfaceType = default_interface_type>   //Note: No convenience typedef needed here
+  class rt_manipulation_interface;
+
+  template <typename InterfaceType = default_interface_type>   //Note: No convenience typedef needed here
+  class rt_manipulation_wrapper;
+  
+  template <typename InterfaceType = default_interface_type>   //Note: No convenience typedef needed here
+  class rt_traversal_interface;
+  
+  template <typename InterfaceType = default_interface_type>   //Note: No convenience typedef needed here
+  class rt_traversal_wrapper;
   
   
   /////// interface for op_tags: ///////
   template <typename InterfaceType = default_interface_type>
-  class op_interface;
+  class rt_op_interface;
 
   //binary operator tags:  
   template <typename BinaryOperation, typename InterfaceType = default_interface_type>
@@ -193,14 +209,6 @@ namespace viennamath
 
   template <typename NumericT>
   struct op_partial_deriv;
- 
-  /////// equation types /////////
-  template <typename LHS, typename RHS>
-  class ct_equation;
-  
-  
-  template <typename InterfaceType = default_interface_type>
-  class equation;
   
   
   namespace result_of
@@ -230,31 +238,31 @@ namespace viennamath
     };
 
     template <typename NumericType, typename InterfaceType>
-    struct is_viennamath<constant<NumericType, InterfaceType> >
+    struct is_viennamath<rt_constant<NumericType, InterfaceType> >
     {
       enum { val = true };
     };
     
     template <typename InterfaceType>
-    struct is_viennamath<variable<InterfaceType> >
+    struct is_viennamath<rt_variable<InterfaceType> >
     {
       enum { val = true };
     };
 
     template <typename InterfaceType>
-    struct is_viennamath<unary_expr<InterfaceType> >
+    struct is_viennamath<rt_unary_expr<InterfaceType> >
     {
       enum { val = true };
     };
     
     template <typename InterfaceType>
-    struct is_viennamath<binary_expr<InterfaceType> >
+    struct is_viennamath<rt_binary_expr<InterfaceType> >
     {
       enum { val = true };
     };
     
     template <typename InterfaceType>
-    struct is_viennamath<expr<InterfaceType> >
+    struct is_viennamath<rt_expr<InterfaceType> >
     {
       enum { val = true };
     };
@@ -293,49 +301,49 @@ namespace viennamath
     };
 
     template <typename T, typename U, typename RHS>
-    struct interface< constant<T, U>, RHS >
+    struct interface< rt_constant<T, U>, RHS >
     {
       typedef U    type;
     };
 
     template <typename T, typename RHS>
-    struct interface< variable<T>, RHS >
+    struct interface< rt_variable<T>, RHS >
     {
       typedef T    type;
     };
 
     template <typename T>
-    struct interface< double, variable<T> >
+    struct interface< double, rt_variable<T> >
     {
       typedef T    type;
     };
 
     template <typename T, typename RHS>
-    struct interface< binary_expr<T>, RHS >
+    struct interface< rt_binary_expr<T>, RHS >
     {
       typedef T    type;
     };
 
     template <typename T>
-    struct interface< double, binary_expr<T> >
+    struct interface< double, rt_binary_expr<T> >
     {
       typedef T    type;
     };
 
     template <typename T, typename RHS>
-    struct interface< unary_expr<T>, RHS >
+    struct interface< rt_unary_expr<T>, RHS >
     {
       typedef T    type;
     };
     
     template <typename T, typename RHS>
-    struct interface< expr<T>, RHS >
+    struct interface< rt_expr<T>, RHS >
     {
       typedef T    type;
     };
 
     template <typename T>
-    struct interface< double,  expr<T> >
+    struct interface< double,  rt_expr<T> >
     {
       typedef T    type;
     };

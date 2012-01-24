@@ -41,7 +41,7 @@ namespace viennamath
   }
 
   template <typename InterfaceType, typename VectorType>
-  long eval(constant<long, InterfaceType> c, VectorType const & v)
+  long eval(rt_constant<long, InterfaceType> c, VectorType const & v)
   {
     //generic approach: use operator() and hope the best:
     return c();
@@ -55,7 +55,7 @@ namespace viennamath
   }
 
   template <typename InterfaceType, typename VectorType>
-  typename InterfaceType::numeric_type eval(binary_expr<InterfaceType> const & e, VectorType const & v)
+  typename InterfaceType::numeric_type eval(rt_binary_expr<InterfaceType> const & e, VectorType const & v)
   {
     //we have unwrap the runtime expression:
     return e(v);

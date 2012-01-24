@@ -36,9 +36,9 @@ namespace viennamath
   };
 
   template <typename T, typename InterfaceType>
-  struct expression_traits < constant<T, InterfaceType> >
+  struct expression_traits < rt_constant<T, InterfaceType> >
   {
-     typedef constant<T, InterfaceType>    const_reference_type;
+     typedef rt_constant<T, InterfaceType>    const_reference_type;
   };
   
   

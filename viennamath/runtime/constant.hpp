@@ -27,13 +27,13 @@ namespace viennamath
   //per default, we assume floating point constants, which cannot be tackled with template arguments
   template <typename ScalarType, /* see forwards.h for default argument */
             typename InterfaceType /* see forwards.h for default argument */>
-  class constant : public InterfaceType
+  class rt_constant : public InterfaceType
   {
-      typedef constant<ScalarType, InterfaceType>     self_type;
+      typedef rt_constant<ScalarType, InterfaceType>     self_type;
     public:
       typedef typename InterfaceType::numeric_type    numeric_type;
       
-      explicit constant(ScalarType s_) : s(s_) {};
+      explicit rt_constant(ScalarType s_) : s(s_) {};
 
       self_type operator() () const
       {
@@ -109,7 +109,7 @@ namespace viennamath
   
   template <typename ScalarType, typename InterfaceType>
   std::ostream& operator<<(std::ostream & stream,
-                           constant<ScalarType, InterfaceType> const & c)
+                           rt_constant<ScalarType, InterfaceType> const & c)
   {
     stream << c.deep_str();
     return stream;

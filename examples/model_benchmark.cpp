@@ -74,11 +74,11 @@ int main()
   std::cout << "--------- ViennaMath (runtime) --------- " << std::endl;
   
   //ViennaMath:
-  viennamath::variable<>  x(0);
-  viennamath::variable<>  T(1);
-  viennamath::expr<> e = (T * eps * x * viennamath::exp( prefactor * voltage / (kb * T) ) );
+  viennamath::variable  x(0);
+  viennamath::variable  T(1);
+  viennamath::expr e = (T * eps * x * viennamath::exp( prefactor * voltage / (kb * T) ) );
   std::cout << "Expression before substitution: " << e << std::endl;
-  viennamath::expr<> e_opt = viennamath::substitute(T, 300.0, e);
+  viennamath::expr e_opt = viennamath::substitute(T, 300.0, e);
   std::cout << "Expression after substitution: " << e_opt << std::endl;
   result = 0;
   timer.start();
