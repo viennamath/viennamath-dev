@@ -78,7 +78,7 @@ namespace viennamath
                                                               op_(new op_unary_id_type()) {}
 
       //Copy CTOR:
-      rt_unary_expr(unary_expr const & other) : expr_(other.expr_->clone()), 
+      rt_unary_expr(rt_unary_expr const & other) : expr_(other.expr_->clone()), 
                                              op_(other.op_->clone()) {};
 
       //assignments:                           
