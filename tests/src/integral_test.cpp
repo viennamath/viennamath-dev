@@ -31,7 +31,7 @@ int main()
   viennamath::numerical_integrator gauss_integrator(viennamath::GAUSS);
   viennamath::symbolic_integrator symb_integrator(rt_gauss_quad(5));
   
-  // numerical quadrature
+  // numerical quadrature (no copy of e2)
   viennamath::expr e = gauss_integrator( viennamath::rt_interval(0, 1),
                                          e2,
                                          x );
@@ -40,7 +40,13 @@ int main()
   viennamath::expr e = symb_integrator( viennamath::rt_interval(0, 1),
                                         e2,
                                         x );
-   
+
+  // Just represent the integral, no evaluation:
+  viennamath::expr e = viennamath::integral( viennamath::rt_interval(0, 1),
+                                             e2,
+                                             x );
+  double result = gauss_integrator(e);   //now integrate it
+  
   // pure representation of an integral about something (no second and third argument)
   viennamath::expr e_symb = viennamath::integral( viennamath::rt_symbolic_interval(id),
                                                   e2);
@@ -51,7 +57,13 @@ int main()
   viennamath::expr e = replace_integration_domain(viennamath::rt_symbolic_interval(id),
                                                   viennamath::rt_interval(0, 1),
                                                   x,
-                                                  e);
+                                                  e2);
+
+  // multiple integrals
+  viennamath::expr e = replace_integration_domain(viennamath::rt_symbolic_interval(id),
+                                                  make_vector(viennamath::rt_interval(0, 1), viennamath::rt_interval(0, 1), viennamath::rt_interval(0, 1)),
+                                                  make_vector(x, y, z),
+                                                  e2);
   
 
   std::cout << "************************************************" << std::endl;
