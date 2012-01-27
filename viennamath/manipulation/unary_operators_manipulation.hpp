@@ -22,6 +22,7 @@
 #include "viennamath/compiletime/unary_op_tags.hpp"
 #include "viennamath/runtime/unary_expression.hpp"
 #include "viennamath/runtime/binary_expression.hpp"
+#include "viennamath/runtime/rt_integral.hpp"
 
 namespace viennamath
 {
@@ -586,7 +587,14 @@ namespace viennamath
     throw "Cannot differentiate symbolic_integration!";
     return NULL;
   }  
-  
+
+  template <typename InterfaceType>
+  InterfaceType * diff_impl(const InterfaceType * e, op_rt_integral<InterfaceType>, const InterfaceType * diff_var)
+  {
+    throw "Cannot differentiate runtime integration (yet)!";
+    return NULL;
+  }  
+
 }
 
 #endif

@@ -55,6 +55,7 @@ namespace viennamath
   {
     public:
       virtual void operator()(InterfaceType const * e) const = 0;
+      virtual bool step_into(InterfaceType const * e) const { return true; }
   };
   
   template <typename InterfaceType /* default argument in forwards.h */>
@@ -68,6 +69,8 @@ namespace viennamath
       {
         functor_.get()->operator()(e); 
       }
+
+      bool step_into(InterfaceType const * e) const { return functor_.get()->step_into(e); }
 
     private:
       std::auto_ptr< const rt_traversal_interface<InterfaceType> > functor_;

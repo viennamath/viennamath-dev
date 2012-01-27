@@ -62,6 +62,12 @@ namespace viennamath
         rt_expr_ = std::auto_ptr<InterfaceType>(other.clone());
       }
 
+      template <unsigned long id>
+      rt_expr<InterfaceType>(ct_variable<id> const & other)
+      {
+        rt_expr_ = std::auto_ptr<InterfaceType>(new rt_variable<InterfaceType>(id));
+      }
+
       template <typename T>
       rt_expr(rt_constant<T, InterfaceType> const & other)
       {

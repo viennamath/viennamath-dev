@@ -405,9 +405,14 @@ namespace viennamath
 
       void recursive_traversal(rt_traversal_wrapper<InterfaceType> const & fw) const
       {
-        lhs_->recursive_traversal(fw);
-        fw(this);
-        rhs_->recursive_traversal(fw);
+        if (fw.step_into(this))
+        {
+          lhs_->recursive_traversal(fw);
+          fw(this);
+          rhs_->recursive_traversal(fw);
+        }
+        else
+          fw(this);
       }
 
     private:

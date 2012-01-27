@@ -132,6 +132,9 @@ namespace viennamath
   class rt_equation;
   typedef rt_equation<>                equation;
 
+  template <typename InterfaceType = default_interface_type>
+  class rt_interval;
+  typedef rt_interval<>                interval;
   
   
   

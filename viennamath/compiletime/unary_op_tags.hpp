@@ -19,7 +19,6 @@
 #include <vector>
 #include <math.h>
 #include "viennamath/forwards.h"
-#include "viennamath/debug.hpp"
 
 namespace viennamath
 {
@@ -216,6 +215,30 @@ namespace viennamath
       throw "Cannot evaluate symbolic_integration. Use transformations first.";
       return value;
     }
+  };
+  
+  
+  template <typename IntervalType, unsigned long integration_variable>
+  class op_ct_integral
+  {
+      typedef typename IntervalType::numeric_type    NumericT;
+    
+    public:
+      typedef IntervalType         interval_type;
+      
+      
+      
+      static std::string str() { return "symb_int"; }
+      
+      NumericT apply(NumericT value) const
+      {
+        throw "Cannot evaluate symbolic_integration. Use transformations first.";
+        return value;
+      }
+      
+    private:
+      IntervalType const & interval;
+      
   };
   
 }

@@ -12,8 +12,8 @@
 
 
 
-#ifndef VIENNAMATH_EQUATION_CPP
-#define VIENNAMATH_EQUATION_CPP
+#ifndef VIENNAMATH_EQUATION_HPP
+#define VIENNAMATH_EQUATION_HPP
 
 #include <ostream>
 #include "viennamath/forwards.h"

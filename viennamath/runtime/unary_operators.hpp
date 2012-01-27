@@ -112,8 +112,7 @@ namespace viennamath
       unary_operation unary_op_;
   };
 
-  
-  
+
 }
 
 #endif

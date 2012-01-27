@@ -8,7 +8,8 @@
 #include "viennamath/manipulation/eval.hpp"
 #include "viennamath/manipulation/substitute.hpp"
 #include "viennamath/manipulation/diff.hpp"
-#include "viennamath/manipulation/integrate.hpp"
+//#include "viennamath/manipulation/integral.hpp"
+#include "viennamath/runtime/numerical_quadrature.hpp"
 
 
 
@@ -23,7 +24,39 @@ int main()
   viennamath::expr e1 = x + y;
   viennamath::expr e2 = x*y+c8;
   viennamath::expr e3 = x/y-c8;
+  viennamath::expr e4 = x + c8;
 
+  
+  viennamath::interval rt_int01(0, 1);
+  std::cout << "Interval: " << rt_int01 << std::endl;
+
+  viennamath::interval rt_intxy(x, y);
+  std::cout << "Interval: " << rt_intxy << std::endl;
+
+  viennamath::ct_interval<viennamath::ct_constant<0>,
+                          viennamath::ct_constant<1> > ct_int01;
+  std::cout << "Interval: " << ct_int01 << std::endl;
+  
+  viennamath::ct_interval<viennamath::ct_variable<0>,
+                          viennamath::ct_variable<1> > ct_intxy;
+  std::cout << "Interval: " << ct_intxy << std::endl;
+
+  //////////////////////
+  
+  viennamath::expr e4_int = viennamath::integral( viennamath::interval(0, 1), e4, x );
+  
+  std::cout << "Integral: " << e4_int << std::endl;
+  
+  std::cout << "Starting evaluation..." << std::endl;
+  viennamath::numerical_quadrature integrator(viennamath::gauss_quad_1::id);
+  std::cout << "Evaluated, type 1: " << integrator(e4_int) << std::endl;
+  std::cout << "Evaluated, type 2a: " << integrator(viennamath::interval(0, 1), e4, x) << std::endl;
+  std::cout << "Evaluated, type 2b: " << viennamath::eval(integrator(viennamath::interval(0, 1), e4, x), 0.0) << std::endl;
+  
+  
+  
+  
+/*  
   viennamath::interval int01(0,1);
   viennamath::ct_interval<0,1> ct_int01;
   
@@ -65,7 +98,7 @@ int main()
                                                   make_vector(x, y, z),
                                                   e2);
   
-
+*/
   std::cout << "************************************************" << std::endl;
   std::cout << "*****     TEST COMPLETED SUCCESSFULLY!     *****" << std::endl;
   std::cout << "************************************************" << std::endl;

@@ -27,5 +27,6 @@ ADD_EXECUTABLE(runtime_test tests/src/runtime_test.cpp)
 ADD_EXECUTABLE(compiletime_test tests/src/compiletime_test.cpp)
 ADD_EXECUTABLE(compiletime_evaluation tests/src/compiletime_evaluation.cpp)
 ADD_EXECUTABLE(diff_test tests/src/diff_test.cpp)
+ADD_EXECUTABLE(integral_test tests/src/integral_test.cpp)
 ADD_EXECUTABLE(equation_test tests/src/equation_test.cpp)
  

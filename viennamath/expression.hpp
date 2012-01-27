@@ -23,6 +23,8 @@
 #include "viennamath/compiletime/ct_function_symbol.hpp"
 #include "viennamath/compiletime/ct_variable.hpp"
 #include "viennamath/compiletime/ct_expr.hpp"
+#include "viennamath/compiletime/ct_equation.hpp"
+#include "viennamath/compiletime/ct_interval.hpp"
 
 #include "viennamath/runtime/variable.hpp"
 #include "viennamath/runtime/binary_expression.hpp"
@@ -31,8 +33,10 @@
 #include "viennamath/runtime/unary_operators.hpp"
 #include "viennamath/runtime/expr.hpp"
 #include "viennamath/runtime/equation.hpp"
+#include "viennamath/runtime/interval.hpp"
 #include "viennamath/runtime/function_symbol.hpp"
 #include "viennamath/runtime/functor_wrapper.hpp"
+#include "viennamath/runtime/rt_integral.hpp"
 
 #include "viennamath/manipulation/unary_operators_manipulation.hpp"
 #include "viennamath/manipulation/binary_operators_manipulation.hpp"
