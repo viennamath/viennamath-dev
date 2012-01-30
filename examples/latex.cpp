@@ -42,5 +42,18 @@ int main()
   std::cout << "e2: " << to_latex(e2) << std::endl;
   std::cout << "eq: " << to_latex(eq) << std::endl;
   
+  std::cout << std::endl;
+  std::cout << "-----------------" << std::endl;
+  std::cout << std::endl;
+
+  viennamath::interval rt_int01(0, 1);
+  viennamath::interval rt_int_symb(true);
+  
+  viennamath::expr e1_int01 = viennamath::integral( rt_int01, e1, x );
+  viennamath::expr e1_int_symb = viennamath::integral( rt_int_symb, e1, x );
+  
+  std::cout << "e1_int01: " << to_latex(e1_int01) << std::endl;
+  std::cout << "e1_int_symb: " << to_latex(e1_int_symb) << std::endl;
+  
   return EXIT_SUCCESS;
 }

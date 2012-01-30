@@ -213,6 +213,8 @@ namespace viennamath
   template <typename NumericT>
   struct op_partial_deriv;
   
+  template <typename InterfaceType>
+  class op_rt_integral;
   
   namespace result_of
   {

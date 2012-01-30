@@ -49,7 +49,8 @@ namespace viennamath
       
       NumericT apply(NumericT value) const
       {
-        std::cout << "TODO: Call integration here!" << std::endl;
+        //std::cout << "TODO: Call integration here!" << std::endl;
+        throw "Must not reach this point!";
         return value;
       }
       
@@ -87,6 +88,19 @@ namespace viennamath
     OperatorT op(interv, rt_variable<InterfaceType>(id));
     
     return rt_expr<InterfaceType>(new rt_unary_expr<InterfaceType>(integrand.get()->clone(),
+                                                                   new op_unary<OperatorT, InterfaceType>(op))
+                                 );
+  }
+
+  template <typename InterfaceType, unsigned long id>
+  rt_expr<InterfaceType> integral(rt_interval<InterfaceType> const & interv,
+                                  rt_binary_expr<InterfaceType> const & integrand,
+                                  ct_variable<id> const & var)
+  {
+    typedef op_rt_integral<InterfaceType>    OperatorT;
+    OperatorT op(interv, rt_variable<InterfaceType>(id));
+    
+    return rt_expr<InterfaceType>(new rt_unary_expr<InterfaceType>(integrand.clone(),
                                                                    new op_unary<OperatorT, InterfaceType>(op))
                                  );
   }

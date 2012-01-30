@@ -189,11 +189,11 @@ namespace viennamath
   //
   // integral:
   //
-  template <typename NumericT>
+/*  template <typename NumericT>
   struct op_symbolic_integration
   {
     static std::string str() { return "symb_int"; }
-    /*typedef BoundaryTag boundary_tag;
+    / * typedef BoundaryTag boundary_tag;
   
     static std::string str() 
     { 
@@ -208,14 +208,14 @@ namespace viennamath
       if(type_string != "void_") id += "_{"+type_string+"}";
       
       return id;
-    } */
+    } */ 
     
-    NumericT apply(NumericT value) const
+    /*NumericT apply(NumericT value) const
     {
       throw "Cannot evaluate symbolic_integration. Use transformations first.";
       return value;
     }
-  };
+  };*/
   
   
   template <typename IntervalType, unsigned long integration_variable>

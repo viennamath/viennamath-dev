@@ -48,12 +48,10 @@ int main()
   std::cout << "Integral: " << e4_int << std::endl;
   
   std::cout << "Starting evaluation..." << std::endl;
-  viennamath::numerical_quadrature integrator(viennamath::gauss_quad_1::id);
+  viennamath::numerical_quadrature integrator(new viennamath::gauss_quad_1());
   std::cout << "Evaluated, type 1: " << integrator(e4_int) << std::endl;
   std::cout << "Evaluated, type 2a: " << integrator(viennamath::interval(0, 1), e4, x) << std::endl;
   std::cout << "Evaluated, type 2b: " << viennamath::eval(integrator(viennamath::interval(0, 1), e4, x), 0.0) << std::endl;
-  
-  
   
   
 /*  

@@ -30,6 +30,7 @@ namespace viennamath
   // Symbolic integral:
   //
   
+  /*
   template <typename InterfaceType>
   rt_expr<InterfaceType> integral(symbolic_interval, rt_expr<InterfaceType> const & integrand)
   {
@@ -45,6 +46,7 @@ namespace viennamath
                                                                    new op_unary<op_symbolic_integration<typename InterfaceType::numeric_type>, InterfaceType>())
                                   );
   }
+  */
   
 }
 

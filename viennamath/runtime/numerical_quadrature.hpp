@@ -22,6 +22,7 @@
 #include <sstream>
 #include "viennamath/forwards.h"
 #include "viennamath/runtime/rt_integral.hpp"
+#include "viennamath/manipulation/substitute.hpp"
 
 namespace viennamath
 {
@@ -62,36 +63,57 @@ namespace viennamath
   class rt_numerical_quadrature 
   {
     public:
-      rt_numerical_quadrature(unsigned long id)
+      
+      //
+      // Initialization, method 1: Provide an ID for predefined integration routines
+      //
+      /*rt_numerical_quadrature(unsigned long id)
       {
         if (id == 1)
           quadrature_rule_ = std::auto_ptr<numerical_quadrature_interface<InterfaceType> >(new rt_gauss_quad_1<InterfaceType>());
         else
           throw "Not supported!";
+      }*/
+      
+      //
+      // Initialization, method 2: Provide pointer (ownership is taken!)
+      //
+      rt_numerical_quadrature(numerical_quadrature_interface<InterfaceType> * ptr)
+      {
+        if (ptr != NULL)
+          quadrature_rule_ = std::auto_ptr<numerical_quadrature_interface<InterfaceType> >(ptr);
+        else
+          throw "Invalid pointer!";
       }
       
       
       rt_expr<InterfaceType> operator()(rt_expr<InterfaceType> const & e) const
       {
+        const rt_unary_expr<InterfaceType> * integral_expression = dynamic_cast<const rt_unary_expr<InterfaceType> *>(e.get());
         
-        if (dynamic_cast<const rt_unary_expr<InterfaceType> *>(e.get()) != NULL)
+        if (integral_expression != NULL)
         {
           typedef op_unary<op_rt_integral<InterfaceType>, InterfaceType>    IntegrationOperation;
+
+          const IntegrationOperation * op_tmp = dynamic_cast<const IntegrationOperation *>(integral_expression->op());
           
-          const rt_unary_expr<InterfaceType> * integrand = dynamic_cast<const rt_unary_expr<InterfaceType> *>(e.get());
-        
-          if (dynamic_cast<const IntegrationOperation *>(integrand->op()) != NULL)
+          if (op_tmp != NULL)
           {
-            const IntegrationOperation * op_tmp = dynamic_cast<const IntegrationOperation *>(integrand->op());
             return quadrature_rule_->eval(op_tmp->op().interval(), 
-                                          rt_expr<InterfaceType>(integrand->clone()),
+                                          rt_expr<InterfaceType>(integral_expression->lhs()->clone()),
                                           op_tmp->op().variable());
           }
           else
+          {
+            std::cerr << "ERROR: No integral encountered in numerical quadrature!" << std::endl;
             throw "Not implemented!";
+          }
         }
         else
+        {
+          std::cerr << "ERROR: Binary expression encountered in numerical quadrature: NOT IMPLEMENTED!" << std::endl;
           throw "Not implemented!";
+        }
 
         return ct_constant<1>();
       }
