@@ -60,8 +60,8 @@ namespace viennamath
   };
 
   // integral tags
-  struct symbolic_interval {};
-  struct symbolic_tag {};
+  //struct symbolic_interval {};
+  //struct symbolic_tag {};
   
   
   /////// compile time expression stuff ///////
@@ -135,7 +135,10 @@ namespace viennamath
   template <typename InterfaceType = default_interface_type>
   class rt_interval;
   typedef rt_interval<>                interval;
-  
+
+  template <typename InterfaceType = default_interface_type>
+  class rt_symbolic_interval;
+  typedef rt_symbolic_interval<>       symbolic_interval;
   
   
   
@@ -215,7 +218,11 @@ namespace viennamath
   
   template <typename InterfaceType>
   class op_rt_integral;
+
+  template <typename InterfaceType>
+  class op_rt_symbolic_integral;
   
+
   namespace result_of
   {
     template <typename T>

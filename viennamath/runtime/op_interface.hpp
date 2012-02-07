@@ -72,6 +72,7 @@ namespace viennamath
 
       //optimization for unary operators:
       //virtual InterfaceType * optimize(const InterfaceType * lhs) const { return lhs->optimize(); }
+      virtual bool optimizable() const = 0;
       virtual bool optimizable(const InterfaceType * lhs,
                                const InterfaceType * rhs) const { return false; }    
                                

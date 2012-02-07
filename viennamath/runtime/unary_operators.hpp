@@ -97,6 +97,8 @@ namespace viennamath
       InterfaceType * optimize(const InterfaceType * lhs,
                                 const InterfaceType * rhs) const;
 
+      bool optimizable() const { return unary_op_.optimizable(); }
+      
       bool equal(const op_interface<InterfaceType> * other) const
       {
         const op_unary<unary_operation, InterfaceType> * ptr = dynamic_cast<const op_unary<unary_operation, InterfaceType> *>(other);

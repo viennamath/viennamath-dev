@@ -21,7 +21,7 @@
 #include <iostream>
 #include <sstream>
 #include "viennamath/forwards.h"
-#include "viennamath/runtime/rt_integral.hpp"
+#include "viennamath/runtime/integral.hpp"
 #include "viennamath/manipulation/substitute.hpp"
 
 namespace viennamath
@@ -105,13 +105,32 @@ namespace viennamath
           }
           else
           {
+            typedef op_unary<op_rt_symbolic_integral<InterfaceType>, InterfaceType>    SymbolicIntegrationOperation;
+
+            const SymbolicIntegrationOperation * op_symb_tmp = dynamic_cast<const SymbolicIntegrationOperation *>(integral_expression->op());
+            
+            if (op_symb_tmp != NULL)
+            {
+              return quadrature_rule_->eval(op_tmp->op().interval(), 
+                                            rt_expr<InterfaceType>(integral_expression->lhs()->clone()),
+                                            op_tmp->op().variable());
+            }
+            
             std::cerr << "ERROR: No integral encountered in numerical quadrature!" << std::endl;
+            std::cerr << e << std::endl;
             throw "Not implemented!";
           }
         }
         else
         {
-          std::cerr << "ERROR: Binary expression encountered in numerical quadrature: NOT IMPLEMENTED!" << std::endl;
+          if (e.get()->is_constant())
+          {
+            if (e.get()->eval(0) == 0)
+              return rt_constant<typename InterfaceType::numeric_type, InterfaceType>(0);
+          }
+          
+          std::cerr << "ERROR: Non-unary expression encountered in numerical quadrature: NOT IMPLEMENTED!" << std::endl;
+          std::cerr << e << std::endl;
           throw "Not implemented!";
         }
 

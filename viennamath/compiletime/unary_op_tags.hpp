@@ -30,7 +30,7 @@ namespace viennamath
   {
     static std::string str() { return "id"; }
     NumericT apply(NumericT value) const { return value; }
-    
+    bool optimizable() const { return true; }
   };
 
   //
@@ -41,7 +41,7 @@ namespace viennamath
   {
     static std::string str() { return "exp"; }
     NumericT apply(NumericT value) const { return exp(value); }
-    
+    bool optimizable() const { return true; }
   };
 
   //
@@ -52,6 +52,7 @@ namespace viennamath
   {
     static std::string str() { return "sin"; }
     NumericT apply(NumericT value) const { return sin(value); }
+    bool optimizable() const { return true; }
   };
   
   //
@@ -62,6 +63,7 @@ namespace viennamath
   {
     static std::string str() { return "cos"; }
     NumericT apply(NumericT value) const { return cos(value); }
+    bool optimizable() const { return true; }
   };
   
 
@@ -73,6 +75,7 @@ namespace viennamath
   {
     static std::string str() { return "tan"; }
     NumericT apply(NumericT value) const { return tan(value); }
+    bool optimizable() const { return true; }
   };
   
   //
@@ -83,6 +86,7 @@ namespace viennamath
   {
     static std::string str() { return "fabs"; }
     NumericT apply(NumericT value) const { return fabs(value); }
+    bool optimizable() const { return true; }
   };
 
   //
@@ -93,6 +97,7 @@ namespace viennamath
   {
     static std::string str() { return "sqrt"; }
     NumericT apply(NumericT value) const { return sqrt(value); }
+    bool optimizable() const { return true; }
   };
 
   
@@ -104,6 +109,7 @@ namespace viennamath
   {
     static std::string str() { return "log"; }
     NumericT apply(NumericT value) const { return log(value); }
+    bool optimizable() const { return true; }
   };
   
   //
@@ -114,7 +120,7 @@ namespace viennamath
   {
     static std::string str() { return "log10"; }
     NumericT apply(NumericT value) const { return log10(value); }
-
+    bool optimizable() const { return true; }
   };
   
   ////////////     formal stuff //////////////
@@ -132,6 +138,7 @@ namespace viennamath
       throw "Cannot evaluate formal gradient. Use transformations first.";
       return 0;
     }
+    bool optimizable() const { return true; }
   };
   
   
@@ -148,6 +155,7 @@ namespace viennamath
       throw "Cannot evaluate formal divergence. Use transformations first.";
       return 0;
     }
+    bool optimizable() const { return true; }
   };
 
   
@@ -174,6 +182,8 @@ namespace viennamath
         return 0;
       }
       
+      bool optimizable() const { return false; }
+      
       id_type id() const { return id_; }
       
     private:
@@ -189,35 +199,6 @@ namespace viennamath
   //
   // integral:
   //
-/*  template <typename NumericT>
-  struct op_symbolic_integration
-  {
-    static std::string str() { return "symb_int"; }
-    / * typedef BoundaryTag boundary_tag;
-  
-    static std::string str() 
-    { 
-      std::string id = "symb_integral";
-      
-      // get string for the type
-      std::string type_string = viennamath::type_to_string<boundary_tag>();
-      // remove the namespaces
-      std::size_t found = type_string.find_last_of(":");
-      type_string = type_string.substr(found+1);
-      // only add a bundary part if there is one ...
-      if(type_string != "void_") id += "_{"+type_string+"}";
-      
-      return id;
-    } */ 
-    
-    /*NumericT apply(NumericT value) const
-    {
-      throw "Cannot evaluate symbolic_integration. Use transformations first.";
-      return value;
-    }
-  };*/
-  
-  
   template <typename IntervalType, unsigned long integration_variable>
   class op_ct_integral
   {
@@ -235,7 +216,9 @@ namespace viennamath
         throw "Cannot evaluate symbolic_integration. Use transformations first.";
         return value;
       }
-      
+
+      bool optimizable() const { return false; }
+
     private:
       IntervalType const & interval;
       

@@ -19,7 +19,8 @@
 #include "viennamath/runtime/unary_expression.hpp"
 #include "viennamath/compiletime/unary_op_tags.hpp"
 #include "viennamath/runtime/interval.hpp"
-#include "viennamath/runtime/rt_integral.hpp"
+#include "viennamath/runtime/symbolic_interval.hpp"
+#include "viennamath/runtime/integral.hpp"
 
 namespace viennamath
 {

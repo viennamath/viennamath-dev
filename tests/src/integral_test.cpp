@@ -52,6 +52,17 @@ int main()
   std::cout << "Evaluated, type 1: " << integrator(e4_int) << std::endl;
   std::cout << "Evaluated, type 2a: " << integrator(viennamath::interval(0, 1), e4, x) << std::endl;
   std::cout << "Evaluated, type 2b: " << viennamath::eval(integrator(viennamath::interval(0, 1), e4, x), 0.0) << std::endl;
+
+  std::cout << std::endl;
+  viennamath::expr my_integral = viennamath::integral(viennamath::symbolic_interval(), e4, x);
+  std::cout << "Symbolic integral: " << my_integral << std::endl;
+  
+  viennamath::expr my_integral2 = viennamath::substitute(viennamath::symbolic_interval(),
+                                                         std::make_pair(viennamath::interval(0, 1), x),
+                                                         my_integral);
+  std::cout << "Symbolic integral, substituted: " << my_integral2 << std::endl;
+  
+  
   
   
 /*  

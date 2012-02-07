@@ -16,15 +16,23 @@
 #define VIENNAMATH_SUBSTITUTE_HPP
 
 #include "viennamath/forwards.h"
+#include "viennamath/runtime/functor_wrapper.hpp"
 #include <assert.h>
 
 namespace viennamath
 {
   
+  //
+  //   Section 1: Compile time substitution
+  //
   
   //TODO: compile time substitution
   
   
+  
+  //
+  //   Section 1: Run time substitution
+  //
   
   
   
@@ -165,7 +173,6 @@ namespace viennamath
     
     while (temp.get()->optimizable())
     {
-      //std::cout << "Optimizing " << temp << std::endl;
       temp = temp.get()->optimize();
     }
     //std::cout << "Optimization end" << std::endl;
@@ -173,6 +180,75 @@ namespace viennamath
     return temp;
   }
 
+
+
+  // substitute intervals
+  
+  namespace detail
+  {
+    template <typename InterfaceType>
+    class integral_substitution_functor : public viennamath::rt_manipulation_interface<InterfaceType>
+    {
+      public: 
+        integral_substitution_functor(op_unary<op_rt_integral<InterfaceType>, InterfaceType> const * ptr) : ptr_(ptr) {}
+        
+        
+        InterfaceType * operator()(InterfaceType const * e) const 
+        {
+          viennamath::rt_unary_expr<InterfaceType> const * ex_ptr = dynamic_cast< viennamath::rt_unary_expr<InterfaceType> const * >(e);
+          if (ex_ptr != NULL)
+          {
+            typedef op_unary<op_rt_symbolic_integral<InterfaceType>, InterfaceType> const *  OpPtrType;
+            
+            OpPtrType op_ptr = dynamic_cast< OpPtrType >(ex_ptr->op());
+            if (op_ptr != NULL)
+            {
+              //std::cout << "Modifies!" << std::endl;
+              return new viennamath::rt_unary_expr<InterfaceType>(ex_ptr->lhs()->clone(), ptr_->clone());
+            }
+          }
+          
+          return e->clone();
+        }
+
+
+        bool modifies(InterfaceType const * e) const 
+        {
+          //std::cout << "Checking " << e->shallow_str() << std::endl;
+          viennamath::rt_unary_expr<InterfaceType> const * ex_ptr = dynamic_cast< viennamath::rt_unary_expr<InterfaceType> const * >(e);
+          if (ex_ptr != NULL)
+          {
+            typedef op_unary<op_rt_symbolic_integral<InterfaceType>, InterfaceType> const *  OpPtrType;
+            
+            OpPtrType op_ptr = dynamic_cast< OpPtrType >(ex_ptr->op());
+            if (op_ptr != NULL)
+            {
+              //std::cout << "FOUND!" << std::endl;
+              return true;
+            }
+          }
+          return false;
+        }
+
+      private:
+        std::auto_ptr<const op_unary<op_rt_integral<InterfaceType>, InterfaceType> > ptr_;
+    };
+  }
+  
+  template <typename InterfaceType, typename PairType>
+  rt_expr<InterfaceType> substitute(rt_symbolic_interval<InterfaceType> const & search,
+                                    PairType const & repl,
+                                    rt_expr<InterfaceType> const & e)
+  {
+    typedef op_rt_integral<InterfaceType>    OperatorT;
+    
+    viennamath::rt_manipulation_wrapper<> fun( new detail::integral_substitution_functor<InterfaceType>(new op_unary<OperatorT>(OperatorT(repl.first, repl.second))) );
+    
+    rt_expr<InterfaceType> temp(e.get()->recursive_manipulation(fun));
+    
+    return temp;
+  }
+  
 }
 
 #endif

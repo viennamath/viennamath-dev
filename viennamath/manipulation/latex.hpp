@@ -158,6 +158,7 @@ namespace viennamath
         typedef op_unary<op_divergence<NumericType>, InterfaceType>            OpDivergence;
         typedef op_unary<op_partial_deriv<NumericType>, InterfaceType>         OpPartialDeriv;
         typedef op_unary<op_rt_integral<InterfaceType>, InterfaceType>         OpRuntimeIntegration;
+        typedef op_unary<op_rt_symbolic_integral<InterfaceType>, InterfaceType>         OpSymbolicIntegration;
         
         std::stringstream ss;
         viennamath::rt_expr<InterfaceType> lhs(e.lhs()->clone());
@@ -194,20 +195,18 @@ namespace viennamath
         else if (dynamic_cast< const OpRuntimeIntegration * >(e.op()) != NULL)
         {
           const OpRuntimeIntegration * op_integral = dynamic_cast< const OpRuntimeIntegration * >(e.op());
-          // integral:
-          if (op_integral->op().interval().is_symbolic())
-            ss << " \\int_\\Omega ";
-          else
-            ss << " \\int_{ " << operator()(op_integral->op().interval()) << " } ";
-                
-          // integrand:
-          ss << operator()(lhs) << " ";
           
-          // integration variable:
-          if (op_integral->op().interval().is_symbolic())
-            ss << " \\: \\mathrm{d} \\Omega ";
-          else
-            ss << " \\: \\mathrm{d} " << operator()(op_integral->op().variable()) << " ";
+          ss << " \\int_{ " << operator()(op_integral->op().interval()) << " } ";
+          ss << operator()(lhs) << " ";
+          ss << " \\: \\mathrm{d} " << operator()(op_integral->op().variable()) << " ";
+        }
+        else if (dynamic_cast< const OpSymbolicIntegration * >(e.op()) != NULL)
+        {
+          const OpSymbolicIntegration * op_integral = dynamic_cast< const OpSymbolicIntegration * >(e.op());
+          // integral:
+          ss << " \\int_{\\Omega_{" << op_integral->op().interval().id() << "}} ";
+          ss << operator()(lhs) << " ";
+          ss << " \\: \\mathrm{d} \\Omega ";
         }
         else
           throw "Not supported!";

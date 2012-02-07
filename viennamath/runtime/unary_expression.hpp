@@ -200,7 +200,13 @@ namespace viennamath
       InterfaceType * optimize() const
       {
         if (expr_->is_constant())
-          return new rt_constant<numeric_type, InterfaceType>( op_->apply(expr_->unwrap()) );
+        {
+          if (op_->optimizable())
+            return new rt_constant<numeric_type, InterfaceType>( op_->apply(expr_->unwrap()) );
+          else
+            return new rt_unary_expr(new rt_constant<numeric_type, InterfaceType>(expr_->unwrap()),
+                                     op_->clone());
+        }
 
         //TODO: Unwrap op_id()
         
@@ -211,7 +217,7 @@ namespace viennamath
       {
         if (expr_->optimizable())
         {
-          //std::cout << "optimizable(): true in binary_expr" << std::endl;
+          //std::cout << "optimizable(): true in unary_expr" << std::endl;
           return true;
         }
         return false;

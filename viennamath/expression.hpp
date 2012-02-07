@@ -34,9 +34,10 @@
 #include "viennamath/runtime/expr.hpp"
 #include "viennamath/runtime/equation.hpp"
 #include "viennamath/runtime/interval.hpp"
+#include "viennamath/runtime/symbolic_interval.hpp"
 #include "viennamath/runtime/function_symbol.hpp"
 #include "viennamath/runtime/functor_wrapper.hpp"
-#include "viennamath/runtime/rt_integral.hpp"
+#include "viennamath/runtime/integral.hpp"
 
 #include "viennamath/manipulation/unary_operators_manipulation.hpp"
 #include "viennamath/manipulation/binary_operators_manipulation.hpp"

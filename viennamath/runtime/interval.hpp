@@ -31,19 +31,15 @@ namespace viennamath
       typedef InterfaceType                           interface_type;
       typedef typename InterfaceType::numeric_type    numeric_type;
       
-      explicit rt_interval(bool symbolic = false) : lower_(new rt_constant<numeric_type, InterfaceType>(0)),
-                                                    upper_(new rt_constant<numeric_type, InterfaceType>(1)),
-                                                    is_symbolic_(symbolic) {} 
+      explicit rt_interval() : lower_(new rt_constant<numeric_type, InterfaceType>(0)),
+                               upper_(new rt_constant<numeric_type, InterfaceType>(1)) {} 
       
       explicit rt_interval(const rt_expr<InterfaceType> & a,
-                           const rt_expr<InterfaceType> & b,
-                           bool symbolic = false) : lower_(a.get()->clone()),
-                                                    upper_(b.get()->clone()),
-                                                    is_symbolic_(symbolic) {}
+                           const rt_expr<InterfaceType> & b) : lower_(a.get()->clone()),
+                                                               upper_(b.get()->clone()) {}
                            
       rt_interval(rt_interval const & other) : lower_(other.lower_.get()->clone()),
-                                               upper_(other.upper_.get()->clone()),
-                                               is_symbolic_(other.is_symbolic_) {}
+                                               upper_(other.upper_.get()->clone()) {}
       
       rt_expr<InterfaceType> const & lower() const { return lower_; }
       rt_expr<InterfaceType> const & upper() const { return upper_; }
@@ -52,16 +48,11 @@ namespace viennamath
       {
         lower_ = other.lower().get()->clone();
         upper_ = other.upper().get()->clone();
-        is_symbolic_ = other.is_symbolic_;
       };
       
-      bool is_symbolic() const { return is_symbolic_; }
-      void is_symbolic(bool b) { is_symbolic_ = b; }
-
     private:
       rt_expr<InterfaceType> lower_;
       rt_expr<InterfaceType> upper_;
-      bool is_symbolic_;
   };
 
   template <typename InterfaceType>

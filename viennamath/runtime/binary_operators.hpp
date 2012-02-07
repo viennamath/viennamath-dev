@@ -99,6 +99,8 @@ namespace viennamath
       {
         return optimizable_impl(lhs, BinaryOperation(), rhs);
       }
+      
+      bool optimizable() const { throw "must not be reached - just for unary_expr"; }      
 
       bool equal(const op_interface<InterfaceType> * other) const
       {
