@@ -281,7 +281,7 @@ namespace viennamath
            return expr_->deep_equal(temp->expr_.get())
                   && op_->equal(temp->op_.get());
         }
-        return expr_->deep_equal(other); 
+        return false;
       }
       
       bool shallow_equal(const InterfaceType * other) const

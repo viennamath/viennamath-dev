@@ -185,6 +185,16 @@ namespace viennamath
                                  );
   }
   
+  template <typename InterfaceType>
+  rt_expr<InterfaceType> integral(rt_symbolic_interval<InterfaceType> const & interv,
+                                  rt_function_symbol<InterfaceType> const & integrand)
+  {
+    typedef op_rt_symbolic_integral<InterfaceType>    OperatorT;
+    
+    return rt_expr<InterfaceType>(new rt_unary_expr<InterfaceType>(integrand.clone(),
+                                                                   new op_unary<OperatorT, InterfaceType>(OperatorT(interv)))
+                                 );
+  }
 
 }
 
