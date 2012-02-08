@@ -121,6 +121,10 @@ namespace viennamath
   typedef rt_expr<>                    expr;
   
   template <typename InterfaceType = default_interface_type>
+  class rt_vector_expr; 
+  typedef rt_vector_expr<>             vector_expr;
+  
+  template <typename InterfaceType = default_interface_type>
   class rt_function_symbol;
   typedef rt_function_symbol<>         function_symbol;
 
@@ -261,6 +265,12 @@ namespace viennamath
       enum { val = true };
     };
 
+    template <typename InterfaceType>
+    struct is_viennamath<rt_function_symbol<InterfaceType> >
+    {
+      enum { val = true };
+    };
+    
     template <typename InterfaceType>
     struct is_viennamath<rt_unary_expr<InterfaceType> >
     {

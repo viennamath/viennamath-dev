@@ -79,6 +79,11 @@ namespace viennamath
         rt_expr_ = std::auto_ptr<InterfaceType>(other.clone());
       }
 
+      rt_expr(rt_vector_expr<InterfaceType> const & other)
+      {
+        rt_expr_ = std::auto_ptr<InterfaceType>(other.clone());
+      }
+
       template <long value>
       rt_expr(ct_constant<value> const & other)
       {
@@ -91,7 +96,7 @@ namespace viennamath
       }
       
       //Copy CTOR:
-      rt_expr(expr const & other)
+      rt_expr(rt_expr const & other)
       {
         if (other.get() != NULL)
         rt_expr_ = std::auto_ptr<InterfaceType>(other.get()->clone());
@@ -104,7 +109,7 @@ namespace viennamath
         return *this;
       }
       
-      rt_expr & operator=(expr const & other)
+      rt_expr & operator=(rt_expr const & other)
       {
         rt_expr_ = std::auto_ptr<InterfaceType>(other.get()->clone()); 
         return *this;
@@ -140,6 +145,18 @@ namespace viennamath
       rt_expr & operator=(ct_constant<value> const & other)
       {
         rt_expr_ = std::auto_ptr<InterfaceType>(new rt_constant<numeric_type>(value));
+        return *this;
+      }
+
+      rt_expr & operator=(rt_function_symbol<InterfaceType> const & other)
+      {
+        rt_expr_ = std::auto_ptr<InterfaceType>(other.clone());
+        return *this;
+      }
+
+      rt_expr & operator=(rt_vector_expr<InterfaceType> const & other)
+      {
+        rt_expr_ = std::auto_ptr<InterfaceType>(other.clone());
         return *this;
       }
 

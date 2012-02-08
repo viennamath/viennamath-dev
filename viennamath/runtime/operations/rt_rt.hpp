@@ -40,6 +40,9 @@ namespace viennamath
     InterfaceType * clone(ct_variable<id> const & v) { return new rt_variable<InterfaceType>(id); }    
 
     template <typename InterfaceType>
+    InterfaceType * clone(rt_function_symbol<InterfaceType> const & fs) { return fs.clone(); }    
+
+    template <typename InterfaceType>
     InterfaceType * clone(rt_unary_expr<InterfaceType> const & e) { return e.clone(); }    
 
     template <typename InterfaceType>

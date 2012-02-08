@@ -103,7 +103,6 @@ namespace viennamath
     return temp;
   }
 
-
   //substitute binary_expressions (for fem):
   template <typename InterfaceType, typename ReplacementType>
   rt_expr<InterfaceType> substitute(rt_unary_expr<InterfaceType> const & search,
@@ -233,7 +232,7 @@ namespace viennamath
       private:
         std::auto_ptr<const op_unary<op_rt_integral<InterfaceType>, InterfaceType> > ptr_;
     };
-  }
+  } //namespace detail
   
   template <typename InterfaceType, typename PairType>
   rt_expr<InterfaceType> substitute(rt_symbolic_interval<InterfaceType> const & search,

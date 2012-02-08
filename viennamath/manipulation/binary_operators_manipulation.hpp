@@ -207,6 +207,12 @@ namespace viennamath
                                                    new rt_constant<NumericT, InterfaceType>(val));
         }
         
+        rt_vector_expr<InterfaceType> const * lhs_vec = dynamic_cast<rt_vector_expr<InterfaceType> const *>(lhs);
+        rt_vector_expr<InterfaceType> const * rhs_vec = dynamic_cast<rt_vector_expr<InterfaceType> const *>(rhs);
+        
+        if (lhs_vec != NULL && rhs_vec != NULL)
+          return (*lhs_vec * *rhs_vec).get()->clone();
+        
         return new rt_binary_expr<InterfaceType>(lhs->optimize(),
                                                  new op_binary<op_mult<NumericT>, InterfaceType>(),
                                                  rhs->optimize());
@@ -243,6 +249,12 @@ namespace viennamath
           return true;
         }
       }
+      
+      rt_vector_expr<InterfaceType> const * lhs_vec = dynamic_cast<rt_vector_expr<InterfaceType> const *>(lhs);
+      rt_vector_expr<InterfaceType> const * rhs_vec = dynamic_cast<rt_vector_expr<InterfaceType> const *>(rhs);
+      
+      if (lhs_vec != NULL && rhs_vec != NULL)
+        return true;
       
       return lhs->optimizable() || rhs->optimizable();
   }

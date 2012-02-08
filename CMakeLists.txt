@@ -21,6 +21,7 @@ ADD_EXECUTABLE(newton_solve examples/newton_solve.cpp)
 ADD_EXECUTABLE(functor_test examples/functor_test.cpp)
 ADD_EXECUTABLE(substitute_test examples/substitute_test.cpp)
 ADD_EXECUTABLE(latex_output examples/latex.cpp)
+ADD_EXECUTABLE(vector_expr examples/vector_expr.cpp)
 
 # tests:
 ADD_EXECUTABLE(runtime_test tests/src/runtime_test.cpp)

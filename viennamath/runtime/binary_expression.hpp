@@ -380,7 +380,8 @@ namespace viennamath
                  && op_->equal(temp->op())
                  && rhs_->deep_equal(temp->rhs());
         }
-        return lhs_->deep_equal(other) && rhs_->deep_equal(other);
+        return false;
+        //return lhs_->deep_equal(other) && rhs_->deep_equal(other);
       }
 
       bool shallow_equal(const InterfaceType * other) const
