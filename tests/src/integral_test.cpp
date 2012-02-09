@@ -51,10 +51,9 @@ int main()
   viennamath::numerical_quadrature integrator(new viennamath::gauss_quad_1());
   std::cout << "Evaluated, type 1: " << integrator(e4_int) << std::endl;
   std::cout << "Evaluated, type 2a: " << integrator(viennamath::interval(0, 1), e4, x) << std::endl;
-  std::cout << "Evaluated, type 2b: " << viennamath::eval(integrator(viennamath::interval(0, 1), e4, x), 0.0) << std::endl;
 
   std::cout << std::endl;
-  viennamath::expr my_integral = viennamath::integral(viennamath::symbolic_interval(), e4, x);
+  viennamath::expr my_integral = viennamath::integral(viennamath::symbolic_interval(), e4);
   std::cout << "Symbolic integral: " << my_integral << std::endl;
   
   viennamath::expr my_integral2 = viennamath::substitute(viennamath::symbolic_interval(),

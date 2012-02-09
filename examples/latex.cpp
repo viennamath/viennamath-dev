@@ -47,10 +47,10 @@ int main()
   std::cout << std::endl;
 
   viennamath::interval rt_int01(0, 1);
-  viennamath::interval rt_int_symb(true);
+  viennamath::symbolic_interval rt_int_symb;
   
   viennamath::expr e1_int01 = viennamath::integral( rt_int01, e1, x );
-  viennamath::expr e1_int_symb = viennamath::integral( rt_int_symb, e1, x );
+  viennamath::expr e1_int_symb = viennamath::integral( rt_int_symb, e1);
   
   std::cout << "e1_int01: " << to_latex(e1_int01) << std::endl;
   std::cout << "e1_int_symb: " << to_latex(e1_int_symb) << std::endl;

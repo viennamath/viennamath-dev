@@ -23,6 +23,7 @@
 #include "viennamath/forwards.h"
 #include "viennamath/runtime/integral.hpp"
 #include "viennamath/manipulation/substitute.hpp"
+#include "viennamath/manipulation/eval.hpp"
 
 namespace viennamath
 {
@@ -33,24 +34,36 @@ namespace viennamath
     public:
       typedef typename InterfaceType::numeric_type   numeric_type;
       
-      virtual rt_expr<InterfaceType> eval(rt_interval<InterfaceType> const & interv,
-                                          rt_expr<InterfaceType> const & e,
-                                          rt_variable<InterfaceType> const & var) const = 0;
+      virtual numeric_type eval(rt_interval<InterfaceType> const & interv,
+                                rt_expr<InterfaceType> const & e,
+                                rt_variable<InterfaceType> const & var) const = 0;
   };
   
   
   template <typename InterfaceType = default_interface_type>
-  struct rt_gauss_quad_1 : public numerical_quadrature_interface<InterfaceType>
+  class rt_gauss_quad_1 : public numerical_quadrature_interface<InterfaceType>
   {
-    enum { id = 1 };
-    
-    rt_expr<InterfaceType> eval(rt_interval<InterfaceType> const & interv,
-                                rt_expr<InterfaceType> const & e,
-                                rt_variable<InterfaceType> const & var) const
-    {
-      rt_expr<InterfaceType> tmp = viennamath::substitute(var, (interv.lower() + interv.upper()) / 2.0, e);
-      return tmp * (interv.upper() - interv.lower());
-    }
+      typedef numerical_quadrature_interface<InterfaceType>  BaseType;
+     
+    public:
+      typedef typename BaseType::numeric_type         numeric_type;
+      
+      enum { id = 1 };
+      
+      numeric_type eval(rt_interval<InterfaceType> const & interv,
+                        rt_expr<InterfaceType> const & e,
+                        rt_variable<InterfaceType> const & var) const
+      {
+        assert(interv.lower().get()->is_constant() && 
+              interv.upper().get()->is_constant() && 
+              "Upper or lower interval is not a constant!");
+        
+        numeric_type abscissa = (viennamath::eval(interv.lower(), 0.0) + viennamath::eval(interv.upper(), 0.0)) / 2.0;
+        rt_expr<InterfaceType> tmp = viennamath::substitute(var, abscissa, e);
+        return tmp.get()->unwrap() * viennamath::eval(interv.upper() - interv.lower(), 0.0);
+      }
+    private:
+      std::vector<numeric_type> p_;
   };
   typedef rt_gauss_quad_1<>      gauss_quad_1;
   
@@ -63,6 +76,7 @@ namespace viennamath
   class rt_numerical_quadrature 
   {
     public:
+      typedef typename InterfaceType::numeric_type        NumericT;
       
       //
       // Initialization, method 1: Provide an ID for predefined integration routines
@@ -87,7 +101,7 @@ namespace viennamath
       }
       
       
-      rt_expr<InterfaceType> operator()(rt_expr<InterfaceType> const & e) const
+      NumericT operator()(rt_expr<InterfaceType> const & e) const
       {
         const rt_unary_expr<InterfaceType> * integral_expression = dynamic_cast<const rt_unary_expr<InterfaceType> *>(e.get());
         
@@ -134,10 +148,10 @@ namespace viennamath
           throw "Not implemented!";
         }
 
-        return ct_constant<1>();
+        return 0;
       }
 
-      rt_expr<InterfaceType> operator()(rt_interval<InterfaceType> const & interv,
+      NumericT operator()(rt_interval<InterfaceType> const & interv,
                                         rt_expr<InterfaceType> const & e,
                                         rt_variable<InterfaceType> const & var) const
       {
@@ -145,9 +159,9 @@ namespace viennamath
       }
 
       template <unsigned long id>
-      rt_expr<InterfaceType> operator()(rt_interval<InterfaceType> const & interv,
-                                        rt_expr<InterfaceType> const & e,
-                                        ct_variable<id> const & var) const
+      NumericT operator()(rt_interval<InterfaceType> const & interv,
+                          rt_expr<InterfaceType> const & e,
+                          ct_variable<id> const & var) const
       {
         return quadrature_rule_->eval(interv, e, rt_variable<InterfaceType>(id));
       }
