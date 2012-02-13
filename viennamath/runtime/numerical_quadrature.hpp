@@ -34,6 +34,8 @@ namespace viennamath
     public:
       typedef typename InterfaceType::numeric_type   numeric_type;
       
+      virtual numerical_quadrature_interface * clone() const = 0;
+      
       virtual numeric_type eval(rt_interval<InterfaceType> const & interv,
                                 rt_expr<InterfaceType> const & e,
                                 rt_variable<InterfaceType> const & var) const = 0;
@@ -49,6 +51,9 @@ namespace viennamath
       typedef typename BaseType::numeric_type         numeric_type;
       
       enum { id = 1 };
+      
+      BaseType * clone() { return rt_gauss_quad_1(); }
+      
       
       numeric_type eval(rt_interval<InterfaceType> const & interv,
                         rt_expr<InterfaceType> const & e,
@@ -89,17 +94,27 @@ namespace viennamath
           throw "Not supported!";
       }*/
       
+      // Default CTOR for support with STL containers:
+      rt_numerical_quadrature() {}
+      
+      
       //
       // Initialization, method 2: Provide pointer (ownership is taken!)
       //
-      rt_numerical_quadrature(numerical_quadrature_interface<InterfaceType> * ptr)
-      {
-        if (ptr != NULL)
-          quadrature_rule_ = std::auto_ptr<numerical_quadrature_interface<InterfaceType> >(ptr);
-        else
-          throw "Invalid pointer!";
-      }
+      rt_numerical_quadrature(numerical_quadrature_interface<InterfaceType> * ptr) : quadrature_rule_(ptr) {}
       
+      
+      // Copy CTOR:
+      rt_numerical_quadrature(const rt_numerical_quadrature & other) : quadrature_rule_(other.quadrature_rule_->clone()) {}
+
+
+      // Copy CTOR:
+      rt_numerical_quadrature & operator=(const rt_numerical_quadrature & other)
+      {
+        quadrature_rule_ = std::auto_ptr<numerical_quadrature_interface<InterfaceType> >(other.quadrature_rule_->clone());
+        return *this;
+      }
+
       
       NumericT operator()(rt_expr<InterfaceType> const & e) const
       {

@@ -184,7 +184,40 @@ namespace viennamath
                                                                    new op_unary<OperatorT, InterfaceType>(OperatorT(interv)))
                                  );
   }
-  
+
+  template <typename InterfaceType>
+  rt_expr<InterfaceType> integral(rt_symbolic_interval<InterfaceType> const & interv,
+                                  rt_unary_expr<InterfaceType> const & integrand)
+  {
+    typedef op_rt_symbolic_integral<InterfaceType>    OperatorT;
+    
+    return rt_expr<InterfaceType>(new rt_unary_expr<InterfaceType>(integrand.clone(),
+                                                                   new op_unary<OperatorT, InterfaceType>(OperatorT(interv)))
+                                 );
+  }
+
+  template <typename InterfaceType, typename T>
+  rt_expr<InterfaceType> integral(rt_symbolic_interval<InterfaceType> const & interv,
+                                  rt_constant<T, InterfaceType> const & integrand)
+  {
+    typedef op_rt_symbolic_integral<InterfaceType>    OperatorT;
+    
+    return rt_expr<InterfaceType>(new rt_unary_expr<InterfaceType>(integrand.clone(),
+                                                                   new op_unary<OperatorT, InterfaceType>(OperatorT(interv)))
+                                 );
+  }
+
+  template <typename InterfaceType>
+  rt_expr<InterfaceType> integral(rt_symbolic_interval<InterfaceType> const & interv,
+                                  rt_variable<InterfaceType> const & integrand)
+  {
+    typedef op_rt_symbolic_integral<InterfaceType>    OperatorT;
+    
+    return rt_expr<InterfaceType>(new rt_unary_expr<InterfaceType>(integrand.clone(),
+                                                                   new op_unary<OperatorT, InterfaceType>(OperatorT(interv)))
+                                 );
+  }
+
   template <typename InterfaceType>
   rt_expr<InterfaceType> integral(rt_symbolic_interval<InterfaceType> const & interv,
                                   rt_function_symbol<InterfaceType> const & integrand)
