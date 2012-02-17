@@ -57,7 +57,7 @@ namespace viennamath
         ret = process_if_castable<FuncSymbol>(e.get(), use_parenthesis); if (ret.size() > 0) return ret;
         ret = process_if_castable<Equation  >(e.get(), use_parenthesis); if (ret.size() > 0) return ret;
 
-        
+        std::cerr << "Unknown type in latex translator: " << e << std::endl;
         throw "Unknown type!";
         return "";
       }
@@ -126,7 +126,7 @@ namespace viennamath
             ss << "(";
           ss << operator()(lhs, is_op_mult);
           if (is_op_mult)
-            ss << "\\cdot";
+            ss << " \\cdot ";
           else
             ss << e.op()->str();
           ss << operator()(rhs, is_op_mult);
@@ -209,7 +209,10 @@ namespace viennamath
           ss << " \\: \\mathrm{d} \\Omega ";
         }
         else
+        {
+          std::cout << "Operator not supported: " << e.op()->str() << std::endl;
           throw "Not supported!";
+        }
         
         return ss.str();
       }
