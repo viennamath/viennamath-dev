@@ -21,7 +21,7 @@
 namespace viennamath
 {
   
-  /////////////////// derivative of runtime expression /////////////////////
+  /////////////////// Derivative of runtime expression /////////////////////
 
   template <typename InterfaceType>
   rt_expr<InterfaceType> diff(rt_binary_expr<InterfaceType> const & e,
@@ -105,10 +105,11 @@ namespace viennamath
   
 
 
-
-  /////////////////// derivative of compiletime expression /////////////////////
+  //
+  /////////////////// Derivative of compiletime expressions /////////////////////
+  //
   
-  //////////// derivative of a constant: /////////////////////////////////
+  //////////// Derivative of a constant: /////////////////////////////////
 
   template <typename InterfaceType>
   rt_constant<typename InterfaceType::numeric_type> diff(typename InterfaceType::numeric_type value,
@@ -126,8 +127,8 @@ namespace viennamath
 
   //////////// derivative of an variable: /////////////////////////////////
 
-  template <unsigned long other_id, typename InterfaceType,
-            unsigned long id>
+  template <id_type other_id, typename InterfaceType,
+            id_type id>
   rt_constant<typename InterfaceType::numeric_type> diff(rt_variable<InterfaceType> const & c,
                                                          rt_variable<InterfaceType> const & var)
   {
@@ -138,103 +139,107 @@ namespace viennamath
   }
   
   //metafunctions
-  
-  //differentiates ARG with respect to VAR
-  template <typename ARG, typename VAR>
-  struct ct_diff
+  namespace result_of
   {
-    typedef typename ARG::ERROR_INVALID_ARGUMENT_PROVIDED_TO_COMPILE_TIME_DIFFERENTIATION  error_type; 
-  };
-  
-  // (u + v)' = u' + v'
-  template <typename LHS, typename RHS, unsigned long id>
-  struct ct_diff<ct_expr<LHS, op_plus<default_numeric_type>, RHS>,
-                 ct_variable<id> >
-  {
-    typedef ct_expr< typename ct_diff<LHS, ct_variable<id> >::result_type,
-                     op_plus<default_numeric_type>,
-                        typename ct_diff<RHS, ct_variable<id> >::result_type >     result_type;    
-  };
-  
-  // (u - v)' = u' - v'
-  template <typename LHS, typename RHS, unsigned long id>
-  struct ct_diff<ct_expr<LHS, op_minus<default_numeric_type>, RHS>,
-                 ct_variable<id> >
-  {
-    typedef ct_expr< typename ct_diff<LHS, ct_variable<id> >::result_type,
-                        op_minus<default_numeric_type>,
-                        typename ct_diff<RHS, ct_variable<id> >::result_type >     result_type;    
-  };
-  
-  // (u * v)' = u'*v + u*v'
-  template <typename LHS, typename RHS, unsigned long id>
-  struct ct_diff<ct_expr<LHS, op_mult<default_numeric_type>, RHS>,
-                 ct_variable<id> >
-  {
-    typedef ct_expr< ct_expr< typename ct_diff<LHS, ct_variable<id> >::result_type,
-                                    op_mult<default_numeric_type>,
-                                    RHS>,
-                        op_plus<default_numeric_type>,            
-                        ct_expr< LHS,
-                                    op_mult<default_numeric_type>,
-                                    typename ct_diff<RHS, ct_variable<id> >::result_type >
-                      >                                                      result_type;    
-  };
+    //differentiates ARG with respect to VAR
+    template <typename ARG, typename VAR>
+    struct diff {}; //default case: used for SFINAE with respect to the viennamath::diff() function
+    //{
+    //  typedef typename ARG::ERROR_INVALID_ARGUMENT_PROVIDED_TO_COMPILE_TIME_DIFFERENTIATION  error_type; 
+    //};
+    
+    // (u + v)' = u' + v'
+    template <typename LHS, typename RHS, id_type id>
+    struct diff<ct_binary_expr<LHS, op_plus<default_numeric_type>, RHS>,
+                ct_variable<id> >
+    {
+      typedef ct_binary_expr< typename diff<LHS, ct_variable<id> >::result_type,
+                              op_plus<default_numeric_type>,
+                              typename diff<RHS, ct_variable<id> >::result_type >     result_type;    
+    };
+    
+    // (u - v)' = u' - v'
+    template <typename LHS, typename RHS, id_type id>
+    struct diff<ct_binary_expr<LHS, op_minus<default_numeric_type>, RHS>,
+                ct_variable<id> >
+    {
+      typedef ct_binary_expr< typename diff<LHS, ct_variable<id> >::result_type,
+                              op_minus<default_numeric_type>,
+                              typename diff<RHS, ct_variable<id> >::result_type >     result_type;    
+    };
+    
+    // (u * v)' = u'*v + u*v'
+    template <typename LHS, typename RHS, id_type id>
+    struct diff<ct_binary_expr<LHS, op_mult<default_numeric_type>, RHS>,
+                ct_variable<id> >
+    {
+      typedef ct_binary_expr< ct_binary_expr< typename diff<LHS, ct_variable<id> >::result_type,
+                                              op_mult<default_numeric_type>,
+                                              RHS>,
+                              op_plus<default_numeric_type>,            
+                              ct_binary_expr< LHS,
+                                              op_mult<default_numeric_type>,
+                                              typename diff<RHS, ct_variable<id> >::result_type >
+                            >                                                      result_type;    
+    };
 
-  // (u/v)' = (u'*v - u*v') / v^2
-  template <typename LHS, typename RHS, unsigned long id>
-  struct ct_diff<ct_expr<LHS, op_div<default_numeric_type>, RHS>,
+    // (u/v)' = (u'*v - u*v') / v^2
+    template <typename LHS, typename RHS, id_type id>
+    struct diff<ct_binary_expr<LHS, op_div<default_numeric_type>, RHS>,
+                ct_variable<id> >
+    {
+      typedef ct_binary_expr< ct_binary_expr< ct_binary_expr< typename diff<LHS, ct_variable<id> >::result_type,
+                                                              op_mult<default_numeric_type>,
+                                                              RHS>,
+                                              op_minus<default_numeric_type>,            
+                                              ct_binary_expr< LHS,
+                                                              op_mult<default_numeric_type>,
+                                                              typename diff<RHS, ct_variable<id> >::result_type >
+                                            >,
+                              op_div<default_numeric_type>,             
+                              ct_binary_expr< RHS,
+                                              op_mult<default_numeric_type>,
+                                              RHS >
+                            >                 result_type;    
+    };
+    
+    template <id_type other_id,
+              id_type id>
+    struct diff< ct_variable<other_id>,
                  ct_variable<id> >
-  {
-    typedef ct_expr< ct_expr< ct_expr< typename ct_diff<LHS, ct_variable<id> >::result_type,
-                                                op_mult<default_numeric_type>,
-                                                RHS>,
-                                    op_minus<default_numeric_type>,            
-                                    ct_expr< LHS,
-                                                op_mult<default_numeric_type>,
-                                                typename ct_diff<RHS, ct_variable<id> >::result_type >
-                                   >,
-                      op_div<default_numeric_type>,             
-                      ct_expr< RHS,
-                               op_mult<default_numeric_type>,
-                               RHS >
-                      >                    result_type;    
-  };
-  
-  template <unsigned long other_id,
-            unsigned long id>
-  struct ct_diff< ct_variable<other_id>,
-                  ct_variable<id> >
-  {
-    typedef ct_constant<0>    result_type;    
-  };
-  
-  template <unsigned long id>
-  struct ct_diff< ct_variable<id>,
-                  ct_variable<id> >
-  {
-    typedef ct_constant<1>    result_type;    
-  };
-  
-  template <long value, unsigned long id>
-  struct ct_diff< ct_constant<value>,
-                  ct_variable<id> >
-  {
-    typedef ct_constant<0>    result_type;    
-  };
+    {
+      typedef ct_constant<0>    result_type;    
+    };
+    
+    template <id_type id>
+    struct diff< ct_variable<id>,
+                 ct_variable<id> >
+    {
+      typedef ct_constant<1>    result_type;    
+    };
+    
+    template <long value, id_type id>
+    struct diff< ct_constant<value>,
+                 ct_variable<id> >
+    {
+      typedef ct_constant<0>    result_type;    
+    };
+    
+  } // namespace result_of
   
   
-  
-  //interface function
-  template <typename LHS, typename OP, typename RHS,
-            unsigned long id>
-  typename ct_diff<ct_expr<LHS, OP, RHS>,
-                   ct_variable<id> >::result_type
-  diff(ct_expr<LHS, OP, RHS> const & c,
+  //
+  // interface functions
+  //
+  template <typename ExpressionType,
+            id_type id>
+  typename result_of::diff<ExpressionType,
+                           ct_variable<id> >::result_type
+  diff(ExpressionType const & c,
        ct_variable<id> const & var)
   {
-    return typename ct_diff<ct_expr<LHS, OP, RHS>,
-                            ct_variable<id> >::result_type();
+    return typename result_of::diff<ExpressionType,
+                                    ct_variable<id> >::result_type();
   }
   
   

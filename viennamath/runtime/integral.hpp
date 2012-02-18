@@ -44,7 +44,7 @@ namespace viennamath
                      viennamath::rt_variable<InterfaceType> const & var) : interval_(interv),
                                                                            integration_variable_(var) {}
 
-      template <unsigned long id>
+      template <id_type id>
       op_rt_integral(viennamath::rt_interval<InterfaceType> const & interv,
                      viennamath::ct_variable<id> const & var) : interval_(interv),
                                                                 integration_variable_(id) {}
@@ -92,7 +92,7 @@ namespace viennamath
                                  );
   }
 
-  template <typename InterfaceType, unsigned long id>
+  template <typename InterfaceType, id_type id>
   rt_expr<InterfaceType> integral(rt_interval<InterfaceType> const & interv,
                                   rt_expr<InterfaceType> const & integrand,
                                   ct_variable<id> const & var)
@@ -105,7 +105,7 @@ namespace viennamath
                                  );
   }
 
-  template <typename InterfaceType, unsigned long id>
+  template <typename InterfaceType, id_type id>
   rt_expr<InterfaceType> integral(rt_interval<InterfaceType> const & interv,
                                   rt_binary_expr<InterfaceType> const & integrand,
                                   ct_variable<id> const & var)

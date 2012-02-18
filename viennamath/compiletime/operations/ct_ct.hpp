@@ -19,7 +19,7 @@
 #include "viennamath/forwards.h"
 #include "viennamath/compiletime/ct_constant.hpp"
 #include "viennamath/compiletime/ct_variable.hpp"
-#include "viennamath/compiletime/ct_expr.hpp"
+#include "viennamath/compiletime/ct_binary_expr.hpp"
 
 namespace viennamath
 {
@@ -30,9 +30,9 @@ namespace viennamath
     template <typename LHS, typename RHS>
     struct add<LHS, RHS, true, true>
     {
-      typedef ct_expr<LHS,
-                      op_plus<default_numeric_type>,
-                      RHS >              type;
+      typedef ct_binary_expr<LHS,
+                             op_plus<default_numeric_type>,
+                             RHS >              type;
                       
       static type instance(LHS const & lhs, RHS const & rhs) { return type(); }                
     };
@@ -40,9 +40,9 @@ namespace viennamath
     template <typename LHS, typename RHS>
     struct subtract<LHS, RHS, true, true>
     {
-      typedef ct_expr<LHS,
-                      op_minus<default_numeric_type>,
-                      RHS >              type;
+      typedef ct_binary_expr<LHS,
+                             op_minus<default_numeric_type>,
+                             RHS >              type;
                       
       static type instance(LHS const & lhs, RHS const & rhs) { return type(); }                
     };
@@ -50,9 +50,9 @@ namespace viennamath
     template <typename LHS, typename RHS>
     struct mult<LHS, RHS, true, true>
     {
-      typedef ct_expr<LHS,
-                      op_mult<default_numeric_type>,
-                      RHS >              type;
+      typedef ct_binary_expr<LHS,
+                             op_mult<default_numeric_type>,
+                             RHS >              type;
                       
       static type instance(LHS const & lhs, RHS const & rhs) { return type(); }                
     };
@@ -60,9 +60,9 @@ namespace viennamath
     template <typename LHS, typename RHS>
     struct div<LHS, RHS, true, true>
     {
-      typedef ct_expr<LHS,
-                      op_div<default_numeric_type>,
-                      RHS >              type;
+      typedef ct_binary_expr<LHS,
+                             op_div<default_numeric_type>,
+                             RHS >              type;
                       
       static type instance(LHS const & lhs, RHS const & rhs) { return type(); }                
     };

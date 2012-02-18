@@ -19,6 +19,13 @@
 
 namespace viennamath
 {
+  ///////////// compile time ///////////////////////////////
+
+  // nothing to do, already covered by the approach below 
+  
+  
+  ///////////// run time ///////////////////////////////
+  
   template <typename ExpressionType, typename VectorType>
   typename ExpressionType::numeric_type eval(ExpressionType const & e, VectorType const & v)
   {
@@ -50,16 +57,9 @@ namespace viennamath
   template <long value, typename VectorType>
   long eval(ct_constant<value> c, VectorType const & v)
   {
-    //generic approach: use operator() and hope the best:
     return value;
   }
 
-  template <typename InterfaceType, typename VectorType>
-  typename InterfaceType::numeric_type eval(rt_binary_expr<InterfaceType> const & e, VectorType const & v)
-  {
-    //we have unwrap the runtime expression:
-    return e(v);
-  }
   
 
 }

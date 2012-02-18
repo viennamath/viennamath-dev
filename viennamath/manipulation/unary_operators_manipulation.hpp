@@ -72,10 +72,17 @@ namespace viennamath
   }
 
   template <typename LHS, typename OP, typename RHS>
-  rt_unary_expr<> exp(ct_expr<LHS, OP, RHS> const & other)
+  rt_unary_expr<> exp(ct_binary_expr<LHS, OP, RHS> const & other)
   {
     return rt_unary_expr<>(new rt_binary_expr<>(other),
                         new op_unary<op_exp<default_numeric_type> >()); 
+  }
+
+  template <typename LHS, typename OP>
+  rt_unary_expr<> exp(ct_unary_expr<LHS, OP> const & other)
+  {
+    return rt_unary_expr<>(new rt_unary_expr<>(other),
+                           new op_unary<op_exp<default_numeric_type> >()); 
   }
 
   template <typename InterfaceType>
@@ -115,11 +122,19 @@ namespace viennamath
   }
 
   template <typename LHS, typename OP, typename RHS>
-  rt_unary_expr<> sin(ct_expr<LHS, OP, RHS> const & other)
+  rt_unary_expr<> sin(ct_binary_expr<LHS, OP, RHS> const & other)
   {
     return rt_unary_expr<>(new rt_binary_expr<>(other),
-                        new op_unary<op_sin<default_numeric_type> >()); 
+                           new op_unary<op_sin<default_numeric_type> >()); 
   }
+
+  template <typename LHS, typename OP>
+  rt_unary_expr<> sin(ct_unary_expr<LHS, OP> const & other)
+  {
+    return rt_unary_expr<>(new rt_unary_expr<>(other),
+                           new op_unary<op_sin<default_numeric_type> >()); 
+  }
+
 
   template <typename InterfaceType>
   rt_unary_expr<InterfaceType> sin(rt_unary_expr<InterfaceType> const & other)
@@ -174,11 +189,19 @@ namespace viennamath
   }
   
   template <typename LHS, typename OP, typename RHS>
-  rt_unary_expr<> cos(ct_expr<LHS, OP, RHS> const & other)
+  rt_unary_expr<> cos(ct_binary_expr<LHS, OP, RHS> const & other)
   {
     return rt_unary_expr<>(new rt_binary_expr<>(other),
                         new op_unary<op_cos<default_numeric_type> >()); 
   }
+
+  template <typename LHS, typename OP>
+  rt_unary_expr<> cos(ct_unary_expr<LHS, OP> const & other)
+  {
+    return rt_unary_expr<>(new rt_unary_expr<>(other),
+                           new op_unary<op_cos<default_numeric_type> >()); 
+  }
+
 
   template <typename InterfaceType>
   rt_unary_expr<InterfaceType> cos(rt_unary_expr<InterfaceType> const & other)
@@ -233,9 +256,16 @@ namespace viennamath
   }
   
   template <typename LHS, typename OP, typename RHS>
-  rt_unary_expr<> tan(ct_expr<LHS, OP, RHS> const & other)
+  rt_unary_expr<> tan(ct_binary_expr<LHS, OP, RHS> const & other)
   {
     return rt_unary_expr<>(new rt_binary_expr<>(other),
+                        new op_unary<op_tan<default_numeric_type> >()); 
+  }
+
+  template <typename LHS, typename OP>
+  rt_unary_expr<> tan(ct_unary_expr<LHS, OP> const & other)
+  {
+    return rt_unary_expr<>(new rt_unary_expr<>(other),
                         new op_unary<op_tan<default_numeric_type> >()); 
   }
 
@@ -287,11 +317,19 @@ namespace viennamath
   }
   
   template <typename LHS, typename OP, typename RHS>
-  rt_unary_expr<> fabs(ct_expr<LHS, OP, RHS> const & other)
+  rt_unary_expr<> fabs(ct_binary_expr<LHS, OP, RHS> const & other)
   {
     return rt_unary_expr<>(new rt_binary_expr<>(other),
-                        new op_unary<op_fabs<default_numeric_type> >()); 
+                           new op_unary<op_fabs<default_numeric_type> >()); 
   }
+
+  template <typename LHS, typename OP>
+  rt_unary_expr<> fabs(ct_unary_expr<LHS, OP> const & other)
+  {
+    return rt_unary_expr<>(new rt_unary_expr<>(other),
+                           new op_unary<op_fabs<default_numeric_type> >()); 
+  }
+
 
   template <typename InterfaceType>
   rt_unary_expr<InterfaceType> fabs(rt_unary_expr<InterfaceType> const & other)
@@ -347,11 +385,19 @@ namespace viennamath
   }
   
   template <typename LHS, typename OP, typename RHS>
-  rt_unary_expr<> sqrt(ct_expr<LHS, OP, RHS> const & other)
+  rt_unary_expr<> sqrt(ct_binary_expr<LHS, OP, RHS> const & other)
   {
     return rt_unary_expr<>(new rt_binary_expr<>(other),
-                        new op_unary<op_sqrt<default_numeric_type> >()); 
+                           new op_unary<op_sqrt<default_numeric_type> >()); 
   }
+
+  template <typename LHS, typename OP>
+  rt_unary_expr<> sqrt(ct_unary_expr<LHS, OP> const & other)
+  {
+    return rt_unary_expr<>(new rt_unary_expr<>(other),
+                           new op_unary<op_sqrt<default_numeric_type> >()); 
+  }
+
 
   template <typename InterfaceType>
   rt_unary_expr<InterfaceType> sqrt(rt_unary_expr<InterfaceType> const & other)
@@ -402,10 +448,17 @@ namespace viennamath
   }
   
   template <typename LHS, typename OP, typename RHS>
-  rt_unary_expr<> log(ct_expr<LHS, OP, RHS> const & other)
+  rt_unary_expr<> log(ct_binary_expr<LHS, OP, RHS> const & other)
   {
     return rt_unary_expr<>(new rt_binary_expr<>(other),
-                        new op_unary<op_log<default_numeric_type> >()); 
+                           new op_unary<op_log<default_numeric_type> >()); 
+  }
+
+  template <typename LHS, typename OP>
+  rt_unary_expr<> log(ct_unary_expr<LHS, OP> const & other)
+  {
+    return rt_unary_expr<>(new rt_unary_expr<>(other),
+                           new op_unary<op_log<default_numeric_type> >()); 
   }
 
   template <typename InterfaceType>
@@ -463,10 +516,17 @@ namespace viennamath
   }
   
   template <typename LHS, typename OP, typename RHS>
-  rt_unary_expr<> log10(ct_expr<LHS, OP, RHS> const & other)
+  rt_unary_expr<> log10(ct_binary_expr<LHS, OP, RHS> const & other)
   {
     return rt_unary_expr<>(new rt_binary_expr<>(other),
-                        new op_unary<op_log10<default_numeric_type> >()); 
+                           new op_unary<op_log10<default_numeric_type> >()); 
+  }
+
+  template <typename LHS, typename OP>
+  rt_unary_expr<> log10(ct_unary_expr<LHS, OP> const & other)
+  {
+    return rt_unary_expr<>(new rt_unary_expr<>(other),
+                           new op_unary<op_log10<default_numeric_type> >()); 
   }
 
   template <typename InterfaceType>
@@ -488,7 +548,7 @@ namespace viennamath
   }
   
   
-  //formal stuff:
+  ///////////////////  formal (symbolic) stuff ////////////////////////////////
 
   //
   // gradient

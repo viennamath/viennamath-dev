@@ -25,7 +25,7 @@
 
 namespace viennamath
 {
-  template <unsigned long dim>
+  template <id_type dim>
   struct cartesian {};
   
   template <typename InterfaceType>
@@ -161,7 +161,7 @@ namespace viennamath
 
 
   //tries to automatically derive the weak formulation from the strong formulation
-  template <typename InterfaceType, unsigned long dim>
+  template <typename InterfaceType, id_type dim>
   rt_equation<InterfaceType> apply_coordinate_system(cartesian<dim>,
                                                      rt_equation<InterfaceType> const & equ)
   {

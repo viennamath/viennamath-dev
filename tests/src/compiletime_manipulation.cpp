@@ -1,0 +1,77 @@
+
+#include <iostream>
+#include <vector>
+#include <stdlib.h>
+#include <assert.h>
+#include <math.h>
+
+#include "viennamath/expression.hpp"
+#include "viennamath/manipulation/eval.hpp"
+#include "viennamath/manipulation/substitute.hpp"
+#include "viennamath/manipulation/diff.hpp"
+#include "viennamath/manipulation/expand.hpp"
+
+
+#include "viennamath/compiletime/ct_eval.hpp"
+
+int main()
+{
+  viennamath::ct_constant<0> c0;
+  viennamath::ct_constant<1> c1;
+  viennamath::ct_constant<2> c2;
+  viennamath::ct_constant<5> c5;
+  viennamath::ct_constant<7> c7;
+  
+  viennamath::ct_variable<0> x;
+  viennamath::ct_variable<1> y;
+  viennamath::ct_variable<2> z;
+  
+  std::cout << "Evaluate (1-x-y)xy at (1,2,5):" << std::endl;
+  std::cout << viennamath::eval( (c1 - x - y) * x * y, viennamath::make_vector(c1, c2, c5) ) << std::endl;
+  
+  std::cout << "Replace ( (1-x-y)xy, x) and evaluate at (1,2,5):" << std::endl;
+  std::cout << viennamath::substitute(x, z, (c1 - x - y) * x * y) << std::endl;
+  std::cout << viennamath::eval( 
+                  viennamath::substitute(x, z, (c1 - x - y) * x * y),
+                  viennamath::make_vector(c1, c2, c5)
+               ) << std::endl;
+
+  std::cout << "Differentiate (1-x-y)xy with respect to x and evaluate the result at (1,2,5):" << std::endl;
+  std::cout << viennamath::diff((c1 - x - y) * x * y, x) << std::endl;
+  std::cout << viennamath::ct_eval( 
+                  viennamath::diff((c1 - x - y) * x * y, x),
+                  viennamath::make_vector(c1, c2, c5)
+               ) << std::endl;
+  std::cout << viennamath::eval( 
+                  viennamath::diff((c1 - x - y) * x * y, x),
+                  viennamath::make_vector(c1, c2, c5)
+               ) << std::endl;
+               
+  std::cout << "Evaluation test of super-complicated expression:" << std::endl;
+  std::cout << viennamath::ct_eval( 
+                viennamath::diff((c1 - x - y/x) * x * y / (c2 - y / (x + y)) * (x + y) / (z+x), x) - c1 / (c2  + c2),
+                viennamath::make_vector(c1, c2, c5)
+              ) << std::endl;
+  std::cout << viennamath::eval( 
+                viennamath::diff((c1 - x - y/x) * x * y / (c2 - y / (x + y)) * (x + y) / (z+x), x) - c1 / (c2  + c2),
+                viennamath::make_vector(c1, c2, c5)
+              ) << std::endl;
+
+              
+  std::cout << "Expanding (1-x)*(1-y)*(1-z):" << std::endl;
+  std::cout << viennamath::expand( (c1 - x) * (c1 - y) * (c1 - z) ) << std::endl;
+  std::cout << viennamath::eval( 
+                (c1 - x) * (c1 - y) * (c1 - z),
+                viennamath::make_vector(c1, c2, c5)
+              ) << std::endl;
+  std::cout << viennamath::eval( 
+                viennamath::expand( (c1 - x) * (c1 - y) * (c1 - z) ),
+                viennamath::make_vector(c1, c2, c5)
+              ) << std::endl;
+              
+  std::cout << "************************************************" << std::endl;
+  std::cout << "*****     TEST COMPLETED SUCCESSFULLY!     *****" << std::endl;
+  std::cout << "************************************************" << std::endl;
+  
+  return EXIT_SUCCESS;
+}

@@ -18,13 +18,14 @@
 #include "viennamath/forwards.h"
 #include "viennamath/compiletime/promote_traits.hpp"
 
-#include "viennamath/compiletime/ct_vector.hpp"
+#include "viennamath/compiletime/ct_binary_expr.hpp"
 #include "viennamath/compiletime/ct_constant.hpp"
-#include "viennamath/compiletime/ct_function_symbol.hpp"
-#include "viennamath/compiletime/ct_variable.hpp"
-#include "viennamath/compiletime/ct_expr.hpp"
 #include "viennamath/compiletime/ct_equation.hpp"
+#include "viennamath/compiletime/ct_function_symbol.hpp"
 #include "viennamath/compiletime/ct_interval.hpp"
+#include "viennamath/compiletime/ct_unary_expr.hpp"
+#include "viennamath/compiletime/ct_variable.hpp"
+#include "viennamath/compiletime/ct_vector.hpp"
 
 #include "viennamath/runtime/variable.hpp"
 #include "viennamath/runtime/binary_expression.hpp"

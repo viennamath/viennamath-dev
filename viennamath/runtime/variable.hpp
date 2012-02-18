@@ -51,19 +51,19 @@ namespace viennamath
   };
   
   template <typename VectorType>
-  typename VectorType::value_type get_from_vector(VectorType const & vec, unsigned long i)
+  typename VectorType::value_type get_from_vector(VectorType const & vec, id_type i)
   {
     return vec[i];
   }
   
   template <typename T1>
-  default_numeric_type get_from_vector(ct_vector_1<T1> const & vec, unsigned long i)
+  default_numeric_type get_from_vector(ct_vector_1<T1> const & vec, id_type i)
   {
     return vec[ct_index<0>()]; 
   }
   
   template <typename T1, typename T2>
-  default_numeric_type get_from_vector(ct_vector_2<T1, T2> const & vec, unsigned long i)
+  default_numeric_type get_from_vector(ct_vector_2<T1, T2> const & vec, id_type i)
   {
     if (i == 0)
       return vec[ct_index<0>()];
@@ -73,7 +73,7 @@ namespace viennamath
   }
 
   template <typename T1, typename T2, typename T3>
-  default_numeric_type get_from_vector(ct_vector_3<T1, T2, T3> const & vec, unsigned long i)
+  default_numeric_type get_from_vector(ct_vector_3<T1, T2, T3> const & vec, id_type i)
   {
     if (i == 0)
       return vec[ct_index<0>()];
@@ -98,9 +98,9 @@ namespace viennamath
     public:
       typedef typename InterfaceType::numeric_type    numeric_type;
       
-      explicit rt_variable(unsigned long my_id) : id_(my_id) {};
+      explicit rt_variable(id_type my_id) : id_(my_id) {};
 
-      unsigned long id() const { return id_; }
+      id_type id() const { return id_; }
       
       /////////////////   Basic evaluation: //////////////////////////////////
       numeric_type operator()(numeric_type value) const
@@ -218,7 +218,7 @@ namespace viennamath
       }
     
     private: 
-      unsigned long id_;
+      id_type id_;
   }; //variable
 
   template <typename InterfaceType>

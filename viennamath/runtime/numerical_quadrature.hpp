@@ -52,7 +52,7 @@ namespace viennamath
       
       enum { id = 1 };
       
-      BaseType * clone() { return rt_gauss_quad_1(); }
+      BaseType * clone() const { return new rt_gauss_quad_1(); }
       
       
       numeric_type eval(rt_interval<InterfaceType> const & interv,
@@ -86,7 +86,7 @@ namespace viennamath
       //
       // Initialization, method 1: Provide an ID for predefined integration routines
       //
-      /*rt_numerical_quadrature(unsigned long id)
+      /*rt_numerical_quadrature(id_type id)
       {
         if (id == 1)
           quadrature_rule_ = std::auto_ptr<numerical_quadrature_interface<InterfaceType> >(new rt_gauss_quad_1<InterfaceType>());
@@ -167,13 +167,13 @@ namespace viennamath
       }
 
       NumericT operator()(rt_interval<InterfaceType> const & interv,
-                                        rt_expr<InterfaceType> const & e,
-                                        rt_variable<InterfaceType> const & var) const
+                          rt_expr<InterfaceType> const & e,
+                          rt_variable<InterfaceType> const & var) const
       {
         return quadrature_rule_->eval(interv, e, var);
       }
 
-      template <unsigned long id>
+      template <id_type id>
       NumericT operator()(rt_interval<InterfaceType> const & interv,
                           rt_expr<InterfaceType> const & e,
                           ct_variable<id> const & var) const

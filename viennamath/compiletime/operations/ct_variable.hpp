@@ -17,7 +17,7 @@
 
 #include "viennamath/compiletime/ct_constant.hpp"
 #include "viennamath/compiletime/ct_variable.hpp"
-#include "viennamath/compiletime/ct_expr.hpp"
+#include "viennamath/compiletime/ct_binary_expr.hpp"
 
 #include <assert.h>
 
@@ -29,15 +29,15 @@ namespace viennamath
   ////////////// operator+
 
   template <id_type id>
-  ct_expr<ct_constant<2>,
-          op_mult<default_numeric_type>,
-          ct_variable<id> >
+  ct_binary_expr<ct_constant<2>,
+                 op_mult<default_numeric_type>,
+                 ct_variable<id> >
   operator+(ct_variable<id> const & lhs,
             ct_variable<id> const & other)
   {
-    return ct_expr<ct_constant<2>,
-                   op_mult<default_numeric_type>,
-                   ct_variable<id> >(ct_constant<2>(), lhs);
+    return ct_binary_expr<ct_constant<2>,
+                          op_mult<default_numeric_type>,
+                          ct_variable<id> >(ct_constant<2>(), lhs);
   }
 
   ////////// operator-

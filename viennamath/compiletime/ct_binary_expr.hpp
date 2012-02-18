@@ -12,41 +12,22 @@
 
 
 
-#ifndef VIENNAMATH_CT_EXPR_HPP
-#define VIENNAMATH_CT_EXPR_HPP
+#ifndef VIENNAMATH_CT_BINARY_EXPR_HPP
+#define VIENNAMATH_CT_BINARY_EXPR_HPP
 
 #include <ostream>
 #include "viennamath/forwards.h"
 #include "viennamath/compiletime/binary_op_tags.hpp"
+#include "viennamath/compiletime/ct_eval.hpp"
 
 namespace viennamath
 {
-  
-  template <typename T>
-  struct expression_traits
-  {
-    typedef T   const_reference_type; 
-  };
-  
-  //for compile time constants, we have to copy in order to circumvent problems with temporaries
-  template <long value>
-  struct expression_traits < ct_constant<value> >
-  {
-     typedef ct_constant<value>    const_reference_type;
-  };
-
-  template <typename T, typename InterfaceType>
-  struct expression_traits < rt_constant<T, InterfaceType> >
-  {
-     typedef rt_constant<T, InterfaceType>    const_reference_type;
-  };
-  
   
   //A compile time expression
   template <typename LHS,
             typename OP,
             typename RHS>
-  class ct_expr
+  class ct_binary_expr
   {
       typedef typename expression_traits<LHS>::const_reference_type    internal_lhs_type;
       typedef typename expression_traits<RHS>::const_reference_type    internal_rhs_type;
@@ -57,10 +38,10 @@ namespace viennamath
       typedef OP     op_type;
       typedef RHS    rhs_type;
       
-      explicit ct_expr() : lhs_(LHS()), rhs_(RHS()) {} 
+      explicit ct_binary_expr() : lhs_(LHS()), rhs_(RHS()) {} 
       
-      explicit ct_expr(internal_lhs_type lhs,
-                       internal_rhs_type rhs) : lhs_(lhs), rhs_(rhs) {}
+      explicit ct_binary_expr(internal_lhs_type lhs,
+                              internal_rhs_type rhs) : lhs_(lhs), rhs_(rhs) {}
                           
       internal_lhs_type lhs() const { return lhs_; }
       internal_rhs_type rhs() const { return rhs_; }
@@ -72,6 +53,14 @@ namespace viennamath
         return OP::apply(static_cast<numeric_type>(lhs_(v)), static_cast<numeric_type>(rhs_(v)));
       }
       
+      template <long a>
+      numeric_type operator()(ct_vector_1< ct_constant<a> > const & v) const
+      {
+        return typename ct_evaluation< ct_binary_expr<LHS, OP, RHS>,
+                                       ct_vector_1< ct_constant<a> >
+                                     >::result_type();
+      }
+      
     private:
       internal_lhs_type lhs_;
       internal_rhs_type rhs_;
@@ -80,7 +69,7 @@ namespace viennamath
   
   //stream operator for output:
   template <typename LHS, typename OP, typename RHS>
-  std::ostream& operator<<(std::ostream & stream, ct_expr<LHS, OP, RHS> const & other)
+  std::ostream& operator<<(std::ostream & stream, ct_binary_expr<LHS, OP, RHS> const & other)
   {
     stream << "[" << other.lhs() << OP().str() << other.rhs() << "]";
     return stream;

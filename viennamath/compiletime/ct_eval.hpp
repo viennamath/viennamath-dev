@@ -16,6 +16,7 @@
 #define VIENNAMATH_CT_EVAL_HPP
 
 #include "viennamath/forwards.h"
+#include "viennamath/compiletime/ct_variable.hpp"
 #include "viennamath/runtime/variable.hpp"
 
 namespace viennamath
@@ -29,11 +30,11 @@ namespace viennamath
   
 
   template <typename LHS, typename OP, typename RHS>
-  struct rational_evaluation < ct_expr<LHS, OP, RHS> >
+  struct rational_evaluation < ct_binary_expr<LHS, OP, RHS> >
   {
-    typedef ct_expr< typename rational_evaluation<LHS>::result_type,
-                        OP,
-                        typename rational_evaluation<RHS>::result_type>  result_type;
+    typedef ct_binary_expr< typename rational_evaluation<LHS>::result_type,
+                            OP,
+                            typename rational_evaluation<RHS>::result_type>  result_type;
   };
   
   //////////////////  compound expressions (with fractions) ////////////////////////////
@@ -41,49 +42,59 @@ namespace viennamath
   // A + B:
   template <long numerator_1, long denominator_1,
             long numerator_2, long denominator_2>
-  struct rational_evaluation< ct_expr<ct_expr<ct_constant<numerator_1>,
-                                              op_div<default_numeric_type>,
-                                              ct_constant<denominator_1> >,
-                                      op_plus<default_numeric_type>,
-                                      ct_expr<ct_constant<numerator_2>,
-                                              op_div<default_numeric_type>,
-                                              ct_constant<denominator_2> >
-                                      >
+  struct rational_evaluation< ct_binary_expr<ct_binary_expr<ct_constant<numerator_1>,
+                                                            op_div<default_numeric_type>,
+                                                            ct_constant<denominator_1> >,
+                                             op_plus<default_numeric_type>,
+                                             ct_binary_expr<ct_constant<numerator_2>,
+                                                            op_div<default_numeric_type>,
+                                                            ct_constant<denominator_2> >
+                                            >
                             >
   {
-    typedef ct_expr< ct_constant<numerator_1 * denominator_2 + numerator_2 * denominator_1>,
-                        op_div<default_numeric_type>,
-                        ct_constant<denominator_1 * denominator_2> >        result_type;
+    enum { numerator = numerator_1 * denominator_2 + numerator_2 * denominator_1,
+           denominator = denominator_1 * denominator_2 };
+    
+    
+    typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
+                            op_div<default_numeric_type>,
+                            ct_constant<denominator / result_of::gcd<numerator, denominator>::value > >        result_type;
   };
 
   template <long value_1,
             long numerator_2, long denominator_2>
-  struct rational_evaluation< ct_expr<ct_constant<value_1>,
-                                         op_plus<default_numeric_type>,
-                                         ct_expr<ct_constant<numerator_2>,
-                                                    op_div<default_numeric_type>,
-                                                    ct_constant<denominator_2> >
+  struct rational_evaluation< ct_binary_expr<ct_constant<value_1>,
+                                             op_plus<default_numeric_type>,
+                                             ct_binary_expr<ct_constant<numerator_2>,
+                                                            op_div<default_numeric_type>,
+                                                            ct_constant<denominator_2> >
                                          >
                             >
   {
-    typedef ct_expr< ct_constant<value_1 * denominator_2 + numerator_2>,
-                        op_div<default_numeric_type>,
-                        ct_constant<denominator_2> >        result_type;
+    enum { numerator = value_1 * denominator_2 + numerator_2,
+           denominator = denominator_2 };
+           
+    typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
+                            op_div<default_numeric_type>,
+                            ct_constant<denominator / result_of::gcd<numerator, denominator>::value > >        result_type;
   };
 
   template <long numerator_1, long denominator_1,
             long value_2>
-  struct rational_evaluation< ct_expr<ct_expr<ct_constant<numerator_1>,
-                                                    op_div<default_numeric_type>,
-                                                    ct_constant<denominator_1> >,
-                                         op_plus<default_numeric_type>,
-                                         ct_constant<value_2>
-                                         >
+  struct rational_evaluation< ct_binary_expr<ct_binary_expr<ct_constant<numerator_1>,
+                                                            op_div<default_numeric_type>,
+                                                            ct_constant<denominator_1> >,
+                                             op_plus<default_numeric_type>,
+                                             ct_constant<value_2>
+                                            >
                             >
   {
-    typedef ct_expr< ct_constant<numerator_1 + value_2 * denominator_1>,
-                        op_div<default_numeric_type>,
-                        ct_constant<denominator_1> >        result_type;
+    enum { numerator = numerator_1 + value_2 * denominator_1,
+           denominator = denominator_1 };
+           
+    typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
+                            op_div<default_numeric_type>,
+                            ct_constant<denominator / result_of::gcd<numerator, denominator>::value > >        result_type;
   };
   
   
@@ -91,199 +102,268 @@ namespace viennamath
   // A - B:
   template <long numerator_1, long denominator_1,
             long numerator_2, long denominator_2>
-  struct rational_evaluation< ct_expr<ct_expr<ct_constant<numerator_1>,
-                                                    op_div<default_numeric_type>,
-                                                    ct_constant<denominator_1> >,
-                                         op_minus<default_numeric_type>,
-                                         ct_expr<ct_constant<numerator_2>,
-                                                    op_div<default_numeric_type>,
-                                                    ct_constant<denominator_2> >
-                                         >
+  struct rational_evaluation< ct_binary_expr<ct_binary_expr<ct_constant<numerator_1>,
+                                                            op_div<default_numeric_type>,
+                                                            ct_constant<denominator_1> >,
+                                             op_minus<default_numeric_type>,
+                                             ct_binary_expr<ct_constant<numerator_2>,
+                                                            op_div<default_numeric_type>,
+                                                            ct_constant<denominator_2> >
+                                            >
                             >
   {
-    typedef ct_expr< ct_constant<numerator_1 * denominator_2 - numerator_2 * denominator_1>,
-                        op_div<default_numeric_type>,
-                        ct_constant<denominator_1 * denominator_2> >        result_type;
+    enum { numerator = numerator_1 * denominator_2 - numerator_2 * denominator_1,
+           denominator = denominator_1 * denominator_2 };
+           
+    typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
+                            op_div<default_numeric_type>,
+                            ct_constant<denominator / result_of::gcd<numerator, denominator>::value > >        result_type;
   };
   
   template <long value_1,
             long numerator_2, long denominator_2>
-  struct rational_evaluation< ct_expr<ct_constant<value_1>,
-                                         op_minus<default_numeric_type>,
-                                         ct_expr<ct_constant<numerator_2>,
-                                                    op_div<default_numeric_type>,
-                                                    ct_constant<denominator_2> >
-                                         >
+  struct rational_evaluation< ct_binary_expr<ct_constant<value_1>,
+                                             op_minus<default_numeric_type>,
+                                             ct_binary_expr<ct_constant<numerator_2>,
+                                                            op_div<default_numeric_type>,
+                                                            ct_constant<denominator_2> >
+                                            >
                             >
   {
-    typedef ct_expr< ct_constant<value_1 * denominator_2 - numerator_2>,
-                        op_div<default_numeric_type>,
-                        ct_constant<denominator_2> >        result_type;
+    enum { numerator = value_1 * denominator_2 - numerator_2,
+           denominator = denominator_2 };
+           
+    typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
+                            op_div<default_numeric_type>,
+                            ct_constant<denominator / result_of::gcd<numerator, denominator>::value > >        result_type;
   };
 
   template <long numerator_1, long denominator_1,
             long value_2>
-  struct rational_evaluation< ct_expr<ct_expr<ct_constant<numerator_1>,
-                                                    op_div<default_numeric_type>,
-                                                    ct_constant<denominator_1> >,
-                                         op_minus<default_numeric_type>,
-                                         ct_constant<value_2>
-                                         >
+  struct rational_evaluation< ct_binary_expr<ct_binary_expr<ct_constant<numerator_1>,
+                                                            op_div<default_numeric_type>,
+                                                            ct_constant<denominator_1> >,
+                                             op_minus<default_numeric_type>,
+                                             ct_constant<value_2>
+                                            >
                             >
   {
-    typedef ct_expr< ct_constant<numerator_1 - value_2 * denominator_1>,
-                        op_div<default_numeric_type>,
-                        ct_constant<denominator_1> >        result_type;
+    enum { numerator = numerator_1 - value_2 * denominator_1,
+           denominator = denominator_1 };
+           
+    typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
+                            op_div<default_numeric_type>,
+                            ct_constant<denominator / result_of::gcd<numerator, denominator>::value > >        result_type;
   };
   
   // A * B:
   template <long numerator_1, long denominator_1,
             long numerator_2, long denominator_2>
-  struct rational_evaluation< ct_expr<ct_expr<ct_constant<numerator_1>,
-                                                    op_div<default_numeric_type>,
-                                                    ct_constant<denominator_1> >,
-                                         op_mult<default_numeric_type>,
-                                         ct_expr<ct_constant<numerator_2>,
-                                                    op_div<default_numeric_type>,
-                                                    ct_constant<denominator_2> >
-                                         >
+  struct rational_evaluation< ct_binary_expr<ct_binary_expr<ct_constant<numerator_1>,
+                                                            op_div<default_numeric_type>,
+                                                            ct_constant<denominator_1> >,
+                                             op_mult<default_numeric_type>,
+                                             ct_binary_expr<ct_constant<numerator_2>,
+                                                            op_div<default_numeric_type>,
+                                                            ct_constant<denominator_2> >
+                                            >
                             >
   {
-    typedef ct_expr< ct_constant<numerator_1 * numerator_2>,
-                        op_div<default_numeric_type>,
-                        ct_constant<denominator_1 * denominator_2> >        result_type;
+    enum { numerator = numerator_1 * numerator_2,
+           denominator = denominator_1 * denominator_2 };
+           
+    typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
+                            op_div<default_numeric_type>,
+                            ct_constant<denominator / result_of::gcd<numerator, denominator>::value > >        result_type;
   };
   
   template <long value_1,
             long numerator_2, long denominator_2>
-  struct rational_evaluation< ct_expr<ct_constant<value_1>,
-                                         op_mult<default_numeric_type>,
-                                         ct_expr<ct_constant<numerator_2>,
-                                                    op_div<default_numeric_type>,
-                                                    ct_constant<denominator_2> >
-                                         >
+  struct rational_evaluation< ct_binary_expr<ct_constant<value_1>,
+                                             op_mult<default_numeric_type>,
+                                             ct_binary_expr<ct_constant<numerator_2>,
+                                                            op_div<default_numeric_type>,
+                                                            ct_constant<denominator_2> >
+                                            >
                             >
   {
-    typedef ct_expr< ct_constant<value_1 * numerator_2>,
-                        op_div<default_numeric_type>,
-                        ct_constant<denominator_2> >        result_type;
+    enum { numerator = value_1 * numerator_2,
+           denominator = denominator_2 };
+           
+    typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
+                            op_div<default_numeric_type>,
+                            ct_constant<denominator / result_of::gcd<numerator, denominator>::value > >        result_type;
   };
 
   template <long numerator_1, long denominator_1,
             long value_2>
-  struct rational_evaluation< ct_expr<ct_expr<ct_constant<numerator_1>,
-                                                    op_div<default_numeric_type>,
-                                                    ct_constant<denominator_1> >,
-                                         op_mult<default_numeric_type>,
-                                         ct_constant<value_2>
-                                         >
+  struct rational_evaluation< ct_binary_expr<ct_binary_expr<ct_constant<numerator_1>,
+                                                            op_div<default_numeric_type>,
+                                                            ct_constant<denominator_1> >,
+                                             op_mult<default_numeric_type>,
+                                             ct_constant<value_2>
+                                            >
                             >
   {
-    typedef ct_expr< ct_constant<numerator_1 * value_2>,
-                        op_div<default_numeric_type>,
-                        ct_constant<denominator_1> >        result_type;
+    enum { numerator = numerator_1 * value_2,
+           denominator = denominator_1 };
+           
+    typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
+                            op_div<default_numeric_type>,
+                            ct_constant<denominator / result_of::gcd<numerator, denominator>::value > >        result_type;
   };
   
   // A / B:
   template <long numerator_1, long denominator_1,
             long numerator_2, long denominator_2>
-  struct rational_evaluation< ct_expr<ct_expr<ct_constant<numerator_1>,
-                                                    op_div<default_numeric_type>,
-                                                    ct_constant<denominator_1> >,
-                                         op_div<default_numeric_type>,
-                                         ct_expr<ct_constant<numerator_2>,
-                                                    op_div<default_numeric_type>,
-                                                    ct_constant<denominator_2> >
-                                         >
+  struct rational_evaluation< ct_binary_expr<ct_binary_expr<ct_constant<numerator_1>,
+                                                            op_div<default_numeric_type>,
+                                                            ct_constant<denominator_1> >,
+                                             op_div<default_numeric_type>,
+                                             ct_binary_expr<ct_constant<numerator_2>,
+                                                            op_div<default_numeric_type>,
+                                                            ct_constant<denominator_2> >
+                                            >
                             >
   {
-    typedef ct_expr< ct_constant<numerator_1 * denominator_2>,
-                        op_div<default_numeric_type>,
-                        ct_constant<denominator_1 * numerator_2> >        result_type;
+    enum { numerator = numerator_1 * denominator_2,
+           denominator = denominator_1 * numerator_2 };
+           
+    typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
+                            op_div<default_numeric_type>,
+                            ct_constant<denominator / result_of::gcd<numerator, denominator>::value > >        result_type;
   };
   
   template <long value_1,
             long numerator_2, long denominator_2>
-  struct rational_evaluation< ct_expr<ct_constant<value_1>,
-                                         op_div<default_numeric_type>,
-                                         ct_expr<ct_constant<numerator_2>,
-                                                    op_div<default_numeric_type>,
-                                                    ct_constant<denominator_2> >
-                                         >
+  struct rational_evaluation< ct_binary_expr<ct_constant<value_1>,
+                                             op_div<default_numeric_type>,
+                                             ct_binary_expr<ct_constant<numerator_2>,
+                                                            op_div<default_numeric_type>,
+                                                            ct_constant<denominator_2> >
+                                            >
                             >
   {
-    typedef ct_expr< ct_constant<value_1 * denominator_2>,
-                        op_div<default_numeric_type>,
-                        ct_constant<numerator_2> >        result_type;
+    enum { numerator = value_1 * denominator_2,
+           denominator = numerator_2 };
+           
+    typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
+                            op_div<default_numeric_type>,
+                            ct_constant<denominator / result_of::gcd<numerator, denominator>::value > >        result_type;
   };
 
   template <long numerator_1, long denominator_1,
             long value_2>
-  struct rational_evaluation< ct_expr<ct_expr<ct_constant<numerator_1>,
-                                                    op_div<default_numeric_type>,
-                                                    ct_constant<denominator_1> >,
-                                         op_div<default_numeric_type>,
-                                         ct_constant<value_2>
-                                         >
+  struct rational_evaluation< ct_binary_expr<ct_binary_expr<ct_constant<numerator_1>,
+                                                            op_div<default_numeric_type>,
+                                                            ct_constant<denominator_1> >,
+                                             op_div<default_numeric_type>,
+                                             ct_constant<value_2>
+                                            >
                             >
   {
-    typedef ct_expr< ct_constant<numerator_1>,
-                        op_div<default_numeric_type>,
-                        ct_constant<denominator_1 * value_2> >        result_type;
+    enum { numerator = numerator_1,
+           denominator = denominator_1 * value_2 };
+           
+    typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
+                            op_div<default_numeric_type>,
+                            ct_constant<denominator / result_of::gcd<numerator, denominator>::value > >        result_type;
   };
   
   //primitive expressions
   template <long value_1, long value_2>
-  struct rational_evaluation< ct_expr<ct_constant<value_1>,
-                                         op_plus<default_numeric_type>,
-                                         ct_constant<value_2>
-                                        >
+  struct rational_evaluation< ct_binary_expr<ct_constant<value_1>,
+                                             op_plus<default_numeric_type>,
+                                             ct_constant<value_2>
+                                            >
                             >
   {
     typedef ct_constant<value_1 + value_2>   result_type;
   };
   
   template <long value_1, long value_2>
-  struct rational_evaluation< ct_expr<ct_constant<value_1>,
-                                         op_minus<default_numeric_type>,
-                                         ct_constant<value_2>
-                                        >
+  struct rational_evaluation< ct_binary_expr<ct_constant<value_1>,
+                                             op_minus<default_numeric_type>,
+                                             ct_constant<value_2>
+                                            >
                             >
   {
     typedef ct_constant<value_1 - value_2>   result_type;
   };
 
   template <long value_1, long value_2>
-  struct rational_evaluation< ct_expr<ct_constant<value_1>,
-                                         op_mult<default_numeric_type>,
-                                         ct_constant<value_2>
-                                        >
+  struct rational_evaluation< ct_binary_expr<ct_constant<value_1>,
+                                             op_mult<default_numeric_type>,
+                                             ct_constant<value_2>
+                                            >
                             >
   {
     typedef ct_constant<value_1 * value_2>   result_type;
   };
   
   template <long value_1, long value_2>
-  struct rational_evaluation< ct_expr<ct_constant<value_1>,
-                                         op_div<default_numeric_type>,
-                                         ct_constant<value_2>
-                                        >
+  struct rational_evaluation< ct_binary_expr<ct_constant<value_1>,
+                                             op_div<default_numeric_type>,
+                                             ct_constant<value_2>
+                                            >
                             >
   {
-    typedef ct_expr<ct_constant<value_1>,
-                       op_div<default_numeric_type>,
-                       ct_constant<value_2>
-                      >                      result_type;
+    typedef ct_binary_expr<ct_constant<value_1 / result_of::gcd<value_1, value_2>::value >,
+                           op_div<default_numeric_type>,
+                           ct_constant<value_2 / result_of::gcd<value_1, value_2>::value >
+                          >                      result_type;
   };
   
   template <long value_1>
-  struct rational_evaluation< ct_expr<ct_constant<value_1>,
-                                         op_div<default_numeric_type>,
-                                         ct_constant<1>
-                                        >
+  struct rational_evaluation< ct_binary_expr<ct_constant<value_1>,
+                                             op_div<default_numeric_type>,
+                                             ct_constant<1>
+                                            >
                             >
   {
     typedef ct_constant<value_1>             result_type;
+  };
+
+  template <long value_1>
+  struct rational_evaluation< ct_binary_expr<ct_constant<value_1>,
+                                             op_div<default_numeric_type>,
+                                             ct_constant<-1>
+                                            >
+                            >
+  {
+    typedef ct_constant<-value_1>             result_type;
+  };
+  
+  template <long value_2>
+  struct rational_evaluation< ct_binary_expr<ct_constant<0>,
+                                             op_div<default_numeric_type>,
+                                             ct_constant<value_2>
+                                            >
+                            >
+  {
+    typedef ct_constant<0>             result_type;
+  };
+
+  //resolve ambiguity of specializations for a/1 and 0/b
+  template <>
+  struct rational_evaluation< ct_binary_expr<ct_constant<0>,
+                                             op_div<default_numeric_type>,
+                                             ct_constant<1>
+                                            >
+                            >
+  {
+    typedef ct_constant<0>             result_type;
+  };
+
+  //resolve ambiguity of specializations for a/(-1) and 0/b
+  template <>
+  struct rational_evaluation< ct_binary_expr<ct_constant<0>,
+                                             op_div<default_numeric_type>,
+                                             ct_constant<-1>
+                                            >
+                            >
+  {
+    typedef ct_constant<0>             result_type;
   };
   
   //primitive constant:
@@ -328,13 +408,16 @@ namespace viennamath
 
   //valid arguments:
   template <typename LHS, typename OP, typename RHS, typename VectorType>
-  struct ct_evaluation< ct_expr<LHS, OP, RHS>, VectorType>
+  struct ct_evaluation< ct_binary_expr<LHS, OP, RHS>, VectorType>
   {
-    typedef ct_expr< typename ct_evaluation<LHS, VectorType>::result_type,
-                        OP,
-                        typename ct_evaluation<RHS, VectorType>::result_type >  intermediate_type;
-                        
-    typedef typename rational_evaluation<intermediate_type>::result_type   result_type;                    
+    typedef ct_binary_expr< typename ct_evaluation<LHS, VectorType>::result_type,
+                            OP,
+                            typename ct_evaluation<RHS, VectorType>::result_type >  intermediate_type;
+    
+    // run two rational evaluations in the following (the second ensures a resolution of a/1 and 0/b cases)
+    typedef typename rational_evaluation<intermediate_type>::result_type   result_candidate_type;
+    
+    typedef typename rational_evaluation<result_candidate_type>::result_type   result_type;
     //typedef intermediate_type   result_type; //DEBUG                    
   };
   
@@ -344,7 +427,7 @@ namespace viennamath
     typedef ct_constant<value>    result_type;
   };
   
-  template <unsigned long id, typename VectorType>
+  template <id_type id, typename VectorType>
   struct ct_evaluation< ct_variable<id>, VectorType>
   {
     typedef typename type_by_index<VectorType, id>::result_type  result_type;
@@ -368,7 +451,7 @@ namespace viennamath
   };
   
   template <typename LHS, typename OP, typename RHS>
-  struct is_ct_evaluable< ct_expr<LHS, OP, RHS> >
+  struct is_ct_evaluable< ct_binary_expr<LHS, OP, RHS> >
   {
     enum { return_value = is_ct_evaluable<LHS>::return_value * is_ct_evaluable<RHS>::return_value };
   };
@@ -379,7 +462,7 @@ namespace viennamath
     enum { return_value = 1 };
   };
   
-  template <unsigned long id>
+  template <id_type id>
   struct is_ct_evaluable< ct_variable<id> >
   {
     enum { return_value = 1 };

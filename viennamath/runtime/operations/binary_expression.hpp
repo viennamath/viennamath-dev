@@ -16,7 +16,6 @@
 #define VIENNAMATH_BINARY_EXPRESSION_OPERATIONS_CPP
 
 #include "viennamath/forwards.h"
-#include "viennamath/compiletime/ct_expr.hpp"
 #include "viennamath/runtime/binary_expression.hpp"
 #include "viennamath/runtime/binary_operators.hpp"
 

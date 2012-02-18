@@ -199,7 +199,7 @@ namespace viennamath
   //
   // integral:
   //
-  template <typename IntervalType, unsigned long integration_variable>
+  template <typename IntervalType, id_type integration_variable>
   class op_ct_integral
   {
       typedef typename IntervalType::numeric_type    NumericT;

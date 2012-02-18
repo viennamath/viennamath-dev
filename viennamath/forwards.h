@@ -68,12 +68,16 @@ namespace viennamath
   template <typename LHS,
             typename OP,
             typename RHS>
-  class ct_expr;
+  class ct_binary_expr;
+
+  template <typename LHS,
+            typename OP>
+  class ct_unary_expr;
   
   template <long value_>
   class ct_constant;
 
-  template <unsigned long id = 0>
+  template <id_type id = 0>
   struct ct_variable;
 
   template <typename Tag>
@@ -270,11 +274,17 @@ namespace viennamath
     };
 
     template <typename LHS, typename OP, typename RHS>
-    struct is_viennamath<ct_expr<LHS, OP, RHS> >
+    struct is_viennamath<ct_binary_expr<LHS, OP, RHS> >
     {
       enum { val = true };
     };
 
+    template <typename LHS, typename OP>
+    struct is_viennamath<ct_unary_expr<LHS, OP> >
+    {
+      enum { val = true };
+    };
+    
     template <typename NumericType, typename InterfaceType>
     struct is_viennamath<rt_constant<NumericType, InterfaceType> >
     {
@@ -332,11 +342,16 @@ namespace viennamath
     };
 
     template <typename LHS, typename OP, typename RHS>
-    struct is_compiletime<ct_expr<LHS, OP, RHS> >
+    struct is_compiletime<ct_binary_expr<LHS, OP, RHS> >
     {
       enum { val = true };
     };
 
+    template <typename LHS, typename OP>
+    struct is_compiletime<ct_unary_expr<LHS, OP> >
+    {
+      enum { val = true };
+    };
     
     template <typename LHS, typename RHS>
     struct interface
@@ -416,7 +431,52 @@ namespace viennamath
               bool rhs_is_ct = is_compiletime<RHS>::val>
     struct div;
     
+    
+    // greatest common divisor:
+    template <long a, long b>
+    struct gcd
+    {
+      enum { value = gcd<b, a % b>::value };
+    };
+    
+    template <long a>
+    struct gcd <a, 0>
+    {
+      enum { value = a};
+    };
+
+    template <>
+    struct gcd <0, 0>
+    {
+      enum { value = 1};
+    };
+    
+    
   } //namespace result_of
+  
+  
+    
+  template <typename T>
+  struct expression_traits
+  {
+    typedef T   const_reference_type; 
+  };
+  
+  //for compile time constants, we have to copy in order to circumvent problems with temporaries
+  template <long value>
+  struct expression_traits < ct_constant<value> >
+  {
+     typedef ct_constant<value>    const_reference_type;
+  };
+
+  template <typename T, typename InterfaceType>
+  struct expression_traits < rt_constant<T, InterfaceType> >
+  {
+     typedef rt_constant<T, InterfaceType>    const_reference_type;
+  };
+  
+
+  
   
   template <typename LHS, typename RHS>
   typename enable_if< result_of::is_viennamath<LHS>::val || result_of::is_viennamath<RHS>::val,

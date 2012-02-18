@@ -74,7 +74,7 @@ namespace viennamath
     return rt_equation<InterfaceType>(lhs, rhs); 
   }
 
-  template <unsigned long id>
+  template <id_type id>
   rt_equation<> make_equation(default_numeric_type lhs, ct_variable<id> const & rhs)
   {
     return rt_equation<>(lhs, rhs); 
@@ -113,13 +113,6 @@ namespace viennamath
     return rt_equation<InterfaceType>(lhs, rhs); 
   }
 
-  template <unsigned long id, typename RHSType>
-  rt_equation<> make_equation(ct_variable<id> const & lhs, RHSType const & rhs)
-  {
-    rt_variable<> temp(id);
-    return rt_equation<>(temp, rhs); 
-  }
-
   //function_symbol:
   template <typename InterfaceType, typename RHSType>
   rt_equation<InterfaceType> make_equation(rt_function_symbol<InterfaceType> const & lhs, RHSType const & rhs)
@@ -151,11 +144,34 @@ namespace viennamath
 
   //compile time with run time stuff also possible:
   template <typename LHS, typename OP, typename RHS, typename RHSType>
-  rt_equation<> make_equation(ct_expr<LHS, OP, RHS> const & lhs, RHSType const & rhs)
+  rt_equation<> make_equation(ct_binary_expr<LHS, OP, RHS> const & lhs, RHSType const & rhs)
   {
     return rt_equation<>(lhs, rhs); 
   }
 
+  template <typename LHS, typename OP, typename RHSType>
+  rt_equation<> make_equation(ct_unary_expr<LHS, OP> const & lhs, RHSType const & rhs)
+  {
+    return rt_equation<>(lhs, rhs); 
+  }
+
+  template <long val, typename RHSType>
+  rt_equation<> make_equation(ct_constant<val> const & lhs, RHSType const & rhs)
+  {
+    return rt_equation<>(lhs, rhs); 
+  }
+
+  template <typename TAG, typename RHSType>
+  rt_equation<> make_equation(ct_function_symbol<TAG> const & lhs, RHSType const & rhs)
+  {
+    return rt_equation<>(lhs, rhs); 
+  }
+
+  template <id_type id, typename RHSType>
+  rt_equation<> make_equation(ct_variable<id> const & lhs, RHSType const & rhs)
+  {
+    return rt_equation<>(lhs, rhs); 
+  }
   
 }
 

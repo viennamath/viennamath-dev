@@ -34,57 +34,147 @@ namespace viennamath
   
   //
   // compile time 
-  // [expression, ct_constant, variable] for each argument -> 9 overloads
+  // [binary expression, unary expression, constant, function symbol, variable] for each argument -> 25 overloads
   //
   
-  
-  //first argument: expression
+  //
+  //first argument: binary expression
   template <typename LHS1, typename OP1, typename RHS1,
             typename LHS2, typename OP2, typename RHS2>
-  ct_interval<ct_expr<LHS1, OP1, RHS1>,
-              ct_expr<LHS2, OP2, RHS2> > 
-  make_interval(ct_expr<LHS1, OP1, RHS1> const & lhs,
-                ct_expr<LHS2, OP2, RHS2> const & rhs)
+  ct_interval<ct_binary_expr<LHS1, OP1, RHS1>,
+              ct_binary_expr<LHS2, OP2, RHS2> > 
+  make_interval(ct_binary_expr<LHS1, OP1, RHS1> const & lhs,
+                ct_binary_expr<LHS2, OP2, RHS2> const & rhs)
   {
-    return ct_interval<ct_expr<LHS1, OP1, RHS1>,
-                       ct_expr<LHS2, OP2, RHS2> >(); 
+    return ct_interval<ct_binary_expr<LHS1, OP1, RHS1>,
+                       ct_binary_expr<LHS2, OP2, RHS2> >(); 
+  }
+  
+  template <typename LHS1, typename OP1, typename RHS1,
+            typename LHS2, typename OP2>
+  ct_interval<ct_binary_expr<LHS1, OP1, RHS1>,
+              ct_unary_expr<LHS2, OP2> > 
+  make_interval(ct_binary_expr<LHS1, OP1, RHS1> const & lhs,
+                ct_unary_expr<LHS2, OP2> const & rhs)
+  {
+    return ct_interval<ct_binary_expr<LHS1, OP1, RHS1>,
+                       ct_unary_expr<LHS2, OP2> >(); 
   }
   
   template <typename LHS1, typename OP1, typename RHS1,
             long value>
-  ct_interval<ct_expr<LHS1, OP1, RHS1>,
+  ct_interval<ct_binary_expr<LHS1, OP1, RHS1>,
               ct_constant<value> > 
-  make_interval(ct_expr<LHS1, OP1, RHS1> const & lhs,
+  make_interval(ct_binary_expr<LHS1, OP1, RHS1> const & lhs,
                 ct_constant<value> const & rhs)
   {
-    return ct_interval<ct_expr<LHS1, OP1, RHS1>,
+    return ct_interval<ct_binary_expr<LHS1, OP1, RHS1>,
                        ct_constant<value> >(); 
   }
 
   template <typename LHS1, typename OP1, typename RHS1,
-            unsigned long id>
-  ct_interval<ct_expr<LHS1, OP1, RHS1>,
+            typename TAG>
+  ct_interval<ct_binary_expr<LHS1, OP1, RHS1>,
+              ct_function_symbol<TAG> > 
+  make_interval(ct_binary_expr<LHS1, OP1, RHS1> const & lhs,
+                ct_function_symbol<TAG> const & rhs)
+  {
+    return ct_interval<ct_binary_expr<LHS1, OP1, RHS1>,
+                       ct_function_symbol<TAG> >(); 
+  }
+
+  template <typename LHS1, typename OP1, typename RHS1,
+            id_type id>
+  ct_interval<ct_binary_expr<LHS1, OP1, RHS1>,
               ct_variable<id> > 
-  make_interval(ct_expr<LHS1, OP1, RHS1> const & lhs,
+  make_interval(ct_binary_expr<LHS1, OP1, RHS1> const & lhs,
                 ct_variable<id> const & rhs)
   {
-    return ct_interval<ct_expr<LHS1, OP1, RHS1>,
+    return ct_interval<ct_binary_expr<LHS1, OP1, RHS1>,
                        ct_variable<id> >(); 
   }
 
 
+  //
+  //first argument: unary expression
+  template <typename LHS1, typename OP1,
+            typename LHS2, typename OP2, typename RHS2>
+  ct_interval<ct_unary_expr<LHS1, OP1>,
+              ct_binary_expr<LHS2, OP2, RHS2> > 
+  make_interval(ct_unary_expr<LHS1, OP1> const & lhs,
+                ct_binary_expr<LHS2, OP2, RHS2> const & rhs)
+  {
+    return ct_interval<ct_unary_expr<LHS1, OP1>,
+                       ct_binary_expr<LHS2, OP2, RHS2> >(); 
+  }
+
+  template <typename LHS1, typename OP1,
+            typename LHS2, typename OP2>
+  ct_interval<ct_unary_expr<LHS1, OP1>,
+              ct_unary_expr<LHS2, OP2> > 
+  make_interval(ct_unary_expr<LHS1, OP1> const & lhs,
+                ct_unary_expr<LHS2, OP2> const & rhs)
+  {
+    return ct_interval<ct_unary_expr<LHS1, OP1>,
+                       ct_unary_expr<LHS2, OP2> >(); 
+  }
+
+  template <typename LHS1, typename OP1,
+            long value>
+  ct_interval<ct_unary_expr<LHS1, OP1>,
+              ct_constant<value> > 
+  make_interval(ct_unary_expr<LHS1, OP1> const & lhs,
+                ct_constant<value> const & rhs)
+  {
+    return ct_interval<ct_unary_expr<LHS1, OP1>,
+                       ct_constant<value> >(); 
+  }
+
+  template <typename LHS1, typename OP1,
+            typename TAG>
+  ct_interval<ct_unary_expr<LHS1, OP1>,
+              ct_function_symbol<TAG> >
+  make_interval(ct_unary_expr<LHS1, OP1> const & lhs,
+                ct_function_symbol<TAG> const & rhs)
+  {
+    return ct_interval<ct_unary_expr<LHS1, OP1>,
+                       ct_function_symbol<TAG> >(); 
+  }
+
+  template <typename LHS1, typename OP1,
+            id_type id>
+  ct_interval<ct_unary_expr<LHS1, OP1>,
+              ct_variable<id> > 
+  make_interval(ct_unary_expr<LHS1, OP1> const & lhs,
+                ct_variable<id> const & rhs)
+  {
+    return ct_interval<ct_unary_expr<LHS1, OP1>,
+                       ct_variable<id> >(); 
+  }
 
 
+  //
   //first argument: ct_constant
   template <long value1,
             typename LHS2, typename OP2, typename RHS2>
   ct_interval<ct_constant<value1>,
-              ct_expr<LHS2, OP2, RHS2> > 
+              ct_binary_expr<LHS2, OP2, RHS2> > 
   make_interval(ct_constant<value1> const & lhs,
-                ct_expr<LHS2, OP2, RHS2> const & rhs)
+                ct_binary_expr<LHS2, OP2, RHS2> const & rhs)
   {
     return ct_interval<ct_constant<value1>,
-                       ct_expr<LHS2, OP2, RHS2> >(); 
+                       ct_binary_expr<LHS2, OP2, RHS2> >(); 
+  }
+
+  template <long value1,
+            typename LHS2, typename OP2>
+  ct_interval<ct_constant<value1>,
+              ct_unary_expr<LHS2, OP2> > 
+  make_interval(ct_constant<value1> const & lhs,
+                ct_unary_expr<LHS2, OP2> const & rhs)
+  {
+    return ct_interval<ct_constant<value1>,
+                       ct_unary_expr<LHS2, OP2> >(); 
   }
   
   template <long value1,
@@ -99,7 +189,19 @@ namespace viennamath
   }
 
   template <long value1,
-            unsigned long id>
+            typename TAG>
+  ct_interval<ct_constant<value1>,
+              ct_function_symbol<TAG> > 
+  make_interval(ct_constant<value1> const & lhs,
+                ct_function_symbol<TAG> const & rhs)
+  {
+    return ct_interval<ct_constant<value1>,
+                       ct_function_symbol<TAG> >(); 
+  }
+
+
+  template <long value1,
+            id_type id>
   ct_interval<ct_constant<value1>,
               ct_variable<id> > 
   make_interval(ct_constant<value1> const & lhs,
@@ -109,20 +211,90 @@ namespace viennamath
                        ct_variable<id> >(); 
   }
 
-  
+
+  //
+  //first argument: function symbol
+  template <typename TAG,
+            typename LHS2, typename OP2, typename RHS2>
+  ct_interval<ct_function_symbol<TAG>,
+              ct_binary_expr<LHS2, OP2, RHS2> > 
+  make_interval(ct_function_symbol<TAG> const & lhs,
+                ct_binary_expr<LHS2, OP2, RHS2> const & rhs)
+  {
+    return ct_interval<ct_function_symbol<TAG>,
+                       ct_binary_expr<LHS2, OP2, RHS2> >(); 
+  }
+
+  template <typename TAG,
+            typename LHS2, typename OP2>
+  ct_interval<ct_function_symbol<TAG>,
+              ct_unary_expr<LHS2, OP2> > 
+  make_interval(ct_function_symbol<TAG> const & lhs,
+                ct_unary_expr<LHS2, OP2> const & rhs)
+  {
+    return ct_interval<ct_function_symbol<TAG>,
+                       ct_unary_expr<LHS2, OP2> >(); 
+  }
+
+  template <typename TAG,
+            long value>
+  ct_interval<ct_function_symbol<TAG>,
+              ct_constant<value> > 
+  make_interval(ct_function_symbol<TAG> const & lhs,
+                ct_constant<value> const & rhs)
+  {
+    return ct_interval<ct_function_symbol<TAG>,
+                       ct_constant<value> >(); 
+  }
+
+  template <typename TAG1,
+            typename TAG2>
+  ct_interval<ct_function_symbol<TAG1>,
+              ct_function_symbol<TAG2> >
+  make_interval(ct_function_symbol<TAG1> const & lhs,
+                ct_function_symbol<TAG2> const & rhs)
+  {
+    return ct_interval<ct_function_symbol<TAG1>,
+                       ct_function_symbol<TAG2> >(); 
+  }
+
+  template <typename TAG,
+            id_type id>
+  ct_interval<ct_function_symbol<TAG>,
+              ct_variable<id> > 
+  make_interval(ct_function_symbol<TAG> const & lhs,
+                ct_variable<id> const & rhs)
+  {
+    return ct_interval<ct_function_symbol<TAG>,
+                       ct_variable<id> >(); 
+  }
+
+
+  //
   //first argument: variable
-  template <unsigned long id1,
+  template <id_type id1,
             typename LHS2, typename OP2, typename RHS2>
   ct_interval<ct_variable<id1>,
-              ct_expr<LHS2, OP2, RHS2> > 
+              ct_binary_expr<LHS2, OP2, RHS2> > 
   make_interval(ct_variable<id1> const & lhs,
-                ct_expr<LHS2, OP2, RHS2> const & rhs)
+                ct_binary_expr<LHS2, OP2, RHS2> const & rhs)
   {
     return ct_interval<ct_variable<id1>,
-                       ct_expr<LHS2, OP2, RHS2> >(); 
+                       ct_binary_expr<LHS2, OP2, RHS2> >(); 
   }
   
-  template <unsigned long id1,
+  template <id_type id1,
+            typename LHS2, typename OP2>
+  ct_interval<ct_variable<id1>,
+              ct_unary_expr<LHS2, OP2> > 
+  make_interval(ct_variable<id1> const & lhs,
+                ct_unary_expr<LHS2, OP2> const & rhs)
+  {
+    return ct_interval<ct_variable<id1>,
+                       ct_unary_expr<LHS2, OP2> >(); 
+  }
+  
+  template <id_type id1,
             long value2>
   ct_interval<ct_variable<id1>,
               ct_constant<value2> > 
@@ -133,8 +305,20 @@ namespace viennamath
                        ct_constant<value2> >(); 
   }
 
-  template <unsigned long id1,
-            unsigned long id2>
+  template <id_type id1,
+            typename TAG>
+  ct_interval<ct_variable<id1>,
+              ct_function_symbol<TAG> > 
+  make_interval(ct_variable<id1> const & lhs,
+                ct_function_symbol<TAG> const & rhs)
+  {
+    return ct_interval<ct_variable<id1>,
+                       ct_function_symbol<TAG> >(); 
+  }
+
+
+  template <id_type id1,
+            id_type id2>
   ct_interval<ct_variable<id1>,
               ct_variable<id2> > 
   make_interval(ct_variable<id1> const & lhs,

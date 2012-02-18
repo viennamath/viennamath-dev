@@ -21,7 +21,7 @@
 #include <memory>
 #include "viennamath/forwards.h"
 #include "viennamath/compiletime/unary_op_tags.hpp"
-#include "viennamath/compiletime/ct_expr.hpp"
+#include "viennamath/compiletime/ct_unary_expr.hpp"
 #include "viennamath/runtime/constant.hpp"
 #include "viennamath/runtime/op_interface.hpp"
 #include "viennamath/runtime/expression_interface.hpp"
@@ -60,7 +60,7 @@ namespace viennamath
       }*/
 
       template <typename LHS, typename OP, typename RHS>
-      explicit rt_unary_expr(ct_expr<LHS, OP, RHS> const & other) : op_(new OP())
+      explicit rt_unary_expr(ct_unary_expr<LHS, OP> const & other) : op_(new OP())
       {
         std::cout << "Constructing from expression " << other << std::endl;
         expr_ = std::auto_ptr<InterfaceType>(other.lhs().clone());
@@ -82,8 +82,8 @@ namespace viennamath
                                              op_(other.op_->clone()) {};
 
       //assignments:                           
-      template <typename LHS, typename OP, typename RHS>
-      rt_unary_expr & operator=(ct_expr<LHS, OP, RHS> const & other) 
+      template <typename LHS, typename OP>
+      rt_unary_expr & operator=(ct_unary_expr<LHS, OP> const & other) 
       {
         expr_ = std::auto_ptr<InterfaceType>(other.lhs().clone());
         op_ = std::auto_ptr<op_interface_type>(new OP());

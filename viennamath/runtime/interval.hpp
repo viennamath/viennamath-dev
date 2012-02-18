@@ -92,7 +92,7 @@ namespace viennamath
     return rt_interval<InterfaceType>(lhs, rhs); 
   }
 
-  template <unsigned long id>
+  template <id_type id>
   rt_interval<> make_interval(default_numeric_type lhs, ct_variable<id> const & rhs)
   {
     return rt_interval<>(lhs, rhs); 
@@ -131,7 +131,7 @@ namespace viennamath
     return rt_interval<InterfaceType>(lhs, rhs); 
   }
 
-  template <unsigned long id, typename RHSType>
+  template <id_type id, typename RHSType>
   rt_interval<> make_interval(ct_variable<id> const & lhs, RHSType const & rhs)
   {
     rt_variable<> temp(id);
@@ -169,11 +169,39 @@ namespace viennamath
 
   //compile time with run time stuff also possible:
   template <typename LHS, typename OP, typename RHS, typename RHSType>
-  rt_interval<> make_interval(ct_expr<LHS, OP, RHS> const & lhs, RHSType const & rhs)
+  rt_interval<typename RHSType::interface_type>
+  make_interval(ct_binary_expr<LHS, OP, RHS> const & lhs, RHSType const & rhs)
   {
-    return rt_interval<>(lhs, rhs); 
+    return rt_interval<typename RHSType::interface_type>(lhs, rhs); 
   }
 
+  template <typename LHS, typename OP, typename RHSType>
+  rt_interval<typename RHSType::interface_type>
+  make_interval(ct_unary_expr<LHS, OP> const & lhs, RHSType const & rhs)
+  {
+    return rt_interval<typename RHSType::interface_type>(lhs, rhs); 
+  }
+
+  template <long val, typename RHSType>
+  rt_interval<typename RHSType::interface_type>
+  make_interval(ct_constant<val> const & lhs, RHSType const & rhs)
+  {
+    return rt_interval<typename RHSType::interface_type>(lhs, rhs); 
+  }
+
+  template <typename TAG, typename RHSType>
+  rt_interval<typename RHSType::interface_type>
+  make_interval(ct_function_symbol<TAG> const & lhs, RHSType const & rhs)
+  {
+    return rt_interval<typename RHSType::interface_type>(lhs, rhs); 
+  }
+
+  template <id_type id, typename RHSType>
+  rt_interval<typename RHSType::interface_type>
+  make_interval(ct_variable<id> const & lhs, RHSType const & rhs)
+  {
+    return rt_interval<typename RHSType::interface_type>(lhs, rhs); 
+  }
   
 }
 

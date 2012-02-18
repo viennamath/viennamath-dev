@@ -141,7 +141,7 @@ namespace viennamath
    * @tparam ScalarType        the underlying numerical type (typically float, double)
    * @tparam id                the component of the vector for which 'variable' is evaluated
    */
-  template <unsigned long id /* see forwards.h for default argument */>
+  template <id_type id /* see forwards.h for default argument */>
   struct ct_variable
   {
     typedef default_numeric_type   numeric_type;
@@ -187,7 +187,7 @@ namespace viennamath
     
   }; //variable
 
-  template <unsigned long id>
+  template <id_type id>
   std::ostream& operator<<(std::ostream & stream, ct_variable<id> const & u)
   {
     stream << "ct_variable<" << id << ">";

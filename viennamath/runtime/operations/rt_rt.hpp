@@ -52,7 +52,10 @@ namespace viennamath
     InterfaceType * clone(rt_expr<InterfaceType> const & e) { return e.get()->clone(); }    
 
     template <typename InterfaceType, typename LHS, typename OP, typename RHS>
-    InterfaceType * clone(ct_expr<LHS, OP, RHS> const & e) { return new rt_binary_expr<InterfaceType>(e); } 
+    InterfaceType * clone(ct_binary_expr<LHS, OP, RHS> const & e) { return new rt_binary_expr<InterfaceType>(e); } 
+
+    template <typename InterfaceType, typename LHS, typename OP>
+    InterfaceType * clone(ct_unary_expr<LHS, OP> const & e) { return new rt_unary_expr<InterfaceType>(e); } 
 
   }
   

@@ -31,12 +31,12 @@ namespace viennamath
       typedef InterfaceType                           interface_type;
       typedef typename InterfaceType::numeric_type    numeric_type;
       
-      rt_symbolic_interval(unsigned long interval_id = 0) : id_(interval_id) {}
+      rt_symbolic_interval(id_type interval_id = 0) : id_(interval_id) {}
       
-      unsigned long id() const { return id_; }
+      id_type id() const { return id_; }
       
     private:
-      unsigned long id_;      
+      id_type id_;      
   };
 
   template <typename InterfaceType>

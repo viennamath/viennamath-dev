@@ -12,8 +12,8 @@
 
 
 
-#ifndef VIENNAMATH_EXPR_HPP
-#define VIENNAMATH_EXPR_HPP
+#ifndef VIENNAMATH_RUNTIME_EXPR_HPP
+#define VIENNAMATH_RUNTIME_EXPR_HPP
 
 #include <ostream>
 #include <sstream>
@@ -21,7 +21,8 @@
 #include "viennamath/forwards.h"
 #include "viennamath/runtime/constant.hpp"
 #include "viennamath/compiletime/ct_constant.hpp"
-#include "viennamath/compiletime/ct_expr.hpp"
+#include "viennamath/compiletime/ct_binary_expr.hpp"
+#include "viennamath/compiletime/ct_unary_expr.hpp"
 
 namespace viennamath
 {
@@ -52,9 +53,15 @@ namespace viennamath
       }
 
       template <typename LHS, typename OP, typename RHS>
-      rt_expr(ct_expr<LHS, OP, RHS> const & other)
+      rt_expr(ct_binary_expr<LHS, OP, RHS> const & other)
       {
         rt_expr_ = std::auto_ptr<InterfaceType>(new rt_binary_expr<InterfaceType>(other));
+      }
+
+      template <typename LHS, typename OP>
+      rt_expr(ct_unary_expr<LHS, OP> const & other)
+      {
+        rt_expr_ = std::auto_ptr<InterfaceType>(new rt_unary_expr<InterfaceType>(other));
       }
 
       rt_expr<InterfaceType>(rt_variable<InterfaceType> const & other)
@@ -62,7 +69,7 @@ namespace viennamath
         rt_expr_ = std::auto_ptr<InterfaceType>(other.clone());
       }
 
-      template <unsigned long id>
+      template <id_type id>
       rt_expr<InterfaceType>(ct_variable<id> const & other)
       {
         rt_expr_ = std::auto_ptr<InterfaceType>(new rt_variable<InterfaceType>(id));
@@ -102,7 +109,9 @@ namespace viennamath
         rt_expr_ = std::auto_ptr<InterfaceType>(other.get()->clone());
       }
 
-      //assignments:    
+      //
+      // assignments:    
+      //
       rt_expr & operator=(InterfaceType * other)
       {
         rt_expr_ = std::auto_ptr<InterfaceType>(other);
@@ -116,9 +125,16 @@ namespace viennamath
       }
       
       template <typename LHS, typename OP, typename RHS>
-      rt_expr & operator=(ct_expr<LHS, OP, RHS> const & other)
+      rt_expr & operator=(ct_binary_expr<LHS, OP, RHS> const & other)
       {
         rt_expr_ = std::auto_ptr<InterfaceType>(new rt_binary_expr<InterfaceType>(other));
+        return *this;
+      }
+
+      template <typename LHS, typename OP>
+      rt_expr & operator=(ct_unary_expr<LHS, OP> const & other)
+      {
+        rt_expr_ = std::auto_ptr<InterfaceType>(new rt_unary_expr<InterfaceType>(other));
         return *this;
       }
 
@@ -133,6 +149,14 @@ namespace viennamath
         rt_expr_ = std::auto_ptr<InterfaceType>(other.clone());
         return *this;
       }
+
+      template <id_type id>
+      rt_expr & operator=(ct_variable<id> const & other)
+      {
+        rt_expr_ = std::auto_ptr<InterfaceType>(new rt_constant<InterfaceType>(id));
+        return *this;
+      }
+
 
       template <typename ScalarType>
       rt_expr & operator=(rt_constant<ScalarType, InterfaceType> const & other)

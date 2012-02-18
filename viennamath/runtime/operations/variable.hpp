@@ -18,7 +18,6 @@
 #include "viennamath/runtime/constant.hpp"
 #include "viennamath/compiletime/ct_vector.hpp"
 #include "viennamath/runtime/binary_expression.hpp"
-#include "viennamath/compiletime/ct_expr.hpp"
 #include "viennamath/runtime/variable.hpp"
 
 #include <assert.h>

@@ -390,7 +390,7 @@ namespace viennamath
       {
         std::stringstream ss;
 
-        std::map<unsigned long, std::string>::const_iterator it = variable_strings_.find(e.id());
+        std::map<id_type, std::string>::const_iterator it = variable_strings_.find(e.id());
         if (it != variable_strings_.end())
           ss << it->second;
         else
@@ -399,7 +399,7 @@ namespace viennamath
         return ss.str();        
       }      
       
-      std::map<unsigned long, std::string>                            variable_strings_;
+      std::map<id_type, std::string>                            variable_strings_;
   }; 
 
   //
@@ -410,7 +410,7 @@ namespace viennamath
   {
       typedef typename InterfaceType::numeric_type              NumericType;
       typedef viennamath::rt_function_symbol<InterfaceType>     FuncSymbol;
-      typedef std::pair<unsigned long, unsigned long>           KeyType;
+      typedef std::pair<id_type, id_type>           KeyType;
     
     public:
       

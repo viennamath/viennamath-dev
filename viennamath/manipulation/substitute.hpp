@@ -26,7 +26,108 @@ namespace viennamath
   //   Section 1: Compile time substitution
   //
   
-  //TODO: compile time substitution
+  namespace result_of
+  {
+    template <typename SearchType,
+              typename ReplacementType,
+              typename ExpressionType>
+    struct substitute {};  //Note: not having a default type defined serves as SFINAE for viennamath::substitute() as well (no runtime types allowed)
+    
+    //
+    // generic handling of primitives
+    //
+    template <typename SearchType,
+              typename ReplacementType,
+              typename LHS, typename OP, typename RHS>
+    struct substitute <SearchType, ReplacementType, ct_binary_expr<LHS, OP, RHS> >
+    {
+      typedef ct_binary_expr< typename substitute<SearchType, ReplacementType, LHS>::type,
+                              OP,
+                              typename substitute<SearchType, ReplacementType, RHS>::type >   type;
+    };
+
+    template <typename SearchType,
+              typename ReplacementType,
+              typename LHS, typename OP>
+    struct substitute <SearchType, ReplacementType, ct_unary_expr<LHS, OP> >
+    {
+      typedef ct_unary_expr< typename substitute<SearchType, ReplacementType, LHS>::type,
+                             OP >   type;
+    };
+
+    template <typename SearchType,
+              typename ReplacementType,
+              long value>
+    struct substitute <SearchType, ReplacementType, ct_constant<value> >
+    {
+      typedef ct_constant<value>   type;
+    };
+    
+    template <typename SearchType,
+              typename ReplacementType,
+              typename TAG>
+    struct substitute <SearchType, ReplacementType, ct_function_symbol<TAG> >
+    {
+      typedef ct_function_symbol<TAG>   type;
+    };
+    
+    template <typename SearchType,
+              typename ReplacementType,
+              id_type id>
+    struct substitute <SearchType, ReplacementType, ct_variable<id> >
+    {
+      typedef ct_variable<id>   type;
+    };
+    
+    //
+    // replacement specializations
+    //
+    template <typename ReplacementType,
+              typename LHS, typename OP, typename RHS>
+    struct substitute <ct_binary_expr<LHS, OP, RHS>, ReplacementType, ct_binary_expr<LHS, OP, RHS> >
+    {
+      typedef ReplacementType   type;
+    };
+
+    template <typename ReplacementType,
+              typename LHS, typename OP>
+    struct substitute <ct_unary_expr<LHS, OP>, ReplacementType, ct_unary_expr<LHS, OP> >
+    {
+      typedef ReplacementType   type;
+    };
+
+    template <typename ReplacementType,
+              long value>
+    struct substitute <ct_constant<value>, ReplacementType, ct_constant<value> >
+    {
+      typedef ReplacementType   type;
+    };
+    
+    template <typename ReplacementType,
+              typename TAG>
+    struct substitute <ct_function_symbol<TAG>, ReplacementType, ct_function_symbol<TAG> >
+    {
+      typedef ReplacementType   type;
+    };
+    
+    template <typename ReplacementType,
+              id_type id>
+    struct substitute <ct_variable<id>, ReplacementType, ct_variable<id> >
+    {
+      typedef ReplacementType   type;
+    };
+    
+  }
+  
+  // interface:
+  template <typename SearchType,
+            typename ReplacementType,
+            typename ExpressionType>
+  typename result_of::substitute< SearchType, ReplacementType, ExpressionType>::type
+  substitute(SearchType const &, ReplacementType const &, ExpressionType const & ex)
+  {
+    return typename result_of::substitute< SearchType, ReplacementType, ExpressionType>::type();
+  }
   
   
   
