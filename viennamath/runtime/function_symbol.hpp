@@ -114,10 +114,10 @@ namespace viennamath
 
   
   
-  template <typename Tag, typename InterfaceType>
+  template <typename InterfaceType>
   std::ostream& operator<<(std::ostream & stream, rt_function_symbol<InterfaceType> const & v)
   {
-    stream << v.str();
+    stream << v.deep_str();
     return stream;
   }
   

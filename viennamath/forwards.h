@@ -227,6 +227,28 @@ namespace viennamath
   class op_rt_symbolic_integral;
   
 
+  //
+  // LaTeX processing
+  //
+  template <typename InterfaceType = default_interface_type>
+  class rt_latex_translator;
+  
+  template <typename InterfaceType = default_interface_type>
+  class rt_latex_binary_expr_processor;
+
+  template <typename InterfaceType = default_interface_type>
+  class rt_latex_unary_expr_processor;
+
+  template <typename InterfaceType = default_interface_type>
+  class rt_latex_constant_processor;
+
+  template <typename InterfaceType = default_interface_type>
+  class rt_latex_variable_processor;
+
+  template <typename InterfaceType = default_interface_type>
+  class rt_latex_function_symbol_processor;
+
+
   namespace result_of
   {
     template <typename T>
