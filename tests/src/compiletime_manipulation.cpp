@@ -10,9 +10,12 @@
 #include "viennamath/manipulation/substitute.hpp"
 #include "viennamath/manipulation/diff.hpp"
 #include "viennamath/manipulation/expand.hpp"
+#include "viennamath/manipulation/coefficient.hpp"
+#include "viennamath/manipulation/drop_dependent_terms.hpp"
 
 
 #include "viennamath/compiletime/ct_eval.hpp"
+
 
 int main()
 {
@@ -68,7 +71,19 @@ int main()
                 viennamath::expand( (c1 - x) * (c1 - y) * (c1 - z) ),
                 viennamath::make_vector(c1, c2, c5)
               ) << std::endl;
+
               
+  std::cout << "Extracting coefficients from (1-x)*(1-y)*(1-z):" << std::endl;
+  std::cout << "x: " << viennamath::coefficient(x, (c1 - x) * (c1 - y) * (c1 - z) ) << std::endl;
+  std::cout << "y: " << viennamath::coefficient(y, (c1 - x) * (c1 - y) * (c1 - z) ) << std::endl;
+  std::cout << "z: " << viennamath::coefficient(z, (c1 - x) * (c1 - y) * (c1 - z) ) << std::endl;
+
+  std::cout << "Dropping coefficients from (1-x)*(1-y)*(1-z):" << std::endl;
+  std::cout << "Drop x-terms: " << viennamath::drop_dependent_terms(x, (c1 - x) * (c1 - y) * (c1 - z) ) << std::endl;
+  std::cout << "Drop y-terms: " << viennamath::drop_dependent_terms(y, (c1 - x) * (c1 - y) * (c1 - z) ) << std::endl;
+  std::cout << "Drop z-terms: " << viennamath::drop_dependent_terms(z, (c1 - x) * (c1 - y) * (c1 - z) ) << std::endl;
+              
+  
   std::cout << "************************************************" << std::endl;
   std::cout << "*****     TEST COMPLETED SUCCESSFULLY!     *****" << std::endl;
   std::cout << "************************************************" << std::endl;
