@@ -20,6 +20,7 @@
 
 namespace viennamath
 {
+  
   //compile time vector with one element
   template <typename T0>
   class ct_vector_1

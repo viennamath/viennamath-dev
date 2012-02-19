@@ -12,9 +12,8 @@
 #include "viennamath/manipulation/expand.hpp"
 #include "viennamath/manipulation/coefficient.hpp"
 #include "viennamath/manipulation/drop_dependent_terms.hpp"
+#include "viennamath/manipulation/integrate.hpp"
 
-
-#include "viennamath/compiletime/ct_eval.hpp"
 
 
 int main()
@@ -41,20 +40,20 @@ int main()
 
   std::cout << "Differentiate (1-x-y)xy with respect to x and evaluate the result at (1,2,5):" << std::endl;
   std::cout << viennamath::diff((c1 - x - y) * x * y, x) << std::endl;
-  std::cout << viennamath::ct_eval( 
+  /*std::cout << viennamath::ct_eval( 
                   viennamath::diff((c1 - x - y) * x * y, x),
                   viennamath::make_vector(c1, c2, c5)
-               ) << std::endl;
+               ) << std::endl;*/
   std::cout << viennamath::eval( 
                   viennamath::diff((c1 - x - y) * x * y, x),
                   viennamath::make_vector(c1, c2, c5)
                ) << std::endl;
                
   std::cout << "Evaluation test of super-complicated expression:" << std::endl;
-  std::cout << viennamath::ct_eval( 
+  /*std::cout << viennamath::ct_eval( 
                 viennamath::diff((c1 - x - y/x) * x * y / (c2 - y / (x + y)) * (x + y) / (z+x), x) - c1 / (c2  + c2),
                 viennamath::make_vector(c1, c2, c5)
-              ) << std::endl;
+              ) << std::endl;*/
   std::cout << viennamath::eval( 
                 viennamath::diff((c1 - x - y/x) * x * y / (c2 - y / (x + y)) * (x + y) / (z+x), x) - c1 / (c2  + c2),
                 viennamath::make_vector(c1, c2, c5)
@@ -83,7 +82,81 @@ int main()
   std::cout << "Drop y-terms: " << viennamath::drop_dependent_terms(y, (c1 - x) * (c1 - y) * (c1 - z) ) << std::endl;
   std::cout << "Drop z-terms: " << viennamath::drop_dependent_terms(z, (c1 - x) * (c1 - y) * (c1 - z) ) << std::endl;
               
+
+  std::cout << "Integrate x*y:" << std::endl;
+  std::cout << "with respect to x on [0,1]: " << viennamath::integrate( viennamath::make_interval(c0, c1),
+                                                                        x*y,
+                                                                        x) << std::endl;
+  std::cout << "with respect to y on [0,1]: " << viennamath::integrate( viennamath::make_interval(c0, c1),
+                                                                        x*y,
+                                                                        y) << std::endl;
   
+  std::cout << "Integrate (1-x)*(1-y)*x*y: " << std::endl;
+  
+  std::cout << "with respect to x on [0,1]: " << viennamath::integrate( viennamath::make_interval(c0, c1),
+                                                                         (c1-x)*(c1-y)*x*y,
+                                                                         x) << std::endl;
+  std::cout << "with respect to y on [0,1]: " << viennamath::integrate( viennamath::make_interval(c0, c1),
+                                                                         (c1-x)*(c1-y)*x*y,
+                                                                         y) << std::endl;
+                                                                         
+                                                                         
+  std::cout << "Integration on unit triangle:" << std::endl;     
+  std::cout << "1: " << viennamath::integrate( viennamath::make_interval(c0, c1),
+                                               viennamath::integrate( viennamath::make_interval(c0, c1 - x),
+                                                                      c1,
+                                                                      y),
+                                               x) << std::endl;
+  //linear
+  std::cout << "x: " << viennamath::integrate( viennamath::make_interval(c0, c1),
+                                               viennamath::integrate( viennamath::make_interval(c0, c1 - x),
+                                                                      x,
+                                                                      y),
+                                               x) << std::endl;
+  std::cout << "y: " << viennamath::integrate( viennamath::make_interval(c0, c1),
+                                               viennamath::integrate( viennamath::make_interval(c0, c1 - x),
+                                                                      y,
+                                                                      y),
+                                               x) << std::endl;
+  std::cout << "1-x-y: " << viennamath::integrate( viennamath::make_interval(c0, c1),
+                                                   viennamath::integrate( viennamath::make_interval(c0, c1 - x),
+                                                                          c1 - x - y,
+                                                                          y),
+                                                    x) << std::endl;
+
+  //quadratic:                                                    
+  std::cout << "x^2: " << viennamath::integrate( viennamath::make_interval(c0, c1),
+                                                 viennamath::integrate( viennamath::make_interval(c0, c1 - x),
+                                                                        x*x,
+                                                                        y),
+                                                 x) << std::endl;
+  std::cout << "y^2: " << viennamath::integrate( viennamath::make_interval(c0, c1),
+                                                 viennamath::integrate( viennamath::make_interval(c0, c1 - x),
+                                                                        y*y,
+                                                                        y),
+                                                 x) << std::endl;
+                                               
+  std::cout << "(1-x-y)^2: " << viennamath::integrate( viennamath::make_interval(c0, c1),
+                                                       viennamath::integrate( viennamath::make_interval(c0, c1 - x),
+                                                                              (c1 - x - y) * (c1 - x - y),
+                                                                              y),
+                                                       x) << std::endl;
+  std::cout << "x*y: " << viennamath::integrate( viennamath::make_interval(c0, c1),
+                                                 viennamath::integrate( viennamath::make_interval(c0, c1 - x),
+                                                                        x*y,
+                                                                        y),
+                                                 x) << std::endl;
+  std::cout << "x*(1-x-y): " << viennamath::integrate( viennamath::make_interval(c0, c1),
+                                                       viennamath::integrate( viennamath::make_interval(c0, c1 - x),
+                                                                              x*(c1 - x - y),
+                                                                              y),
+                                                       x) << std::endl;
+  std::cout << "y*(1-x-y): " << viennamath::integrate( viennamath::make_interval(c0, c1),
+                                                       viennamath::integrate( viennamath::make_interval(c0, c1 - x),
+                                                                              y*(c1 - x - y),
+                                                                              y),
+                                                       x) << std::endl;
+                                                    
   std::cout << "************************************************" << std::endl;
   std::cout << "*****     TEST COMPLETED SUCCESSFULLY!     *****" << std::endl;
   std::cout << "************************************************" << std::endl;

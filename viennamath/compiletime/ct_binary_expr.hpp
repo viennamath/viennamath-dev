@@ -18,7 +18,6 @@
 #include <ostream>
 #include "viennamath/forwards.h"
 #include "viennamath/compiletime/binary_op_tags.hpp"
-#include "viennamath/compiletime/ct_eval.hpp"
 
 namespace viennamath
 {
@@ -52,15 +51,7 @@ namespace viennamath
         //std::cout << "ct_expr::operator()" << std::endl;
         return OP::apply(static_cast<numeric_type>(lhs_(v)), static_cast<numeric_type>(rhs_(v)));
       }
-      
-      template <long a>
-      numeric_type operator()(ct_vector_1< ct_constant<a> > const & v) const
-      {
-        return typename ct_evaluation< ct_binary_expr<LHS, OP, RHS>,
-                                       ct_vector_1< ct_constant<a> >
-                                     >::result_type();
-      }
-      
+
     private:
       internal_lhs_type lhs_;
       internal_rhs_type rhs_;

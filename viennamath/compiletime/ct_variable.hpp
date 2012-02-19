@@ -28,19 +28,19 @@ namespace viennamath
   template <typename vmath_vector>
   struct type_by_index <vmath_vector, 0>
   {
-    typedef typename vmath_vector::type_0   result_type; 
+    typedef typename vmath_vector::type_0   type; 
   };
   
   template <typename vmath_vector>
   struct type_by_index <vmath_vector, 1>
   {
-    typedef typename vmath_vector::type_1   result_type; 
+    typedef typename vmath_vector::type_1   type; 
   };
   
   template <typename vmath_vector>
   struct type_by_index <vmath_vector, 2>
   {
-    typedef typename vmath_vector::type_2   result_type; 
+    typedef typename vmath_vector::type_2   type; 
   };
 
   /********** evaluation at STL vector types ***************/
@@ -64,7 +64,7 @@ namespace viennamath
   struct variable_traits <ct_vector_1<T0>, 
                           id>
   {
-    typedef typename type_by_index<ct_vector_1<T0>, id>::result_type   return_type;
+    typedef typename type_by_index<ct_vector_1<T0>, id>::type   return_type;
     
     //per default, access id-th element;
     static return_type get(ct_vector_1<T0> const & v)
@@ -79,7 +79,7 @@ namespace viennamath
   struct variable_traits <ct_vector_2<T0, T1>, 
                           id>
   {
-    typedef typename type_by_index<ct_vector_2<T0, T1>, id>::result_type   return_type;
+    typedef typename type_by_index<ct_vector_2<T0, T1>, id>::type   return_type;
     
     //per default, access id-th element;
     static return_type get(ct_vector_2<T0, T1> const & v)
@@ -94,7 +94,7 @@ namespace viennamath
   struct variable_traits <ct_vector_3<T0, T1, T2>, 
                           id>
   {
-    typedef typename type_by_index<ct_vector_3<T0, T1, T2>, id>::result_type   return_type;
+    typedef typename type_by_index<ct_vector_3<T0, T1, T2>, id>::type   return_type;
     
     //per default, access id-th element;
     static return_type get(ct_vector_3<T0, T1, T2> const & v)

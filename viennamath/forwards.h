@@ -352,6 +352,12 @@ namespace viennamath
     {
       enum { val = true };
     };
+
+    template <typename TAG>
+    struct is_compiletime<ct_function_symbol<TAG> >
+    {
+      enum { val = true };
+    };
     
     template <typename LHS, typename RHS>
     struct interface

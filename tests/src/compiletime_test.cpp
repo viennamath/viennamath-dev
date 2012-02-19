@@ -6,7 +6,6 @@
 
 #include "viennamath/expression.hpp"
 #include "viennamath/manipulation/eval.hpp"
-#include "viennamath/compiletime/ct_eval.hpp"
 
 
 template <typename T, typename U>

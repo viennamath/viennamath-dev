@@ -7,7 +7,6 @@
 
 #include "viennamath/expression.hpp"
 #include "viennamath/manipulation/eval.hpp"
-#include "viennamath/compiletime/ct_eval.hpp"
 
 template <typename T, typename U>
 void operations_test(T const & t, U const & u, double t2, double u2)
@@ -70,8 +69,8 @@ struct evaluation_compiletime
   static void apply(E const & e, VectorType const & v, double ref_solution)
   {
     std::cout.precision(17);
-    std::cout << viennamath::ct_eval(e, v);
-    viennamath::expr temp(viennamath::ct_eval(e, v));
+    std::cout << viennamath::eval(e, v);
+    viennamath::expr temp(viennamath::eval(e, v));
     std::cout <<  "(should: " << ref_solution << ", is: " << temp(1.0) << ")" << std::endl;
     fuzzy_check(temp(1.0), ref_solution);
   }
@@ -96,7 +95,7 @@ void evaluations_test(E const & e, double ref_solution)
   viennamath::ct_constant<8> ct8;
   
   std::cout << e << " at compile-time (4,6,8): ";
-  evaluation_compiletime<viennamath::is_ct_evaluable<E>::return_value,
+  evaluation_compiletime<viennamath::result_of::is_ct_evaluable<E>::value,
                          E
                         >::apply(e, viennamath::make_vector(ct4, ct6, ct8), ref_solution);
   
