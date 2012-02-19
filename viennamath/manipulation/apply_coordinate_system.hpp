@@ -17,7 +17,6 @@
 
 #include "viennamath/forwards.h"
 #include "viennamath/manipulation/unary_operators_manipulation.hpp"
-#include "viennamath/manipulation/integral.hpp"
 #include "viennamath/manipulation/substitute.hpp"
 #include "viennamath/manipulation/diff.hpp"
 #include "viennamath/runtime/equation.hpp"
