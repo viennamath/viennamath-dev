@@ -1,19 +1,21 @@
+#ifndef VIENNAMATH_MANIPULATION_EXPAND_HPP
+#define VIENNAMATH_MANIPULATION_EXPAND_HPP
+
 /* =======================================================================
-   Copyright (c) 2010, Institute for Microelectronics, TU Vienna.
-   http://www.iue.tuwien.ac.at
+   Copyright (c) 2012, Institute for Microelectronics,
+                       Institute for Analysis and Scientific Computing,
+                       TU Wien.
                              -----------------
-                 ViennaMath - Symbolic and Numeric Math in C++
+               ViennaMath - Symbolic and Numerical Math in C++
                              -----------------
 
-   authors:    Karl Rupp                          rupp@iue.tuwien.ac.at
+   Author:     Karl Rupp                          rupp@iue.tuwien.ac.at
 
-   license:    MIT (X11), see file LICENSE in the ViennaMath base directory
+   License:    MIT (X11), see file LICENSE in the ViennaMath base directory
 ======================================================================= */
 
 
 
-#ifndef VIENNAMATH_EXPAND_HPP
-#define VIENNAMATH_EXPAND_HPP
 
 #include "viennamath/forwards.h"
 #include "viennamath/runtime/unary_expression.hpp"

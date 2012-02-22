@@ -1,19 +1,21 @@
+#ifndef VIENNAMATH_EXPRESSION_HPP
+#define VIENNAMATH_EXPRESSION_HPP
+
 /* =======================================================================
-   Copyright (c) 2010, Institute for Microelectronics, TU Vienna.
-   http://www.iue.tuwien.ac.at
+   Copyright (c) 2012, Institute for Microelectronics,
+                       Institute for Analysis and Scientific Computing,
+                       TU Wien.
                              -----------------
-                 ViennaMath - Symbolic and Numeric Math in C++
+               ViennaMath - Symbolic and Numerical Math in C++
                              -----------------
 
-   authors:    Karl Rupp                          rupp@iue.tuwien.ac.at
+   Author:     Karl Rupp                          rupp@iue.tuwien.ac.at
 
-   license:    MIT (X11), see file LICENSE in the ViennaMath base directory
+   License:    MIT (X11), see file LICENSE in the ViennaMath base directory
 ======================================================================= */
 
 
 
-#ifndef VIENNAMATH_EXPRESSION_HPP
-#define VIENNAMATH_EXPRESSION_HPP
 
 #include "viennamath/forwards.h"
 #include "viennamath/compiletime/promote_traits.hpp"
@@ -41,8 +43,8 @@
 #include "viennamath/runtime/integral.hpp"
 #include "viennamath/runtime/vector_expr.hpp"
 
-#include "viennamath/manipulation/unary_operators_manipulation.hpp"
-#include "viennamath/manipulation/binary_operators_manipulation.hpp"
+#include "viennamath/manipulation/detail/unary_operators_manipulation.hpp"
+#include "viennamath/manipulation/detail/binary_operators_manipulation.hpp"
 
 #include "viennamath/compiletime/operations/ct_ct.hpp"
 #include "viennamath/compiletime/operations/ct_constant.hpp"
@@ -50,12 +52,8 @@
 #include "viennamath/compiletime/operations/ct_expr.hpp"
 
 #include "viennamath/runtime/operations/rt_rt.hpp"
-#include "viennamath/runtime/operations/binary_expression.hpp"
-#include "viennamath/runtime/operations/unary_expression.hpp"
-#include "viennamath/runtime/operations/expr.hpp"
 #include "viennamath/runtime/operations/constant.hpp"
-#include "viennamath/runtime/operations/variable.hpp"
-#include "viennamath/operations/function_symbol_operations.hpp"
+#include "viennamath/runtime/operations/function_symbol.hpp"
 
 
 #endif

@@ -1,22 +1,24 @@
+#ifndef VIENNAMATH_MANIPULATION_APPLY_COORDINATE_SYSTEM_HPP
+#define VIENNAMATH_MANIPULATION_APPLY_COORDINATE_SYSTEM_HPP
+
 /* =======================================================================
-   Copyright (c) 2010, Institute for Microelectronics, TU Vienna.
-   http://www.iue.tuwien.ac.at
+   Copyright (c) 2012, Institute for Microelectronics,
+                       Institute for Analysis and Scientific Computing,
+                       TU Wien.
                              -----------------
-                 ViennaMath - Symbolic and Numeric Math in C++
+               ViennaMath - Symbolic and Numerical Math in C++
                              -----------------
 
-   authors:    Karl Rupp                          rupp@iue.tuwien.ac.at
+   Author:     Karl Rupp                          rupp@iue.tuwien.ac.at
 
-   license:    MIT (X11), see file LICENSE in the ViennaMath base directory
+   License:    MIT (X11), see file LICENSE in the ViennaMath base directory
 ======================================================================= */
 
 
 
-#ifndef VIENNAMATH_APPLY_COORDINATE_SYSTEM_HPP
-#define VIENNAMATH_APPLY_COORDINATE_SYSTEM_HPP
 
 #include "viennamath/forwards.h"
-#include "viennamath/manipulation/unary_operators_manipulation.hpp"
+#include "viennamath/manipulation/detail/unary_operators_manipulation.hpp"
 #include "viennamath/manipulation/substitute.hpp"
 #include "viennamath/manipulation/diff.hpp"
 #include "viennamath/runtime/equation.hpp"

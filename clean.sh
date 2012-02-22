@@ -8,6 +8,7 @@ rm viennamath/compiletime/operations/*.*~
 rm viennamath/runtime/*.*~
 rm viennamath/runtime/operations/*.*~
 rm viennamath/manipulation/*.*~
+rm viennamath/manipulation/detail/*.*~
 rm viennamath/old/*.*~
 rm tests/*.*~
 rm tests/src/*.*~
