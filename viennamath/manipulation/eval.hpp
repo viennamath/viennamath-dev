@@ -63,19 +63,19 @@ namespace viennamath
     template <typename T0>
     struct is_ct_vector< ct_vector_1<T0> > 
     {
-      enum { value = is_compiletime<T0>::val };
+      enum { value = is_compiletime<T0>::value };
     };
 
     template <typename T0, typename T1>
     struct is_ct_vector< ct_vector_2<T0, T1> >
     {
-      enum { value = is_compiletime<T0>::val && is_compiletime<T1>::val };
+      enum { value = is_compiletime<T0>::value && is_compiletime<T1>::value };
     };
 
     template <typename T0, typename T1, typename T2>
     struct is_ct_vector< ct_vector_3<T0, T1, T2> > 
     {
-      enum { value = is_compiletime<T0>::val && is_compiletime<T1>::val && is_compiletime<T2>::val };
+      enum { value = is_compiletime<T0>::value && is_compiletime<T1>::value && is_compiletime<T2>::value };
     };
     
     

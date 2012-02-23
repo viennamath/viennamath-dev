@@ -25,6 +25,53 @@
 
 namespace viennamath
 {
+  //
+  // LaTeX processing
+  //
+  /** @brief 
+   * 
+   * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
+   */
+  template <typename InterfaceType = default_interface_type>
+  class rt_latex_translator;
+  
+  /** @brief 
+   * 
+   * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
+   */
+  template <typename InterfaceType = default_interface_type>
+  class rt_latex_binary_expr_processor;
+
+  /** @brief 
+   * 
+   * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
+   */
+  template <typename InterfaceType = default_interface_type>
+  class rt_latex_unary_expr_processor;
+
+  /** @brief 
+   * 
+   * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
+   */
+  template <typename InterfaceType = default_interface_type>
+  class rt_latex_constant_processor;
+
+  /** @brief 
+   * 
+   * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
+   */
+  template <typename InterfaceType = default_interface_type>
+  class rt_latex_variable_processor;
+
+  /** @brief 
+   * 
+   * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
+   */
+  template <typename InterfaceType = default_interface_type>
+  class rt_latex_function_symbol_processor;
+
+  
+  
   template <typename InterfaceType = default_interface_type>
   class rt_latex_processor_interface
   {

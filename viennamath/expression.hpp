@@ -14,6 +14,9 @@
    License:    MIT (X11), see file LICENSE in the ViennaMath base directory
 ======================================================================= */
 
+/** @file expression.hpp
+    @brief This is the main include file of ViennaMath. Only includes other headers and is for convenience only.
+*/
 
 
 

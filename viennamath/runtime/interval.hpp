@@ -75,7 +75,7 @@ namespace viennamath
   //
   
   ////// scalar is first argument:
-  rt_interval<> make_interval(default_numeric_type lhs, default_numeric_type rhs)
+  inline rt_interval<> make_interval(default_numeric_type lhs, default_numeric_type rhs)
   {
     rt_expr<> a = rt_constant<>(lhs);
     rt_expr<> b = rt_constant<>(rhs);

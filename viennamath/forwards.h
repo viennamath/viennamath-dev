@@ -32,9 +32,10 @@
 #include <memory>
 
 /** @file forwards.h
-    @brief Contains forward declarations and definition of small classes that must be defined at an early stage
+    @brief Contains forward declarations and definition of small classes/metafunctions required to be defined at an early stage.
 */
 
+/** @brief The main ViennaMath namespace. All types and functions for the user reside here. */
 namespace viennamath
 {
   //basic numeric type (customize to your needs)
@@ -257,312 +258,413 @@ namespace viennamath
   typedef rt_symbolic_interval<>       symbolic_interval;
   
   
-  
+  /** @brief The common base class for expression manipulators (top to bottom). 
+   * 
+   * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
+   */
   template <typename InterfaceType = default_interface_type>   //Note: No convenience typedef needed here
   class rt_manipulation_interface;
 
+  /** @brief A wrapper class for convenient handling of expression manipulators.
+   * 
+   * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
+   */
   template <typename InterfaceType = default_interface_type>   //Note: No convenience typedef needed here
   class rt_manipulation_wrapper;
   
+  
+  /** @brief The common base class for traversal of an expression from bottom to top. Does not modify the expression.
+   * 
+   * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
+   */
   template <typename InterfaceType = default_interface_type>   //Note: No convenience typedef needed here
   class rt_traversal_interface;
   
+  /** @brief A wrapper class for convenient handling of expression traversal objects.
+   * 
+   * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
+   */
   template <typename InterfaceType = default_interface_type>   //Note: No convenience typedef needed here
   class rt_traversal_wrapper;
   
-  
+  //
   /////// interface for op_tags: ///////
+  //
+  
+  /** @brief Common base class for all operators (binary and unary).
+   * 
+   * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
+   */
   template <typename InterfaceType = default_interface_type>
   class rt_op_interface;
 
   //binary operator tags:  
+  /** @brief Runtime representation of an operator taking two arguments.
+   * 
+   * @tparam BinaryOperation  A tag type identifying the binary operation.
+   * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
+   */
   template <typename BinaryOperation, typename InterfaceType = default_interface_type>
   class op_binary;
   
+  /** @brief A compiletime tag for encoding the action of the addition operator */
   template <typename NumericT>
   struct op_plus;
   
+  /** @brief A compiletime tag for encoding the action of the subtraction operator */
   template <typename NumericT>
   struct op_minus;
   
+  /** @brief A compiletime tag for encoding the action of the multiplication operator */
   template <typename NumericT>
   struct op_mult;
   
+  /** @brief A compiletime tag for encoding the action of the division operator */
   template <typename NumericT>
   struct op_div;
   
+  /** @brief A compiletime tag for encoding the action of the exponent operator */
   template <typename NumericT>
   struct op_pow;
 
   
   
-  
+  //
   ////// unary operator tags:
-  template <typename unary_operation, typename InterfaceType = default_interface_type>
-  class op_unary;
-
+  //
   
+  /** @brief Runtime representation of a function taking one argument.
+   * 
+   * @tparam UnaryOperation   A tag type identifying the unary operation.
+   * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
+   */
+  template <typename UnaryOperation, typename InterfaceType = default_interface_type>
+  class op_unary;
+  
+
+  /** @brief A compiletime tag for encoding the action of the identity function x -> x. Can be useful when manipulating expressions. */
   template <typename NumericT>
   struct op_id;
   
+  /** @brief A compiletime tag for encoding the action of the exponential function */
   template <typename NumericT>
   struct op_exp;
   
+  /** @brief A compiletime tag for encoding the action of the sine function */
   template <typename NumericT>
   struct op_sin;
   
+  /** @brief A compiletime tag for encoding the action of the cosine function */
   template <typename NumericT>
   struct op_cos;
   
+  /** @brief A compiletime tag for encoding the action of the tangens function */
   template <typename NumericT>
   struct op_tan;
   
+  /** @brief A compiletime tag for encoding the action of the modulus function */
   template <typename NumericT>
   struct op_fabs;
   
+  /** @brief A compiletime tag for encoding the action of the sqrt function */
   template <typename NumericT>
   struct op_sqrt;
   
+  /** @brief A compiletime tag for encoding the action of the natural logarithm */
   template <typename NumericT>
   struct op_log; //natural logarithm
   
+  /** @brief A compiletime tag for encoding the action of the logarithm with base 10 */
   template <typename NumericT>
   struct op_log10;
 
+  /** @brief A compiletime tag for encoding the partial derivative with respect to a variable */
   template <typename NumericT>
   struct op_partial_deriv;
   
+  /** @brief A compiletime tag for encoding the partial derivative with respect to a function */
   template <typename InterfaceType>
   class op_rt_integral;
 
+  
+  /** @brief A runtime representation of a symbolic integral. Allows to specify the integration domain later (useful in e.g. Finite Element Methods).
+   * 
+   * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
+   */
   template <typename InterfaceType>
   class op_rt_symbolic_integral;
   
 
-  //
-  // LaTeX processing
-  //
-  template <typename InterfaceType = default_interface_type>
-  class rt_latex_translator;
+
   
-  template <typename InterfaceType = default_interface_type>
-  class rt_latex_binary_expr_processor;
-
-  template <typename InterfaceType = default_interface_type>
-  class rt_latex_unary_expr_processor;
-
-  template <typename InterfaceType = default_interface_type>
-  class rt_latex_constant_processor;
-
-  template <typename InterfaceType = default_interface_type>
-  class rt_latex_variable_processor;
-
-  template <typename InterfaceType = default_interface_type>
-  class rt_latex_function_symbol_processor;
-
-
   namespace result_of
   {
+    /** @brief A metafunction with value 'true' if the provided argument is a ViennaMath expression type. Otherwise, false is returned.
+     * 
+     * Should be used in the form   result_of::is_viennamath<myType>::value  in order to check for a type being from ViennaMath.
+     * 
+     * @tparam T    The type to be checked
+     */
     template <typename T>
     struct is_viennamath
     {
-      enum { val = false };
+      enum { value = false };
     };
     
-    template <long value>
-    struct is_viennamath<ct_constant<value> >
+    /** @brief Specialization of the metafunction for a ViennaMath compiletime constant. */
+    template <long val>
+    struct is_viennamath<ct_constant<val> >
     {
-      enum { val = true };
+      enum { value = true };
     };
     
+    /** @brief Specialization of the metafunction for a ViennaMath compiletime variable. */
     template <id_type id>
     struct is_viennamath<ct_variable<id> >
     {
-      enum { val = true };
+      enum { value = true };
     };
 
+    /** @brief Specialization of the metafunction for a ViennaMath compiletime function symbol. */
+    template <typename TAG>
+    struct is_viennamath<ct_function_symbol<TAG> >
+    {
+      enum { value = true };
+    };
+    
+    /** @brief Specialization of the metafunction for a ViennaMath compiletime binary expression. */
     template <typename LHS, typename OP, typename RHS>
     struct is_viennamath<ct_binary_expr<LHS, OP, RHS> >
     {
-      enum { val = true };
+      enum { value = true };
     };
 
+    /** @brief Specialization of the metafunction for a ViennaMath compiletime unary expression. */
     template <typename LHS, typename OP>
     struct is_viennamath<ct_unary_expr<LHS, OP> >
     {
-      enum { val = true };
+      enum { value = true };
     };
     
+    
+    
+    /** @brief Specialization of the metafunction for a ViennaMath runtime constant. */
     template <typename NumericType, typename InterfaceType>
     struct is_viennamath<rt_constant<NumericType, InterfaceType> >
     {
-      enum { val = true };
+      enum { value = true };
     };
     
+    /** @brief Specialization of the metafunction for a ViennaMath runtime variable. */
     template <typename InterfaceType>
     struct is_viennamath<rt_variable<InterfaceType> >
     {
-      enum { val = true };
+      enum { value = true };
     };
 
+    /** @brief Specialization of the metafunction for a ViennaMath runtime function symbol. */
     template <typename InterfaceType>
     struct is_viennamath<rt_function_symbol<InterfaceType> >
     {
-      enum { val = true };
+      enum { value = true };
     };
     
+    /** @brief Specialization of the metafunction for a ViennaMath runtime unary expression. */
     template <typename InterfaceType>
     struct is_viennamath<rt_unary_expr<InterfaceType> >
     {
-      enum { val = true };
+      enum { value = true };
     };
     
+    /** @brief Specialization of the metafunction for a ViennaMath runtime binary expression. */
     template <typename InterfaceType>
     struct is_viennamath<rt_binary_expr<InterfaceType> >
     {
-      enum { val = true };
+      enum { value = true };
     };
     
+    /** @brief Specialization of the metafunction for a ViennaMath runtime expression. */
     template <typename InterfaceType>
     struct is_viennamath<rt_expr<InterfaceType> >
     {
-      enum { val = true };
+      enum { value = true };
     };
     
+    ///////// is_compiletime
     
-    
+    /** @brief A metafunction returning a value 'true' if the provided argument is a ViennaMath compiletime expression type. Otherwise, false is returned.
+     * 
+     * Should be used in the form   result_of::is_compiletime<myType>::value  in order to check for a type being a compile time type.
+     * 
+     * @tparam T    The type to be checked
+     */
     template <typename T>
     struct is_compiletime
     {
-      enum { val = false };
+      enum { value = false };
     };
     
-    template <long value>
-    struct is_compiletime<ct_constant<value> >
+    /** @brief Specialization of the metafunction for a ViennaMath compiletime constant. */
+    template <long val>
+    struct is_compiletime<ct_constant<val> >
     {
-      enum { val = true };
+      enum { value = true };
     };
     
+    /** @brief Specialization of the metafunction for a ViennaMath compiletime variable. */
     template <id_type id>
     struct is_compiletime<ct_variable<id> >
     {
-      enum { val = true };
+      enum { value = true };
     };
 
-    template <typename LHS, typename OP, typename RHS>
-    struct is_compiletime<ct_binary_expr<LHS, OP, RHS> >
-    {
-      enum { val = true };
-    };
-
-    template <typename LHS, typename OP>
-    struct is_compiletime<ct_unary_expr<LHS, OP> >
-    {
-      enum { val = true };
-    };
-
+    /** @brief Specialization of the metafunction for a ViennaMath compiletime function symbol. */
     template <typename TAG>
     struct is_compiletime<ct_function_symbol<TAG> >
     {
-      enum { val = true };
+      enum { value = true };
     };
     
+    /** @brief Specialization of the metafunction for a ViennaMath compiletime binary expression. */
+    template <typename LHS, typename OP, typename RHS>
+    struct is_compiletime<ct_binary_expr<LHS, OP, RHS> >
+    {
+      enum { value = true };
+    };
+
+    /** @brief Specialization of the metafunction for a ViennaMath compiletime unary expression. */
+    template <typename LHS, typename OP>
+    struct is_compiletime<ct_unary_expr<LHS, OP> >
+    {
+      enum { value = true };
+    };
+
+    ////////////// interface
+    
+    /** @brief A metafunction deducing the ViennaMath runtime expression interface (base class) from two types. The first argument has priority.
+    * 
+    * Mostly used for binary operator overloads.
+    */
     template <typename LHS, typename RHS>
     struct interface
     {
       typedef default_interface_type  type; //for compatibility with enable_if
     };
 
+    /** @brief Specialization of the runtime expression interface deduction for a ViennaMath runtime constant. */
     template <typename T, typename U, typename RHS>
     struct interface< rt_constant<T, U>, RHS >
     {
       typedef U    type;
     };
 
+    /** @brief Specialization of the runtime expression interface deduction for a ViennaMath runtime variable. */
     template <typename T, typename RHS>
     struct interface< rt_variable<T>, RHS >
     {
       typedef T    type;
     };
 
+    /** @brief Specialization of the runtime expression interface deduction for a ViennaMath runtime variable. */
     template <typename T>
-    struct interface< double, rt_variable<T> >
+    struct interface< default_numeric_type, rt_variable<T> >
     {
       typedef T    type;
     };
 
+    /** @brief Specialization of the runtime expression interface deduction for a ViennaMath runtime binary expression. */
     template <typename T, typename RHS>
     struct interface< rt_binary_expr<T>, RHS >
     {
       typedef T    type;
     };
 
+    /** @brief Specialization of the runtime expression interface deduction for a ViennaMath runtime binary expression. */
     template <typename T>
-    struct interface< double, rt_binary_expr<T> >
+    struct interface< default_numeric_type, rt_binary_expr<T> >
     {
       typedef T    type;
     };
 
+    /** @brief Specialization of the runtime expression interface deduction for a ViennaMath runtime unary expression. */
     template <typename T, typename RHS>
     struct interface< rt_unary_expr<T>, RHS >
     {
       typedef T    type;
     };
     
+    /** @brief Specialization of the runtime expression interface deduction for the ViennaMath runtime expression wrapper. */
     template <typename T, typename RHS>
     struct interface< rt_expr<T>, RHS >
     {
       typedef T    type;
     };
 
+    /** @brief Specialization of the runtime expression interface deduction for the ViennaMath runtime expression wrapper. */
     template <typename T>
     struct interface< double,  rt_expr<T> >
     {
       typedef T    type;
     };
     
+    /** @brief A metafunction returning the resulting expression type when adding objects of type LHS and objects of type RHS.
+    * 
+    */
     template <typename LHS,
               typename RHS,
-              bool lhs_is_ct = is_compiletime<LHS>::val,
-              bool rhs_is_ct = is_compiletime<RHS>::val>
+              bool lhs_is_ct = is_compiletime<LHS>::value,
+              bool rhs_is_ct = is_compiletime<RHS>::value>
     struct add;
     
+    /** @brief A metafunction returning the resulting expression type when subtracting objects of type LHS and objects of type RHS.
+    * 
+    */
     template <typename LHS,
               typename RHS,
-              bool lhs_is_ct = is_compiletime<LHS>::val,
-              bool rhs_is_ct = is_compiletime<RHS>::val>
+              bool lhs_is_ct = is_compiletime<LHS>::value,
+              bool rhs_is_ct = is_compiletime<RHS>::value>
     struct subtract;
     
+    /** @brief A metafunction returning the resulting expression type when multiplying objects of type LHS and objects of type RHS.
+    * 
+    */
     template <typename LHS,
               typename RHS,
-              bool lhs_is_ct = is_compiletime<LHS>::val,
-              bool rhs_is_ct = is_compiletime<RHS>::val>
+              bool lhs_is_ct = is_compiletime<LHS>::value,
+              bool rhs_is_ct = is_compiletime<RHS>::value>
     struct mult;
 
+    /** @brief A metafunction returning the resulting expression type when dividing objects of type LHS and objects of type RHS.
+    * 
+    */
     template <typename LHS,
               typename RHS,
-              bool lhs_is_ct = is_compiletime<LHS>::val,
-              bool rhs_is_ct = is_compiletime<RHS>::val>
+              bool lhs_is_ct = is_compiletime<LHS>::value,
+              bool rhs_is_ct = is_compiletime<RHS>::value>
     struct div;
     
     
-    // greatest common divisor:
+    //////// greatest common divisor:
+    
+    /** @brief Helper metafunction for computing the greatest common divisor of two numbers. */
     template <long a, long b>
     struct gcd
     {
       enum { value = gcd<b, a % b>::value };
     };
     
+    /** @brief Specialization for the computation of the greatest common divisor of a and 0, which is a */
     template <long a>
     struct gcd <a, 0>
     {
       enum { value = a};
     };
 
+    /** @brief Specialization forcing a compile time error, since the greatest common divisor of 0 and 0 is not defined. */
     template <>
     struct gcd <0, 0>
     {
-      enum { value = 1};
+      enum { error = 1};
     };
     
     
@@ -570,6 +672,7 @@ namespace viennamath
   
   
     
+  /** @brief A traits system for expressions. For now provides a deduction of the const reference type only.*/
   template <typename T>
   struct expression_traits
   {
@@ -577,12 +680,24 @@ namespace viennamath
   };
   
   //for compile time constants, we have to copy in order to circumvent problems with temporaries
+  /** @brief Specialization of the expression traits system: A compiletime constant can be copied with no extra cost, thus no need for const reference
+   * 
+   * Note: There seems to be a minor design flaw here, because the return type does not provide what the name suggests.
+   *       This will be improved in one of the future releases.
+   * 
+   */
   template <long value>
   struct expression_traits < ct_constant<value> >
   {
      typedef ct_constant<value>    const_reference_type;
   };
 
+  /** @brief Specialization of the expression traits system: A runtime constant does not allow for copying, otherwise one runs into problems with tempories.
+   * 
+   * Note: There seems to be a minor design flaw here, because the return type does not provide what the name suggests.
+   *       This will be improved in one of the future releases.
+   * 
+   */
   template <typename T, typename InterfaceType>
   struct expression_traits < rt_constant<T, InterfaceType> >
   {
@@ -592,63 +707,49 @@ namespace viennamath
 
   
   
+  /** @brief Generic overload of the addition operator for ViennaMath types. Uses SFINAE to control the scope, otherwise one may run into very tricky problems with operator+ being considered outside the viennamath namespace.
+  * 
+  */
   template <typename LHS, typename RHS>
-  typename enable_if< result_of::is_viennamath<LHS>::val || result_of::is_viennamath<RHS>::val,
+  typename enable_if< result_of::is_viennamath<LHS>::value || result_of::is_viennamath<RHS>::value,
                       typename result_of::add<LHS, RHS>::type >::type
   operator+(LHS const & lhs, RHS const & rhs)
   {
     return result_of::add<LHS, RHS>::instance(lhs, rhs); 
   }
   
+  /** @brief Generic overload of the subtraction operator for ViennaMath types. Uses SFINAE to control the scope, otherwise one may run into very tricky problems with operator- being considered outside the viennamath namespace.
+  * 
+  */
   template <typename LHS, typename RHS>
-  typename enable_if< result_of::is_viennamath<LHS>::val || result_of::is_viennamath<RHS>::val,
+  typename enable_if< result_of::is_viennamath<LHS>::value || result_of::is_viennamath<RHS>::value,
                       typename result_of::subtract<LHS, RHS>::type >::type
   operator-(LHS const & lhs, RHS const & rhs)
   {
     return result_of::subtract<LHS, RHS>::instance(lhs, rhs); 
   }
 
+  /** @brief Generic overload of the multiplication operator for ViennaMath types. Uses SFINAE to control the scope, otherwise one may run into very tricky problems with operator* being considered outside the viennamath namespace.
+  * 
+  */
   template <typename LHS, typename RHS>
-  typename enable_if< result_of::is_viennamath<LHS>::val || result_of::is_viennamath<RHS>::val,
+  typename enable_if< result_of::is_viennamath<LHS>::value || result_of::is_viennamath<RHS>::value,
                       typename result_of::mult<LHS, RHS>::type >::type
   operator*(LHS const & lhs, RHS const & rhs)
   {
     return result_of::mult<LHS, RHS>::instance(lhs, rhs); 
   }
   
+  /** @brief Generic overload of the division operator for ViennaMath types. Uses SFINAE to control the scope, otherwise one may run into very tricky problems with operator/ being considered outside the viennamath namespace.
+  * 
+  */
   template <typename LHS, typename RHS>
-  typename enable_if< result_of::is_viennamath<LHS>::val || result_of::is_viennamath<RHS>::val,
+  typename enable_if< result_of::is_viennamath<LHS>::value || result_of::is_viennamath<RHS>::value,
                       typename result_of::div<LHS, RHS>::type >::type
   operator/(LHS const & lhs, RHS const & rhs)
   {
     return result_of::div<LHS, RHS>::instance(lhs, rhs); 
   }
-
-  /////// exceptions ///////
-  
-  //TODO: Is this needed here? Maybe collect exceptions in a separate file.
-  
-  class expression_not_unwrappable : public std::exception
-  {
-    const char * what() const throw() { return "Expression cannot be unwrapped!"; } 
-  };
-  
-  class variable_index_out_of_bounds : public std::exception
-  {
-    const char * what() const throw()
-    {
-      std::stringstream ss;
-      ss << "Encountered an variable<> type with id larger or equal to the size of the supplied vector of values. id=" << id_ << ", vector_size=" << vector_size_ << std::endl;
-      return ss.str().c_str(); } 
-    
-    public:
-      variable_index_out_of_bounds(long id, long vector_size) : id_(id), vector_size_(vector_size) {}
-      
-    private:
-      long id_;
-      long vector_size_;
-  };
-  
   
 }
 

@@ -19,6 +19,7 @@
 
 #include <ostream>
 #include "viennamath/forwards.h"
+#include "viennamath/exception.hpp"
 
 namespace viennamath
 {

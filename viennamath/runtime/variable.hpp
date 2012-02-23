@@ -18,6 +18,7 @@
 
 
 #include "viennamath/compiletime/ct_vector.hpp"
+#include "viennamath/exception.hpp"
 
 #include "viennamath/runtime/constant.hpp"
 #include "viennamath/runtime/expression_interface.hpp"

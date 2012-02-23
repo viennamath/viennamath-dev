@@ -24,6 +24,7 @@
 namespace viennamath
 {
   
+  /** @brief Any generic free functions for unifying interfaces are defined here. */
   namespace traits
   {
     template <typename InterfaceType, typename NumericT>

@@ -4,7 +4,7 @@ img_extIsRegExp=false
 img_extensions=.eps .jpg .jpeg .png .pdf .ps .fig .gif
 kileprversion=2
 kileversion=2.0.85
-lastDocument=license.tex
+lastDocument=basic-types.tex
 masterDocument=
 name=viennamath
 pkg_extIsRegExp=false
@@ -144,24 +144,24 @@ highlight=LaTeX
 line=0
 mode=LaTeX
 open=true
-order=6
+order=5
 
 [item:basic-types.tex]
 archive=true
 column=0
 encoding=UTF-8
 highlight=LaTeX
-line=0
+line=6
 mode=LaTeX
 open=true
-order=7
+order=6
 
 [item:benchmarks.tex]
 archive=true
-column=0
+column=41
 encoding=UTF-8
 highlight=LaTeX
-line=3
+line=2
 mode=LaTeX
 open=true
 order=2
@@ -174,7 +174,7 @@ highlight=LaTeX
 line=1
 mode=LaTeX
 open=true
-order=11
+order=7
 
 [item:contributors.tex]
 archive=true
@@ -183,7 +183,7 @@ encoding=UTF-8
 highlight=LaTeX
 line=36
 mode=LaTeX
-open=true
+open=false
 order=8
 
 [item:cover.tex]
@@ -193,7 +193,7 @@ encoding=UTF-8
 highlight=LaTeX
 line=29
 mode=LaTeX
-open=true
+open=false
 order=9
 
 [item:design-decisions.tex]
@@ -213,7 +213,7 @@ encoding=UTF-8
 highlight=LaTeX
 line=112
 mode=LaTeX
-open=true
+open=false
 order=4
 
 [item:internals.tex]
@@ -224,11 +224,11 @@ highlight=LaTeX
 line=2
 mode=LaTeX
 open=true
-order=5
+order=4
 
 [item:introduction.tex]
 archive=true
-column=49
+column=34
 encoding=UTF-8
 highlight=LaTeX
 line=4
@@ -253,7 +253,7 @@ encoding=UTF-8
 highlight=LaTeX
 line=1
 mode=LaTeX
-open=true
+open=false
 order=10
 
 [item:setup.tex]
@@ -302,11 +302,11 @@ CursorLine=0
 
 [view-settings,view=0,item:basic-types.tex]
 CursorColumn=0
-CursorLine=0
+CursorLine=6
 
 [view-settings,view=0,item:benchmarks.tex]
-CursorColumn=0
-CursorLine=3
+CursorColumn=41
+CursorLine=2
 
 [view-settings,view=0,item:changelogs.tex]
 CursorColumn=66
@@ -333,7 +333,7 @@ CursorColumn=57
 CursorLine=2
 
 [view-settings,view=0,item:introduction.tex]
-CursorColumn=49
+CursorColumn=34
 CursorLine=4
 
 [view-settings,view=0,item:keywords.tex]
