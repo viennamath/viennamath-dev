@@ -180,7 +180,7 @@ namespace viennamath
    * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
    */
   template <typename InterfaceType = default_interface_type>
-  struct rt_variable;
+  class rt_variable;
   typedef rt_variable<>                variable;
 
   /** @brief Runtime representation of a constant value expression
@@ -380,7 +380,7 @@ namespace viennamath
 
   /** @brief A compiletime tag for encoding the partial derivative with respect to a variable */
   template <typename NumericT>
-  struct op_partial_deriv;
+  class op_partial_deriv;
   
   /** @brief A compiletime tag for encoding the partial derivative with respect to a function */
   template <typename InterfaceType>

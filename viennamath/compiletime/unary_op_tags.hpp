@@ -42,7 +42,7 @@ namespace viennamath
   struct op_exp
   {
     static std::string str() { return "exp"; }
-    NumericT apply(NumericT value) const { return exp(value); }
+    NumericT apply(NumericT value) const { return ::exp(value); }
     bool optimizable() const { return true; }
   };
 
@@ -53,7 +53,7 @@ namespace viennamath
   struct op_sin
   {
     static std::string str() { return "sin"; }
-    NumericT apply(NumericT value) const { return sin(value); }
+    NumericT apply(NumericT value) const { return ::sin(value); }
     bool optimizable() const { return true; }
   };
   
@@ -64,7 +64,7 @@ namespace viennamath
   struct op_cos
   {
     static std::string str() { return "cos"; }
-    NumericT apply(NumericT value) const { return cos(value); }
+    NumericT apply(NumericT value) const { return ::cos(value); }
     bool optimizable() const { return true; }
   };
   
@@ -76,7 +76,7 @@ namespace viennamath
   struct op_tan
   {
     static std::string str() { return "tan"; }
-    NumericT apply(NumericT value) const { return tan(value); }
+    NumericT apply(NumericT value) const { return ::tan(value); }
     bool optimizable() const { return true; }
   };
   
@@ -87,7 +87,7 @@ namespace viennamath
   struct op_fabs
   {
     static std::string str() { return "fabs"; }
-    NumericT apply(NumericT value) const { return fabs(value); }
+    NumericT apply(NumericT value) const { return ::fabs(value); }
     bool optimizable() const { return true; }
   };
 
@@ -98,7 +98,7 @@ namespace viennamath
   struct op_sqrt
   {
     static std::string str() { return "sqrt"; }
-    NumericT apply(NumericT value) const { return sqrt(value); }
+    NumericT apply(NumericT value) const { return ::sqrt(value); }
     bool optimizable() const { return true; }
   };
 
@@ -110,7 +110,7 @@ namespace viennamath
   struct op_log //natural logarithm
   {
     static std::string str() { return "log"; }
-    NumericT apply(NumericT value) const { return log(value); }
+    NumericT apply(NumericT value) const { return ::log(value); }
     bool optimizable() const { return true; }
   };
   
@@ -121,7 +121,7 @@ namespace viennamath
   struct op_log10
   {
     static std::string str() { return "log10"; }
-    NumericT apply(NumericT value) const { return log10(value); }
+    NumericT apply(NumericT value) const { return ::log10(value); }
     bool optimizable() const { return true; }
   };
   

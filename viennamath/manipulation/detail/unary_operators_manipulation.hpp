@@ -492,7 +492,7 @@ namespace viennamath
   {
     return new rt_binary_expr<InterfaceType>( e->diff(diff_var),
                                            new op_binary<op_div<typename InterfaceType::numeric_type>, InterfaceType>(),
-                                           new rt_binary_expr<InterfaceType>( new rt_constant<NumericT, InterfaceType>( ::log(10) ),
+                                           new rt_binary_expr<InterfaceType>( new rt_constant<NumericT, InterfaceType>( ::log(10.0) ),
                                                                            new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(),
                                                                            new rt_unary_expr<InterfaceType>(e->clone())
                                                                          )

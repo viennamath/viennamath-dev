@@ -12,6 +12,10 @@
    License:    MIT (X11), see file LICENSE in the ViennaMath base directory
 ======================================================================= */
 
+#ifdef _MSC_VER      //Visual Studio complains about potentially dangerous things, which are perfectly legal in our context
+  #pragma warning( disable : 4503 )     //truncated name decoration
+#endif
+
 #include <iostream>
 #include <vector>
 #include <stdlib.h>
