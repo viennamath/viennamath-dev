@@ -69,7 +69,7 @@ namespace viennamath
   
   namespace result_of
   {
-    
+    /** @brief Returns the type of adding two expressions together. Default case: both types are runtime expressions. */
     template <typename LHS, typename RHS, bool b1, bool b2>
     struct add
     {
@@ -80,6 +80,7 @@ namespace viennamath
       static type instance(LHS const & lhs, RHS const & rhs) { return type(traits::clone<iface_type>(lhs), new op_binary<op_plus<numeric_type>, iface_type>(), traits::clone<iface_type>(rhs)); }
     };
 
+    /** @brief Returns the type when subtracting two expressions. Default case: both types are runtime expressions. */
     template <typename LHS, typename RHS, bool b1, bool b2>
     struct subtract
     {
@@ -90,6 +91,7 @@ namespace viennamath
       static type instance(LHS const & lhs, RHS const & rhs) { return type(traits::clone<iface_type>(lhs), new op_binary<op_minus<numeric_type>, iface_type>(), traits::clone<iface_type>(rhs)); }
     };
 
+    /** @brief Returns the type when multiplying two expressions. Default case: both types are runtime expressions. */
     template <typename LHS, typename RHS, bool b1, bool b2>
     struct mult
     {
@@ -100,6 +102,7 @@ namespace viennamath
       static type instance(LHS const & lhs, RHS const & rhs) { return type(traits::clone<iface_type>(lhs), new op_binary<op_mult<numeric_type>, iface_type>(), traits::clone<iface_type>(rhs)); }
     };
 
+    /** @brief Returns the type when dividing two expressions. Default case: both types are runtime expressions. */
     template <typename LHS, typename RHS, bool b1, bool b2>
     struct div
     {

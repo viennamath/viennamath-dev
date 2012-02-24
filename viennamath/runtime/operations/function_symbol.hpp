@@ -36,12 +36,14 @@ namespace viennamath
     ////// operator-
 
     ////// operator*
+    /** @brief Special overload for the multiplication of a function symbol with a ViennaMath runtime constant */
     template <typename NumericT, typename InterfaceType>
     rt_binary_expr<InterfaceType> operator*(rt_constant<NumericT, InterfaceType> const & lhs, rt_function_symbol<InterfaceType> const & rhs)
     {
       return rt_binary_expr<InterfaceType>(lhs.clone(), new op_binary<op_mult<typename InterfaceType::numeric_type>, InterfaceType>(), rhs.clone());
     }
 
+    /** @brief Special overload for the multiplication of a function symbol with a ViennaMath runtime expression wrapper */
     template <typename InterfaceType>
     rt_binary_expr<InterfaceType> operator*(rt_expr<InterfaceType> const & lhs, rt_function_symbol<InterfaceType> const & rhs)
     {

@@ -34,7 +34,7 @@ namespace viennamath
     ////// operator+
 
 
-    // c1 + (c2 + X) -> [c1 + c2] + X, where X is anything:
+    /** @brief Special overload for c1 + (c2 + X) -> [c1 + c2] + X, where c1 and c2 are runtime constants and X is any expression: */
     template <typename ScalarType, typename InterfaceType, typename OtherScalarType, typename RHS>
     ct_binary_expr<rt_constant<typename promote_traits<ScalarType, op_plus<typename InterfaceType::numeric_type>, OtherScalarType>::result_type, InterfaceType >,
                    op_plus<typename InterfaceType::numeric_type>,
@@ -50,7 +50,7 @@ namespace viennamath
                              other.rhs());
     }
 
-    // c1 + (ct_c2 + X) -> [c1 + ct_c2] + X, where X is anything:
+    /** @brief Special overload for c1 + (ct_c2 + X) -> [c1 + ct_c2] + X, where c1 is a runtime constant, ct_c2 is a compiletime constant, and X is any expression: */
     template <typename ScalarType, typename InterfaceType, long value, typename RHS>
     ct_binary_expr<rt_constant<typename promote_traits<ScalarType, op_plus<typename InterfaceType::numeric_type>, long>::result_type, InterfaceType >,
                    op_plus<typename InterfaceType::numeric_type>,
@@ -66,7 +66,7 @@ namespace viennamath
                              other.rhs());
     }
 
-    // c1 + (c2 - X) -> [c1 + c2] - X, where X is anything:
+    /** @brief Special overload for c1 + (c2 - X) -> [c1 + c2] - X, where c1 and c2 are runtime constants and X is any expression: */
     template <typename ScalarType, typename InterfaceType, typename OtherScalarType, typename RHS>
     ct_binary_expr<rt_constant<typename promote_traits<ScalarType, op_plus<typename InterfaceType::numeric_type>, OtherScalarType>::result_type, InterfaceType >,
                    op_minus<typename InterfaceType::numeric_type>,
@@ -82,7 +82,7 @@ namespace viennamath
                              other.rhs());
     }
 
-    // c1 + (ct_c2 - X) -> [c1 + ct_c2] - X, where X is anything:
+    /** @brief Special overload for c1 + (ct_c2 - X) -> [c1 + ct_c2] - X, where c1 is a runtime constant, ct_c2 is a compiletime constant, and X is any expression: */
     template <typename ScalarType, typename InterfaceType, long value, typename RHS>
     ct_binary_expr<rt_constant<typename promote_traits<ScalarType, op_plus<typename InterfaceType::numeric_type>, long>::result_type, InterfaceType >,
                    op_minus<typename InterfaceType::numeric_type>,
@@ -99,7 +99,7 @@ namespace viennamath
     }
 
     
-    // (ct_c1 + X) + c2 -> [ct_c1 + c2] + X
+    /** @brief Special overload for (ct_c1 + X) + c2 -> [ct_c1 + c2] + X, where ct_c1 is a compile constant, c2 is a runtime constant, and X is any expression: */
     template <long value, typename RHS, typename ScalarType, typename T, typename InterfaceType>
     ct_binary_expr< rt_constant<typename promote_traits<long, op_plus<T>, ScalarType>::result_type >,
                     op_plus<T>,
@@ -114,7 +114,7 @@ namespace viennamath
                                   lhs.rhs());
     }
 
-    // (ct_c1 - X) + c2 -> [ct_c1 + c2] - X
+    /** @brief Special overload for (ct_c1 - X) + c2 -> [ct_c1 + c2] - X, where ct_c1 is a compile constant, c2 is a runtime constant, and X is any expression: */
     template <long value, typename RHS, typename ScalarType, typename InterfaceType>
     ct_binary_expr< rt_constant<default_numeric_type, InterfaceType >,
                     op_minus<default_numeric_type>,
@@ -133,7 +133,7 @@ namespace viennamath
     
     ////// operator-
     
-    // c1 - (c2 + X) -> [c1 - c2] - X, where X is anything:
+    /** @brief Special overload for c1 - (c2 + X) -> [c1 - c2] - X, where c1 and c2 are runtime constants and X is any expression: */
     template <typename ScalarType, typename InterfaceType, typename OtherScalarType, typename RHS>
     ct_binary_expr<rt_constant<typename promote_traits<ScalarType, op_minus<typename InterfaceType::numeric_type>, OtherScalarType>::result_type, InterfaceType >,
                    op_minus<typename InterfaceType::numeric_type>,
@@ -149,7 +149,7 @@ namespace viennamath
                              other.rhs());
     }
 
-    // c1 - (ct_c2 + X) -> [c1 - ct_c2] - X, where X is anything:
+    /** @brief Special overload for c1 - (ct_c2 + X) -> [c1 - ct_c2] - X, where c1 is a runtime constant, ct_c2 is a compiletime constant, and X is any expression: */
     template <typename ScalarType, typename InterfaceType, long value, typename RHS>
     ct_binary_expr<rt_constant<typename promote_traits<ScalarType, op_minus<typename InterfaceType::numeric_type>, long>::result_type, InterfaceType >,
                    op_minus<typename InterfaceType::numeric_type>,
@@ -165,7 +165,7 @@ namespace viennamath
                              other.rhs());
     }
 
-    // c1 - (c2 - X) -> [c1 - c2] + X, where X is anything:
+    /** @brief Special overload for c1 - (c2 - X) -> [c1 - c2] + X, where c1 and c2 are runtime constants and X is any expression: */
     template <typename ScalarType, typename InterfaceType, typename OtherScalarType, typename RHS>
     ct_binary_expr<rt_constant<typename promote_traits<ScalarType, op_minus<typename InterfaceType::numeric_type>, OtherScalarType>::result_type, InterfaceType >,
                    op_plus<typename InterfaceType::numeric_type>,
@@ -181,7 +181,7 @@ namespace viennamath
                              other.rhs());
     }
 
-    // c1 - (ct_c2 - X) -> [c1 - ct_c2] + X, where X is anything:
+    /** @brief Special overload for c1 - (ct_c2 - X) -> [c1 - ct_c2] + X, where c1 is a runtime constant, ct_c2 is a compiletime constant, and X is any expression: */
     template <typename ScalarType, typename InterfaceType, long value, typename RHS>
     ct_binary_expr<rt_constant<typename promote_traits<ScalarType, op_minus<typename InterfaceType::numeric_type>, long>::result_type, InterfaceType >,
                    op_plus<typename InterfaceType::numeric_type>,

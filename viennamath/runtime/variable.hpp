@@ -184,7 +184,7 @@ namespace viennamath
       }
         
       //protected:
-      /** @brief If 'e' is equal to this variable, the corresponding replacement in 'repl' is returned. Otherwise, a copy of the variable is returned. */
+      /** @brief If 'e' is equal to this variable, the corresponding replacement in 'repl' is returned. Otherwise, a copy of the variable is returned.  The object referred by the pointer is not automatically deleted, thus the caller needs to ensure deletion. */
       InterfaceType * substitute(const InterfaceType * e,
                                  const InterfaceType * repl) const
       {
@@ -196,7 +196,7 @@ namespace viennamath
         return clone();
       };    
 
-      /** @brief Checks whether one of the expressions in 'e' are equal to the variable. If yes, then the corresponding replacement in 'repl' is returned. Otherwise, a copy of the variable is returned. */
+      /** @brief Checks whether one of the expressions in 'e' are equal to the variable. If yes, then the corresponding replacement in 'repl' is returned. Otherwise, a copy of the variable is returned.  The object referred by the pointer is not automatically deleted, thus the caller needs to ensure deletion. */
       InterfaceType * substitute(std::vector<const InterfaceType *> const &  e,
                                  std::vector<const InterfaceType *> const &  repl) const
       {
@@ -225,7 +225,7 @@ namespace viennamath
         return dynamic_cast< const self_type * >(other) != NULL;
       }
 
-      /** @brief Differentiates the variable with respect to 'diff_var' and returns the resulting expression. */
+      /** @brief Differentiates the variable with respect to 'diff_var' and returns the resulting expression. The object referred by the pointer is not automatically deleted, thus the caller needs to ensure deletion. */
       InterfaceType * diff(const InterfaceType * diff_var) const
       {
         const rt_variable<InterfaceType> * ptr = dynamic_cast< const rt_variable<InterfaceType> *>(diff_var);
