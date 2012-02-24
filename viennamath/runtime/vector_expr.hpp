@@ -15,21 +15,28 @@
 ======================================================================= */
 
 
-
-
 #include <ostream>
 #include <sstream>
 #include <memory>
 #include <assert.h>
 #include "viennamath/forwards.h"
+#include "viennamath/exception.hpp"
 #include "viennamath/runtime/expr.hpp"
+
+
+
+/** @file vector_expr.hpp
+    @brief Defines a class representing a vector-valued expression and consisting of a scalar valued expression for each entry in the vector.
+*/
 
 namespace viennamath
 {
 
-  /** @brief An tweaked auto_ptr for run time rt_expressions. 
+  /** @brief An tweaked auto_ptr for run time rt_expr types
    * 
    * Additionally provides the basic user-interface for evaluation using operator().
+   * 
+   * @tparam InterfaceType    The expression runtime interface to inherit from. Usually rt_expression_interface, but extensions are possible.
    */ 
   template <typename InterfaceType /* see forwards.h for default argument */>
   class rt_vector_expr : public InterfaceType, public std::vector< viennamath::rt_expr<InterfaceType> >
@@ -42,6 +49,7 @@ namespace viennamath
       typedef InterfaceType                              interface_type;
       typedef typename BaseType::size_type               size_type;
       
+      /** @brief Constructor for initializing the vector expression with the supplied number of elements. Similar to the C++ STL, all-zero entries are created by default. */
       explicit rt_vector_expr(size_type num) : BaseType(num)
       {
         //initialize all zeros:
@@ -49,6 +57,7 @@ namespace viennamath
           BaseType::operator[](i) = viennamath::rt_constant<numeric_type, interface_type>(0);
       }
       
+      /** @brief Operator overload for adding a vector expression from another vector expression. */
       self_type operator+(self_type const & other) const
       {
         assert(BaseType::size() == other.size() && "Expression vector dimensions mismatch");
@@ -60,6 +69,7 @@ namespace viennamath
         return result;
       }
 
+      /** @brief Operator overload for subtracting a vector expression from another vector expression. */
       self_type operator-(self_type const & other) const
       {
         assert(BaseType::size() == other.size() && "Expression vector dimensions mismatch");
@@ -74,6 +84,8 @@ namespace viennamath
       //
       // Interface requirements:
       //
+      /** @brief Returns a copy of the vector expression. The returned pointer is not automatically deleted, thus the caller needs to ensure deletion.
+       */
       InterfaceType * clone() const 
       {
         self_type * result = new self_type(BaseType::size());
@@ -85,6 +97,7 @@ namespace viennamath
         return result; 
       }
 
+      /** @brief Returns a detailed string describing objects of this type. Acts recursively on the expression. */
       std::string deep_str() const
       {
         std::stringstream ss;
@@ -92,30 +105,38 @@ namespace viennamath
         return ss.str();
       }
       
+      /** @brief Returns a short string describing objects of this type. Does not act recursively. */
       std::string shallow_str() const
       {
         return std::string("vector_expr");
       }
       
       //virtual functions for evaluations
+      /** @brief Interface function for evaluating the expression. Since an rt_vector_expr cannot be evaluated, an expression_not_evaluable_exception is thrown.
+       */
       numeric_type eval(std::vector<double> const & v) const
       {
-        throw "Cannot evaluate vector expression!";
+        throw expression_not_evaluable_exception("Cannot evaluate a rt_vector_expr!");
         return 0;
       }
 
+      /** @brief Interface function for evaluating the expression. Since an rt_vector_expr cannot be evaluated, an expression_not_evaluable_exception is thrown.
+       */
       numeric_type eval(numeric_type val) const
       {
-        throw "Cannot evaluate vector expression!";
+        throw expression_not_evaluable_exception("Cannot evaluate a rt_vector_expr!");
         return 0;
       }
 
+      /** @brief Unwraps the expression, i.e. returns the numerical value represented by the expression. Throws an expression_not_unwrappable_exception, since rt_vector_expr cannot be reduced to a constant. 
+       */
       numeric_type unwrap() const
       {
-        throw "cannot unwrap vector expression!";
+        throw expression_not_unwrappable_exception("Cannot unwrap a rt_vector_expr!");
         return 0;
       }
 
+      /** @brief Returns 'true' if 'other' is strictly the same as this class. Also checks for identical IDs, etc. */
       bool deep_equal(const InterfaceType * other) const
       {
         if (dynamic_cast< const self_type * >(other) != NULL)
@@ -132,12 +153,14 @@ namespace viennamath
         return false;
       }
 
+      /** @brief Returns 'true' if 'other' is of the same type as this class. Does not perform a 'deep' inspection including a check for IDs and the like. */
       bool shallow_equal(const InterfaceType * other) const
       {
         return dynamic_cast< const self_type * >(other) != NULL;
       }
       
       
+      /** @brief Recursively substititues the expression 'e' by 'repl'. Returns a copy of the expression if 'e' is not found. */
       InterfaceType * substitute(const InterfaceType * e,
                                  const InterfaceType * repl) const
       {
@@ -152,10 +175,11 @@ namespace viennamath
         return result; 
       };
 
+      /** @brief Recursively substititues any of the expressions from 'e' by the corresponding replacement in 'repl' */
       InterfaceType * substitute(std::vector<const InterfaceType *> const &  e,
                                  std::vector<const InterfaceType *> const &  repl) const
       {
-        for (size_t i=0; i<e.size(); ++i)
+        for (std::size_t i=0; i<e.size(); ++i)
           if (deep_equal(e[i]))
             return repl[i]->clone();
         
@@ -166,7 +190,8 @@ namespace viennamath
         
         return result; 
       };
-      
+
+      /** @brief Returns the optimized expression (constants collected, trivial operations removed, etc.) */
       InterfaceType * optimize() const
       {
         self_type * result = new self_type(BaseType::size());
@@ -177,6 +202,7 @@ namespace viennamath
         return result;
       }
       
+      /** @brief Returns true if the expression can be simplified by collecting constants, removing trivial operations, etc. */
       bool optimizable() const
       {
         for (std::size_t i=0; i<BaseType::size(); ++i)
@@ -186,7 +212,7 @@ namespace viennamath
         return false;
       }
       
-      
+      /** @brief Returns the differentiated expression. Note that the returned pointer is not automatically deleted, thus the caller is responsible for proper deletion. */
       InterfaceType * diff(const InterfaceType * diff_var) const
       {
         self_type * result = new self_type(BaseType::size());

@@ -24,6 +24,11 @@
 #include <iostream>
 #include <sstream>
 #include "viennamath/forwards.h"
+#include "viennamath/exception.hpp"
+
+/** @file   integral.hpp
+    @brief  Defines concrete and symbolic interval operations at runtime.
+*/
 
 namespace viennamath
 {
@@ -32,7 +37,7 @@ namespace viennamath
   // Part 1: Concrete intervals
   //
   
-  
+  /** @brief A unary operation defining an integral over an interval. */
   template <typename InterfaceType>
   class op_rt_integral
   {
@@ -43,15 +48,26 @@ namespace viennamath
 
       op_rt_integral() : integration_variable_(0) {}
 
+      /** @brief Creates the integral operation.
+       * 
+       * @param interv    A runtime interval
+       * @param var       The integration variable (runtime)
+       */
       op_rt_integral(viennamath::rt_interval<InterfaceType> const & interv,
                      viennamath::rt_variable<InterfaceType> const & var) : interval_(interv),
                                                                            integration_variable_(var) {}
 
+      /** @brief Creates the integral operation.
+       * 
+       * @param interv    A runtime interval
+       * @param var       The integration variable (compiletime)
+       */
       template <id_type id>
       op_rt_integral(viennamath::rt_interval<InterfaceType> const & interv,
                      viennamath::ct_variable<id> const & var) : interval_(interv),
                                                                 integration_variable_(id) {}
 
+      /** @brief Returns a string representation of the integral operation. */
       std::string str() const
       {
         std::stringstream ss;
@@ -60,13 +76,15 @@ namespace viennamath
         return ss.str();
       }
       
+      /** @brief Interface requirement: Applies the integral operation. No symbolic integration at runtime available, thus an exception is thrown. */
       NumericT apply(NumericT value) const
       {
         //std::cout << "TODO: Call integration here!" << std::endl;
-        throw "Must not reach this point!";
+        throw analytic_integration_not_supported_exception();
         return value;
       }
       
+      /** @brief Interface requirement: A integral operation cannot be optimized (at least for now). */
       bool optimizable() const { return false; }
       
       viennamath::rt_interval<InterfaceType> const & interval() const { return interval_; }
@@ -82,6 +100,7 @@ namespace viennamath
   //
   // Convenience functions with rt_interval:
   //
+  /** @brief Creates an expression encoding the integral of an expression with respect to a runtime variable over a certain interval. */
   template <typename InterfaceType>
   rt_expr<InterfaceType> integral(rt_interval<InterfaceType> const & interv,
                                   rt_expr<InterfaceType> const & integrand,
@@ -95,6 +114,7 @@ namespace viennamath
                                  );
   }
 
+  /** @brief Creates an expression encoding the integral of an expression with respect to a compiletime variable over a certain interval. */
   template <typename InterfaceType, id_type id>
   rt_expr<InterfaceType> integral(rt_interval<InterfaceType> const & interv,
                                   rt_expr<InterfaceType> const & integrand,
@@ -108,6 +128,7 @@ namespace viennamath
                                  );
   }
 
+  /** @brief Creates an expression encoding the integral of a binary expression with respect to a compiletime variable over a certain interval. */
   template <typename InterfaceType, id_type id>
   rt_expr<InterfaceType> integral(rt_interval<InterfaceType> const & interv,
                                   rt_binary_expr<InterfaceType> const & integrand,
@@ -126,7 +147,7 @@ namespace viennamath
   // Part 2: Symbolic integrals
   //
   
-  
+  /** @brief A unary operation encoding a symbolic interval. Cannot be evaluated and is meant to be replaced by a concrete integration later on */
   template <typename InterfaceType>
   class op_rt_symbolic_integral
   {
@@ -139,6 +160,7 @@ namespace viennamath
 
       op_rt_symbolic_integral(viennamath::rt_symbolic_interval<InterfaceType> const & interv) : interval_(interv) {}
       
+      /** @brief Returns a string representation of the symbolic interval */
       std::string str() const
       {
         std::stringstream ss;
@@ -147,15 +169,18 @@ namespace viennamath
         return ss.str();
       }
       
+      /** @brief Interface requirement: Application of the symbolic interval. This is bogus, thus a symbolic_integral_evaluation_not_possible_exception is thrown. */
       NumericT apply(NumericT value) const
       {
         //std::cout << "TODO: Call integration here!" << std::endl;
-        throw "Must not reach this point!";
+        throw symbolic_integral_evaluation_not_possible_exception();
         return value;
       }
       
+      /** @brief Interface requirement: Since an integral over a symbolic interval cannot be further optimized, 'false' is returned */
       bool optimizable() const { return false; }
       
+      /** @brief Returns the integration interval */
       viennamath::rt_symbolic_interval<InterfaceType> const & interval() const { return interval_; }
       
     private:
@@ -166,6 +191,7 @@ namespace viennamath
   //
   // Convenience functions with symbolic integrals
   //
+  /** @brief Integral generator function taking a symbolic interval and a runtime expression wrapper for the integrand */
   template <typename InterfaceType>
   rt_expr<InterfaceType> integral(rt_symbolic_interval<InterfaceType> const & interv,
                                   rt_expr<InterfaceType> const & integrand)
@@ -177,6 +203,7 @@ namespace viennamath
                                  );
   }
 
+  /** @brief Integral generator function taking a symbolic interval and a runtime binary expression for the integrand */
   template <typename InterfaceType>
   rt_expr<InterfaceType> integral(rt_symbolic_interval<InterfaceType> const & interv,
                                   rt_binary_expr<InterfaceType> const & integrand)
@@ -188,6 +215,7 @@ namespace viennamath
                                  );
   }
 
+  /** @brief Integral generator function taking a symbolic interval and a runtime unary expression for the integrand */
   template <typename InterfaceType>
   rt_expr<InterfaceType> integral(rt_symbolic_interval<InterfaceType> const & interv,
                                   rt_unary_expr<InterfaceType> const & integrand)
@@ -199,6 +227,7 @@ namespace viennamath
                                  );
   }
 
+  /** @brief Integral generator function taking a symbolic interval and a ViennaMath runtime constant for the integrand */
   template <typename InterfaceType, typename T>
   rt_expr<InterfaceType> integral(rt_symbolic_interval<InterfaceType> const & interv,
                                   rt_constant<T, InterfaceType> const & integrand)
@@ -210,6 +239,7 @@ namespace viennamath
                                  );
   }
 
+  /** @brief Integral generator function taking a symbolic interval and a ViennaMath runtime variable for the integrand */
   template <typename InterfaceType>
   rt_expr<InterfaceType> integral(rt_symbolic_interval<InterfaceType> const & interv,
                                   rt_variable<InterfaceType> const & integrand)
@@ -221,6 +251,7 @@ namespace viennamath
                                  );
   }
 
+  /** @brief Integral generator function taking a symbolic interval and a ViennaMath runtime function symbol for the integrand */
   template <typename InterfaceType>
   rt_expr<InterfaceType> integral(rt_symbolic_interval<InterfaceType> const & interv,
                                   rt_function_symbol<InterfaceType> const & integrand)

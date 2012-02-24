@@ -23,10 +23,19 @@
 #include "viennamath/runtime/expression_interface.hpp"
 //#include "viennamath/expression_run_time.hpp"
 
+
+/** @file constant.hpp
+    @brief Defines the ViennaMath runtime constant class. 
+*/
+
 namespace viennamath
 {
   
   //per default, we assume floating point constants, which cannot be tackled with template arguments
+  /** @brief
+   * 
+   * @tparam InterfaceType    The expression runtime interface to inherit from. Usually rt_expression_interface, but extensions are possible.
+   */ 
   template <typename ScalarType, /* see forwards.h for default argument */
             typename InterfaceType /* see forwards.h for default argument */>
   class rt_constant : public InterfaceType

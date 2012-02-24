@@ -20,15 +20,20 @@
 #include <ostream>
 #include <sstream>
 #include "viennamath/forwards.h"
+#include "viennamath/expression.hpp"
 #include "viennamath/compiletime/ct_function_symbol.hpp"
 #include "viennamath/runtime/expression_interface.hpp"
+
+/** @file function_symbol.hpp
+    @brief Defines a symbolic representation of a function at runtime.
+*/
 
 namespace viennamath
 {
 
   /** @brief A function symbol. Can be used for unknown functions, test functions, etc. Cannot be evaluated, but substituted with an evaluable object 
    *
-   * @tparam Tag    A tag class that is typically used to distinguish between different function symbols. Tag requirements: 'static std::string str();' which returns an identification string
+   * @tparam InterfaceType    The expression runtime interface to inherit from. Usually rt_expression_interface, but extensions are possible.
    */
   template <typename InterfaceType>
   class rt_function_symbol : public InterfaceType
@@ -48,10 +53,19 @@ namespace viennamath
       id_type id() const { return id_; }
       id_type tag_id() const { return tag_id_; }
 
-      //interface requirements:
+      //
+      // interface requirements:
+      //
+      
+      /** @brief Returns a copy of the function symbol. The caller needs to ensure that the object the pointer is referring to is deleted. */
       InterfaceType * clone() const { return new self_type(id_, tag_id_); }
-      numeric_type eval(std::vector<double> const & v) const { throw "Cannot evaluate rt_function_symbol!"; return 0; }
-      numeric_type eval(numeric_type v) const { throw "Cannot evaluate rt_function_symbol!"; return 0; }
+      
+      /** @brief Interface requirement: Evaluates the expression. This is illegal for a function symbol */
+      numeric_type eval(std::vector<double> const & v) const { throw expression_not_evaluable_exception("Cannot evaluate rt_function_symbol!"); return 0; }
+      /** @brief Interface requirement: Evaluates the expression. This is illegal for a function symbol */
+      numeric_type eval(numeric_type v) const { throw expression_not_evaluable_exception("Cannot evaluate rt_function_symbol!"); return 0; }
+      
+      /** @brief Returns a detailed string with all informations about the function symbol */
       std::string deep_str() const
       {
         std::stringstream ss;
@@ -65,8 +79,11 @@ namespace viennamath
         
         return ss.str();      
       }
-      numeric_type unwrap() const { throw "Cannot evaluate rt_function_symbol to a number!"; }
       
+      /** @brief Interface requirement: Evaluate to a constant. This is illegal for a function symbol */
+      numeric_type unwrap() const { throw expression_not_unwrappable_exception("Cannot evaluate rt_function_symbol to a number!"); }
+      
+      /** @brief If this expression is equal to 'e', the replacement 'repl' is returned. Otherwise, a copy of this object is returned. Note that the caller is responsible for deleting the object the returned pointer is referring to. */
       InterfaceType * substitute(const InterfaceType * e,
                                  const InterfaceType * repl) const
       {
@@ -76,11 +93,12 @@ namespace viennamath
         return clone();
       };    
       
+      /** @brief If this expression is equal to one of the elements of 'e', the corresponding replacement 'repl' is returned. Otherwise, a copy of this object is returned. Note that the caller is responsible for deleting the object the returned pointer is referring to. */
       InterfaceType * substitute(std::vector<const InterfaceType *> const &  e,
                                  std::vector<const InterfaceType *> const &  repl) const
       {
         //std::cout << "Comparing variable<" << id << "> with " << e->str() << ", result: ";
-        for (size_t i=0; i<e.size(); ++i)
+        for (std::size_t i=0; i<e.size(); ++i)
           if (deep_equal(e[i]))
             return repl[i]->clone();
         
@@ -88,6 +106,7 @@ namespace viennamath
         return clone();
       };    
       
+      /** @brief Returns true if the other function is semantically equal (same ID, same tag). */
       bool deep_equal(const InterfaceType * other) const
       {
         const self_type * ptr = dynamic_cast< const self_type *>(other);
@@ -97,20 +116,24 @@ namespace viennamath
         return false;
       }
       
+      /** @brief Returns true if the type of 'other' is also a function symbol (with possibly different ID). */
       bool shallow_equal(const InterfaceType * other) const
       {
         return dynamic_cast< const self_type * >(other) != NULL;
       }
       
+      /** @brief Interface requirement. The differentiation of a function symbol is not allowed, thus an exception is thrown. */
       InterfaceType * diff(const InterfaceType * diff_var) const
       {
         //this code should not be reached, because rt_function_symbol is symbolically differentiated at a higher level
-        throw "Cannot differentiate rt_function_symbol!";
+        throw expression_not_differentiable_exception("Cannot differentiate rt_function_symbol!");
         return NULL;
       }
       
     private:
+      /** @brief A numerical ID identifying the function symbol for a given tag */
       id_type id_;
+      /** @brief A tag ID allowing for distinguishing between different groups of function symbols. */
       id_type tag_id_;
   };
 

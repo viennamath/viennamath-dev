@@ -22,6 +22,10 @@
 #include "viennamath/compiletime/promote_traits.hpp"
 #include "viennamath/runtime/binary_operators.hpp"
 
+/** @file viennamath/runtime/operations/constant.hpp
+    @brief Defines special (non-standard) operator overloads for runtime constants.
+*/
+
 namespace viennamath
 {
       

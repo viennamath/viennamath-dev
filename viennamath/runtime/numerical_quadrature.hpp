@@ -27,23 +27,30 @@
 #include "viennamath/manipulation/substitute.hpp"
 #include "viennamath/manipulation/eval.hpp"
 
+/** @file    numerical_quadrature.hpp
+    @brief   Defines a runtime interface for numerical quadrature, several integration routines and a common wrapper for all quadrature rules.
+*/
+
 namespace viennamath
 {
   
+  /** @brief The abstract runtime interface for all numerical quadrature rules */
   template <typename InterfaceType>
   class numerical_quadrature_interface
   {
     public:
       typedef typename InterfaceType::numeric_type   numeric_type;
       
+      /** @brief Returns a copy of the quadrature rule. The caller must ensure proper deletion of the object. */
       virtual numerical_quadrature_interface * clone() const = 0;
       
+      /** @brief Evaluates the provided expression using the respective numerical quadrature rule */
       virtual numeric_type eval(rt_interval<InterfaceType> const & interv,
                                 rt_expr<InterfaceType> const & e,
                                 rt_variable<InterfaceType> const & var) const = 0;
   };
   
-  
+  /** @brief Gauss quadrature rule with first-order accuracy. */
   template <typename InterfaceType = default_interface_type>
   class rt_gauss_quad_1 : public numerical_quadrature_interface<InterfaceType>
   {
@@ -78,7 +85,7 @@ namespace viennamath
   
 
   
-  
+  /** @brief The main numerical quadrature rule class. Wraps the integration rule and performs all the book-keeping for the evaluation. */
   template <typename InterfaceType = default_interface_type>
   class rt_numerical_quadrature 
   {
@@ -118,6 +125,7 @@ namespace viennamath
       }
 
       
+      /** @brief Evaluate the passed expression numerically. Note that all leaves of the expression tree need to be an integral equipped with a suitable interval. */
       NumericT operator()(rt_expr<InterfaceType> const & e) const
       {
         const rt_unary_expr<InterfaceType> * integral_expression = dynamic_cast<const rt_unary_expr<InterfaceType> *>(e.get());
@@ -147,9 +155,9 @@ namespace viennamath
                                             op_tmp->op().variable());
             }
             
-            std::cerr << "ERROR: No integral encountered in numerical quadrature!" << std::endl;
-            std::cerr << e << std::endl;
-            throw "Not implemented!";
+            //std::cerr << "ERROR: No integral encountered in numerical quadrature!" << std::endl;
+            //std::cerr << e << std::endl;
+            throw integration_without_integral_exception();
           }
         }
         else
@@ -160,14 +168,15 @@ namespace viennamath
               return rt_constant<typename InterfaceType::numeric_type, InterfaceType>(0);
           }
           
-          std::cerr << "ERROR: Non-unary expression encountered in numerical quadrature: NOT IMPLEMENTED!" << std::endl;
-          std::cerr << e << std::endl;
-          throw "Not implemented!";
+          //std::cerr << "ERROR: Non-unary expression encountered in numerical quadrature: NOT IMPLEMENTED!" << std::endl;
+          //std::cerr << e << std::endl;
+          throw integration_without_integral_exception(); 
         }
 
         return 0;
       }
 
+      /** @brief Integrates the provided expression 'e' over the interval 'interv' with respect to the runtime variable 'var'. */
       NumericT operator()(rt_interval<InterfaceType> const & interv,
                           rt_expr<InterfaceType> const & e,
                           rt_variable<InterfaceType> const & var) const
@@ -175,6 +184,7 @@ namespace viennamath
         return quadrature_rule_->eval(interv, e, var);
       }
 
+      /** @brief Integrates the provided expression 'e' over the interval 'interv' with respect to the compiletime variable 'var'. */
       template <id_type id>
       NumericT operator()(rt_interval<InterfaceType> const & interv,
                           rt_expr<InterfaceType> const & e,

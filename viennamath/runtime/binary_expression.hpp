@@ -29,10 +29,18 @@
 #include "viennamath/runtime/expression_interface.hpp"
 #include "viennamath/runtime/unary_operators.hpp"
 
+/** @file binary_expression.hpp
+    @brief Defines the binary expression class.
+*/
+
 namespace viennamath
 {
   
   //A run time expression
+  /** @brief
+   * 
+   * @tparam InterfaceType    The expression runtime interface to inherit from. Usually rt_expression_interface, but extensions are possible.
+   */ 
   template <typename InterfaceType /* see forwards.h for default argument */>
   class rt_binary_expr : public InterfaceType
   {

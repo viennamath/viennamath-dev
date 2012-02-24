@@ -26,12 +26,18 @@
 #include "viennamath/compiletime/ct_binary_expr.hpp"
 #include "viennamath/compiletime/ct_unary_expr.hpp"
 
+/** @file expr.hpp
+    @brief Defines the ViennaMath expression wrapper. All ViennaMath expressions can be wrapped by this type.
+*/
+
 namespace viennamath
 {
 
-  /** @brief An tweaked auto_ptr for run time rt_expressions. 
+  /** @brief This class represents a smart pointer to all types expressions.
    * 
    * Additionally provides the basic user-interface for evaluation using operator().
+   * 
+   * @tparam InterfaceType    The expression runtime interface to inherit from. Usually rt_expression_interface, but extensions are possible.
    */ 
   template <typename InterfaceType /* see forwards.h for default argument */>
   class rt_expr 

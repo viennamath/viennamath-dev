@@ -21,18 +21,30 @@
 #include <sstream>
 #include "viennamath/forwards.h"
 
+/** @file functor_wrapper.hpp
+    @brief Defines a manipulator and a traversal functionality for working with symbolic expressions at runtime.
+*/
+
 namespace viennamath
 {
+  
+  //
+  // Modification of expressions
+  //
+  
+  /** @brief The abstract runtime interface for all expression manipulators */
   template <typename InterfaceType /* see forwards.h for default argument */>
   class rt_manipulation_interface
   {
     public:
+      /** @brief Returns the manipulated (runtime) expression. The caller has to ensure the proper deletion of the object the pointer is referring to. */
       virtual InterfaceType * operator()(InterfaceType const * e) const { return e->clone(); };
+      
+      /** @brief Returns true if 'e' is modified directly and not just the leaves of 'e'. Otherwise, returns 'false'. */
       virtual bool modifies(InterfaceType const * e) const { return false; }
   };
 
-  /** @brief: Type erasure for functors acting on expressions */
-  
+  /** @brief A wrapper using type erasure for manipulation functors acting on expressions */  
   template <typename InterfaceType /* default argument in forwards.h */>
   class rt_manipulation_wrapper
   {
@@ -52,14 +64,27 @@ namespace viennamath
   };
 
   
+  //
+  // Traversal of expressions (no modification)
+  //
+  
+  
+  /** @brief The abstract runtime interface for all expression traversal routines.
+   * 
+   * @tparam InterfaceType   The common expression interface for all runtime classes.
+   */
   template <typename InterfaceType /* see forwards.h for default argument */>
   class rt_traversal_interface
   {
     public:
+      /** @brief Triggers the processing of the supplied expression. */
       virtual void operator()(InterfaceType const * e) const = 0;
+      
+      /** @brief If 'true' is returned, the traversal continues the recursion. */
       virtual bool step_into(InterfaceType const * e) const { return true; }
   };
   
+  /** @brief A wrapper using type erasure for traversal functions acting on expressions */
   template <typename InterfaceType /* default argument in forwards.h */>
   class rt_traversal_wrapper
   {
@@ -78,10 +103,15 @@ namespace viennamath
       std::auto_ptr< const rt_traversal_interface<InterfaceType> > functor_;
   };
 
-  
+
+  /** @brief A helper class which calls a provided functor if the supplied expression pointer can be cast to the target type.
+   * 
+   * @tparam CastToType    The type to which a dynamic cast should be attempted.
+   */
   template <typename CastToType>
   struct callback_if_castable
   {
+    /** @brief Attempts to cast the expression referred to be 'e' to 'CastToType'. If successful, the provided functor is called. */
     template <typename InterfaceType, typename FunctorType>
     static bool apply(InterfaceType const * e, FunctorType const & functor)
     {

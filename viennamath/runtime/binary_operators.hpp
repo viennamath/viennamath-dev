@@ -24,6 +24,10 @@
 #include "viennamath/runtime/op_interface.hpp"
 #include "viennamath/compiletime/binary_op_tags.hpp"
 
+/** @file binary_operators.hpp
+    @brief Defines the binary operation class wrapping all binary operation tags at runtime.
+*/
+
 namespace viennamath
 {
   

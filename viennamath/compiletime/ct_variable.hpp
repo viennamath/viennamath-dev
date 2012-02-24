@@ -165,7 +165,7 @@ namespace viennamath
     rt_constant<ScalarType> operator()(rt_constant<ScalarType> const & other) const
     {
       if (id > 0)
-        throw variable_index_out_of_bounds(id, 0);
+        throw variable_index_out_of_bounds_exception(id, 0);
       return rt_constant<ScalarType>(static_cast<ScalarType>(other));
     }
 
@@ -173,7 +173,7 @@ namespace viennamath
     long operator()(ct_constant<value> const & other) const
     {
       if (id > 0)
-        throw variable_index_out_of_bounds(id, 0);
+        throw variable_index_out_of_bounds_exception(id, 0);
       return value;
     }
 
@@ -184,7 +184,7 @@ namespace viennamath
     operator()(VectorType const & v) const
     {
       if(id >= v.size())
-        throw variable_index_out_of_bounds(id, v.size());
+        throw variable_index_out_of_bounds_exception(id, v.size());
       return variable_traits<VectorType, id>::get(v);
     }
     

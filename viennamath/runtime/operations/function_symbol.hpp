@@ -21,6 +21,10 @@
 #include "viennamath/forwards.h"
 #include "viennamath/runtime/binary_operators.hpp"
 
+/** @file viennamath/runtime/operations/function_symbol.hpp
+    @brief Defines special (non-standard) operator overloads for runtime function symbols.
+*/
+
 namespace viennamath
 {
   

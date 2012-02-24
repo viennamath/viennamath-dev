@@ -20,21 +20,20 @@
 #include <vector>
 #include <exception>
 #include "viennamath/forwards.h"
+#include "viennamath/exception.hpp"
+
+/** @file op_interface.hpp
+    @brief Defines a common abstract interface for all operations.
+*/
 
 namespace viennamath
 {
   
-  struct ex_no_rhs_provided  : std::exception
-  {
-    const char* what() const throw() { return "Error due to wrong use of class 'op_interface': No right hand side provided for binary operator."; }
-  };
   
-  struct ex_rhs_provided_for_unary_operator : std::exception
-  {
-    const char* what() const throw() { return "Error due to wrong use of class 'op_interface': A right hand side argument was provided to an unary operator."; }
-  };
-  
-  
+  /** @brief The abstract runtime interface for all operations (unary and binary).
+   * 
+   * @tparam InterfaceType    The expression runtime interface. Usually rt_expression_interface, but extensions are possible.
+   */ 
   template <typename InterfaceType>
   class op_interface
   {
@@ -50,34 +49,40 @@ namespace viennamath
       virtual std::string    str() const = 0;
 
       /** @brief Applys the operator to the provided value. Unary operators must overwrite this function. */
-      virtual numeric_type   apply(numeric_type value) const { throw ex_no_rhs_provided(); }                   
+      virtual numeric_type   apply(numeric_type value) const { throw no_rhs_provided_exception(); }                   
       
       /** @brief Applys the operator to the left hand side 'lhs' and the right hand side 'rhs'. Binary operators must overwrite this function. */
       virtual numeric_type   apply(numeric_type lhs,
-                                   numeric_type rhs) const { throw ex_rhs_provided_for_unary_operator(); }
+                                   numeric_type rhs) const { throw rhs_provided_for_unary_operation_exception(); }
 
       /** @brief A boolean flag that specifies whether the operator is an unary operator, i.e. taking one argument only */                             
       virtual bool                   is_unary() const { return true; }
 
       //unary diff:
+      /** @brief Interface for differentation of a unary expression */
       virtual InterfaceType * diff(const InterfaceType * e,
-                                   const InterfaceType * diff_var) const { throw ex_no_rhs_provided(); }
+                                   const InterfaceType * diff_var) const { throw no_rhs_provided_exception(); }
 
       //binary diff:                                   
+      /** @brief Interface for differentation of a binary expression */
       virtual InterfaceType * diff(const InterfaceType * lhs,
                                    const InterfaceType * rhs,
-                                   const InterfaceType * diff_var) const { throw ex_rhs_provided_for_unary_operator(); }
+                                   const InterfaceType * diff_var) const { throw rhs_provided_for_unary_operation_exception(); }
                                    
       //optimization for binary operators:
+      /** @brief Interface for optimizing a binary expression by passing the two operands */
       virtual InterfaceType * optimize(const InterfaceType * lhs,
                                        const InterfaceType * rhs) const = 0; //{ throw ex_rhs_provided_for_unary_operator(); }
 
       //optimization for unary operators:
-      //virtual InterfaceType * optimize(const InterfaceType * lhs) const { return lhs->optimize(); }
+
+      /** @brief Returns true if the unary expression can be simplified */
       virtual bool optimizable() const = 0;
+      /** @brief Returns true if the binary expression can be simplified */
       virtual bool optimizable(const InterfaceType * lhs,
                                const InterfaceType * rhs) const { return false; }    
-                               
+
+      /** @brief Returns true if 'other' is the same operation as the respective object. */
       virtual bool equal(const op_interface * other) const = 0;
   };
   

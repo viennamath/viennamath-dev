@@ -21,6 +21,10 @@
 #include <ostream>
 #include "viennamath/forwards.h"
 
+/** @file  symbolic_interval.hpp
+    @brief Defines a class representing an interval. This is only a placeholder class, the actual interval is substituted later.
+*/
+
 namespace viennamath
 {
   
@@ -36,12 +40,14 @@ namespace viennamath
       
       rt_symbolic_interval(id_type interval_id = 0) : id_(interval_id) {}
       
+      /** @brief Returns the ID of the interval (used for dispatching purposes). */
       id_type id() const { return id_; }
       
     private:
       id_type id_;      
   };
 
+  /** @brief Convenience overload for obtaining a string representation of a symbolic interval */
   template <typename InterfaceType>
   std::ostream& operator<<(std::ostream & stream, rt_symbolic_interval<InterfaceType> const & e)
   {
