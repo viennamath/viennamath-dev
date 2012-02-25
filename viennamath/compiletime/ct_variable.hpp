@@ -22,24 +22,32 @@
 
 #include <assert.h>
 
+/** @file   viennamath/compiletime/ct_variable.hpp
+    @brief  Implementation of a compiletime variable (in the mathematical sense).
+*/
+
 namespace viennamath
 {
   /********** evaluation at ViennaMath vector types ***************/
+  /** @brief Helper metafunction for returning the 'id'-th entry of a compiletime vector */
   template <typename vmath_vector, long id>
   struct type_by_index {};
   
+  /** @brief Accesses the first entry in a compiletime vector */
   template <typename vmath_vector>
   struct type_by_index <vmath_vector, 0>
   {
     typedef typename vmath_vector::type_0   type; 
   };
   
+  /** @brief Accesses the second entry in a compiletime vector */
   template <typename vmath_vector>
   struct type_by_index <vmath_vector, 1>
   {
     typedef typename vmath_vector::type_1   type; 
   };
   
+  /** @brief Accesses the third entry in a compiletime vector */
   template <typename vmath_vector>
   struct type_by_index <vmath_vector, 2>
   {
@@ -47,6 +55,7 @@ namespace viennamath
   };
 
   /********** evaluation at STL vector types ***************/
+  /** @brief Helper struct for accessing the i-th element of a vector at runtime */
   template <typename VectorType,
             long id>
   struct variable_traits
@@ -62,6 +71,7 @@ namespace viennamath
   
   
   //vector_1:
+  /** @brief Helper struct for accessing the i-th element of a vector at runtime. Specialization for a ViennaMath compiletime vector with one entry. */
   template <typename T0,
             long id>
   struct variable_traits <ct_vector_1<T0>, 
@@ -77,6 +87,7 @@ namespace viennamath
   };
   
   //vector_2:
+  /** @brief Helper struct for accessing the i-th element of a vector at runtime. Specialization for a ViennaMath compiletime vector with two entries. */
   template <typename T0, typename T1,
             long id>
   struct variable_traits <ct_vector_2<T0, T1>, 
@@ -92,6 +103,7 @@ namespace viennamath
   };
 
   //vector_3:
+  /** @brief Helper struct for accessing the i-th element of a vector at runtime. Specialization for a ViennaMath compiletime vector with three entries. */
   template <typename T0, typename T1, typename T2,
             long id>
   struct variable_traits <ct_vector_3<T0, T1, T2>, 
@@ -110,6 +122,7 @@ namespace viennamath
 
   
   /************* evaluation of a compile time constant *****************/
+  /** @brief Helper struct for accessing the 0-th element of a constant at runtime. */
   template <long value_>
   struct variable_traits <ct_constant<value_>,
                           0>
@@ -124,6 +137,7 @@ namespace viennamath
   };
 
   //guard: something like (x*y - z)(constant<long, ct_constant<4> >()) is not allowed
+  /** @brief Compiletime guard for index out of bounds */
   template <long value_, long id>
   struct variable_traits <ct_constant<value_>, 
                           id>
@@ -138,10 +152,8 @@ namespace viennamath
   
   
   
-  /** @brief Representation of an variable (a variable). If the supplied argument is some vector type,
-   *  a traits system accesses the id-th component
+  /** @brief Representation of a mathematical variable. If the supplied argument is some vector type, a traits system accesses the id-th component
    * 
-   * @tparam ScalarType        the underlying numerical type (typically float, double)
    * @tparam id                the component of the vector for which 'variable' is evaluated
    */
   template <id_type id /* see forwards.h for default argument */>
@@ -190,6 +202,8 @@ namespace viennamath
     
   }; //variable
 
+
+  /** @brief Convenience overload for printing a variable to an output stream. */
   template <id_type id>
   std::ostream& operator<<(std::ostream & stream, ct_variable<id> const & u)
   {

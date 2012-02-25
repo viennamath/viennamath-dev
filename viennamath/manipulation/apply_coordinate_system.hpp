@@ -18,17 +18,23 @@
 
 
 #include "viennamath/forwards.h"
-#include "viennamath/manipulation/detail/unary_operators_manipulation.hpp"
+#include "viennamath/manipulation/detail/unary_operations.hpp"
 #include "viennamath/manipulation/substitute.hpp"
 #include "viennamath/manipulation/diff.hpp"
 #include "viennamath/runtime/equation.hpp"
 #include "viennamath/runtime/function_symbol.hpp"
 
+/** @file apply_coordinate_system.hpp
+    @brief Applies a coordinate system to a coordinate system free form (using gradient, divergence, etc.) of an expression.
+*/
+
 namespace viennamath
 {
-  template <id_type dim>
-  struct cartesian {};
   
+  /** @brief Transforms the expression to a Cartesian coordinate system in one dimension 
+   *
+   * @param ex     The runtime expression wrapper to be transformed
+   */
   template <typename InterfaceType>
   rt_expr<InterfaceType> apply_coordinate_system(cartesian<1>, rt_expr<InterfaceType> const & ex)
   {
@@ -48,6 +54,11 @@ namespace viennamath
     return new_ex4;
   }
 
+
+  /** @brief Transforms the expression to a Cartesian coordinate system in one dimension 
+   *
+   * @param ex     The runtime unary expression to be transformed
+   */
   template <typename InterfaceType>
   rt_expr<InterfaceType> apply_coordinate_system(cartesian<1>, rt_unary_expr<InterfaceType> const & ex)
   {
@@ -55,6 +66,10 @@ namespace viennamath
     return apply_coordinate_system(cartesian<1>(), temp);
   }
 
+  /** @brief Transforms the expression to a Cartesian coordinate system in one dimension 
+   *
+   * @param ex     The runtime binary expression to be transformed
+   */
   template <typename InterfaceType>
   rt_expr<InterfaceType> apply_coordinate_system(cartesian<1>, rt_binary_expr<InterfaceType> const & ex)
   {
@@ -65,6 +80,10 @@ namespace viennamath
   
   /********* 2d *********/
 
+  /** @brief Transforms the expression to a Cartesian coordinate system in two dimensions
+   *
+   * @param ex     The runtime expression wrapper to be transformed
+   */
   template <typename InterfaceType>
   rt_expr<InterfaceType> apply_coordinate_system(cartesian<2>, rt_expr<InterfaceType> const & ex)
   {
@@ -92,6 +111,10 @@ namespace viennamath
     return new_ex4;
   }
   
+  /** @brief Transforms the expression to a Cartesian coordinate system in two dimensions 
+   *
+   * @param ex     The runtime unary expression to be transformed
+   */
   template <typename InterfaceType>
   rt_expr<InterfaceType> apply_coordinate_system(cartesian<2>, rt_unary_expr<InterfaceType> const & ex)
   {
@@ -99,6 +122,10 @@ namespace viennamath
     return apply_coordinate_system(cartesian<2>(), temp);
   }
 
+  /** @brief Transforms the expression to a Cartesian coordinate system in two dimensions 
+   *
+   * @param ex     The runtime binary expression to be transformed
+   */
   template <typename InterfaceType>
   rt_expr<InterfaceType> apply_coordinate_system(cartesian<2>, rt_binary_expr<InterfaceType> const & ex)
   {
@@ -109,6 +136,10 @@ namespace viennamath
 
   /******** 3d ***********/
 
+  /** @brief Transforms the expression to a Cartesian coordinate system in two dimensions
+   *
+   * @param ex     The runtime expression wrapper to be transformed
+   */
   template <typename InterfaceType>
   rt_expr<InterfaceType> apply_coordinate_system(cartesian<3>, rt_expr<InterfaceType> const & ex)
   {
@@ -139,6 +170,10 @@ namespace viennamath
     return new_ex4;
   }
   
+  /** @brief Transforms the expression to a Cartesian coordinate system in three dimensions 
+   *
+   * @param ex     The runtime unary expression to be transformed
+   */
   template <typename InterfaceType>
   rt_expr<InterfaceType> apply_coordinate_system(cartesian<3>, rt_unary_expr<InterfaceType> const & ex)
   {
@@ -146,6 +181,10 @@ namespace viennamath
     return apply_coordinate_system(cartesian<3>(), temp);
   }
 
+  /** @brief Transforms the expression to a Cartesian coordinate system in three dimensions 
+   *
+   * @param ex     The runtime binary expression to be transformed
+   */
   template <typename InterfaceType>
   rt_expr<InterfaceType> apply_coordinate_system(cartesian<3>, rt_binary_expr<InterfaceType> const & ex)
   {
@@ -162,6 +201,7 @@ namespace viennamath
 
 
   //tries to automatically derive the weak formulation from the strong formulation
+  /** @brief Convenience overload which automatically applies the coordinate transformation to the right hand left hand side of an equation */
   template <typename InterfaceType, id_type dim>
   rt_equation<InterfaceType> apply_coordinate_system(cartesian<dim>,
                                                      rt_equation<InterfaceType> const & equ)

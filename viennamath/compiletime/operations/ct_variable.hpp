@@ -23,13 +23,17 @@
 
 #include <assert.h>
 
+/** @file viennamath/compiletime/operations/ct_variable.hpp
+    @brief Special operator overloads containing a compiletime variable are defined here.
+*/
+
 namespace viennamath
 {
 
   ////////////////// Operations //////////////////////////////
   
   ////////////// operator+
-
+  /** @brief Special overload: x + x becomes 2*x */
   template <id_type id>
   ct_binary_expr<ct_constant<2>,
                  op_mult<default_numeric_type>,
@@ -44,6 +48,7 @@ namespace viennamath
 
   ////////// operator-
 
+  /** @brief Special overload: x - x becomes 0 */
   template <id_type id>
   ct_constant<0>
   operator-(ct_variable<id> const & lhs,
@@ -59,6 +64,7 @@ namespace viennamath
 
   //////////// operator/
 
+  /** @brief Special overload: x / x becomes 1 */
   template <id_type id>
   ct_constant<1>
   operator/(ct_variable<id> const & lhs,

@@ -22,8 +22,12 @@
 #include <math.h>
 #include "viennamath/forwards.h"
 #include "viennamath/compiletime/binary_op_tags.hpp"
-#include "viennamath/runtime/binary_expression.hpp"
-#include "viennamath/runtime/unary_expression.hpp"
+#include "viennamath/runtime/binary_expr.hpp"
+#include "viennamath/runtime/unary_expr.hpp"
+
+/** @file viennamath/manipulation/detail/binary_operations.hpp
+    @brief Provides additional implementation details for binary operations.
+*/
 
 namespace viennamath
 {
@@ -32,6 +36,7 @@ namespace viennamath
   //
   // addition
   //
+  /** @brief Implementation of the differentation of e1 + e1, where e1 and e2 are expressions. */
   template <typename InterfaceType, typename NumericT>
   InterfaceType * diff_impl(const InterfaceType * lhs, op_plus<NumericT>, const InterfaceType * rhs, const InterfaceType * diff_var)
   {
@@ -40,43 +45,45 @@ namespace viennamath
                                                 rhs->diff(diff_var) );
   }
   
+  /** @brief Implementation of the simplification procedures for an expression of the form e1 + e2 */
   template <typename InterfaceType, typename NumericT>
-  InterfaceType * optimize_impl(const InterfaceType * lhs, op_plus<NumericT>, const InterfaceType * rhs)
+  InterfaceType * simplify_impl(const InterfaceType * lhs, op_plus<NumericT>, const InterfaceType * rhs)
   {
         if (lhs->is_constant())
         {
           NumericT val = lhs->unwrap();
           if (val == 0.0)
-            return rhs->optimize();
+            return rhs->simplify();
           
           return new rt_binary_expr<InterfaceType>(new rt_constant<NumericT, InterfaceType>(val),
                                                    new op_binary<op_plus<NumericT>, InterfaceType>(),
-                                                   rhs->optimize());
+                                                   rhs->simplify());
         }
         else if (rhs->is_constant())
         {
           NumericT val = rhs->unwrap();
           if (val == 0.0)
-            return lhs->optimize();
+            return lhs->simplify();
           
-          return new rt_binary_expr<InterfaceType>(lhs->optimize(),
+          return new rt_binary_expr<InterfaceType>(lhs->simplify(),
                                                    new op_binary<op_plus<NumericT>, InterfaceType>(),
                                                    new rt_constant<NumericT, InterfaceType>(val));
         }
         
-        return new rt_binary_expr<InterfaceType>(lhs->optimize(),
+        return new rt_binary_expr<InterfaceType>(lhs->simplify(),
                                                  new op_binary<op_plus<NumericT>, InterfaceType>(),
-                                                 rhs->optimize());
+                                                 rhs->simplify());
   }
   
+  /** @brief Checks whether an expression of the form e1 + e2 can be simplified */
   template <typename InterfaceType, typename NumericT>
-  bool optimizable_impl(const InterfaceType * lhs, op_plus<NumericT>, const InterfaceType * rhs)
+  bool can_simplify_impl(const InterfaceType * lhs, op_plus<NumericT>, const InterfaceType * rhs)
   {
       if (lhs->is_constant())
       {
         if (lhs->unwrap() == 0.0)
         {
-          //std::cout << "optimizable: true in op_plus" << std::endl;
+          //std::cout << "can_simplify: true in op_plus" << std::endl;
           return true;
         }
       }
@@ -84,11 +91,11 @@ namespace viennamath
       {
         if (rhs->unwrap() == 0.0)
         {
-          //std::cout << "optimizable: true in op_plus" << std::endl;
+          //std::cout << "can_simplify: true in op_plus" << std::endl;
           return true;
         }
       }
-      return lhs->optimizable() || rhs->optimizable();
+      return lhs->can_simplify() || rhs->can_simplify();
   }
   
   
@@ -97,6 +104,7 @@ namespace viennamath
   //
   // subtraction
   //
+  /** @brief Implementation of the differentation of e1 - e1, where e1 and e2 are expressions. */
   template <typename InterfaceType, typename NumericT>
   InterfaceType * diff_impl(const InterfaceType * lhs, op_minus<NumericT>, const InterfaceType * rhs, const InterfaceType * diff_var)
   {
@@ -105,8 +113,9 @@ namespace viennamath
                                                 rhs->diff(diff_var) );
   }
   
+  /** @brief Implementation of the simplification procedures for an expression of the form e1 - e2 */
   template <typename InterfaceType, typename NumericT>
-  InterfaceType * optimize_impl(const InterfaceType * lhs, op_minus<NumericT>, const InterfaceType * rhs)
+  InterfaceType * simplify_impl(const InterfaceType * lhs, op_minus<NumericT>, const InterfaceType * rhs)
   {
         if (lhs->is_constant())
         {
@@ -115,37 +124,38 @@ namespace viennamath
           {
             return new rt_binary_expr<InterfaceType>(new rt_constant<NumericT, InterfaceType>(-1),
                                                      new op_binary<op_mult<NumericT>, InterfaceType>(),
-                                                     rhs->optimize());
+                                                     rhs->simplify());
           }
           
           return new rt_binary_expr<InterfaceType>(new rt_constant<NumericT, InterfaceType>(val),
                                                    new op_binary<op_minus<NumericT>, InterfaceType>(),
-                                                   rhs->optimize());
+                                                   rhs->simplify());
         }
         else if (rhs->is_constant())
         {
           NumericT val = rhs->unwrap();
           if (val == 0.0)
-            return lhs->optimize();
+            return lhs->simplify();
           
-          return new rt_binary_expr<InterfaceType>(lhs->optimize(),
+          return new rt_binary_expr<InterfaceType>(lhs->simplify(),
                                                    new op_binary<op_minus<NumericT>, InterfaceType>(),
                                                    new rt_constant<NumericT, InterfaceType>(val));
         }
         
-        return new rt_binary_expr<InterfaceType>(lhs->optimize(),
+        return new rt_binary_expr<InterfaceType>(lhs->simplify(),
                                                  new op_binary<op_minus<NumericT>, InterfaceType>(),
-                                                 rhs->optimize());
+                                                 rhs->simplify());
   }
   
+  /** @brief Checks whether an expression of the form e1 - e2 can be simplified */
   template <typename InterfaceType, typename NumericT>
-  bool optimizable_impl(const InterfaceType * lhs, op_minus<NumericT>, const InterfaceType * rhs)
+  bool can_simplify_impl(const InterfaceType * lhs, op_minus<NumericT>, const InterfaceType * rhs)
   {
       if (lhs->is_constant())
       {
         if (lhs->unwrap() == 0.0)
         {
-          //std::cout << "optimizable: true in op_minus" << std::endl;
+          //std::cout << "can_simplify: true in op_minus" << std::endl;
           return true;
         }
       }
@@ -154,12 +164,12 @@ namespace viennamath
       {
         if (rhs->unwrap() == 0.0)
         {
-          //std::cout << "optimizable: true in op_minus" << std::endl;
+          //std::cout << "can_simplify: true in op_minus" << std::endl;
           return true;
         }
       }
       
-      return lhs->optimizable() || rhs->optimizable();
+      return lhs->can_simplify() || rhs->can_simplify();
   }
   
   
@@ -168,6 +178,7 @@ namespace viennamath
   //
   // multiplication
   //
+  /** @brief Implementation of the differentation of e1 * e1, where e1 and e2 are expressions. */
   template <typename InterfaceType, typename NumericT>
   InterfaceType * diff_impl(const InterfaceType * lhs, op_mult<NumericT>, const InterfaceType * rhs, const InterfaceType * diff_var)
   {
@@ -181,8 +192,9 @@ namespace viennamath
                             );
   }
   
+  /** @brief Implementation of the simplification procedures for an expression of the form e1 * e2 */
   template <typename InterfaceType, typename NumericT>
-  InterfaceType * optimize_impl(const InterfaceType * lhs, op_mult<NumericT>, const InterfaceType * rhs)
+  InterfaceType * simplify_impl(const InterfaceType * lhs, op_mult<NumericT>, const InterfaceType * rhs)
   {
         if (lhs->is_constant())
         {
@@ -190,11 +202,11 @@ namespace viennamath
           if (val == 0.0)
             return new rt_constant<NumericT, InterfaceType>(0.0);
           if (val == 1.0)
-            return rhs->optimize();
+            return rhs->simplify();
           
           return new rt_binary_expr<InterfaceType>(new rt_constant<NumericT, InterfaceType>(val),
                                                    new op_binary<op_mult<NumericT>, InterfaceType>(),
-                                                   rhs->optimize());
+                                                   rhs->simplify());
         }
         else if (rhs->is_constant())
         {
@@ -202,9 +214,9 @@ namespace viennamath
           if (val == 0.0)
             return new rt_constant<NumericT, InterfaceType>(0.0);
           if (val == 1.0)
-            return lhs->optimize();
+            return lhs->simplify();
           
-          return new rt_binary_expr<InterfaceType>(lhs->optimize(),
+          return new rt_binary_expr<InterfaceType>(lhs->simplify(),
                                                    new op_binary<op_mult<NumericT>, InterfaceType>(),
                                                    new rt_constant<NumericT, InterfaceType>(val));
         }
@@ -215,25 +227,26 @@ namespace viennamath
         if (lhs_vec != NULL && rhs_vec != NULL)
           return (*lhs_vec * *rhs_vec).get()->clone();
         
-        return new rt_binary_expr<InterfaceType>(lhs->optimize(),
+        return new rt_binary_expr<InterfaceType>(lhs->simplify(),
                                                  new op_binary<op_mult<NumericT>, InterfaceType>(),
-                                                 rhs->optimize());
+                                                 rhs->simplify());
   }
   
+  /** @brief Checks whether an expression of the form e1 * e2 can be simplified */
   template <typename InterfaceType, typename NumericT>
-  bool optimizable_impl(const InterfaceType * lhs, op_mult<NumericT>, const InterfaceType * rhs)
+  bool can_simplify_impl(const InterfaceType * lhs, op_mult<NumericT>, const InterfaceType * rhs)
   {
       if (lhs->is_constant())
       {
         NumericT val = lhs->unwrap();
         if (val == 0.0)
         {
-          //std::cout << "optimizable: true in op_mult" << std::endl;
+          //std::cout << "can_simplify: true in op_mult" << std::endl;
           return true;
         }
         if (val == 1.0)
         {
-          //std::cout << "optimizable: true in op_mult" << std::endl;
+          //std::cout << "can_simplify: true in op_mult" << std::endl;
           return true;
         }
       }
@@ -242,12 +255,12 @@ namespace viennamath
         NumericT val = rhs->unwrap();
         if (val == 0.0)
         {
-          //std::cout << "optimizable: true in op_mult" << std::endl;
+          //std::cout << "can_simplify: true in op_mult" << std::endl;
           return true;
         }
         if (val == 1.0)
         {
-          //std::cout << "optimizable: true in op_mult" << std::endl;
+          //std::cout << "can_simplify: true in op_mult" << std::endl;
           return true;
         }
       }
@@ -258,7 +271,7 @@ namespace viennamath
       if (lhs_vec != NULL && rhs_vec != NULL)
         return true;
       
-      return lhs->optimizable() || rhs->optimizable();
+      return lhs->can_simplify() || rhs->can_simplify();
   }
   
   
@@ -267,6 +280,7 @@ namespace viennamath
   //
   // division
   //
+  /** @brief Implementation of the differentation of e1 / e1, where e1 and e2 are expressions. */
   template <typename InterfaceType, typename NumericT>
   InterfaceType * diff_impl(const InterfaceType * lhs, op_div<NumericT>, const InterfaceType * rhs, const InterfaceType * diff_var)
   {
@@ -285,8 +299,9 @@ namespace viennamath
                                          );
   }
   
+  /** @brief Implementation of the simplification procedures for an expression of the form e1 / e2 */
   template <typename InterfaceType, typename NumericT>
-  InterfaceType * optimize_impl(const InterfaceType * lhs, op_div<NumericT>, const InterfaceType * rhs)
+  InterfaceType * simplify_impl(const InterfaceType * lhs, op_div<NumericT>, const InterfaceType * rhs)
   {
     if (lhs->is_constant())
     {
@@ -296,32 +311,33 @@ namespace viennamath
       
       return new rt_binary_expr<InterfaceType>(new rt_constant<NumericT, InterfaceType>(val),
                                                new op_binary<op_div<NumericT>, InterfaceType>(),
-                                               rhs->optimize());
+                                               rhs->simplify());
     }
     else if (rhs->is_constant())
     {
       NumericT val = rhs->unwrap();
       if (val == 1.0)
-        return lhs->optimize();
+        return lhs->simplify();
       
-      return new rt_binary_expr<InterfaceType>(lhs->optimize(),
+      return new rt_binary_expr<InterfaceType>(lhs->simplify(),
                                                new op_binary<op_div<NumericT>, InterfaceType>(),
                                                new rt_constant<NumericT, InterfaceType>(val));
     }
     
-    return new rt_binary_expr<InterfaceType>(lhs->optimize(),
+    return new rt_binary_expr<InterfaceType>(lhs->simplify(),
                                              new op_binary<op_div<NumericT>, InterfaceType>(),
-                                             rhs->optimize());
+                                             rhs->simplify());
   }
   
+  /** @brief Checks whether an expression of the form e1 / e2 can be simplified */
   template <typename InterfaceType, typename NumericT>
-  bool optimizable_impl(const InterfaceType * lhs, op_div<NumericT>, const InterfaceType * rhs)
+  bool can_simplify_impl(const InterfaceType * lhs, op_div<NumericT>, const InterfaceType * rhs)
   {
     if (lhs->is_constant())
     {
       if (lhs->unwrap() == 0.0)
       {
-        //std::cout << "optimizable: true in op_div" << std::endl;
+        //std::cout << "can_simplify: true in op_div" << std::endl;
         return true;
       }
     }
@@ -329,11 +345,11 @@ namespace viennamath
     {
       if (rhs->unwrap() == 1.0)
       {
-        //std::cout << "optimizable: true in op_div" << std::endl;
+        //std::cout << "can_simplify: true in op_div" << std::endl;
         return true;
       }
     }
-    return lhs->optimizable() || rhs->optimizable();
+    return lhs->can_simplify() || rhs->can_simplify();
   }
   
   

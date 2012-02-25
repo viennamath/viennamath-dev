@@ -21,10 +21,19 @@
 #include "viennamath/forwards.h"
 #include "viennamath/compiletime/binary_op_tags.hpp"
 
+/** @file viennamath/compiletime/ct_binary_expr.hpp
+    @brief Represents a binary expression at compile time
+*/
+
 namespace viennamath
 {
   
-  //A compile time expression
+  /** @brief A compile time expression consisting of two operands and one operation (taking two arguments)
+   * 
+   * @tparam LHS     The first operand ('left hand side')
+   * @tparam OP      The operation (addition, subtraction, etc.)
+   * @tparam RHS     The second operand ('right hand side')
+   */
   template <typename LHS,
             typename OP,
             typename RHS>
@@ -47,6 +56,11 @@ namespace viennamath
       internal_lhs_type lhs() const { return lhs_; }
       internal_rhs_type rhs() const { return rhs_; }
       
+      numeric_type operator()() const
+      {
+        return OP::apply(static_cast<numeric_type>(lhs_), static_cast<numeric_type>(rhs_));
+      }
+      
       template <typename VectorType>
       numeric_type operator()(VectorType const & v) const
       {
@@ -61,6 +75,7 @@ namespace viennamath
   
   
   //stream operator for output:
+  /** @brief Convenience overload for printing a compiletime binary expression to an output stream */
   template <typename LHS, typename OP, typename RHS>
   std::ostream& operator<<(std::ostream & stream, ct_binary_expr<LHS, OP, RHS> const & other)
   {

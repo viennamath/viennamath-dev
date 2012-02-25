@@ -21,10 +21,19 @@
 #include "viennamath/forwards.h"
 #include "viennamath/compiletime/unary_op_tags.hpp"
 
+/** @file   viennamath/compiletime/ct_unary_expr.hpp
+    @brief  Defines a compiletime unary expression (represents the expression f(e), where f is function and 'e' is an expression)
+*/
+
 namespace viennamath
 {
   
   //A compile time expression
+  /** @brief Defines a unary expression f(e), where f is function and 'e' is an expression
+   * 
+   * @tparam LHS     The expression on which the unary operation acts
+   * @tparam OP      A tag identifying the operation
+   */
   template <typename LHS,
             typename OP>
   class ct_unary_expr
@@ -39,7 +48,8 @@ namespace viennamath
       explicit ct_unary_expr() : lhs_(LHS()) {} 
       
       explicit ct_unary_expr(internal_lhs_type lhs) : lhs_(lhs){}
-                          
+     
+      /** @brief Returns the operation the unary operation is acting on */
       internal_lhs_type lhs() const { return lhs_; }
       
       template <typename VectorType>
@@ -55,6 +65,7 @@ namespace viennamath
   
   
   //stream operator for output:
+  /** @brief Convenience overload for printing a compiletime unary expression to an output stream */
   template <typename LHS, typename OP>
   std::ostream& operator<<(std::ostream & stream, ct_unary_expr<LHS, OP> const & other)
   {

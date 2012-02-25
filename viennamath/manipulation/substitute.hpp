@@ -18,7 +18,12 @@
 
 #include "viennamath/forwards.h"
 #include "viennamath/runtime/functor_wrapper.hpp"
+#include "viennamath/manipulation/simplify.hpp"
 #include <assert.h>
+
+/** @file substitute.hpp
+    @brief Defines routines for substituting (parts of) an expression by another expression.
+*/
 
 namespace viennamath
 {
@@ -29,6 +34,7 @@ namespace viennamath
   
   namespace result_of
   {
+    /** @brief Default case for the compiletime substitution metafunction: Do not define any return type. This provides SFINAE for the interface function. */
     template <typename SearchType,
               typename ReplacementType,
               typename ExpressionType>
@@ -37,6 +43,7 @@ namespace viennamath
     //
     // generic handling of primitives
     //
+    /** @brief For a binary expression, the substitution is performed for both operands. */
     template <typename SearchType,
               typename ReplacementType,
               typename LHS, typename OP, typename RHS>
@@ -47,6 +54,7 @@ namespace viennamath
                               typename substitute<SearchType, ReplacementType, RHS>::type >   type;
     };
 
+    /** @brief For a unary expression, the substitution is performed for the operand. */
     template <typename SearchType,
               typename ReplacementType,
               typename LHS, typename OP>
@@ -56,6 +64,7 @@ namespace viennamath
                              OP >   type;
     };
 
+    /** @brief By default, a compiletime constant is left unmodified (no match). */
     template <typename SearchType,
               typename ReplacementType,
               long value>
@@ -64,6 +73,7 @@ namespace viennamath
       typedef ct_constant<value>   type;
     };
     
+    /** @brief By default, a compiletime function symbol is left unmodified (no match). */
     template <typename SearchType,
               typename ReplacementType,
               typename TAG>
@@ -72,6 +82,7 @@ namespace viennamath
       typedef ct_function_symbol<TAG>   type;
     };
     
+    /** @brief By default, a compiletime variable is left unmodified (no match). */
     template <typename SearchType,
               typename ReplacementType,
               id_type id>
@@ -83,6 +94,7 @@ namespace viennamath
     //
     // replacement specializations
     //
+    /** @brief If there is a match for the binary expression, the replacement is returned. */
     template <typename ReplacementType,
               typename LHS, typename OP, typename RHS>
     struct substitute <ct_binary_expr<LHS, OP, RHS>, ReplacementType, ct_binary_expr<LHS, OP, RHS> >
@@ -90,6 +102,7 @@ namespace viennamath
       typedef ReplacementType   type;
     };
 
+    /** @brief If there is a match for the unary expression, the replacement is returned. */
     template <typename ReplacementType,
               typename LHS, typename OP>
     struct substitute <ct_unary_expr<LHS, OP>, ReplacementType, ct_unary_expr<LHS, OP> >
@@ -97,6 +110,7 @@ namespace viennamath
       typedef ReplacementType   type;
     };
 
+    /** @brief If there is a match for the compiletime constant, the replacement is returned. */
     template <typename ReplacementType,
               long value>
     struct substitute <ct_constant<value>, ReplacementType, ct_constant<value> >
@@ -104,6 +118,7 @@ namespace viennamath
       typedef ReplacementType   type;
     };
     
+    /** @brief If there is a match for the compiletime function symbol, the replacement is returned. */
     template <typename ReplacementType,
               typename TAG>
     struct substitute <ct_function_symbol<TAG>, ReplacementType, ct_function_symbol<TAG> >
@@ -111,6 +126,7 @@ namespace viennamath
       typedef ReplacementType   type;
     };
     
+    /** @brief If there is a match for the compiletime variable, the replacement is returned. */
     template <typename ReplacementType,
               id_type id>
     struct substitute <ct_variable<id>, ReplacementType, ct_variable<id> >
@@ -121,6 +137,12 @@ namespace viennamath
   }
   
   // interface:
+  /** @brief The generic interface function for compiletime substitution.
+   * 
+   * @tparam SearchType    Type of the expression to be substituted
+   * @tparam ReplacementType   Type of the expression used as replacement
+   * @tparam ExpressionType    Type of the expression in which the substitution is carried out
+   */
   template <typename SearchType,
             typename ReplacementType,
             typename ExpressionType>
@@ -133,39 +155,35 @@ namespace viennamath
   
   
   //
-  //   Section 1: Run time substitution
+  //   Section 2: Run time substitution
   //
   
   
   
   //public interface:
-  /** @brief Replaces all occurances of the variable u in the expression 'e' with 'u'. */
+  /** @brief Replaces all occurances of the variable 'u' in the expression 'e' with 'repl'. */
   template <typename InterfaceType, typename ReplacementType, typename ExpressionType>
   rt_expr<InterfaceType> substitute(rt_variable<InterfaceType> const & u,
                                     ReplacementType const & repl,
                                     ExpressionType const & e)
   {
     rt_expr<InterfaceType> temp(e.substitute(&u, &repl));
-    while (temp.get()->optimizable())
-      temp = temp.get()->optimize();
-    
+    inplace_simplify(temp);
     return temp;
   }
 
-  /** @brief Replaces all occurances of the variable u in the expression 'e' with 'u'. */
+  /** @brief Replaces all occurances of the variable 'u' in the expression 'e' with 'repl'. */
   template <typename InterfaceType, typename ReplacementType>
   rt_expr<InterfaceType> substitute(rt_variable<InterfaceType> const & u,
                                     ReplacementType const & repl,
                                     rt_expr<InterfaceType> const & e)
   {
     rt_expr<InterfaceType> temp(e.get()->substitute(&u, &repl));
-    while (temp.get()->optimizable())
-      temp = temp.get()->optimize();
-    
+    inplace_simplify(temp);
     return temp;
   }
 
-  /** @brief Replaces all occurances of the variable u in the expression 'e' with 'u'. */
+  /** @brief Replaces all occurances of the variable 'u' in the expression 'e' with 'repl'. */
   template <typename InterfaceType>
   rt_expr<InterfaceType> substitute(rt_variable<InterfaceType> const & u,
                                     default_numeric_type repl,
@@ -173,13 +191,11 @@ namespace viennamath
   {
     rt_constant<default_numeric_type, InterfaceType> c(repl);
     rt_expr<InterfaceType> temp(e.get()->substitute(&u, &c));
-    while (temp.get()->optimizable())
-      temp = temp.get()->optimize();
-    
+    inplace_simplify(temp);
     return temp;
   }
 
-  /** @brief Replaces all occurances of the variable u in the expression 'e' with 'repl'. */
+  /** @brief Replaces all occurances of the function symbol 'u' in the expression 'e' with 'repl'. */
   template <typename InterfaceType>
   rt_expr<InterfaceType> substitute(rt_function_symbol<InterfaceType> const & u,
                                     default_numeric_type repl,
@@ -187,74 +203,68 @@ namespace viennamath
   {
     rt_constant<default_numeric_type, InterfaceType> c(repl);
     rt_expr<InterfaceType> temp(e.get()->substitute(&u, &c));
-    while (temp.get()->optimizable())
-      temp = temp.get()->optimize();
-    
+    inplace_simplify(temp);
     return temp;
   }
 
+  /** @brief Replaces all occurances of the function symbol 'u' in the expression 'e' with 'repl'. */
   template <typename InterfaceType>
   rt_expr<InterfaceType> substitute(rt_function_symbol<InterfaceType> const & u,
                                     rt_expr<InterfaceType> const & repl,
                                     rt_expr<InterfaceType> const & e)
   {
     rt_expr<InterfaceType> temp(e.get()->substitute(&u, repl.get()));
-    while (temp.get()->optimizable())
-      temp = temp.get()->optimize();
-    
+    inplace_simplify(temp);
     return temp;
   }
 
-  //substitute binary_expressions (for fem):
+  //substitute unary and  binary expressions:
+  /** @brief Replaces all occurances of the unary expression 'search' in the expression 'e' with 'repl'. */
   template <typename InterfaceType, typename ReplacementType>
   rt_expr<InterfaceType> substitute(rt_unary_expr<InterfaceType> const & search,
                                     ReplacementType const & repl,
                                     rt_expr<InterfaceType> const & e)
   {
     rt_expr<InterfaceType> temp(e.get()->substitute(&search, &repl));
-    while (temp.get()->optimizable())
-      temp = temp.get()->optimize();
-    
+    inplace_simplify(temp);
     return temp;
   }
 
+  /** @brief Replaces all occurances of the unary expression 'search' in the expression 'e' with 'repl'. */
   template <typename InterfaceType>
   rt_expr<InterfaceType> substitute(rt_unary_expr<InterfaceType> const & search,
                                     rt_expr<InterfaceType> const & repl,
                                     rt_expr<InterfaceType> const & e)
   {
     rt_expr<InterfaceType> temp(e.get()->substitute(&search, repl.get()));
-    while (temp.get()->optimizable())
-      temp = temp.get()->optimize();
-    
+    inplace_simplify(temp);
     return temp;
   }
 
+  /** @brief Replaces all occurances of the binary expression 'search' in the expression 'e' with 'repl'. */
   template <typename InterfaceType, typename ReplacementType>
   rt_expr<InterfaceType> substitute(rt_binary_expr<InterfaceType> const & search,
                                     ReplacementType const & repl,
                                     rt_expr<InterfaceType> const & e)
   {
     rt_expr<InterfaceType> temp(e.get()->substitute(&search, &repl));
-    while (temp.get()->optimizable())
-      temp = temp.get()->optimize();
-    
+    inplace_simplify(temp);
     return temp;
   }
 
+  /** @brief Replaces all occurances of the expression 'search' in the expression 'e' with 'repl'. */
   template <typename InterfaceType>
   rt_expr<InterfaceType> substitute(rt_expr<InterfaceType> const & search,
                                     rt_expr<InterfaceType> const & repl,
                                     rt_expr<InterfaceType> const & e)
   {
     rt_expr<InterfaceType> temp(e.get()->substitute(search.get(), repl.get()));
-    while (temp.get()->optimizable())
-      temp = temp.get()->optimize();
-    
+    inplace_simplify(temp);
     return temp;
   }
 
 
+  /** @brief Replaces all occurances of the the expressions in 'search' in the expression 'e' with the corresponding expressions in 'repl'. */
   template <typename InterfaceType>
   rt_expr<InterfaceType> substitute(std::vector<rt_expr<InterfaceType> > const & search,
                                     std::vector<rt_expr<InterfaceType> > const & repl,
@@ -271,13 +281,7 @@ namespace viennamath
       repl_ptrs[i] = repl[i].get();
     
     rt_expr<InterfaceType> temp(e.get()->substitute(search_ptrs, repl_ptrs));
-    
-    while (temp.get()->optimizable())
-    {
-      temp = temp.get()->optimize();
-    }
-    //std::cout << "Optimization end" << std::endl;
-    
+    inplace_simplify(temp);
     return temp;
   }
 
@@ -336,6 +340,12 @@ namespace viennamath
     };
   } //namespace detail
   
+  /** @brief Substitutes a symbolic interval with a concrete interval.
+   * 
+   * @param search     The symbolic interval to be replaced
+   * @param repl       A pair consisting of the integration interval and the integration variable. Must be interface compatible with std::pair<>.
+   * @param e          The expression on which the substitution is carried out
+   */
   template <typename InterfaceType, typename PairType>
   rt_expr<InterfaceType> substitute(rt_symbolic_interval<InterfaceType> const & search,
                                     PairType const & repl,

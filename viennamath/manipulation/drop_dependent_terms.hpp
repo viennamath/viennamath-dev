@@ -18,8 +18,13 @@
 
 
 #include "viennamath/forwards.h"
+#include "viennamath/manipulation/expand.hpp"
 #include "viennamath/manipulation/substitute.hpp"
-#include "viennamath/manipulation/optimize.hpp"
+#include "viennamath/manipulation/simplify.hpp"
+
+/** @file    drop_dependent_terms.hpp
+    @brief   Provides routines for dropping all terms with a dependency on a certain variable or expression from an expression. Only compiletime support at the moment.
+*/
 
 namespace viennamath
 {
@@ -29,100 +34,33 @@ namespace viennamath
   namespace result_of
   {
     
-    /*
-    //
-    // Tokenizer: Extracts the factor from each token
-    template <typename FactorType,
-              typename ExpressionType>
-    struct drop_dependent_terms_impl
-    {
-      typedef ExpressionType   type;
-    };
-
-    template <typename FactorType>
-    struct drop_dependent_terms_impl<FactorType, FactorType>
-    {
-      typedef ct_constant<0>    type;
-    };
-    
-    template <typename FactorType,
-              typename LHS, typename NumericT, typename RHS>
-    struct drop_dependent_terms_impl< FactorType, ct_binary_expr<LHS, op_plus<NumericT>, RHS> >
-    {
-      typedef ct_binary_expr< typename drop_dependent_terms_impl<FactorType, LHS>::type,
-                              op_plus<NumericT>,
-                              typename drop_dependent_terms_impl<FactorType, RHS>::type
-                            >   type;
-    };
-
-    template <typename FactorType,
-              typename LHS, typename NumericT, typename RHS>
-    struct drop_dependent_terms_impl< FactorType, ct_binary_expr<LHS, op_minus<NumericT>, RHS> >
-    {
-      typedef ct_binary_expr< typename drop_dependent_terms_impl<FactorType, LHS>::type,
-                              op_minus<NumericT>,
-                              typename drop_dependent_terms_impl<FactorType, RHS>::type
-                            >   type;
-    };
-
-    template <typename FactorType,
-              typename LHS, typename NumericT, typename RHS>
-    struct drop_dependent_terms_impl< FactorType, ct_binary_expr<LHS, op_mult<NumericT>, RHS> >
-    {
-      typedef ct_binary_expr< typename drop_dependent_terms_impl<FactorType, LHS>::type,
-                              op_mult<NumericT>,
-                              typename drop_dependent_terms_impl<FactorType, RHS>::type
-                            >   type;
-    };
-
-    template <typename FactorType,
-              typename NumericT, typename RHS>
-    struct drop_dependent_terms_impl< FactorType, ct_binary_expr<FactorType, op_mult<NumericT>, RHS> >
-    {
-      typedef ct_constant<0>    type;
-    };
-
-    template <typename FactorType,
-              typename LHS, typename NumericT>
-    struct drop_dependent_terms_impl< FactorType, ct_binary_expr<LHS, op_mult<NumericT>, FactorType> >
-    {
-      typedef ct_constant<0>    type;
-    };
-
-    template <typename FactorType,
-              typename NumericT>
-    struct drop_dependent_terms_impl< FactorType, ct_binary_expr<FactorType, op_mult<NumericT>, FactorType> >
-    {
-      typedef ct_constant<0>    type;
-    };
-    
-    template <typename FactorType,
-              typename LHS, typename NumericT, typename RHS>
-    struct drop_dependent_terms_impl< FactorType, ct_binary_expr<LHS, op_div<NumericT>, RHS> >
-    {
-      typedef ct_binary_expr< typename drop_dependent_terms_impl<FactorType, LHS>::type,
-                              op_div<NumericT>,
-                              RHS
-                            >   type;
-    }; */
-    
     // Reuse existing functionality: Replace FactorType by ct_constant<0>, then optimize:
 
-    //
-    // Interface metafunction:
+    /** @brief Interface metafunction for removing dependent terms from an expression
+     * 
+     * @tparam FactorType              The variable/expression for which all dependent terms should be thrown away
+     * @tparam ExpressionType          The expression from which the factor should be removed
+     */
     template <typename FactorType,
               typename ExpressionType>
     struct drop_dependent_terms
     {
-      typedef typename viennamath::result_of::expand<ExpressionType>::type    expanded_expression;
+      typedef typename viennamath::result_of::expand<ExpressionType>::type    expanded_expression; //[KR]: Is it actually necessary to expand here?
 
       typedef typename viennamath::result_of::substitute<FactorType, ct_constant<0>, expanded_expression>::type    substituted_expression;
       
-      typedef typename viennamath::result_of::optimize<substituted_expression>::type    type;
+      typedef typename viennamath::result_of::simplify<substituted_expression>::type    type;
     };
   }
   
   //interface function:
+  /** @brief Main user function for dropping all terms from an expression which depend on a certain variable or expression.
+   * 
+   * Technically, this is accomplished by replacing the respective factor by zero
+   * 
+   * @param f     The factor which should be set to zero
+   * @param e     The full expression from which the dependent terms should be dropped
+   */
   template <typename FactorType,
             typename ExpressionType>
   typename result_of::drop_dependent_terms<FactorType, ExpressionType>::type

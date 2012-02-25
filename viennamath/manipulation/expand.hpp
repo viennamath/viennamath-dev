@@ -18,11 +18,15 @@
 
 
 #include "viennamath/forwards.h"
-#include "viennamath/runtime/unary_expression.hpp"
+#include "viennamath/runtime/unary_expr.hpp"
 #include "viennamath/compiletime/unary_op_tags.hpp"
 #include "viennamath/runtime/interval.hpp"
 #include "viennamath/runtime/symbolic_interval.hpp"
 #include "viennamath/runtime/integral.hpp"
+
+/** @file   expand.hpp
+    @brief  Routines for expanding an expression such that the expression is given by the addition and subtraction of tokens consisting of multiplication and divisions only. 
+*/
 
 namespace viennamath
 {
@@ -30,7 +34,12 @@ namespace viennamath
   
   namespace result_of
   {
-    // interfacing metafunction
+    /** @brief The main metafunction for expanding a compiletime expression
+     * 
+     * Note that the default is not to define a return type. This provides SFINAE for the user function expand().
+     * 
+     * @tparam T    The compiletime expression to be expanded
+     */
     template <typename T>
     struct expand {}; //Uses SFINAE for proper overloading of viennamath::expand()
     
@@ -127,6 +136,8 @@ namespace viennamath
                                 RHS
                               >                   type;
       };
+
+      ///////
       
       template <typename LHS,
                 typename RHS,
@@ -164,9 +175,10 @@ namespace viennamath
          typedef typename viennamath::result_of::expand<intermediate_type>::type      type;
       };
       
-    }
+    } //namespace detail
     
     
+    /** @brief Specialization for a binary expression (addition): Expand both addends. */
     template <typename LHS, typename NumericT, typename RHS>
     struct expand< ct_binary_expr<LHS, op_plus<NumericT>, RHS> >
     {
@@ -175,6 +187,7 @@ namespace viennamath
                              typename expand<RHS>::type >     type;
     };
 
+    /** @brief Specialization for a binary expression (subtraction): Expand both operands. */
     template <typename LHS, typename NumericT, typename RHS>
     struct expand< ct_binary_expr<LHS, op_minus<NumericT>, RHS> >
     {
@@ -183,13 +196,14 @@ namespace viennamath
                              typename expand<RHS>::type >     type;
     };
 
+    /** @brief Specialization for a binary expression (product): Redirect to helper metafunction */
     template <typename LHS, typename NumericT, typename RHS>
     struct expand< ct_binary_expr<LHS, op_mult<NumericT>, RHS> >
     {
       typedef typename detail::expand_product<LHS, RHS>::type    type;
     };
 
-    // expand numerator and denominator of fractional expressions separately:
+    /** @brief Specialization for a binary expression (division): Expand numerator and denominator of fractional expressions separately. */
     template <typename LHS, typename NumericT, typename RHS>
     struct expand< ct_binary_expr<LHS, op_div<NumericT>, RHS> >
     {
@@ -198,24 +212,28 @@ namespace viennamath
                              typename expand<RHS>::type >     type;
     };
 
+    /** @brief A unary expression is not expanded further, since the operator is typically nonlinear */
     template <typename LHS, typename OP>
     struct expand< ct_unary_expr<LHS, OP> >
     {
       typedef ct_unary_expr<LHS, OP>      type;
     };
     
+    /** @brief A function symbol cannot be further expanded, thus it is returned unmodified */
     template <typename TAG>
     struct expand< ct_function_symbol<TAG> >
     {
       typedef ct_function_symbol<TAG>      type;
     };
 
+    /** @brief A constant cannot be further expanded, thus it is returned unmodified */
     template <long value>
     struct expand< ct_constant<value> >
     {
       typedef ct_constant<value>      type;
     };
 
+    /** @brief A variable cannot be further expanded, thus it is returned unmodified */
     template <id_type id>
     struct expand< ct_variable<id> >
     {
@@ -225,6 +243,11 @@ namespace viennamath
     
   }
   
+  
+  /** @brief User function for expanding a compile time expression.
+   * 
+   * @tparam ExpressionType    The compiletime expression for expansion 
+   */
   template <typename ExpressionType>
   typename result_of::expand<ExpressionType>::type
   expand(ExpressionType const & type)
@@ -235,7 +258,7 @@ namespace viennamath
   
   //////////// run time ////////////////
   
-  //TODO
+  //TODO  Support to be added in one of the next releases of ViennaMath.
 }
 
 #endif

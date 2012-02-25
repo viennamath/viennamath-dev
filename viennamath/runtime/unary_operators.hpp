@@ -111,11 +111,11 @@ namespace viennamath
       }
 
       /** @brief Returns a simplified form of the unary expression (collect constants, remove trivial operations, etc.). The caller is responsible for deleting the pointer returned. */
-      InterfaceType * optimize(const InterfaceType * lhs,
-                                const InterfaceType * rhs) const; // Definition can be found right after the definition if binary_expr.
+      InterfaceType * simplify(const InterfaceType * lhs,
+                               const InterfaceType * rhs) const; // Definition can be found right after the definition if binary_expr.
 
       /** @brief Returns true if (and only if) the underlying unary expression can be simplified (collect constants, remove trivial operations, etc.) */
-      bool optimizable() const { return unary_op_.optimizable(); }
+      bool can_simplify() const { return unary_op_.can_simplify(); }
       
       /** @brief Returns true if the passed 'other' operation equals this operation */
       bool equal(const op_interface<InterfaceType> * other) const

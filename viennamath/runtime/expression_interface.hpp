@@ -87,9 +87,9 @@ namespace viennamath
                                           std::vector<const interface_type *> const & repl) const = 0;  //receiver owns pointer! Function parameters must not be manipulated!
                                           
       /** @brief Returns an optimized expression, where trivial operations such as multiplications by unity are removed. The caller must ensure the deletion of the object the returned pointer is referring to. */
-      virtual interface_type * optimize() const { return clone(); }  //receiver owns pointer!
+      virtual interface_type * simplify() const { return clone(); }  //receiver owns pointer!
       /** @brief Returns true if the experssion can be further optimized */
-      virtual bool optimizable() const { return false; }      
+      virtual bool can_simplify() const { return false; }      
       /** @brief Returns the expression differentiated with respect to the provided variable. The caller must ensure the deletion of the object the returned pointer is referring to.  */
       virtual interface_type * diff(const interface_type * diff_var) const = 0;   //receiver owns pointer! Function parameter diff_var not be manipulated!
          

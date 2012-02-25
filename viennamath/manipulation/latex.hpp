@@ -20,67 +20,69 @@
 #include <map>
 
 #include "viennamath/forwards.h"
-#include "viennamath/runtime/unary_expression.hpp"
+#include "viennamath/runtime/unary_expr.hpp"
 #include "viennamath/compiletime/unary_op_tags.hpp"
+
+/** @file  latex.hpp
+    @brief Provides routines for generating a LaTeX formula out of a ViennaMath expression.
+*/
 
 namespace viennamath
 {
   //
   // LaTeX processing
   //
-  /** @brief 
-   * 
-   * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
-   */
   template <typename InterfaceType = default_interface_type>
   class rt_latex_translator;
   
-  /** @brief 
-   * 
-   * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
-   */
   template <typename InterfaceType = default_interface_type>
   class rt_latex_binary_expr_processor;
 
-  /** @brief 
-   * 
-   * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
-   */
   template <typename InterfaceType = default_interface_type>
   class rt_latex_unary_expr_processor;
 
-  /** @brief 
-   * 
-   * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
-   */
   template <typename InterfaceType = default_interface_type>
   class rt_latex_constant_processor;
 
-  /** @brief 
-   * 
-   * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
-   */
   template <typename InterfaceType = default_interface_type>
   class rt_latex_variable_processor;
 
-  /** @brief 
-   * 
-   * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
-   */
   template <typename InterfaceType = default_interface_type>
   class rt_latex_function_symbol_processor;
 
   
   
+  /** @brief The abstract interface for each LaTeX processor module.
+   * 
+   * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
+   */
   template <typename InterfaceType = default_interface_type>
   class rt_latex_processor_interface
   {
     public: 
-      virtual std::string process(InterfaceType const * e, bool use_parenthesis, rt_latex_translator<InterfaceType> const &) const = 0;
+      /** @brief The interface for converting an expression 'e' to a LaTeX string.
+       * 
+       * @param e                  Pointer to a runtime expression
+       * @param use_parenthesis    A flag indicating whether the expression should be wrapped in parentheses in order to preserve priority of evaluation
+       * @param trans              The LaTeX translater object for callback operations when recursively printing expressions
+       */
+      virtual std::string process(InterfaceType const * e,
+                                  bool use_parenthesis,
+                                  rt_latex_translator<InterfaceType> const & trans) const = 0;
+         
+      /** @brief The interface for customization of output. The expression 'e' is customized to return the LaTeX string 'str'.
+       *
+       * @param e                  Pointer to the ViennaMath runtime expression
+       * @param str                The LaTeX string to be used for the expression referred to be 'e'
+       */
       virtual bool customize(InterfaceType const * e, std::string const & str) { return false; }
   };
   
   
+  /** @brief The main LaTeX translator class. To be used and manipulated by the ViennaMath library user.
+   * 
+   * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
+   */
   template <typename InterfaceType>
   class rt_latex_translator
   {
@@ -147,6 +149,11 @@ namespace viennamath
         return ss.str();        
       }
       
+      /** @brief Enables customization of LaTeX output. The expression 'e' is customized to return the LaTeX string 'str'.
+       *
+       * @param e                  Pointer to the ViennaMath runtime expression
+       * @param output             The LaTeX string to be used for the expression referred to be 'e'
+       */
       template <typename ExpressionType>
       void customize(ExpressionType const & e, std::string output)
       {
@@ -163,6 +170,7 @@ namespace viennamath
         //variable_strings_[x.id()] = output;
       }
       
+      /** @brief Adds another LaTeX processor. Typically required only if user-defined ViennaMath expressions are in use. */
       void add_processor(ProcessorInterface * proc_ptr)
       {
         processors_.push_back(proc_ptr);
@@ -192,6 +200,7 @@ namespace viennamath
     ProcessorArray processors_;
   };
   
+  /** @brief Convenience typedef for the latex translator in order to avoid the ugly '<>' for the default template parameter of rt_latex_translator. */
   typedef rt_latex_translator<>      latex_translator;
 
   
@@ -199,6 +208,10 @@ namespace viennamath
   //
   // Binary expression
   //
+  /** @brief A LaTeX processor responsible for translating binary expressions to LaTeX code.
+   * 
+   * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
+   */
   template <typename InterfaceType>
   class rt_latex_binary_expr_processor : public rt_latex_processor_interface<InterfaceType>
   {
@@ -266,6 +279,10 @@ namespace viennamath
   //
   // Unary expression
   //
+  /** @brief A LaTeX processor responsible for translating unary expressions to LaTeX code.
+   * 
+   * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
+   */
   template <typename InterfaceType>
   class rt_latex_unary_expr_processor : public rt_latex_processor_interface<InterfaceType>
   {
@@ -369,6 +386,10 @@ namespace viennamath
   //
   // Constant
   //
+  /** @brief A LaTeX processor responsible for translating ViennaMath runtime constants to LaTeX code.
+   * 
+   * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
+   */
   template <typename InterfaceType>
   class rt_latex_constant_processor : public rt_latex_processor_interface<InterfaceType>
   {
@@ -403,6 +424,10 @@ namespace viennamath
   //
   // Variable
   //
+  /** @brief A LaTeX processor responsible for translating ViennaMath runtime variables to LaTeX code.
+   * 
+   * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
+   */
   template <typename InterfaceType>
   class rt_latex_variable_processor : public rt_latex_processor_interface<InterfaceType>
   {
@@ -454,6 +479,10 @@ namespace viennamath
   //
   // Function Symbol
   //
+  /** @brief A LaTeX processor responsible for translating ViennaMath runtime function symbols to LaTeX code.
+   * 
+   * @tparam InterfaceType    The interface to inherit from. Usually rt_expression_interface, but extensions are possible.
+   */
   template <typename InterfaceType>
   class rt_latex_function_symbol_processor : public rt_latex_processor_interface<InterfaceType>
   {

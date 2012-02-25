@@ -22,12 +22,17 @@
 #include <math.h>
 #include "viennamath/forwards.h"
 
+/** @file viennamath/compiletime/binary_op_tags.hpp
+    @brief Defines tags for all supported binary operations
+*/
+
 namespace viennamath
 {
   
   //
   // addition
   //
+  /** @brief Tag for addition */
   template <typename NumericT>
   struct op_plus
   {
@@ -45,6 +50,7 @@ namespace viennamath
   //
   // subtraction
   //
+  /** @brief Tag for subtraction */
   template <typename NumericT>
   struct op_minus
   {
@@ -62,6 +68,7 @@ namespace viennamath
   //
   // multiplication
   //
+  /** @brief Tag for multiplication */
   template <typename NumericT>
   struct op_mult
   {
@@ -79,6 +86,7 @@ namespace viennamath
   //
   // division
   //
+  /** @brief Tag for division */
   template <typename NumericT>
   struct op_div
   {

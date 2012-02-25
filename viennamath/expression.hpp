@@ -33,9 +33,9 @@
 #include "viennamath/compiletime/ct_vector.hpp"
 
 #include "viennamath/runtime/variable.hpp"
-#include "viennamath/runtime/binary_expression.hpp"
+#include "viennamath/runtime/binary_expr.hpp"
 #include "viennamath/runtime/binary_operators.hpp"
-#include "viennamath/runtime/unary_expression.hpp"
+#include "viennamath/runtime/unary_expr.hpp"
 #include "viennamath/runtime/unary_operators.hpp"
 #include "viennamath/runtime/expr.hpp"
 #include "viennamath/runtime/equation.hpp"
@@ -46,8 +46,8 @@
 #include "viennamath/runtime/integral.hpp"
 #include "viennamath/runtime/vector_expr.hpp"
 
-#include "viennamath/manipulation/detail/unary_operators_manipulation.hpp"
-#include "viennamath/manipulation/detail/binary_operators_manipulation.hpp"
+#include "viennamath/manipulation/detail/unary_operations.hpp"
+#include "viennamath/manipulation/detail/binary_operations.hpp"
 
 #include "viennamath/compiletime/operations/ct_ct.hpp"
 #include "viennamath/compiletime/operations/ct_constant.hpp"

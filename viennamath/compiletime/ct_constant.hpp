@@ -20,10 +20,17 @@
 #include <ostream>
 #include "viennamath/forwards.h"
 
+/** @file viennamath/compiletime/ct_constant.hpp
+    @brief Defines a class for representing an integer value during compile time.
+*/
+
 namespace viennamath
 {
   
-  //A compile time constant using C++ template magic :-)
+  /** @brief A compiletime constant 
+   *
+   * @tparam value_     The compiletime value to be represented
+   */
   template <long value_>
   class ct_constant
   {    
@@ -36,6 +43,7 @@ namespace viennamath
       template <typename VectorType>
       self_type operator() (const VectorType & p) const { return *this; }
       
+      /** @brief A compiletime constant is implicity convertible to a long. Since ct_constant is only manipulated at compile time, this is a safe operation. */
       operator long() const { return value_; }
       
       std::string str() const
@@ -47,6 +55,7 @@ namespace viennamath
       
   };
 
+  /** @brief Convenience overload for printing a compiletime constant to an output stream */
   template <long value_>
   std::ostream& operator<<(std::ostream & stream,
                            ct_constant<value_> const & c)

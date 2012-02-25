@@ -55,6 +55,13 @@ namespace viennamath
 
   template <class T> 
   struct enable_if<false, T> {};
+
+  /** @brief A tag representing a Cartesian coordinate system in arbitrary dimensions
+   * 
+   * @tparam dim     Dimension of the space
+   */
+  template <id_type dim>
+  struct cartesian {};
   
 
   /** @brief A proxy object which allows for the use of plain default_numeric_type with template operator+, operator-, operator*, operator/ without running into problems with ambiguity. With the proxy object, one additional conversion is required, thus resolving the ambiguity.

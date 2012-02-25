@@ -85,7 +85,7 @@ namespace viennamath
       }
       
       /** @brief Interface requirement: A integral operation cannot be optimized (at least for now). */
-      bool optimizable() const { return false; }
+      bool can_simplify() const { return false; }
       
       viennamath::rt_interval<InterfaceType> const & interval() const { return interval_; }
       viennamath::rt_variable<InterfaceType> const & variable() const { return integration_variable_; }
@@ -178,7 +178,7 @@ namespace viennamath
       }
       
       /** @brief Interface requirement: Since an integral over a symbolic interval cannot be further optimized, 'false' is returned */
-      bool optimizable() const { return false; }
+      bool can_simplify() const { return false; }
       
       /** @brief Returns the integration interval */
       viennamath::rt_symbolic_interval<InterfaceType> const & interval() const { return interval_; }

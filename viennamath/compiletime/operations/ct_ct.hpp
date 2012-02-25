@@ -23,12 +23,16 @@
 #include "viennamath/compiletime/ct_variable.hpp"
 #include "viennamath/compiletime/ct_binary_expr.hpp"
 
+/** @file viennamath/compiletime/operations/ct_ct.hpp
+    @brief Metafunctions for the generic operator overloads of compiletime expressions are defined here
+*/
+
 namespace viennamath
 {
   
   namespace result_of
   {
-    
+    /** @brief Metafunction for adding two compiletime expressions */
     template <typename LHS, typename RHS>
     struct add<LHS, RHS, true, true>
     {
@@ -39,6 +43,7 @@ namespace viennamath
       static type instance(LHS const & lhs, RHS const & rhs) { return type(); }                
     };
 
+    /** @brief Metafunction for subtracting two compiletime expressions */
     template <typename LHS, typename RHS>
     struct subtract<LHS, RHS, true, true>
     {
@@ -49,6 +54,7 @@ namespace viennamath
       static type instance(LHS const & lhs, RHS const & rhs) { return type(); }                
     };
 
+    /** @brief Metafunction for multiplying two compiletime expressions */
     template <typename LHS, typename RHS>
     struct mult<LHS, RHS, true, true>
     {
@@ -59,6 +65,7 @@ namespace viennamath
       static type instance(LHS const & lhs, RHS const & rhs) { return type(); }                
     };
 
+    /** @brief Metafunction for dividing two compiletime expressions */
     template <typename LHS, typename RHS>
     struct div<LHS, RHS, true, true>
     {

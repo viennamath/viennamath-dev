@@ -24,12 +24,12 @@
 #include "viennamath/runtime/constant.hpp"
 #include "viennamath/runtime/binary_operators.hpp"
 #include "viennamath/compiletime/ct_binary_expr.hpp"
-#include "viennamath/runtime/unary_expression.hpp"
+#include "viennamath/runtime/unary_expr.hpp"
 #include "viennamath/runtime/op_interface.hpp"
 #include "viennamath/runtime/expression_interface.hpp"
 #include "viennamath/runtime/unary_operators.hpp"
 
-/** @file binary_expression.hpp
+/** @file binary_expr.hpp
     @brief Defines the binary expression class.
 */
 
@@ -309,24 +309,24 @@ namespace viennamath
       
       
       /** @brief Returns a simplified expression with trivial operations removed. The caller is responsible for deleting the object the returned pointer refers to. */
-      InterfaceType * optimize() const
+      InterfaceType * simplify() const
       {
         if (lhs_->is_constant() && rhs_->is_constant())
           return new rt_constant<numeric_type, InterfaceType>( unwrap() );
         
         //std::cout << "Optimization forwarded to " << op_->str() << std::endl;
-        return op_->optimize(lhs_.get(), rhs_.get());
+        return op_->simplify(lhs_.get(), rhs_.get());
       }
       
       /** @brief Returns true if the expression can be simplified */
-      bool optimizable() const
+      bool can_simplify() const
       {
         if (lhs_->is_constant() && rhs_->is_constant())
         {
           //std::cout << "optimizable(): true in rt_binary_expr" << std::endl;
           return true;
         }
-        return op_->optimizable(lhs_.get(), rhs_.get());
+        return op_->can_simplify(lhs_.get(), rhs_.get());
       }
       
       ///////// other interface requirements ////////////////////////
@@ -462,8 +462,8 @@ namespace viennamath
   }
 
   template <typename T, typename InterfaceType>
-  InterfaceType * op_unary<T, InterfaceType>::optimize(const InterfaceType * lhs,
-                                                      const InterfaceType * rhs) const
+  InterfaceType * op_unary<T, InterfaceType>::simplify(const InterfaceType * lhs,
+                                                       const InterfaceType * rhs) const
   {
     return new rt_binary_expr<InterfaceType>(lhs->clone(),
                                           new op_unary<T, InterfaceType>(),

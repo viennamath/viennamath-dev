@@ -32,7 +32,7 @@
 namespace viennamath
 {
   
-  //differentiation:
+  //differentiation: (defined in manipulation/detail/binary_operations.hpp)
   template <typename InterfaceType, typename NumericT>
   InterfaceType * diff_impl(const InterfaceType * lhs, op_plus<NumericT>, const InterfaceType * rhs, const InterfaceType * diff_var);
 
@@ -46,31 +46,31 @@ namespace viennamath
   InterfaceType * diff_impl(const InterfaceType * lhs, op_div<NumericT>, const InterfaceType * rhs, const InterfaceType * diff_var);
   
   
-  //optimization:
+  //optimization: (defined in manipulation/detail/binary_operations.hpp)
   template <typename InterfaceType, typename NumericT>
-  InterfaceType * optimize_impl(const InterfaceType * lhs, op_plus<NumericT>, const InterfaceType * rhs);
+  InterfaceType * simplify_impl(const InterfaceType * lhs, op_plus<NumericT>, const InterfaceType * rhs);
 
   template <typename InterfaceType, typename NumericT>
-  InterfaceType * optimize_impl(const InterfaceType * lhs, op_minus<NumericT>, const InterfaceType * rhs);
+  InterfaceType * simplify_impl(const InterfaceType * lhs, op_minus<NumericT>, const InterfaceType * rhs);
 
   template <typename InterfaceType, typename NumericT>
-  InterfaceType * optimize_impl(const InterfaceType * lhs, op_mult<NumericT>, const InterfaceType * rhs);
+  InterfaceType * simplify_impl(const InterfaceType * lhs, op_mult<NumericT>, const InterfaceType * rhs);
 
   template <typename InterfaceType, typename NumericT>
-  InterfaceType * optimize_impl(const InterfaceType * lhs, op_div<NumericT>, const InterfaceType * rhs);
+  InterfaceType * simplify_impl(const InterfaceType * lhs, op_div<NumericT>, const InterfaceType * rhs);
   
   
   template <typename InterfaceType, typename NumericT>
-  bool optimizable_impl(const InterfaceType * lhs, op_plus<NumericT>, const InterfaceType * rhs);
+  bool can_simplify_impl(const InterfaceType * lhs, op_plus<NumericT>, const InterfaceType * rhs);
 
   template <typename InterfaceType, typename NumericT>
-  bool optimizable_impl(const InterfaceType * lhs, op_minus<NumericT>, const InterfaceType * rhs);
+  bool can_simplify_impl(const InterfaceType * lhs, op_minus<NumericT>, const InterfaceType * rhs);
 
   template <typename InterfaceType, typename NumericT>
-  bool optimizable_impl(const InterfaceType * lhs, op_mult<NumericT>, const InterfaceType * rhs);
+  bool can_simplify_impl(const InterfaceType * lhs, op_mult<NumericT>, const InterfaceType * rhs);
 
   template <typename InterfaceType, typename NumericT>
-  bool optimizable_impl(const InterfaceType * lhs, op_div<NumericT>, const InterfaceType * rhs);
+  bool can_simplify_impl(const InterfaceType * lhs, op_div<NumericT>, const InterfaceType * rhs);
   
   
   //////////////////////////////////////// binary operations ////////////////////////////////////////
@@ -109,19 +109,19 @@ namespace viennamath
       }
       
       /** @brief Returns a simplified form of the unary expression (collect constants, remove trivial operations, etc.). The caller is responsible for deleting the pointer returned. */
-      InterfaceType * optimize(const InterfaceType * lhs,
-                                const InterfaceType * rhs) const
+      InterfaceType * simplify(const InterfaceType * lhs,
+                               const InterfaceType * rhs) const
       {
-        return optimize_impl(lhs, BinaryOperation(), rhs);
+        return simplify_impl(lhs, BinaryOperation(), rhs);
       }
 
       /** @brief Returns true if (and only if) the underlying unary expression can be simplified (collect constants, remove trivial operations, etc.) */
-      bool optimizable() const { std::cerr << "Warning in op_binary::optimizable(): Call without action" << std::endl; return false; }
+      bool can_simplify() const { std::cerr << "Warning in op_binary::optimizable(): Call without action" << std::endl; return false; }
       
-      bool optimizable(const InterfaceType * lhs,
-                       const InterfaceType * rhs) const
+      bool can_simplify(const InterfaceType * lhs,
+                        const InterfaceType * rhs) const
       {
-        return optimizable_impl(lhs, BinaryOperation(), rhs);
+        return can_simplify_impl(lhs, BinaryOperation(), rhs);
       }
       
       /** @brief Returns true if the passed 'other' operation equals this operation */

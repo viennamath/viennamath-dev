@@ -25,12 +25,16 @@
 //#include "viennamath/expression_compile_time.hpp"
 //#include "viennamath/expression_run_time.hpp"
 
+/** @file viennamath/compiletime/ct_function_symbol.hpp
+    @brief  Defines a function symbol for manipulation at compile time
+*/
+
 namespace viennamath
 {
   
   /////// two common tags:
   
-  //tag for an unknown function:
+  /** @brief A compiletime tag for an unknown function: */
   template <id_type ct_id = 0>
   struct unknown_tag
   {
@@ -44,7 +48,7 @@ namespace viennamath
     static id_type tag_id() { return 0; }
   };
     
-  //tag for test function:
+  /** @brief A compiletime tag for a test function: */
   template <id_type ct_id = 0>
   struct test_tag
   {
@@ -66,7 +70,7 @@ namespace viennamath
 
   /** @brief A function symbol. Can be used for unknown functions, test functions, etc. Cannot be evaluated, but substituted with an evaluable object 
    *
-   * @tparam Tag    A tag class that is typically used to distinguish between different function symbols. Tag requirements: 'static std::string str();' which returns an identification string
+   * @tparam Tag    A tag class typically used to distinguish between different function symbols. Tag requirements: 'static std::string str();' which returns an identification string
    */
   template <typename Tag>
   class ct_function_symbol
@@ -79,6 +83,7 @@ namespace viennamath
 
   
   
+  /** @brief Convenience overload for printing a compiletime function symbol to an output stream */
   template <typename Tag>
   std::ostream& operator<<(std::ostream & stream, ct_function_symbol<Tag> const & v)
   {

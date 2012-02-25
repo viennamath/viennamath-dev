@@ -28,7 +28,7 @@
 #include "viennamath/runtime/op_interface.hpp"
 #include "viennamath/runtime/expression_interface.hpp"
 
-/** @file unary_expression.hpp
+/** @file unary_expr.hpp
     @brief Defines a class representing an unary expression, i.e. an expression a unary manipulator (e.g. a function) is acting on.
 */
 
@@ -211,11 +211,11 @@ namespace viennamath
       ///////////////////// substitution /////////////////////////////
       
       /** @brief Returns a simplified expression with trivial operations removed. The caller is responsible for deleting the object the returned pointer refers to. */
-      InterfaceType * optimize() const
+      InterfaceType * simplify() const
       {
         if (expr_->is_constant())
         {
-          if (op_->optimizable())
+          if (op_->can_simplify())
             return new rt_constant<numeric_type, InterfaceType>( op_->apply(expr_->unwrap()) );
           else
             return new rt_unary_expr(new rt_constant<numeric_type, InterfaceType>(expr_->unwrap()),
@@ -224,13 +224,13 @@ namespace viennamath
 
         //TODO: Unwrap op_id()
         
-        return new rt_unary_expr(expr_->optimize(), op_->clone());
+        return new rt_unary_expr(expr_->simplify(), op_->clone());
       }
       
       /** @brief Returns true if the expression can be simplified */
-      bool optimizable() const
+      bool can_simplify() const
       {
-        if (expr_->optimizable())
+        if (expr_->can_simplify())
         {
           //std::cout << "optimizable(): true in unary_expr" << std::endl;
           return true;

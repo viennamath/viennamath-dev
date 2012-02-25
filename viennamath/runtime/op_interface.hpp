@@ -70,17 +70,17 @@ namespace viennamath
                                    const InterfaceType * diff_var) const { throw rhs_provided_for_unary_operation_exception(); }
                                    
       //optimization for binary operators:
-      /** @brief Interface for optimizing a binary expression by passing the two operands */
-      virtual InterfaceType * optimize(const InterfaceType * lhs,
+      /** @brief Interface for the simplification of a binary expression by passing the two operands */
+      virtual InterfaceType * simplify(const InterfaceType * lhs,
                                        const InterfaceType * rhs) const = 0; //{ throw ex_rhs_provided_for_unary_operator(); }
 
       //optimization for unary operators:
 
       /** @brief Returns true if the unary expression can be simplified */
-      virtual bool optimizable() const = 0;
+      virtual bool can_simplify() const = 0;
       /** @brief Returns true if the binary expression can be simplified */
-      virtual bool optimizable(const InterfaceType * lhs,
-                               const InterfaceType * rhs) const { return false; }    
+      virtual bool can_simplify(const InterfaceType * lhs,
+                                const InterfaceType * rhs) const { return false; }    
 
       /** @brief Returns true if 'other' is the same operation as the respective object. */
       virtual bool equal(const op_interface * other) const = 0;

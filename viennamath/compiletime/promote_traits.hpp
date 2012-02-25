@@ -19,9 +19,13 @@
 
 #include "viennamath/forwards.h"
 
+/** @file promote_traits.hpp
+    @brief Deduces the result type of the possibly mixed addition/subtraction/multiplication/division of integers and floating point types
+*/
+
 namespace viennamath
 {
-   /** @brief For two numeric types T and U with objects t and u respectively, the result type of t+U is returned. Default case: return the basic numeric type for ViennaMath. */
+   /** @brief For two numeric types T and U with objects t and u respectively, the result type of t+u is returned. Default case: return the basic numeric type for ViennaMath. */
    template <typename T, typename OP, typename U>
    struct promote_traits
    {

@@ -30,7 +30,7 @@
 #include "viennamath/manipulation/expand.hpp"
 #include "viennamath/manipulation/integrate.hpp"
 #include "viennamath/manipulation/latex.hpp"
-#include "viennamath/manipulation/optimize.hpp"
+#include "viennamath/manipulation/simplify.hpp"
 #include "viennamath/manipulation/substitute.hpp"
 
 

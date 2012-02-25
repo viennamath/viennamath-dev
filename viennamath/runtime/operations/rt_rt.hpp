@@ -19,7 +19,7 @@
 
 #include <ostream>
 #include "viennamath/forwards.h"
-#include "viennamath/runtime/binary_expression.hpp"
+#include "viennamath/runtime/binary_expr.hpp"
 
 /** @file viennamath/runtime/operations/rt_rt.hpp
     @brief Defines the helper facilities for operator overloads for all ViennaMath expression types.

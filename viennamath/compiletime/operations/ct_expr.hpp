@@ -23,11 +23,15 @@
 #include "viennamath/compiletime/ct_binary_expr.hpp"
 //#include "viennamath/runtime/binary_operators.hpp"
 
+/** @file viennamath/compiletime/operations/ct_expr.hpp
+    @brief Special operator overloads containing a binary expression are collected here.
+*/
+
 namespace viennamath
 {
   /////////////////////////////////// operator+ ///////////////////////////////////
   
-      // (ct_c1 + X) + ct_c2 -> [ct_c1 + ct_c2] + X
+      /** @brief Special overload: (ct_c1 + X) + ct_c2 becomes [ct_c1 + ct_c2] + X, where ct_c1 and ct_c2 are compiletime constants and X is any other expression */
       template <typename ScalarType, long value_1, typename RHS, long value_2>
       ct_binary_expr<ct_constant< value_1 + value_2 >,
                      op_plus<ScalarType>,
@@ -42,7 +46,7 @@ namespace viennamath
       }
 
 
-      // (ct_c1 - X) + ct_c2 -> [ct_c1 + ct_c2] - X
+      /** @brief Special overload: (ct_c1 - X) + ct_c2 becomes [ct_c1 + ct_c2] - X, where ct_c1 and ct_c2 are compiletime constants and X is any other expression */
       template <typename ScalarType, long value_1, typename RHS, long value_2>
       ct_binary_expr<ct_constant< value_1 + value_2 >,
               op_minus<ScalarType>,
@@ -56,7 +60,7 @@ namespace viennamath
                                     lhs.rhs());
       }
 
-      // (c1 - X) + ct_c2 -> [c1 + ct_c2] - X
+      /** @brief Special overload: (c1 - X) + ct_c2 -> [c1 + ct_c2] - X, where ct_c1 and ct_c2 are compiletime constants and X is any other expression */
       template <typename ScalarType, typename OtherScalarType, typename RHS, long value>
       ct_binary_expr< rt_constant<typename promote_traits<OtherScalarType, op_plus<ScalarType>, long>::result_type >,
                       op_minus<ScalarType>,
@@ -74,7 +78,7 @@ namespace viennamath
 
   /////////////////////////////////// operator- ///////////////////////////////////
 
-      // (A + B) - A  -> B, where A is an variable:
+      /** @brief Special overload:  (A + B) - A  -> B, where A is an variable and X can be anything */
       template <typename ScalarType, id_type id, typename RHS>
       RHS
       operator-(ct_binary_expr<ct_variable<id>, op_plus<ScalarType>, RHS> const & lhs,
@@ -84,7 +88,7 @@ namespace viennamath
       }
       
 
-      // (ct_c1 + X) - ct_c2 -> [ct_c1 - ct_c2] + X
+      /** @brief Special overload:  (ct_c1 + X) - ct_c2 -> [ct_c1 - ct_c2] + X, where ct_c1 and ct_c2 are compiletime constants and X is any other expression */
       template <long value_1, typename RHS, long value_2, typename T>
       ct_binary_expr< ct_constant< value_1 - value_2 >,
                       op_plus<T>,
@@ -98,7 +102,7 @@ namespace viennamath
                                     lhs.rhs());
       }
 
-      // (c1 + X) - ct_c2 -> [c1 - ct_c2] + X
+      /** @brief Special overload:  (c1 + X) - ct_c2 -> [c1 - ct_c2] + X, where ct_c1 and ct_c2 are compiletime constants and X is any other expression */
       template <typename OtherScalarType, typename RHS, long value, typename T>
       ct_binary_expr< rt_constant<typename promote_traits<OtherScalarType, op_plus<T>, long>::result_type >,
                       op_plus<T>,
@@ -113,7 +117,7 @@ namespace viennamath
                                     lhs.rhs());
       }
 
-      // (ct_c1 - X) - ct_c2 -> [ct_c1 - ct_c2] - X
+      /** @brief Special overload:  (ct_c1 - X) - ct_c2 -> [ct_c1 - ct_c2] - X, where ct_c1 and ct_c2 are compiletime constants and X is any other expression */
       template <long value_1, typename RHS, long value_2, typename T>
       ct_binary_expr< ct_constant< value_1 - value_2 >,
                op_minus<T>,
@@ -127,7 +131,7 @@ namespace viennamath
                                     lhs.rhs());
       }
 
-      // (c1 - X) - ct_c2 -> [c1 - ct_c2] - X
+      /** @brief Special overload:  (c1 - X) - ct_c2 -> [c1 - ct_c2] - X, where ct_c1 and ct_c2 are compiletime constants and X is any other expression */
       template <typename OtherScalarType, typename RHS, long value, typename T>
       ct_binary_expr< rt_constant<typename promote_traits<OtherScalarType, op_plus<T>, long>::result_type >,
                       op_minus<T>,
@@ -150,7 +154,7 @@ namespace viennamath
 
   /////////////////////////////////// operator/ ///////////////////////////////////
 
-      //division of the same thing leads to '1':
+      /** @brief Special overload: division of the same thing leads to '1' */
       template <typename LHS, typename OP, typename RHS>
       ct_constant<1>
       operator/(ct_binary_expr<LHS, OP, RHS> const & lhs,
