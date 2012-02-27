@@ -1,0 +1,40 @@
+
+\chapter{Additional Features}
+Various features of {\ViennaMath}, which are not necessarily standard features of a symbolic math library, are covered in this chapter.
+Additional feature requests should be sent to
+\begin{center}
+\texttt{viennamath-support$@$lists.sourceforge.net} 
+\end{center}
+
+  \section{\LaTeX{} Output}
+Since {\ViennaMath} encourages a high-level description and manipulation of the underlying mathematical problem formulation in source code, it is natural to
+generate \LaTeX{} code from {\ViennaMath} expressions for debugging purposes. The generated code can be copy\&paste'd to LaTeX rendering webpages or used for
+the automatic generation of program log files in the form of a \LaTeX{} document.
+
+All conversion is carried out by a separate converter object of type \lstinline|rt_latex_translator<InterfaceType>| as defined in
+\lstinline|viennamath/manipulation/latex.hpp|. A convenience shortcut \lstinline|latex_translator| is available for the default runtime expression interface.
+Conversion is triggered by providing the expression to be converted to the functor:
+\begin{lstlisting}
+ latex_translator  to_latex;
+
+ expr f = sqrt( x + y );
+ to_latex( f );     //returns the string '\sqrt{x_{0}+x_{1}}'
+\end{lstlisting}
+By default, variables are printed as $x_0$, $x_1$, etc. This and other output routines can be customized by using the \lstinline|customize()| member function
+of the converter. For example, to print 'x' and 'y' instead of 'x\_\{0\}' and 'x\_\{1\}', the code
+\begin{lstlisting}
+ to_latex.customize(x, "x");
+ to_latex.customize(y, "y");
+\end{lstlisting}
+is sufficient. Similar customizations can be applied for the output of types and features described in the remainder of this chapter.
+
+\NOTE{The \LaTeX{} generator works with runtime expression types only. Thus, compiletime expression types need to be converted to runtime expression types
+first.}
+
+  \section{Function Symbols}
+
+
+  \section{Integration Symbols}
+
+
+  \section{Differential Operators}

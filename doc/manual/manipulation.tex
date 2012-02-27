@@ -8,8 +8,10 @@ Unless otherwise noted, all manipulations considerered in the following can be u
  The respective header files are not included automatically with \lstinline|viennamath/expression.hpp| and need to be included as required.}
 
  \section{Evaluation}
-All {\ViennaMath} expressions can be evaluated to a floating point number using the parenthesis operator.
-Depending on the number of variables in the expression, either a scalar or a vector needs to be passed for evaluation.
+All {\ViennaMath} expressions can be evaluated to a floating point number using the parenthesis operator. 
+A vector of values needs to be passed for the evaluation. In the special case that only the first entry of a vector is required for evaluation, it suffices to
+pass the value directly.
+%Depending on the number of variables in the expression, either a scalar or a vector needs to be passed for evaluation. For conv
 
 Using \lstinline|operator()|, however, is possibly not an option for a generic interface with non-ViennaMath types.
 For this reason, \lstinline|viennamath::eval()| provides a generic evaluation interface. 
@@ -84,23 +86,115 @@ Such a simplification of the expression can be achieved with the function \lstin
 
 
  \section{Differentation}
-
+The differentiation of an expression with respect to one or several variables is central to many algorithms, among which the Newton scheme is presumably the
+most widely used. Differentiation routines in {\ViennaMath} reside in \lstinline|viennamath/manipulation/diff.hpp| and are used in a canonical way by passing
+the expression to be differentiated as first argument and the differentiation variable as second argument:
+\begin{lstlisting}
+ diff( x + y, x );              // returns 1
+ diff( (2.0 - x)*(3.0 + y), y); // returns 2.0 - x
+\end{lstlisting}
+As usually, compiletime expressions are differentatiated at compiletime, while runtime expressions are differentiated at runtime.
+An exemplary Newton-solver demonstrating the use of differentiation routines can be found in \lstinline|examples/newton_solve.cpp|.
 
 
  \section{Integration}
+The integration of an expression over an interval can be accomplished in two ways: The first option is by analytical integration, provided that an
+antiderivative of the integrand can be found easily. The second option is by numerical quadrature using a suitable quadrature rule.
 
  %% Compiletime: Analytic
+Analytical integration is in {\ViennaMathversion} available for compiletime types and polynomials as integrands only.
+The file \lstinline|viennamath/manipulation/integrate.hpp| provides the function \lstinline|integrate()|, which takes the integration interval
+as first argument, the integrand as second argument and the integration variable as third argument. For example, the integral
+\begin{align}
+ \int_0^1 x^2 \: \mathrm{d} x
+\end{align}
+is computed analytically at compile time using the lines
+\begin{lstlisting}
+ integrate( make_interval(c0, c1),
+            x * x,
+            x);              //returns the expression 1/3
+\end{lstlisting}
+where \lstinline|c0| and \lstinline|c1| denote the compiletime constants $0$ and $1$ and are passed to the helper function \lstinline|make_interval()|
+to generate a suitable compiletime interval with the provided lower and upper bound. Note that analytic integration can also be nested and use polynomial lower
+and upper bounds. For example, integration of $x^2$ over the unit triangle with vertices $(0,0)$, $(1,0)$ and $(0,1)$ is achieved via
+\begin{lstlisting}
+ integrate( make_interval(c0, c1),
+            integrate( make_interval(c0, c1 - x),
+                       x * x,
+                       y),
+            x);              //returns 1/12
+\end{lstlisting}
+
+
+\NOTE{ Analytic integration in {\ViennaMathversion} is available for polynomial integrands at compiletime only. }
+
+
 
  %% Runtime: Quadrature
+\begin{table}
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+Name & {\ViennaMath} Type   & Shortcut & Accuracy \\
+\hline
+$1$-point Gauss   & \lstinline|rt_gauss_quad_1| & \lstinline|gauss_quad_1| & $1$ \\
+\hline
+\end{tabular}
+\caption{Overview of numerical quadrature rules in {\ViennaMath}. \label{tab:quadrature}}
+\end{table}
+
+In order to compute an integral numerically using a quadrature rule, the respective rule from Tab.~\ref{tab:quadrature} needs to be instantiated first.
+For a $1$-point Gauss rule, this is accomplished by
+\begin{lstlisting}
+ rt_numerical_quadrature<InterfaceType> 
+    integrator(new rt_gauss_quad_1<InterfaceType>());
+\end{lstlisting}
+for a suitable runtime interface type. If the default interface type is to be used, the shortcut types can be used for convenience:
+\begin{lstlisting}
+ numerical_quadrature integrator(new gauss_quad_1());
+\end{lstlisting}
+To carry out the numerical quadrature, two options exist: The first is to pass the integration interval, the integrand, and
+the integration variable as separate arguments to \lstinline|operator()| of the \lstinline|integrator| object:
+\begin{lstlisting}
+ integrator( make_interval(0.0, 1.0),
+             x * x,
+             x);             // returns the value 0.25
+\end{lstlisting}
+The second option for numerical quadrature is to encode the integral directly in the expression:
+\begin{lstlisting}
+  expr my_integral = integral( make_interval(0, 1), x * x, x );
+\end{lstlisting}
+which encodes $\int_0^1 x^2 \: \mathrm{d} x$ directly in an expression. For numerical quadrature, only the encoded form needs to be passed to the quadrature
+rule then
+\begin{lstlisting}
+ integrator(my_integral);    // returns the value 0.25 (1-point Gauss)
+\end{lstlisting}
+
 
 
  \section{Extract Coefficient}
-
+Given a polynomial $p(x,y) = 1 + x + y + xy$ it can be of interest to extract individual parts of the polynomial.
+For example, one wishes to extract the coefficient of $x$, which is $(1+y)$. In such a case, 
+the function \lstinline|coefficient()| defined in \lstinline|viennamath/manipulation/coefficient.hpp| can be used.
+The first parameter is the variable or expression for which the coefficient should be returned, and the second argument is the expression from which the
+coefficient is to be extracted:
+\begin{lstlisting}
+ coefficient(x, c1 + x + y + x*y);  //returns 1+y
+\end{lstlisting}
+Note that higher-order terms in the variable are also returned. For example, the coeffient of $x$ in $x+x^2$ is obtained as $(1+x)$.
 
 \NOTE{ \lstinline|coefficient()| is in {\ViennaMathversion} available for compiletime types only. }
 
 
  \section{Drop Dependent Terms}
+In order to drop all terms in an expression which depend on a certain expression type (not necessarily a variable), the convenience function
+\lstinline|drop_dependent_terms()| from \lstinline|viennamath/manipulation/drop_dependent_terms.hpp| can be used. As the name suggests, all terms with a
+dependency on the expression passed as first parameter are dropped in the expression passed as second variable.
+For example, all terms depending on $x$ in $1+x+y+xy$ are dropped using the line
+\begin{lstlisting}
+ drop_dependent_terms(x, c1 + x + y + x*y);  //returns 1+y
+\end{lstlisting}
+in order to obtain $1+y$.
 
 
 
