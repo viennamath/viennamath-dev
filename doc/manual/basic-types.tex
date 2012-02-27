@@ -1,11 +1,15 @@
 
-\chapter{Basic Types}
+\chapter{Basic Types} \label{chap:basics}
 
 Since C++ is a statically typed language [CITE], the basic mathematical building blocks such as constants or variables are represented as types.
 The possiblity of manipulations at compiletime or runtime is accomplished by essentially
 two different implementations of these primitives.
 Basic types for runtime evaluations are discussed first, since their interface and handling is potentially more familiar to average C++ programmers.
 Sec.~\ref{sec:compiletime-types} then provides an overview of the basic types used for compiletime manipulations.
+
+The main include file for {\ViennaMath} is \lstinline|viennamath/expression.hpp| and includes all the types discussed in the remainder of this chapter.
+
+\TIP{Include \lstinline|viennamath/expression.hpp| to make all {\ViennaMath} types available.}
 
 \TIP{Note that all types reside in namespace \lstinline|viennamath|. The namespace is not written explicitly in the following, thus either \lstinline|viennamath::| prefixes or certain \lstinline|using| declarations need to be added by the user in order to make the code valid.}
 
@@ -90,9 +94,9 @@ and the {\ViennaMath} helper function \lstinline|make_vector()|, which convenien
 
  \subsection{Unary Expression}
 Mappings of the form $x \mapsto \sin(x)$ are modeled by the \lstinline|rt_unary_expr<InterfaceType>| class.
-Thus, they represent a unary function acting on a constant, a variable or an expression. The following 
-unary functions are provided:
-\begin{center}
+Thus, they represent a unary function acting on a constant, a variable or an expression. An overview of the unary functions provided with {\ViennaMath} is given in Tab.~\ref{tab:unary-functions}.
+
+\begin{table}
 \begin{tabular}{|l|l||l|l|}
 \hline
 Name & {\ViennaMath} Function   & Name & {\ViennaMath} Function \\
@@ -103,9 +107,10 @@ Cosine        & \lstinline|cos()| & Natural Logarithm & \lstinline|log()| \\
 Tangent       & \lstinline|tan()| & Logarithm, Base 10 & \lstinline|log10()| \\
 \hline
 \end{tabular}
-\end{center}
+\caption{Overview of unary functions defined in {\ViennaMath}.\label{tab:unary-functions}}
+\end{table}
 
-\TIP{Function names are intentionally chosen such that they coincide with the standard functions for floating point types.
+\TIP{Function names in Tab.~\ref{tab:unary-functions} are intentionally chosen such that they coincide with the standard functions for floating point types.
 When calling these functions with floating point types, compilation might fail due to ambiguity. In such case the namespace should be specified explicitly.}
 
 Typically, unary expressions are not instantiated explicitly by the library user.
@@ -141,16 +146,98 @@ The dot-product of two vector-valued expressions is provided as well:
 
 
 \section{Types Evaluated at Compiletime} \label{sec:compiletime-types}
+The runtime types discussed in the previous section enable a convenient handling of expressions.
+However, there are numerous runtime dispatches required when evaluating such runtime expressions, which are too costly in a high performance setting.
+The compiletime types discussed in this section avoid any additional runtime dispatches and their use thus result in faster code in general.
+This gain in performance comes at the price of a few additional restrictions:
+Since the expression is entirely encoded in the type, there is no equivalent to \lstinline|expr| in order to assign an expression to a another object\footnote{The new C++11 standard addresses this issue and provides the \lstinline|auto| keyword for automatic type deduction. However, {\ViennaMath} intentionally does not use any C++11 features yet.}.
+Furthermore, compilation times increase due to the additional work to be done for the compiler.
+Excessive use of compiletime evaluations and manipulations can even result in minutes to hours of compilation time, even though this is rarely encountered in practice.
+Another complication stems from the fact that no floating point template arguments are allowed, thus reducing any compiletime calculations to integer calculations.
+Fractional numbers can be emulated this way, but they cannot resolve all problems.
 
  \subsection{Constant}
+Since no floating point type is allowed as template argument, only integer values \lstinline|val| are represented by the class \lstinline|ct_constant<val>|.
+Operators are overloaded in the same way as for the runtime evaluation types in Sec.~\ref{sec:runtime-types}. One example of a compiletime calculation is given as follows:
+\begin{lstlisting}
+ ct_constant<2> c2;   //the constant '2'
+ ct_constant<5> c5;   //the constant '5'
+ std::cout << c2 + c5 << std::endl;  //prints '7' (computed at compiletime)
+\end{lstlisting}
+Note that \lstinline|ct_constant<>| can in principle also be mixed with ordinary constants such as
+\begin{lstlisting}
+ std::cout << 2 + c5 << std::endl;  //prints '7'
+\end{lstlisting}
+However, depending on the optimization capabilities of the C++ compiler used, ordinary constants may or may not be used for compiletime computations, while the compiler is forced to do it in the introductory snippet.
+
+\TIP{A general guideline is to use \lstinline|ct_constant<val>| for encoding an integer \lstinline|val| already known at compile time rather than writing the value explicitly in code. }
 
  \subsection{Variable}
+A mathematical variable for compiletime manipulations is represented by \lstinline|ct_variable<id>|, where \lstinline|id| refers to the coordinate entry in the evaluation vector.
+The meaning of \lstinline|id| is identical to the constructor argument of a \lstinline|variable| in the runtime case. 
+
+Operators are again overloaded as usual. For example, consider
+\begin{lstlisting}
+ ct_variable<0> x;
+ ct_variable<1> y;
+ std::cout << x * y << std::endl;
+\end{lstlisting}
+
 
  \subsection{Unary Expression}
+The unary functions in Tab.~\ref{tab:unary-functions} can also be called with compiletime types.
+The corresponding type for the compiletime representation is provided by \lstinline|ct_unary_expr<E, OP>|, where \lstinline|E| refers to the expression on which the unary function encoded by the tag \lstinline|OP| acts.
+Unary operation tags start with \lstinline|op_| and are defined in \lstinline|viennamath/compiletime/unary_op_tags.hpp|. Their type name can be deduced from the function names in Tab.~\ref{tab:unary-functions} by adding the prefix.
+Note that all unary functions are evaluated at runtime, because the underlying C-functions are called for evaluation. 
+For example, the type \lstinline|T| of the compiletime unary expression
+\begin{lstlisting}
+ ct_variable<0> x;
+ T t = sin(x);
+\end{lstlisting}
+is \lstinline|ct_unary_expr< ct_variable<0>, op_sin<NumericT> >|, where \lstinline|NumericT| is the floating point type used for the evaluation at runtime (typically \lstinline|double|).
+
+
 
  \subsection{Binary Expression}
+The binary expression \lstinline|ct_binary_expr<L, OP, R>| with left hand side expression \lstinline|L|, operation tag \lstinline|OP| and right hand side expression \lstinline|R| are the main types for building more complex expressions.
+Currently, four binary operations are supported: addition (with tag \lstinline|op_plus<NumericT>|), subtraction (\lstinline|op_minus<NumericT>|), multiplication (\lstinline|op_mult<NumericT>|), and division (\lstinline|op_div<NumericT>|).
+Similar to unary expressions, binary expressions are seldomly set up by hand.
+Two examples of binary expressions are as follows:
+\begin{lstlisting}
+ ct_binary_expr< ct_variable<0>,    // x
+                 op_plus<double>,   // +
+                 ct_variable<1> >   // y  
 
- \subsection{Expression Vector}
+ ct_binary_expr< ct_constant<1>,    // 1
+                 op_div<double>,    // /
+                 ct_variable<0> >   // x
+\end{lstlisting}
+
+Typical uses of binary expressions are within the manipulation of compiletime expressions in metafunctions. As an example, outputting the first term of a polynomial is considered:
+\begin{lstlisting}
+ ct_variable<0> x;
+ ct_variable<1> y;
+ print_first( x*y + x*x*y - y*y );
+\end{lstlisting}
+Only two versions of the \lstinline|print_first| function are required.
+The first one recursively traverses the binary expression along the left hand side argument:
+\begin{lstlisting}
+ template <typename L, typename OP, typename R>
+ print_first(ct_binary_expr<L, OP, R> const & b)
+ { print_first(b.lhs()); } //recursion along left hand side
+\end{lstlisting}
+The recursion terminates with a general implementation for printing the left-most entry:
+\begin{lstlisting}
+ template <typename T>
+ print_first(T const & t)
+ { std::cout << t << std::endl; }
+\end{lstlisting}
+
+\NOTE{If a binary operation consists of one object for compiletime and one for runtime evaluation, the compiletime object is converted to a runtime object and then processed as usual in the runtime setting.}
+
+
+
+ %\subsection{Expression List}
 
 
 
