@@ -130,9 +130,9 @@ int main()
   std::cout << "Result: (" << result[0] << ", " << result[1] << ")" << std::endl;
    
 
-  std::cout << "************************************************" << std::endl;
-  std::cout << "*****     TEST COMPLETED SUCCESSFULLY!     *****" << std::endl;
-  std::cout << "************************************************" << std::endl;
+  std::cout << "****************************************************" << std::endl;
+  std::cout << "*****     TUTORIAL COMPLETED SUCCESSFULLY!     *****" << std::endl;
+  std::cout << "****************************************************" << std::endl;
   
   return EXIT_SUCCESS;
 }

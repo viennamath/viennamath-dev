@@ -76,5 +76,9 @@ int main()
   std::cout << "---------------" << std::endl;
   e2.get()->recursive_traversal( fun );
   
+  std::cout << "****************************************************" << std::endl;
+  std::cout << "*****     TUTORIAL COMPLETED SUCCESSFULLY!     *****" << std::endl;
+  std::cout << "****************************************************" << std::endl;
+  
   return EXIT_SUCCESS;
 }

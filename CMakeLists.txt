@@ -15,20 +15,12 @@ INCLUDE_DIRECTORIES(".")
 ADD_DEFINITIONS(-Wall -pedantic -O0 -g)
 
 # examples:
-ADD_EXECUTABLE(basic_test examples/basic_test.cpp)
-ADD_EXECUTABLE(model_benchmark examples/model_benchmark.cpp)
-ADD_EXECUTABLE(newton_solve examples/newton_solve.cpp)
-ADD_EXECUTABLE(functor_test examples/functor_test.cpp)
-ADD_EXECUTABLE(substitute_test examples/substitute_test.cpp)
-ADD_EXECUTABLE(latex_output examples/latex.cpp)
-ADD_EXECUTABLE(vector_expr examples/vector_expr.cpp)
+ADD_EXECUTABLE(basic                examples/basic.cpp)
+ADD_EXECUTABLE(latex_output         examples/latex_output.cpp)
+ADD_EXECUTABLE(model_benchmark      examples/model_benchmark.cpp)
+ADD_EXECUTABLE(newton_solve         examples/newton_solve.cpp)
+ADD_EXECUTABLE(traversal            examples/traversal.cpp)
+ADD_EXECUTABLE(substitute           examples/substitute.cpp)
+ADD_EXECUTABLE(vector_expr          examples/vector_expr.cpp)
 
-# tests:
-ADD_EXECUTABLE(runtime_test tests/src/runtime_test.cpp)
-ADD_EXECUTABLE(compiletime_test tests/src/compiletime_test.cpp)
-ADD_EXECUTABLE(compiletime_evaluation tests/src/compiletime_evaluation.cpp)
-ADD_EXECUTABLE(compiletime_manipulation tests/src/compiletime_manipulation.cpp)
-ADD_EXECUTABLE(diff_test tests/src/diff_test.cpp)
-ADD_EXECUTABLE(integral_test tests/src/integral_test.cpp)
-ADD_EXECUTABLE(equation_test tests/src/equation_test.cpp)
  

@@ -1,10 +1,156 @@
 
 \chapter{Basic Types}
 
+Since C++ is a statically typed language [CITE], the basic mathematical building blocks such as constants or variables are represented as types.
+The possiblity of manipulations at compiletime or runtime is accomplished by essentially
+two different implementations of these primitives.
+Basic types for runtime evaluations are discussed first, since their interface and handling is potentially more familiar to average C++ programmers.
+Sec.~\ref{sec:compiletime-types} then provides an overview of the basic types used for compiletime manipulations.
+
+\TIP{Note that all types reside in namespace \lstinline|viennamath|. The namespace is not written explicitly in the following, thus either \lstinline|viennamath::| prefixes or certain \lstinline|using| declarations need to be added by the user in order to make the code valid.}
 
 
-\section{Types Evaluated at Runtime}
+\section{Types Evaluated at Runtime} \label{sec:runtime-types}
+Common to all types represented at runtime is that they inherit from the same abstract base class 
+and can thus be accessed and manipulated using a pointer to that interface.
+The interface is not fixed a-priori and can be adjusted via a template parameter, which is in the following called \lstinline|InterfaceType|.
+Library users should use the expression wrapper objects discussed next, because it provides an automatic memory management and does not involve complicated pointer manipulation.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+ \subsection{Expression Wrapper \lstinline|expr|}
+The main expression wrapper type in {\ViennaMath} is \lstinline|rt_expr<InterfaceType>|.
+The prefix \lstinline|rt| refers to \emph{runtime} and aids in distinguishing between types processed at runtime, and types processed at compiletime.
+In most cases, the default parameter for the runtime interface \lstinline|InterfaceType| is used, in which case users would have to write
+\begin{lstlisting}
+ rt_expr<> my_expression = /* any expression here */;
+\end{lstlisting}
+for instantiating an expression wrapper object \lstinline|my_expression|.
+In order to avoid users from having to write the \lstinline|rt_| and the lower-than and greater-than signs,
+there is a convenience shortcut \lstinline|expr| provided. The previous code line thus becomes
+\begin{lstlisting}
+ expr my_expression = /* any expression here */;
+\end{lstlisting}
+The \lstinline|expr|-type can be evaluated and manipulated using operator overloads.
+For example, the addition of two expressions is accomplished by
+\begin{lstlisting}
+ expr ex1 = /* any expression here */;
+ expr ex2 = /* any expression here */;
+ expr result = ex1 + ex2;
+\end{lstlisting}
+The initalization of expression objects is accomplished by any of the fundamental types discussed in the next subsections.
+Note that objects of type \lstinline|expr| are default-constructible, yet they can only be used after an expression has been assigned to them.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+ \subsection{Constant}
+Constants in C++ have their own types \lstinline|double|, \lstinline|long|, etc.
+These types can be used with {\ViennaMath} directly. 
+In order to also represent constants using a pointer to the runtime interface, a separate class \lstinline|rt_constant<NumericT, InterfaceType>| is provided.
+The template parameter \lstinline|NumericT| denotes the underlying numerical type such as \lstinline|double|, \lstinline|long|, or high precision types.
+There is again a convenience shortcut \lstinline|constant| provided for the case of the commonly used \lstinline|rt_constant<double>|, hence a user can write code such as
+\begin{lstlisting}
+ constant pi = 3.1415;
+ constant pi_squared = pi * pi;
+\end{lstlisting}
+An exemplary use with the expression wrapper \lstinline|expr| is
+\begin{lstlisting}
+ constant pi = 3.1415;
+ expr pi_squared = pi * pi;
+ expr result = pi + pi_squared;
+\end{lstlisting}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+ \subsection{Variable}
+A mathematical variable in {\ViennaMath} is modeled by \lstinline|rt_variable<InterfaceType>|.
+and refers to the mapping
+\begin{align*}
+ \left( x_0, x_1, \ldots, x_{N-1}  \right) \mapsto x_j \ ,
+\end{align*}
+where the value of $j$ is provided to the constructor of the variable.
+By default, the index $j=0$ is used. Any vector type offering access to its values using \lstinline|operator[]| such as \lstinline|std::vector<T>| can be used for an evaluation of the variable or a compounded expression.
+
+A simple example leading to the mapping $(x,y) \mapsto x(y+\pi)$ using the types introduced so far is as follows:
+\begin{lstlisting}
+ constant pi = 3.1415;
+ variable x(0);
+ variable y(1);
+ expr f = x * (y + pi);
+\end{lstlisting}
+An evaluation of \lstinline|f| at $(1,2)$ can be accomplished by using evaluation overload the parenthesis operator
+and the {\ViennaMath} helper function \lstinline|make_vector()|, which conveniently creates a suitable vector for evaluation.
+\begin{lstlisting}
+ std::cout << f( make_vector(1,2) ) << std::endl;  //prints 5.1415
+\end{lstlisting}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+ \subsection{Unary Expression}
+Mappings of the form $x \mapsto \sin(x)$ are modeled by the \lstinline|rt_unary_expr<InterfaceType>| class.
+Thus, they represent a unary function acting on a constant, a variable or an expression. The following 
+unary functions are provided:
+\begin{center}
+\begin{tabular}{|l|l||l|l|}
+\hline
+Name & {\ViennaMath} Function   & Name & {\ViennaMath} Function \\
+\hline
+Exponential   & \lstinline|exp()| & Modulus & \lstinline|fabs()| \\
+Sine          & \lstinline|sin()| & Square Root & \lstinline|sqrt()| \\
+Cosine        & \lstinline|cos()| & Natural Logarithm & \lstinline|log()| \\
+Tangent       & \lstinline|tan()| & Logarithm, Base 10 & \lstinline|log10()| \\
+\hline
+\end{tabular}
+\end{center}
+
+\TIP{Function names are intentionally chosen such that they coincide with the standard functions for floating point types.
+When calling these functions with floating point types, compilation might fail due to ambiguity. In such case the namespace should be specified explicitly.}
+
+Typically, unary expressions are not instantiated explicitly by the library user.
+Instead, they are generated implicitly by one of the unary functions and then assigned to an object of type \lstinline|expr| as in the following example:
+\begin{lstlisting}
+ variable x;
+ expr g = sin(2.0 * x);  // wraps a unary expression into 'g'
+\end{lstlisting}
+
+ \subsection{Binary Expression}
+Similar to unary expressions, binary expressions at runtime are mostly handled in the background only.
+They are created whenever one of the operator overloads for addition, subtraction, multiplication, or division is triggered.
+In particular, the argument \lstinline|2.0 * x| to \lstinline|sin()| in
+\begin{lstlisting}
+ expr g = sin(2.0 * x);
+\end{lstlisting}
+is a binary expression. Binary expressions are central for compile time evaluations in Sec.~\ref{sec:compiletime-types}.
+
+ \subsection{Expression Vector}
+For the cases where a vector-valued expression is required, a user can either instantiate a vector of \lstinline|expr|, which allows for storing multiple scalar-valued function only,
+or use the \lstinline|rt_vector_expr<InterfaceType>| class provided by {\ViennaMath}. A convenience shortcut \lstinline|vector_expr| is provided.
+The benefit of using the \lstinline|vector_expr| class is that it provides the usual operator overloads directly:
+\begin{lstlisting}
+ variable x(0), y(1);
+ vector_expr vec(3); vec[0] = x; vec[1] = y; vec[2] = x + y;
+ vector_expr vec2 = x * vec + y * vec;
+\end{lstlisting}
+The dot-product of two vector-valued expressions is provided as well:
+\begin{lstlisting}
+ expr h = vec * vec2;
+\end{lstlisting}
 
 
 
-\section{Types Evaluated at Compiletime}
+\section{Types Evaluated at Compiletime} \label{sec:compiletime-types}
+
+ \subsection{Constant}
+
+ \subsection{Variable}
+
+ \subsection{Unary Expression}
+
+ \subsection{Binary Expression}
+
+ \subsection{Expression Vector}
+
+
+

@@ -31,6 +31,9 @@
 #include "viennamath/manipulation/drop_dependent_terms.hpp"
 #include "viennamath/manipulation/integrate.hpp"
 
+//
+// A compilation test for the proper compiletime substitution
+//
 
 
 int main()

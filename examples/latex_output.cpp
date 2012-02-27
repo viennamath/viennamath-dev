@@ -55,5 +55,9 @@ int main()
   std::cout << "e1_int01: " << to_latex(e1_int01) << std::endl;
   std::cout << "e1_int_symb: " << to_latex(e1_int_symb) << std::endl;
   
+  std::cout << "****************************************************" << std::endl;
+  std::cout << "*****     TUTORIAL COMPLETED SUCCESSFULLY!     *****" << std::endl;
+  std::cout << "****************************************************" << std::endl;
+  
   return EXIT_SUCCESS;
 }

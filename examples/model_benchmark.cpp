@@ -94,6 +94,9 @@ int main()
   std::cout << "|  * (not possible in this case)" << std::endl;
   std::cout << "|" << std::endl;
   
+  std::cout << "****************************************************" << std::endl;
+  std::cout << "*****     TUTORIAL COMPLETED SUCCESSFULLY!     *****" << std::endl;
+  std::cout << "****************************************************" << std::endl;
   
   return EXIT_SUCCESS;
 }

@@ -65,5 +65,9 @@ int main()
   long double_z = z( viennamath::make_vector(c4, c6, c8) );
   std::cout << "Double variables: " << double_x << ", " << double_y << ", " << double_z << std::endl;
   
+  std::cout << "****************************************************" << std::endl;
+  std::cout << "*****     TUTORIAL COMPLETED SUCCESSFULLY!     *****" << std::endl;
+  std::cout << "****************************************************" << std::endl;
+  
   return EXIT_SUCCESS;
 }

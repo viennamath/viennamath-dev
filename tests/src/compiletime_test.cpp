@@ -20,6 +20,9 @@
 #include "viennamath/expression.hpp"
 #include "viennamath/manipulation/eval.hpp"
 
+//
+// A test for the proper functionality of operator overloads of compiletime expressions
+//
 
 template <typename T, typename U>
 void operations_test(T const & t, U const & u, double t2, double u2)

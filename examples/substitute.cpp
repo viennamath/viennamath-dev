@@ -30,5 +30,9 @@ int main()
   std::vector<viennamath::expr> repl1(3);     repl1[0] = 1;   repl1[1] = 2;   repl1[2] = 3;
   std::cout << "Substituting (x,y,z) with (1,2,3) in " << e3 << " results in: " << viennamath::substitute(search1, repl1, e3) << std::endl;
   
+  std::cout << "****************************************************" << std::endl;
+  std::cout << "*****     TUTORIAL COMPLETED SUCCESSFULLY!     *****" << std::endl;
+  std::cout << "****************************************************" << std::endl;
+  
   return EXIT_SUCCESS;
 }

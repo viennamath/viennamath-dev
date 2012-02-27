@@ -25,6 +25,9 @@
 #include "viennamath/runtime/equation.hpp"
 #include "viennamath/compiletime/ct_equation.hpp"
 
+//
+// A compilation test for ViennaMath equations
+//
 
 
 int main()

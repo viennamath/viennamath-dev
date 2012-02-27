@@ -31,9 +31,9 @@ Since {\ViennaMath} is a header-only library, it is sufficient to copy the
 include path. On Unix based systems, this is often \lstinline|/usr/include/| or
 \lstinline|/usr/local/include/|.
 
-On Windows, the situation strongly depends on your development environment. We
-advise to consult the documentation of the compiler on how to set the include
-path correctly. With Visual Studio this is usually something like
+On Windows, the situation strongly depends on your development environment.
+Please consult the documentation of your compiler or development environment on how to set the include
+path correctly. The include paths in Visual Studio are usually something like
 \texttt{C:$\setminus$Program Files$\setminus$Microsoft Visual Studio
 9.0$\setminus$VC$\setminus$include}
 and can be set in \texttt{Tools -> Options -> Projects and Solutions ->
@@ -45,17 +45,23 @@ VC++-\-Directories}.
 \section{Building the Examples and Tutorials}
 % -----------------------------------------------------------------------------
 % -----------------------------------------------------------------------------
-For building the examples, we suppose that {\CMake} is properly set up
-on your system. The other dependencies are listed in
+An overview of available examples and their purpose is given
 Tab.~\ref{tab:tutorial-dependencies}.
+For building the examples, we suppose that {\CMake} is properly set up
+on your system. In the following, instructions on how to build the examples on different platforms are given.
 
 \begin{table}[tb]
 \begin{center}
 \begin{tabular}{l|p{8.5cm}}
 File & Purpose\\
 \hline
-\texttt{tutorial/access.cpp}    & Shows the use of \lstinline|access| \\
-\texttt{benchmarks/sparse-custom.cpp}  & Benchmarks for a sparse storage scheme with custom object identification \\
+\texttt{basic.cpp}              & Basic handling of {\ViennaMath} expressions \\
+\texttt{latex\_output.cpp}      & How to use and customize the \LaTeX translator \\
+\texttt{model\_benchmark.cpp}    & An example of how {\ViennaMath} can eliminate dependencies in an expression \\
+\texttt{newton\_solve.cpp}      & A Newton solver using {\ViennaMath} expressions \\
+\texttt{traversal.cpp}          & How to traverse a {\ViennaMath} expressions \\
+\texttt{substitute.cpp}         & Substitute terms in a {\ViennaMath} expressions \\
+\texttt{vector\_expr.cpp}       & Explains the use of vector expressions \\
 \end{tabular}
 \caption{Overview of the examples in the \texttt{examples/} folder}
 \label{tab:tutorial-dependencies}
@@ -78,8 +84,8 @@ to obtain a Makefile and type
 \end{lstlisting}
 to build the examples. If desired, one can build each example separately instead:
 \begin{lstlisting}
- $> make access            #builds the access tutorial
- $> make dense             #builds dense storage benchmark
+ $> make basic            #builds the 'basic' tutorial
+ $> make substitute       #builds the 'substitute' tutorial
 \end{lstlisting}
 
 \TIP{Speed up the building process by using jobs, e.g. \keyword{make -j4}.}
@@ -104,9 +110,9 @@ and project files can be created using {\CMake}:
 \item Set the {\ViennaMath} base directory as source directory.
 \item Set the \texttt{build/} directory as build directory.
 \item Click on 'Configure' and select the appropriate generator
-(e.g.~\texttt{Visual Studio 9 2008})
-\item Click on 'Generate' (you may need to click on 'Configure' one more time
-before you can click on 'Generate')
+(e.g.~\texttt{Visual Studio 9 2008}).
+\item Click on 'Configure' again.
+\item Click on 'Generate' in order to let {\CMake} generate the project files for you.
 \item The project files can now be found in the {\ViennaMath} build directory,
 where they can be opened and compiled with Visual Studio (provided that the
 include and library paths are set correctly, see

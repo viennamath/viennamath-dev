@@ -21,6 +21,11 @@
 #include "viennamath/manipulation/eval.hpp"
 #include "viennamath/manipulation/substitute.hpp"
 
+//
+// A test for the proper functionality of operator overloads of runtime expressions
+//
+
+
 template <typename E, typename T, typename U>
 void operations_test(E & e, T const & t, U const & u, double t2, double u2)
 {
@@ -198,10 +203,6 @@ int main()
   unary_test(c6+c8);
 
   
-  std::cout << "************************************************" << std::endl;
-  std::cout << "*****     TEST COMPLETED SUCCESSFULLY!     *****" << std::endl;
-  std::cout << "************************************************" << std::endl;
-  
   
   e = x - c4 - y;
   std::cout << "Replacing x in " << e 
@@ -226,6 +227,11 @@ int main()
   std::cout << "e: " << e << std::endl;
   
   std::cout << std::endl;
+
+  std::cout << "************************************************" << std::endl;
+  std::cout << "*****     TEST COMPLETED SUCCESSFULLY!     *****" << std::endl;
+  std::cout << "************************************************" << std::endl;
+  
 
   return EXIT_SUCCESS;
 }
