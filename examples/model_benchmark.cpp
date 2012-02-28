@@ -12,6 +12,10 @@
 
 #define BENCHMARK_SIZE   1000000
 
+/*
+ *  Tutorial: A small benchmark demonstrating that ViennaMath can avoid the repeated evaluation of constants in an expression
+ */
+
 
 void print_stats(double result, double elapsed)
 {

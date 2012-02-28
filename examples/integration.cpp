@@ -21,9 +21,11 @@
 #include "viennamath/manipulation/eval.hpp"
 #include "viennamath/manipulation/substitute.hpp"
 #include "viennamath/manipulation/diff.hpp"
-//#include "viennamath/manipulation/integral.hpp"
 #include "viennamath/runtime/numerical_quadrature.hpp"
 
+/*
+ *   Tutorial: How to handle integrals and numerical quadrature
+ */
 
 
 int main()
@@ -39,6 +41,9 @@ int main()
   viennamath::expr e3 = x/y-c8;
   viennamath::expr e4 = x + c8;
 
+  //
+  // Define a few intervals (runtime and compiletime)
+  //
   
   viennamath::interval rt_int01(0, 1);
   std::cout << "Interval: " << rt_int01 << std::endl;
@@ -54,7 +59,9 @@ int main()
                           viennamath::ct_variable<1> > ct_intxy;
   std::cout << "Interval: " << ct_intxy << std::endl;
 
-  //////////////////////
+  //
+  // Set up the integral \int_0^1 x+8 dx and evaluate it using a 1-point-Gauss rule:
+  //
   
   viennamath::expr e4_int = viennamath::integral( viennamath::interval(0, 1), e4, x );
   
@@ -63,8 +70,12 @@ int main()
   std::cout << "Starting evaluation..." << std::endl;
   viennamath::numerical_quadrature integrator(new viennamath::gauss_quad_1());
   std::cout << "Evaluated, type 1: " << integrator(e4_int) << std::endl;
-  std::cout << "Evaluated, type 2a: " << integrator(viennamath::interval(0, 1), e4, x) << std::endl;
+  std::cout << "Evaluated, type 2: " << integrator(viennamath::interval(0, 1), e4, x) << std::endl;
 
+  //
+  // Handling of a symbolic integration interval, which is then substituted to [0,1] with integration over x:
+  //
+  
   std::cout << std::endl;
   viennamath::expr my_integral = viennamath::integral(viennamath::symbolic_interval(), e4);
   std::cout << "Symbolic integral: " << my_integral << std::endl;

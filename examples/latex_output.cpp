@@ -7,11 +7,9 @@
 #include "viennamath/manipulation/latex.hpp"
 #include "viennamath/manipulation/diff.hpp"
 
-//
-// Testing functors on expression tree
-//
-
-
+/*
+ *  Tutorial: Generate LaTeX output from ViennaMath expressions
+ */
 
 
 int main()
@@ -49,7 +47,7 @@ int main()
   viennamath::interval rt_int01(0, 1);
   viennamath::symbolic_interval rt_int_symb;
   
-  viennamath::expr e1_int01 = viennamath::integral( rt_int01, e1, x );
+  viennamath::expr e1_int01    = viennamath::integral( rt_int01, e1, x );
   viennamath::expr e1_int_symb = viennamath::integral( rt_int_symb, e1);
   
   std::cout << "e1_int01: " << to_latex(e1_int01) << std::endl;

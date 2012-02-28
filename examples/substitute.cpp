@@ -6,6 +6,12 @@
 #include "viennamath/expression.hpp"
 #include "viennamath/manipulation/substitute.hpp"
 
+
+/*
+ *  Tutorial: Substitution of variables in expressions
+ */
+
+
 int main()
 {
   viennamath::variable x(0);

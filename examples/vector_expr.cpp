@@ -13,6 +13,12 @@
 #include "viennamath/runtime/vector_expr.hpp"
 
 
+/*
+ *  Tutorial: Using vector expressions
+ */
+
+
+
 int main()
 {
   viennamath::variable x(0);
@@ -27,8 +33,8 @@ int main()
   
   viennamath::vector_expr  vec(3);
   vec[0] = x;
-  //vec[1] = c6;
-  //vec[2] = x*y + z - c6;
+  //vec[1] = c6;             //uncomment this is you do not want to have the default constant '0' here
+  //vec[2] = x*y + z - c6;   //uncomment this is you do not want to have the default constant '0' here
    
   viennamath::vector_expr  vec2(vec);
   vec[1] = c6;
@@ -65,8 +71,6 @@ int main()
   
   std::cout << "----------------------" << std::endl;
   std::cout << "vec * vec2: "   << vec * vec2  << std::endl;
-  //std::cout << "vec \cdot vec2: " << viennamath::inner_prod(vec, vec2) << std::endl;
-  //std::cout << "vec \oprod vec2: " << viennamath::outer_prod(vec, vec2) << std::endl;
   
   viennamath::expr vec_expr = vec;
   std::cout << "vec as expr: " << vec_expr << std::endl;

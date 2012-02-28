@@ -11,6 +11,12 @@
 
 #include "viennamath/runtime/equation.hpp"
 
+
+/*
+ *  Tutorial: How to set up a Newton solver for a system of two nonlinear equations
+ */
+
+
 template <typename InterfaceType>
 std::vector<double> newton_solve_impl(std::vector<viennamath::rt_equation<InterfaceType> > const & equations,
                                       std::vector<double> guess)
@@ -38,20 +44,9 @@ std::vector<double> newton_solve_impl(std::vector<viennamath::rt_equation<Interf
   viennamath::rt_expr<InterfaceType> df2_dx = viennamath::diff(f2, x);
   viennamath::rt_expr<InterfaceType> df2_dy = viennamath::diff(f2, y);
   
-  //std::cout << df1_dx << std::endl;
-  //std::cout << df1_dy << std::endl;
-  //std::cout << df2_dx << std::endl;
-  //std::cout << df2_dy << std::endl;
-  //std::cout << std::endl;
-  //std::cout << df1_dx(guess) << std::endl;
-  //std::cout << df1_dy(guess) << std::endl;
-  //std::cout << df2_dx(guess) << std::endl;
-  //std::cout << df2_dy(guess) << std::endl;
-  //exit(0);
-  
   //TODO Solver for general linear system here
   
-  //In the meanwhile, we use the solution formula for a 2-by-2 system:
+  //In the meanwhile, we use the explicit solution formula for a 2-by-2 system:
   double det = df1_dx(guess) * df2_dy(guess) - df2_dx(guess) * df1_dy(guess);
   double update_x = (res_f1*df2_dy(guess) - df1_dy(guess)*res_f2) / det;
   double update_y = (df1_dx(guess)*res_f2 - res_f1*df2_dx(guess)) / det;

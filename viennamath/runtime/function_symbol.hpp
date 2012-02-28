@@ -43,10 +43,20 @@ namespace viennamath
       typedef typename InterfaceType::numeric_type      numeric_type;
       typedef InterfaceType                             interface_type;
       
+      /** @brief CTOR assigning the ID 'i' for the class of function symbols identified by the tag 't'
+       * 
+       * @param i     A numerical ID
+       * @param t     A tag class used for the compiletime ct_function_symbol
+       */
       template <typename Tag>
       rt_function_symbol(id_type i, Tag const & t) : id_(i), tag_id_(Tag::tag_id()) {}
 
-      rt_function_symbol(id_type i, id_type t) : id_(i), tag_id_(t) {}
+      /** @brief CTOR assigning the ID 'i' for the class of function symbols identified by the ID 't'
+       * 
+       * @param i     A numerical ID
+       * @param t     An ID for the family of function symbols
+       */
+      rt_function_symbol(id_type i, id_type t = 0) : id_(i), tag_id_(t) {}
 
       rt_function_symbol() : id_(0), tag_id_(unknown_tag<>::tag_id()) {}
       

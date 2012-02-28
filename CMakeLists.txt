@@ -16,6 +16,7 @@ ADD_DEFINITIONS(-Wall -pedantic -O0 -g)
 
 # examples:
 ADD_EXECUTABLE(basic                examples/basic.cpp)
+ADD_EXECUTABLE(integration          examples/integration.cpp)
 ADD_EXECUTABLE(latex_output         examples/latex_output.cpp)
 ADD_EXECUTABLE(model_benchmark      examples/model_benchmark.cpp)
 ADD_EXECUTABLE(newton_solve         examples/newton_solve.cpp)
