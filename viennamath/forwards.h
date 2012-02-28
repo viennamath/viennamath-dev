@@ -403,7 +403,7 @@ namespace viennamath
   
 
 
-  
+  /** @brief The namespace containing a set of metafunctions which can be used by the ViennaMath library user */
   namespace result_of
   {
     /** @brief A metafunction with value 'true' if the provided argument is a ViennaMath expression type. Otherwise, false is returned.

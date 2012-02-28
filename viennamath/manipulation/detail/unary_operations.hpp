@@ -27,7 +27,7 @@
 #include "viennamath/runtime/binary_expr.hpp"
 #include "viennamath/runtime/integral.hpp"
 
-/** @file  viennamath/manipulation/unary_operations.hpp
+/** @file  viennamath/manipulation/detail/unary_operations.hpp
     @brief Contains the handling of unary operations (overloads for exp(), etc.)
 */
 
@@ -407,7 +407,7 @@ namespace viennamath
   //
   // square root
   //
-  /** @brief Implementation of the differentation of \sqrt{e}, where e is an expression. */
+  /** @brief Implementation of the differentation of \\sqrt{e}, where e is an expression. */
   template <typename InterfaceType, typename NumericT>
   InterfaceType * diff_impl(const InterfaceType * e, op_sqrt<NumericT>, const InterfaceType * diff_var)
   {

@@ -243,7 +243,7 @@ namespace viennamath
 
   /** @brief Evaluation of a ViennaMath compiletime binary expression using a runtime vector
    *
-   * @param e         The compiletime binary expression
+   * @param ex        The compiletime binary expression
    * @param v         Either a single number (typically of type double) or a vector type offering bracket-access (e.g. std::vector<>)
    */
   template <typename LHS, typename OP, typename RHS, typename VectorType>
@@ -256,7 +256,7 @@ namespace viennamath
   
   /** @brief Evaluation of a ViennaMath compiletime unary expression using a runtime vector
    *
-   * @param e         The compiletime unary expression
+   * @param ex        The compiletime unary expression
    * @param v         Either a single number (typically of type double) or a vector type offering bracket-access (e.g. std::vector<>)
    */
   template <typename LHS, typename OP, typename VectorType>

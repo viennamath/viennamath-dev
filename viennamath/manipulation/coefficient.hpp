@@ -29,7 +29,7 @@ namespace viennamath
   ///////////////// compile time ////////////////////////////
   namespace result_of
   {
-    
+    /** @brief Implementation details for the metafunctions in ViennaMath. Not intended for direct use. */
     namespace detail
     {
       // forward declaration

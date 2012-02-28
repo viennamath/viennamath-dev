@@ -289,6 +289,7 @@ namespace viennamath
 
   // substitute intervals
   
+  /** @brief Implementation details for functionality in ViennaMath. Not intended for direct use. */
   namespace detail
   {
     template <typename InterfaceType>

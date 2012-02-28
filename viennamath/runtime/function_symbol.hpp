@@ -24,7 +24,7 @@
 #include "viennamath/compiletime/ct_function_symbol.hpp"
 #include "viennamath/runtime/expression_interface.hpp"
 
-/** @file function_symbol.hpp
+/** @file viennamath/runtime/function_symbol.hpp
     @brief Defines a symbolic representation of a function at runtime.
 */
 

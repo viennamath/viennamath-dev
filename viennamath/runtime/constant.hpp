@@ -24,7 +24,7 @@
 //#include "viennamath/expression_run_time.hpp"
 
 
-/** @file constant.hpp
+/** @file viennamath/runtime/constant.hpp
     @brief Defines the ViennaMath runtime constant class. 
 */
 

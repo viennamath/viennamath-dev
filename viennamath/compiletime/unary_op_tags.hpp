@@ -122,7 +122,7 @@ namespace viennamath
   //
   // square root
   //
-  /** @brief Square root: x |--> \sqrt{x}
+  /** @brief Square root: x |--> \\sqrt{x}
    * 
    * @tparam NumericT     The underlying numeric (floating point) type
    */
@@ -153,7 +153,7 @@ namespace viennamath
   //
   // logarithm, base 10
   //
-  /** @brief Logarithm with base 10: x |--> \log_{10}(x)
+  /** @brief Logarithm with base 10: x |--> \\log_{10}(x)
    * 
    * @tparam NumericT     The underlying numeric (floating point) type
    */
@@ -254,7 +254,7 @@ namespace viennamath
   //
   // integral:
   //
-  /** @brief Integration operator: f |--> \int_I f d x
+  /** @brief Integration operator: f |--> \\int_I f d x
    * 
    * @tparam IntervalType           The integration interval
    * @tparam integration_variable   ID of the integration variable
