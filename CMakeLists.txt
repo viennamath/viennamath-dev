@@ -77,8 +77,19 @@ if(ENABLE_DIST)
       COMMAND "${CMAKE_COMMAND}" -E copy_directory
          "${PROJECT_SOURCE_DIR}/examples" "${DISTDIR}/examples"
 
+      COMMAND "${CMAKE_COMMAND}" -E make_directory "${DISTDIR}/tests"
+      COMMAND "${CMAKE_COMMAND}" -E make_directory "${DISTDIR}/tests/src"
+      COMMAND "${CMAKE_COMMAND}" -E make_directory "${DISTDIR}/tests/data"
       COMMAND "${CMAKE_COMMAND}" -E copy_directory
-         "${PROJECT_SOURCE_DIR}/tests" "${DISTDIR}/tests"
+         "${PROJECT_SOURCE_DIR}/tests/src" "${DISTDIR}/tests/src"
+      COMMAND "${CMAKE_COMMAND}" -E copy_if_different
+         "${PROJECT_SOURCE_DIR}/tests/clean.sh" "${DISTDIR}/tests/clean.sh"
+      COMMAND "${CMAKE_COMMAND}" -E copy_if_different
+         "${PROJECT_SOURCE_DIR}/tests/CMakeLists.txt" "${DISTDIR}/tests/CMakeLists.txt"
+      COMMAND "${CMAKE_COMMAND}" -E copy_if_different
+         "${PROJECT_SOURCE_DIR}/tests/CTestConfig.cmake" "${DISTDIR}/tests/CTestConfig.cmake"
+      COMMAND "${CMAKE_COMMAND}" -E copy_if_different
+         "${PROJECT_SOURCE_DIR}/tests/run_regression.sh" "${DISTDIR}/tests/run_regression.sh"
 
       COMMAND "${CMAKE_COMMAND}" -E copy_directory
          "${PROJECT_SOURCE_DIR}/viennamath" "${DISTDIR}/viennamath"

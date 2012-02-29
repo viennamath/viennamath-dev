@@ -1,8 +1,22 @@
+/* =======================================================================
+   Copyright (c) 2012, Institute for Microelectronics,
+                       Institute for Analysis and Scientific Computing,
+                       TU Wien.
+                             -----------------
+               ViennaMath - Symbolic and Numerical Math in C++
+                             -----------------
+
+   Author:     Karl Rupp                          rupp@iue.tuwien.ac.at
+
+   License:    MIT (X11), see file LICENSE in the ViennaMath base directory
+======================================================================= */
+
 
 #include <iostream>
 #include <vector>
 #include <stdlib.h>
 
+// Main ViennaMath header:
 #include "viennamath/expression.hpp"
 
 /*

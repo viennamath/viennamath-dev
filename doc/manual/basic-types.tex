@@ -83,7 +83,7 @@ A simple example leading to the mapping $(x,y) \mapsto x(y+\pi)$ using the types
  variable y(1);
  expr f = x * (y + pi);
 \end{lstlisting}
-An evaluation of \lstinline|f| at $(1,2)$ can be accomplished by using evaluation overload the parenthesis operator
+An evaluation of \lstinline|f| at $(1,2)$ can be accomplished by using the functor interface provided by an overload of the parenthesis operator
 and the {\ViennaMath} helper function \lstinline|make_vector()|, which conveniently creates a suitable vector for evaluation.
 \begin{lstlisting}
  std::cout << f( make_vector(1,2) ) << std::endl;  //prints 5.1415

@@ -192,9 +192,9 @@ namespace viennamath
             return ret;
         }       
         
-        std::cerr << "Unknown type in latex translator: " << ptr << std::endl;
-        throw "Unknown type!";
-        return "";
+        std::cerr << "ViennaMath: Warning: Unknown type in latex translator: " << ptr << std::endl;
+        //throw "Unknown type!";
+        return " \\chi_{\\mathrm{unknown}} ";
       }
       
     ProcessorArray processors_;

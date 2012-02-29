@@ -931,6 +931,43 @@ namespace viennamath
   {
     //do nothing, since primitive types cannot be simplified
   }
+  
+  
+
+  /** @brief Returns a new, simplified expression. */
+  template <typename InterfaceType>
+  rt_expr<InterfaceType> simplify(rt_expr<InterfaceType> const & e)
+  {
+    rt_expr<InterfaceType> ret(e);
+    inplace_simplify(ret);
+    return ret;
+  }
+
+  /** @brief Returns a new, simplified expression. */
+  template <typename InterfaceType>
+  rt_expr<InterfaceType> simplify(rt_unary_expr<InterfaceType> const & e)
+  {
+    rt_expr<InterfaceType> ret(e);
+    inplace_simplify(ret);
+    return ret;
+  }
+
+  /** @brief Returns a new, simplified expression. */
+  template <typename InterfaceType>
+  rt_expr<InterfaceType> simplify(rt_binary_expr<InterfaceType> const & e)
+  {
+    rt_expr<InterfaceType> ret(e);
+    inplace_simplify(ret);
+    return ret;
+  }
+
+  /** @brief Returns a new, simplified expression. */
+  template <typename T>
+  T simplify(T const & e)
+  {
+    //do nothing, since primitive types cannot be simplified
+    return e;
+  }
 
 }
 

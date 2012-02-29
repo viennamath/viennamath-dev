@@ -85,7 +85,7 @@ Such a simplification of the expression can be achieved with the function \lstin
 \lstinline|simplify()| is available both for runtime and compiletime manipulation.
 
 
- \section{Differentation}
+ \section{Differentiation}
 The differentiation of an expression with respect to one or several variables is central to many algorithms, among which the Newton scheme is presumably the
 most widely used. Differentiation routines in {\ViennaMath} reside in \lstinline|viennamath/manipulation/diff.hpp| and are used in a canonical way by passing
 the expression to be differentiated as first argument and the differentiation variable as second argument:
@@ -93,7 +93,7 @@ the expression to be differentiated as first argument and the differentiation va
  diff( x + y, x );              // returns 1
  diff( (2.0 - x)*(3.0 + y), y); // returns 2.0 - x
 \end{lstlisting}
-As usually, compiletime expressions are differentatiated at compiletime, while runtime expressions are differentiated at runtime.
+As usually, compiletime expressions are differentiated at compiletime, while runtime expressions are differentiated at runtime.
 An exemplary Newton-solver demonstrating the use of differentiation routines can be found in \lstinline|examples/newton_solve.cpp|.
 
 
@@ -173,13 +173,13 @@ rule then
 
 
  \section{Extract Coefficient}
-Given a polynomial $p(x,y) = 1 + x + y + xy$ it can be of interest to extract individual parts of the polynomial.
-For example, one wishes to extract the coefficient of $x$, which is $(1+y)$. In such a case, 
+Given a polynomial $p(x,y) = 1 + x + y + 2xy$ it can be of interest to extract individual parts of the polynomial.
+For example, one wishes to extract the coefficient of $x$, which is $(1+2y)$. In such a case, 
 the function \lstinline|coefficient()| defined in \lstinline|viennamath/manipulation/coefficient.hpp| can be used.
 The first parameter is the variable or expression for which the coefficient should be returned, and the second argument is the expression from which the
 coefficient is to be extracted:
 \begin{lstlisting}
- coefficient(x, c1 + x + y + x*y);  //returns 1+y
+ coefficient(x, c1 + x + y + c2*x*y);  //returns 1+2y
 \end{lstlisting}
 Note that higher-order terms in the variable are also returned. For example, the coeffient of $x$ in $x+x^2$ is obtained as $(1+x)$.
 
@@ -190,9 +190,9 @@ Note that higher-order terms in the variable are also returned. For example, the
 In order to drop all terms in an expression which depend on a certain expression type (not necessarily a variable), the convenience function
 \lstinline|drop_dependent_terms()| from \lstinline|viennamath/manipulation/drop_dependent_terms.hpp| can be used. As the name suggests, all terms with a
 dependency on the expression passed as first parameter are dropped in the expression passed as second variable.
-For example, all terms depending on $x$ in $1+x+y+xy$ are dropped using the line
+For example, all terms depending on $x$ in $1+x+y+2xy$ are dropped using the line
 \begin{lstlisting}
- drop_dependent_terms(x, c1 + x + y + x*y);  //returns 1+y
+ drop_dependent_terms(x, c1 + x + y + c2*x*y);  //returns 1+y
 \end{lstlisting}
 in order to obtain $1+y$.
 

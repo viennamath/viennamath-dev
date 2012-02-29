@@ -1,4 +1,3 @@
-
 /* =======================================================================
    Copyright (c) 2012, Institute for Microelectronics,
                        Institute for Analysis and Scientific Computing,
@@ -12,11 +11,13 @@
    License:    MIT (X11), see file LICENSE in the ViennaMath base directory
 ======================================================================= */
 
+
 #include <iostream>
 #include <vector>
 #include <stdlib.h>
 #include <assert.h>
 
+// ViennaMath headers
 #include "viennamath/expression.hpp"
 #include "viennamath/manipulation/eval.hpp"
 #include "viennamath/manipulation/substitute.hpp"

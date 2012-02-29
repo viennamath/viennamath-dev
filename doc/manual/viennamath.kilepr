@@ -146,22 +146,22 @@ ReadWrite=true
 
 [item:additional.tex]
 archive=true
-column=0
+column=38
 encoding=UTF-8
 highlight=LaTeX
-line=12
+line=98
 mode=LaTeX
-open=true
+open=false
 order=3
 
 [item:basic-types.tex]
 archive=true
-column=10
+column=62
 encoding=UTF-8
 highlight=LaTeX
-line=99
+line=3
 mode=LaTeX
-open=true
+open=false
 order=0
 
 [item:benchmarks.tex]
@@ -181,7 +181,7 @@ encoding=UTF-8
 highlight=LaTeX
 line=1
 mode=LaTeX
-open=true
+open=false
 order=5
 
 [item:contributors.tex]
@@ -221,7 +221,7 @@ encoding=UTF-8
 highlight=LaTeX
 line=10
 mode=LaTeX
-open=true
+open=false
 order=4
 
 [item:internals.tex]
@@ -256,22 +256,22 @@ order=-1
 
 [item:license.tex]
 archive=true
-column=57
+column=13
 encoding=UTF-8
 highlight=LaTeX
-line=1
+line=21
 mode=LaTeX
 open=false
 order=10
 
 [item:manipulation.tex]
 archive=true
-column=18
+column=31
 encoding=UTF-8
 highlight=LaTeX
-line=19
+line=50
 mode=LaTeX
-open=true
+open=false
 order=2
 
 [item:setup.tex]
@@ -286,10 +286,10 @@ order=-1
 
 [item:viennamath.bib]
 archive=true
-column=6
+column=20
 encoding=UTF-8
 highlight=BibTeX
-line=44
+line=62
 mode=BibTeX
 open=false
 order=8
@@ -306,21 +306,21 @@ order=-1
 
 [item:viennamath.tex]
 archive=true
-column=19
+column=0
 encoding=UTF-8
 highlight=LaTeX
 line=86
 mode=LaTeX
-open=true
+open=false
 order=1
 
 [view-settings,view=0,item:additional.tex]
-CursorColumn=0
-CursorLine=12
+CursorColumn=38
+CursorLine=98
 
 [view-settings,view=0,item:basic-types.tex]
-CursorColumn=10
-CursorLine=99
+CursorColumn=62
+CursorLine=3
 
 [view-settings,view=0,item:benchmarks.tex]
 CursorColumn=41
@@ -359,21 +359,21 @@ CursorColumn=0
 CursorLine=0
 
 [view-settings,view=0,item:license.tex]
-CursorColumn=57
-CursorLine=1
+CursorColumn=13
+CursorLine=21
 
 [view-settings,view=0,item:manipulation.tex]
-CursorColumn=18
-CursorLine=19
+CursorColumn=31
+CursorLine=50
 
 [view-settings,view=0,item:setup.tex]
 CursorColumn=0
 CursorLine=0
 
 [view-settings,view=0,item:viennamath.bib]
-CursorColumn=6
-CursorLine=44
+CursorColumn=20
+CursorLine=62
 
 [view-settings,view=0,item:viennamath.tex]
-CursorColumn=19
+CursorColumn=0
 CursorLine=86

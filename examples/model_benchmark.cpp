@@ -1,9 +1,29 @@
+/* =======================================================================
+   Copyright (c) 2012, Institute for Microelectronics,
+                       Institute for Analysis and Scientific Computing,
+                       TU Wien.
+                             -----------------
+               ViennaMath - Symbolic and Numerical Math in C++
+                             -----------------
 
+   Author:     Karl Rupp                          rupp@iue.tuwien.ac.at
+
+   License:    MIT (X11), see file LICENSE in the ViennaMath base directory
+======================================================================= */
+
+
+// Since this is a benchmark, make sure that no assert() statements are included:
+#ifndef NDEBUG
+  #define NDEBUG
+#endif
+
+// System headers
 #include <iostream>
 #include <vector>
 #include <stdlib.h>
 #include <math.h>
 
+// ViennaMath headers
 #include "viennamath/expression.hpp"
 #include "viennamath/manipulation/eval.hpp"
 #include "viennamath/manipulation/substitute.hpp"
@@ -39,6 +59,9 @@ int main()
   double eps = 8.854e-12;
   
   double mult;
+  
+  std::cout << "**** ViennaMath performance benchmark ****" << std::endl;
+  std::cout << "Make sure that optimization flags (e.g. -O2) are set when benchmarking!" << std::endl;
   
   //
   // First step: disable precomputations by the compiler for naive implementation
