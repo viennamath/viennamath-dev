@@ -60,6 +60,9 @@ namespace viennamath
   class rt_latex_processor_interface
   {
     public: 
+      /** @brief Returns a clone of the processor object */
+      virtual rt_latex_processor_interface<InterfaceType> * clone() const = 0;
+      
       /** @brief The interface for converting an expression 'e' to a LaTeX string.
        * 
        * @param e                  Pointer to a runtime expression
@@ -108,6 +111,16 @@ namespace viennamath
         processors_.push_back(new rt_latex_constant_processor<InterfaceType>());
         processors_.push_back(new rt_latex_variable_processor<InterfaceType>());
         processors_.push_back(new rt_latex_function_symbol_processor<InterfaceType>());
+      }
+      
+      rt_latex_translator(rt_latex_translator const & other)
+      {
+        for (typename ProcessorArray::const_iterator it = other.processors_.begin();
+                                                     it != other.processors_.end();
+                                                   ++it)
+        {
+          processors_.push_back( (*it)->clone() );
+        }
       }
       
       ~rt_latex_translator()
@@ -219,6 +232,7 @@ namespace viennamath
       typedef viennamath::rt_binary_expr<InterfaceType>      BinaryExpr;
     
     public:
+      rt_latex_processor_interface<InterfaceType> * clone() const { return new rt_latex_binary_expr_processor(); }
       
       std::string process(InterfaceType const * ptr, bool use_parenthesis, rt_latex_translator<InterfaceType> const & translator) const 
       {
@@ -290,6 +304,7 @@ namespace viennamath
       typedef viennamath::rt_unary_expr<InterfaceType>       UnaryExpr;
     
     public:
+      rt_latex_processor_interface<InterfaceType> * clone() const { return new rt_latex_unary_expr_processor(); }
       
       std::string process(InterfaceType const * ptr, bool use_parenthesis, rt_latex_translator<InterfaceType> const & translator) const 
       {
@@ -397,6 +412,7 @@ namespace viennamath
       typedef viennamath::rt_constant<default_numeric_type, InterfaceType>   Constant;
     
     public:
+      rt_latex_processor_interface<InterfaceType> * clone() const { return new rt_latex_constant_processor(); }
       
       std::string process(InterfaceType const * ptr, bool use_parenthesis, rt_latex_translator<InterfaceType> const & translator) const 
       {
@@ -435,6 +451,7 @@ namespace viennamath
       typedef viennamath::rt_variable<InterfaceType>                         Variable;
     
     public:
+      rt_latex_processor_interface<InterfaceType> * clone() const { return new rt_latex_variable_processor(); }
       
       std::string process(InterfaceType const * ptr, bool use_parenthesis, rt_latex_translator<InterfaceType> const & translator) const 
       {
@@ -491,6 +508,7 @@ namespace viennamath
       typedef std::pair<id_type, id_type>           KeyType;
     
     public:
+      rt_latex_processor_interface<InterfaceType> * clone() const { return new rt_latex_function_symbol_processor(); }
       
       std::string process(InterfaceType const * ptr, bool use_parenthesis, rt_latex_translator<InterfaceType> const & translator) const 
       {
