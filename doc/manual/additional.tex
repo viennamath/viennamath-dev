@@ -57,7 +57,7 @@ For example, the integral $\int_\Omega x^2 \: \mathrm{d} \Omega$, where $\Omega$
 \begin{lstlisting}
  expr my_integral = integral(symbolic_interval(), x*x);
 \end{lstlisting}
-The interface is again such that it can be used with both runtime and compiletime types. For simplicity, the resulting integral expression is here assigned to a runtime expression \lstinline|my_integral|. An ID can be provided to the constructor of \lstinline|symbolic_interval|for distinguishing between different symbolic intervals. By default, an ID of $0$ is used.
+The interface is again such that it can be used with both runtime and compiletime types. For simplicity, the resulting integral expression is here assigned to a runtime expression \lstinline|my_integral|. An ID can be provided to the constructor of \lstinline|symbolic_interval| for distinguishing between different symbolic intervals. By default, an ID of $0$ is used.
 
 In order to substitute the symbolic interval with the actual integration interval, the function \lstinline|substitute()| as explained in Sec.~\ref{sec:substitute} is used.
 Since the replacement consists of both the integration interval and the variable over which integration is to be carried out, the replacement argument is packed into a \lstinline|pair| as defined in the C++ STL. Thus, in order to specify $\Omega$ as the interval $[0,1]$ with an integration over the $x$-variable, the code
@@ -93,7 +93,7 @@ As a simple example, the expression $uv$ is considered, where $u$ is then substi
 The constructor arguments denote the function symbol ID used for distinguishing the individual function symbols.
 
 Reconsidering the weak form \eqref{eq:weak-poisson}, function symbols at compiletime can use any arbitrary tag class for identification.
-{\ViennaMath} provides the predefined tags \lstinline|unknown_tag<id>| and \lstinline|test_tag<id>|, where the integer template parameter \lstinline|tag| is used for distinguishing between several function symbols of the same tag. The previous code snipped rewritten for compiletime manipulation thus becomes
+{\ViennaMath} provides the predefined tags \lstinline|unknown_tag<id>| and \lstinline|test_tag<id>|, where the integer template parameter \lstinline|tag| is used for distinguishing between several function symbols of the same tag. The previous code snippet rewritten for compiletime manipulation thus becomes
 \begin{lstlisting}
  ct_function_symbol< unknown_tag<0> > u;
  ct_function_symbol<    test_tag<0> > v;

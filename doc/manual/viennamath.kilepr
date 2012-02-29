@@ -4,7 +4,7 @@ img_extIsRegExp=false
 img_extensions=.eps .jpg .jpeg .png .pdf .ps .fig .gif
 kileprversion=2
 kileversion=2.0.85
-lastDocument=additional.tex
+lastDocument=manipulation.tex
 masterDocument=
 name=viennamath
 pkg_extIsRegExp=false
@@ -156,13 +156,13 @@ order=3
 
 [item:basic-types.tex]
 archive=true
-column=62
+column=119
 encoding=UTF-8
 highlight=LaTeX
-line=3
+line=85
 mode=LaTeX
-open=false
-order=0
+open=true
+order=1
 
 [item:benchmarks.tex]
 archive=true
@@ -216,13 +216,13 @@ order=3
 
 [item:installation.tex]
 archive=true
-column=0
+column=38
 encoding=UTF-8
 highlight=LaTeX
-line=10
+line=105
 mode=LaTeX
-open=false
-order=4
+open=true
+order=0
 
 [item:internals.tex]
 archive=true
@@ -266,12 +266,12 @@ order=10
 
 [item:manipulation.tex]
 archive=true
-column=31
+column=51
 encoding=UTF-8
 highlight=LaTeX
-line=50
+line=192
 mode=LaTeX
-open=false
+open=true
 order=2
 
 [item:setup.tex]
@@ -319,8 +319,8 @@ CursorColumn=38
 CursorLine=98
 
 [view-settings,view=0,item:basic-types.tex]
-CursorColumn=62
-CursorLine=3
+CursorColumn=119
+CursorLine=85
 
 [view-settings,view=0,item:benchmarks.tex]
 CursorColumn=41
@@ -343,8 +343,8 @@ CursorColumn=19
 CursorLine=10
 
 [view-settings,view=0,item:installation.tex]
-CursorColumn=0
-CursorLine=10
+CursorColumn=38
+CursorLine=105
 
 [view-settings,view=0,item:internals.tex]
 CursorColumn=57
@@ -363,8 +363,8 @@ CursorColumn=13
 CursorLine=21
 
 [view-settings,view=0,item:manipulation.tex]
-CursorColumn=31
-CursorLine=50
+CursorColumn=51
+CursorLine=192
 
 [view-settings,view=0,item:setup.tex]
 CursorColumn=0
