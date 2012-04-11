@@ -27,7 +27,7 @@ ENDIF(BUILD_TESTING)
 
 #-----------------------------------------------------------------------------
 # add the source files which should be tested without the trailing *.cpp
-SET(PROGS runtime_test compiletime_test compiletime_evaluation diff_test equation_test)
+SET(PROGS runtime_test compiletime_test compiletime_evaluation compiletime_manipulation diff_test equation_test)
 #-----------------------------------------------------------------------------
 
 #-----------------------------------------------------------------------------

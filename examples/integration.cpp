@@ -72,6 +72,16 @@ int main()
   viennamath::numerical_quadrature integrator(new viennamath::gauss_quad_1());
   std::cout << "Evaluated, type 1: " << integrator(e4_int) << std::endl;
   std::cout << "Evaluated, type 2: " << integrator(viennamath::interval(0, 1), e4, x) << std::endl;
+  
+  //
+  // Binary integral expression:
+  //
+  viennamath::expr e44_int = viennamath::integral( viennamath::interval(0, 1), e4, x )
+                            - viennamath::integral( viennamath::interval(0, 1), e4, x );
+  
+  std::cout << "Integral: " << e44_int << std::endl;
+  std::cout << "Evaluated, type 1: " << integrator(e44_int) << std::endl;
+  
 
   //
   // Handling of a symbolic integration interval, which is then substituted to [0,1] with integration over x:

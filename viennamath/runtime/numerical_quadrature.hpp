@@ -168,6 +168,33 @@ namespace viennamath
               return rt_constant<typename InterfaceType::numeric_type, InterfaceType>(0);
           }
           
+          //check for a binary expression:
+          const rt_binary_expr<InterfaceType> * binary_ptr = dynamic_cast<const rt_binary_expr<InterfaceType> *>(e.get());
+          if (binary_ptr != NULL)
+          {
+            // check for addition
+            typedef op_binary<op_plus<typename InterfaceType::numeric_type>,
+                              InterfaceType>                                  BinaryPlus;
+            
+            const BinaryPlus * op_ptr_plus = dynamic_cast<const BinaryPlus *>(binary_ptr->op());
+            if (op_ptr_plus != NULL)
+              return this->operator()(rt_expr<InterfaceType>(binary_ptr->lhs()->clone()))
+                     + this->operator()(rt_expr<InterfaceType>(binary_ptr->rhs()->clone()));
+
+            
+            
+            // check for subtraction
+            typedef op_binary<op_minus<typename InterfaceType::numeric_type>,
+                             InterfaceType>                                   BinaryMinus;
+            
+            const BinaryMinus * op_ptr_minus = dynamic_cast<const BinaryMinus *>(binary_ptr->op());
+            if (op_ptr_minus != NULL)
+            {
+              return this->operator()(rt_expr<InterfaceType>(binary_ptr->lhs()->clone()))
+                     - this->operator()(rt_expr<InterfaceType>(binary_ptr->rhs()->clone()));
+            }
+          }
+          
           //std::cerr << "ERROR: Non-unary expression encountered in numerical quadrature: NOT IMPLEMENTED!" << std::endl;
           //std::cerr << e << std::endl;
           throw integration_without_integral_exception(); 
