@@ -101,3 +101,8 @@ if(ENABLE_DIST)
       VERBATIM)
 
 endif()
+
+##Compatibility with Qt-Creator
+file( GLOB_RECURSE QtCreatorCompatibility_SRC
+    viennamath/*.hpp viennamath/*.h)
+add_custom_target( QtCreatorCompatibility SOURCES ${QtCreatorCompatibility_SRC} )
