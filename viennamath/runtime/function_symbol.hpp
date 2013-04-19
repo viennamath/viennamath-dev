@@ -135,11 +135,22 @@ namespace viennamath
       /** @brief Interface requirement. The differentiation of a function symbol is not allowed, thus an exception is thrown. */
       InterfaceType * diff(const InterfaceType * diff_var) const
       {
-        //this code should not be reached, because rt_function_symbol is symbolically differentiated at a higher level
+        const self_type * ptr = dynamic_cast< const self_type *>(diff_var);
+        if (ptr != NULL)
+        {
+          //std::cout << "diff variable<" << id << ">: TRUE" << std::endl;
+          if (ptr->id() == id_ && ptr->tag_id() == tag_id_)
+            return new rt_constant<numeric_type, InterfaceType>(1);
+          else
+            //std::cout << "diff variable<" << id << ">: FALSE, is: " << diff_var.get()->str() << std::endl;
+            return new rt_constant<numeric_type, InterfaceType>(0);
+        }
+
+        // the derivative of a function symbol with respect to a variable should not be triggered here. TODO: Maybe move higher-level code here?
         throw expression_not_differentiable_exception("Cannot differentiate rt_function_symbol!");
         return NULL;
       }
-      
+
     private:
       /** @brief A numerical ID identifying the function symbol for a given tag */
       id_type id_;

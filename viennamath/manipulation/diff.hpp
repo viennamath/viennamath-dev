@@ -141,6 +141,51 @@ namespace viennamath
                                  );
   }
 
+  //
+  // Gateaux derivative:
+  //
+  /** @brief dg/df for function symbols f and g */
+  template <typename InterfaceType>
+  rt_expr<InterfaceType> diff(rt_function_symbol<InterfaceType> const & e,
+                              rt_function_symbol<InterfaceType> const & var)
+  {
+    typedef typename InterfaceType::numeric_type     numeric_type;
+    if (e.deep_equal(&var))
+      return rt_constant<numeric_type, InterfaceType>(1);
+    return rt_constant<numeric_type, InterfaceType>(0);
+  }
+
+  /** @brief Returns a symbolic representation of a differentiated function */
+  template <typename InterfaceType>
+  rt_expr<InterfaceType> diff(rt_unary_expr<InterfaceType> const & e,
+                              rt_function_symbol<InterfaceType> const & var)
+  {
+    rt_expr<InterfaceType> temp(e.diff(&var));
+    inplace_simplify(temp);
+    return temp;
+  }
+
+  /** @brief Returns a symbolic representation of a differentiated function */
+  template <typename InterfaceType>
+  rt_expr<InterfaceType> diff(rt_binary_expr<InterfaceType> const & e,
+                              rt_function_symbol<InterfaceType> const & var)
+  {
+    rt_expr<InterfaceType> temp(e.diff(&var));
+    inplace_simplify(temp);
+    return temp;
+  }
+
+  /** @brief Returns a symbolic representation of a differentiated function */
+  template <typename InterfaceType>
+  rt_expr<InterfaceType> diff(rt_expr<InterfaceType> const & e,
+                              rt_function_symbol<InterfaceType> const & var)
+  {
+    rt_expr<InterfaceType> temp(e.get()->diff(&var));
+    inplace_simplify(temp);
+    return temp;
+  }
+
+
   //////////// Derivative of a constant: /////////////////////////////////
 
   /** @brief Overload for the derivative of a function */

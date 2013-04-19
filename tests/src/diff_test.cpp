@@ -88,6 +88,24 @@ int main()
   std::cout << viennamath::diff(viennamath::log10(x), x) << std::endl;
   std::cout << viennamath::diff(viennamath::log10(e1), x) << std::endl;
    
+  //
+  // Gateaux derivatives
+  //
+  viennamath::function_symbol f(0);
+  viennamath::function_symbol g(1);
+
+  std::cout << "-- Gateaux derivatives --" << std::endl;
+  std::cout << viennamath::diff(f, f) << std::endl;
+  std::cout << viennamath::diff(g, f) << std::endl;
+  std::cout << viennamath::diff(f + g, g) << std::endl;
+  std::cout << viennamath::diff(f - g, g) << std::endl;
+  std::cout << viennamath::diff(f * g, f) << std::endl;
+  std::cout << viennamath::diff(f / g, f) << std::endl;
+  std::cout << viennamath::diff(4.0 * f * g, f) << std::endl;
+  std::cout << viennamath::diff(viennamath::grad(f), f) << std::endl;
+  std::cout << viennamath::diff(viennamath::grad(g), f) << std::endl;
+  std::cout << viennamath::diff(f*viennamath::grad(f), f) << std::endl;
+  std::cout << viennamath::diff(g*viennamath::grad(f), f) << std::endl;
 
   std::cout << "************************************************" << std::endl;
   std::cout << "*****     TEST COMPLETED SUCCESSFULLY!     *****" << std::endl;

@@ -637,14 +637,32 @@ namespace viennamath
   //
   // gradient
   //
-  /** @brief Implementation of the differentation of a gradient. This is currently not supported, thus an exception is thrown. */
+  /** @brief Implementation of the differentation of a gradient. Only valid for Gateau derivative */
   template <typename InterfaceType, typename NumericT>
   InterfaceType * diff_impl(const InterfaceType * e, op_gradient<NumericT>, const InterfaceType * diff_var)
   {
+    typedef rt_function_symbol<InterfaceType>  FunctionSymbolType;
+    const FunctionSymbolType * ptr = dynamic_cast< const FunctionSymbolType *>(diff_var);
+    if (ptr != NULL)
+    {
+      InterfaceType * c0 = new rt_constant<NumericT, InterfaceType>(0);
+      InterfaceType * new_expr = e->diff(diff_var);
+
+      if (new_expr->deep_equal(c0)) // grad(0) is directly compressed to 0
+      {
+        delete new_expr;
+        return c0;
+      }
+
+      // return grad(...)
+      delete c0;
+      return new rt_unary_expr<InterfaceType>(e->diff(diff_var), new op_unary<op_gradient<NumericT>, InterfaceType>());
+    }
+
     throw expression_not_differentiable_exception("Cannot differentiate gradient operator!");
     return NULL;
-  }  
-  
+  }
+
   /** @brief Overload of the gradient function for a ViennaMath runtime function symbol */
   template <typename InterfaceType>
   rt_unary_expr<InterfaceType> grad(rt_function_symbol<InterfaceType> const & other)

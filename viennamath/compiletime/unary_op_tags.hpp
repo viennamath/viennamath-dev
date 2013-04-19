@@ -184,7 +184,7 @@ namespace viennamath
       throw "Cannot evaluate formal gradient. Use transformations first.";
       return 0;
     }
-    bool can_simplify() const { return true; }
+    bool can_simplify() const { return false; }
   };
   
   
@@ -205,7 +205,7 @@ namespace viennamath
       throw "Cannot evaluate formal divergence. Use transformations first.";
       return 0;
     }
-    bool can_simplify() const { return true; }
+    bool can_simplify() const { return false; }
   };
 
   
