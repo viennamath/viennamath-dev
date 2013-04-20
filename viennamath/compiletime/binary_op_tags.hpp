@@ -28,7 +28,7 @@
 
 namespace viennamath
 {
-  
+
   //
   // addition
   //
@@ -37,16 +37,16 @@ namespace viennamath
   struct op_plus
   {
     typedef NumericT        numeric_type;
-    
+
     //template <typename LHS, typename RHS>
     //static typename op_return_type<LHS, RHS>::return_type apply(LHS const & lhs, RHS const & rhs) { return lhs + rhs; }
-    
+
     static NumericT apply(NumericT lhs, NumericT rhs) { return lhs + rhs; }
-    
+
     static std::string str() { return "+"; }
   };
-  
-  
+
+
   //
   // subtraction
   //
@@ -55,16 +55,16 @@ namespace viennamath
   struct op_minus
   {
     typedef NumericT        numeric_type;
-    
+
     //template <typename LHS, typename RHS>
     //static typename op_return_type<LHS, RHS>::return_type apply(LHS const & lhs, RHS const & rhs) { return lhs - rhs; }
-    
+
     static NumericT apply(NumericT lhs, NumericT rhs) { return lhs - rhs; }
-    
+
     static std::string str() { return "-"; }
   };
-  
-  
+
+
   //
   // multiplication
   //
@@ -73,16 +73,16 @@ namespace viennamath
   struct op_mult
   {
     typedef NumericT        numeric_type;
-    
+
     //template <typename LHS, typename RHS>
     //static typename op_return_type<LHS, RHS>::return_type apply(LHS const & lhs, RHS const & rhs) { return lhs * rhs; }
-    
+
     static NumericT apply(NumericT lhs, NumericT rhs) { return lhs * rhs; }
-    
+
     static std::string str() { return "*"; }
   };
-  
-  
+
+
   //
   // division
   //
@@ -91,18 +91,18 @@ namespace viennamath
   struct op_div
   {
     typedef NumericT        numeric_type;
-    
+
     //template <typename LHS, typename RHS>
     //static typename op_return_type<LHS, RHS>::return_type apply(LHS const & lhs, RHS const & rhs) { return lhs / rhs; }
-    
+
     static NumericT apply(NumericT lhs, NumericT rhs) { return lhs / rhs; }
-    
+
     static std::string str() { return "/"; }
   };
-  
-  
-  
-  
+
+
+
+
 }
 
 #endif

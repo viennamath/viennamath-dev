@@ -31,7 +31,7 @@ namespace viennamath
 {
 
   ////////////////// Operations //////////////////////////////
-  
+
   ////////////// operator+
   /** @brief Special overload: x + x becomes 2*x */
   template <id_type id>

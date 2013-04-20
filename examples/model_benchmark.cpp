@@ -57,12 +57,12 @@ int main()
   double voltage = 3.0;
   double prefactor = 2.0;
   double eps = 8.854e-12;
-  
+
   double mult;
-  
+
   std::cout << "**** ViennaMath performance benchmark ****" << std::endl;
   std::cout << "Make sure that optimization flags (e.g. -O2) are set when benchmarking!" << std::endl;
-  
+
   //
   // First step: disable precomputations by the compiler for naive implementation
   // If not specified at runtime, compiler might detect voltage and prefactor to be constants and precompute results
@@ -72,34 +72,34 @@ int main()
   prefactor *= mult;
   T_ref *= mult;
   kb *= mult;
-  
+
   std::cout << "--------- Naive (standard) implementation --------- " << std::endl;
-  
+
   //the reference implementation:
   timer.start();
   for (int i=0; i<BENCHMARK_SIZE; ++i)
     result += (T_ref * eps * x_ref * ::exp( prefactor * voltage / (kb * T_ref) ) );
   elapsed = timer.get();
 
-  
+
   print_stats(result, elapsed);
-  
-  
+
+
   std::cout << "--------- Hand tuned implementation (best possible, but will never be achieved within a simulator) --------- " << std::endl;
-  
+
   //the reference implementation:
   result = 0;
   timer.start();
   for (int i=0; i<BENCHMARK_SIZE; ++i)
     result += 2.6894024e-9 * x_ref;
   elapsed = timer.get();
-  
+
   print_stats(result, elapsed);
 
-  
-  
+
+
   std::cout << "--------- ViennaMath (runtime) --------- " << std::endl;
-  
+
   //ViennaMath:
   viennamath::variable  x(0);
   viennamath::variable  T(1);
@@ -112,18 +112,18 @@ int main()
   for (int i=0; i<BENCHMARK_SIZE; ++i)
     result += viennamath::eval(e_opt, 2.0);
   elapsed = timer.get();
-  
+
   print_stats(result, elapsed);
-  
-  
+
+
   std::cout << "--------- ViennaMath (compiletime) --------- " << std::endl;
   std::cout << "|" << std::endl;
   std::cout << "|  * (not possible in this case)" << std::endl;
   std::cout << "|" << std::endl;
-  
+
   std::cout << "****************************************************" << std::endl;
   std::cout << "*****     TUTORIAL COMPLETED SUCCESSFULLY!     *****" << std::endl;
   std::cout << "****************************************************" << std::endl;
-  
+
   return EXIT_SUCCESS;
 }

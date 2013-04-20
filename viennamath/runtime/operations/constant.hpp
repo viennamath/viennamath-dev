@@ -28,9 +28,9 @@
 
 namespace viennamath
 {
-      
+
     ////////////////// Operations //////////////////////////////
-    
+
     ////// operator+
 
 
@@ -98,7 +98,7 @@ namespace viennamath
                              other.rhs());
     }
 
-    
+
     /** @brief Special overload for (ct_c1 + X) + c2 -> [ct_c1 + c2] + X, where ct_c1 is a compile constant, c2 is a runtime constant, and X is any expression: */
     template <long value, typename RHS, typename ScalarType, typename T, typename InterfaceType>
     ct_binary_expr< rt_constant<typename promote_traits<long, op_plus<T>, ScalarType>::result_type >,
@@ -129,10 +129,10 @@ namespace viennamath
                                   lhs.rhs());
     }
 
-    
-    
+
+
     ////// operator-
-    
+
     /** @brief Special overload for c1 - (c2 + X) -> [c1 - c2] - X, where c1 and c2 are runtime constants and X is any expression: */
     template <typename ScalarType, typename InterfaceType, typename OtherScalarType, typename RHS>
     ct_binary_expr<rt_constant<typename promote_traits<ScalarType, op_minus<typename InterfaceType::numeric_type>, OtherScalarType>::result_type, InterfaceType >,
@@ -197,12 +197,12 @@ namespace viennamath
                              other.rhs());
     }
 
-  
+
 
     /////////// operator*
 
-    /////////// operator/ 
-  
+    /////////// operator/
+
 }
 
 #endif

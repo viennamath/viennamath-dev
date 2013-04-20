@@ -27,7 +27,7 @@
 
 namespace viennamath
 {
-  
+
   /** @brief A symbolic runtime interval */
   template <typename InterfaceType>
   class rt_symbolic_interval
@@ -37,14 +37,14 @@ namespace viennamath
       typedef rt_expr<InterfaceType>                  value_type;
       typedef InterfaceType                           interface_type;
       typedef typename InterfaceType::numeric_type    numeric_type;
-      
+
       rt_symbolic_interval(id_type interval_id = 0) : id_(interval_id) {}
-      
+
       /** @brief Returns the ID of the interval (used for dispatching purposes). */
       id_type id() const { return id_; }
-      
+
     private:
-      id_type id_;      
+      id_type id_;
   };
 
   /** @brief Convenience overload for obtaining a string representation of a symbolic interval */
@@ -54,15 +54,15 @@ namespace viennamath
     stream << "symbolic_interval[" << e.id() << "]";
     return stream;
   }
-  
-  
-  
-  
-  //////// helper functions for creating equations (uniform interface for compile time and run time: ///////////
-  
- 
 
-  
+
+
+
+  //////// helper functions for creating equations (uniform interface for compile time and run time: ///////////
+
+
+
+
 }
 
 #endif

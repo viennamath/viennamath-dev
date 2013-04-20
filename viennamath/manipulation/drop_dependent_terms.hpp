@@ -28,16 +28,16 @@
 
 namespace viennamath
 {
-  
+
   ///////////////// compile time ////////////////////////////
-  
+
   namespace result_of
   {
-    
+
     // Reuse existing functionality: Replace FactorType by ct_constant<0>, then optimize:
 
     /** @brief Interface metafunction for removing dependent terms from an expression
-     * 
+     *
      * @tparam FactorType              The variable/expression for which all dependent terms should be thrown away
      * @tparam ExpressionType          The expression from which the factor should be removed
      */
@@ -48,16 +48,16 @@ namespace viennamath
       typedef typename viennamath::result_of::expand<ExpressionType>::type    expanded_expression; //[KR]: Is it actually necessary to expand here?
 
       typedef typename viennamath::result_of::substitute<FactorType, ct_constant<0>, expanded_expression>::type    substituted_expression;
-      
+
       typedef typename viennamath::result_of::simplify<substituted_expression>::type    type;
     };
   }
-  
+
   //interface function:
   /** @brief Main user function for dropping all terms from an expression which depend on a certain variable or expression.
-   * 
+   *
    * Technically, this is accomplished by replacing the respective factor by zero
-   * 
+   *
    * @param f     The factor which should be set to zero
    * @param e     The full expression from which the dependent terms should be dropped
    */
@@ -68,9 +68,9 @@ namespace viennamath
   {
     return typename result_of::drop_dependent_terms<FactorType, ExpressionType>::type();
   }
-    
+
   //////////////// run time ///////////////////////////
-  
+
   // Not yet available
 }
 

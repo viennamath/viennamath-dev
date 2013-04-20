@@ -28,7 +28,7 @@
 template <typename T, typename U>
 void operations_test(T const & t, U const & u, double t2, double u2)
 {
-  std::cout << "LHS: " << t << ", RHS: " << u << std::endl; 
+  std::cout << "LHS: " << t << ", RHS: " << u << std::endl;
   evaluations_test(t + u, t2 + u2);
   evaluations_test(u + t, u2 + t2);
   evaluations_test(t - u, t2 - u2);
@@ -43,8 +43,8 @@ void operations_test(T const & t, U const & u, double t2, double u2)
 template <typename T, typename U>
 void operations_test(T const & t, U const & u)
 {
-  
-  operations_test(t, u, viennamath::eval(t, viennamath::make_vector(4, 6, 8)), 
+
+  operations_test(t, u, viennamath::eval(t, viennamath::make_vector(4, 6, 8)),
                         viennamath::eval(u, viennamath::make_vector(4, 6, 8)) );
 }
 
@@ -56,7 +56,7 @@ void operations_test(T const & t)
   viennamath::ct_variable<2> z;
   viennamath::ct_constant<5> c5;
   viennamath::ct_constant<7> c7;
-  
+
   operations_test(t, x);
   operations_test(t, c5);
   operations_test(t, c7);
@@ -71,7 +71,7 @@ void fuzzy_check(double a, double b)
 {
   if (fabs(a) < 1e-8 && fabs(b) < 1e-8)
     return;
-  
+
   if (fabs(a) > 1e-8)
     assert( fabs(fabs(a-b) / fabs(a)) < 1e-10);
   else
@@ -110,12 +110,12 @@ void evaluations_test(E const & e, double ref_solution)
   viennamath::ct_constant<4> ct4;
   viennamath::ct_constant<6> ct6;
   viennamath::ct_constant<8> ct8;
-  
+
   std::cout << e << " at compile-time (4,6,8): ";
   evaluation_compiletime<viennamath::result_of::is_ct_evaluable<E>::value,
                          E
                         >::apply(e, viennamath::make_vector(ct4, ct6, ct8), ref_solution);
-  
+
 }
 
 
@@ -128,8 +128,8 @@ int main()
   viennamath::ct_variable<2> z;
   viennamath::ct_constant<5> c5;
   viennamath::ct_constant<7> c7;
-  
-  
+
+
   std::cout << "--- Involved types ---" << std::endl;
   std::cout << "x: " << x << std::endl;
   std::cout << "y: " << y << std::endl;
@@ -146,7 +146,7 @@ int main()
   operations_test(c5 / x);
   operations_test(c7 - z);
 
-  
+
   //complicated beast:
   // (4 + 5) / 7 - (6 / 8 + 4 * 5)
   // = 9 / 7 - (20 + 6 / 8)
@@ -156,10 +156,10 @@ int main()
   operations_test( (x + c5) / c7 - (y / z + x * c5) );
 
   operations_test( (x + c5) / c7 - (y / (z + c7) + x * c5) );
-  
+
   std::cout << "************************************************" << std::endl;
   std::cout << "*****     TEST COMPLETED SUCCESSFULLY!     *****" << std::endl;
   std::cout << "************************************************" << std::endl;
-  
+
   return EXIT_SUCCESS;
 }

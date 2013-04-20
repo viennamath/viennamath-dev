@@ -38,7 +38,7 @@ namespace viennamath
    {
       typedef T      result_type;
    };
-   
+
    //to double:
    template <typename OP>
    struct promote_traits <double, OP, long>
@@ -63,19 +63,19 @@ namespace viennamath
    {
       typedef double      result_type;
    };
-   
+
    template <typename OP>
    struct promote_traits <double, OP, float>
    {
       typedef double      result_type;
    };
-   
+
    template <typename OP>
    struct promote_traits <float, OP, double>
    {
       typedef double      result_type;
    };
-   
+
    //to float:
    template <typename OP>
    struct promote_traits <float, OP, long>
@@ -88,7 +88,7 @@ namespace viennamath
    {
       typedef float      result_type;
    };
-   
+
    template <typename OP>
    struct promote_traits <float, OP, int>
    {
@@ -100,7 +100,7 @@ namespace viennamath
    {
       typedef float      result_type;
    };
-   
+
    //special case: integer division:
    template <typename NumericType>
    struct promote_traits <long, op_div<NumericType>, long>
@@ -113,14 +113,14 @@ namespace viennamath
    {
       typedef default_numeric_type      result_type;
    };
-   
+
    template <typename NumericType>
    struct promote_traits <int, op_div<NumericType>, long>
    {
       typedef default_numeric_type      result_type;
    };
-   
-   
+
+
 }
 
 #endif

@@ -30,7 +30,7 @@
 namespace viennamath
 {
   /////////////////////////////////// operator+ ///////////////////////////////////
-  
+
       /** @brief Special overload: (ct_c1 + X) + ct_c2 becomes [ct_c1 + ct_c2] + X, where ct_c1 and ct_c2 are compiletime constants and X is any other expression */
       template <typename ScalarType, long value_1, typename RHS, long value_2>
       ct_binary_expr<ct_constant< value_1 + value_2 >,
@@ -74,7 +74,7 @@ namespace viennamath
                               RHS >(result_constant(static_cast<OtherScalarType>(lhs.lhs()) + value),
                                     lhs.rhs());
       }
-  
+
 
   /////////////////////////////////// operator- ///////////////////////////////////
 
@@ -86,7 +86,7 @@ namespace viennamath
       {
         return lhs.rhs();
       }
-      
+
 
       /** @brief Special overload:  (ct_c1 + X) - ct_c2 -> [ct_c1 - ct_c2] + X, where ct_c1 and ct_c2 are compiletime constants and X is any other expression */
       template <long value_1, typename RHS, long value_2, typename T>
@@ -145,7 +145,7 @@ namespace viennamath
                                RHS >(result_constant(static_cast<OtherScalarType>(lhs.lhs()) - value),
                                      lhs.rhs());
       }
-  
+
 
 
   /////////////////////////////////// operator* ///////////////////////////////////
@@ -162,7 +162,7 @@ namespace viennamath
       {
         return ct_constant<1>();
       }
-  
+
 }
 
 #endif

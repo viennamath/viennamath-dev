@@ -42,10 +42,10 @@ void other_func()
   viennamath::variable z(2);
   std::vector<double> v(3);
   v[0] = 1.0; v[1] = 2.0; v[2] = 3.0;
-  
+
   viennamath::expr e = x + y + z;
-  
-  std::cout << "Evaluation of " << e 
+
+  std::cout << "Evaluation of " << e
             << " at (" << v[0] << ", " << v[1] << ", " << v[2]
             << ") results in "
             << viennamath::eval(e, v)

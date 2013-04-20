@@ -27,10 +27,10 @@
 
 namespace viennamath
 {
-  
+
   //A compile time expression
   /** @brief Defines a unary expression f(e), where f is function and 'e' is an expression
-   * 
+   *
    * @tparam LHS     The expression on which the unary operation acts
    * @tparam OP      A tag identifying the operation
    */
@@ -41,29 +41,29 @@ namespace viennamath
       typedef typename expression_traits<LHS>::const_reference_type    internal_lhs_type;
     public:
       typedef typename OP::numeric_type            numeric_type;
-      
+
       typedef LHS    lhs_type;
       typedef OP     op_type;
-      
-      explicit ct_unary_expr() : lhs_(LHS()) {} 
-      
+
+      explicit ct_unary_expr() : lhs_(LHS()) {}
+
       explicit ct_unary_expr(internal_lhs_type lhs) : lhs_(lhs){}
-     
+
       /** @brief Returns the operation the unary operation is acting on */
       internal_lhs_type lhs() const { return lhs_; }
-      
+
       template <typename VectorType>
       numeric_type operator()(VectorType const & v) const
       {
         //std::cout << "ct_expr::operator()" << std::endl;
         return OP::apply(static_cast<numeric_type>(lhs_(v)), static_cast<numeric_type>(rhs_(v)));
       }
-      
+
     private:
       internal_lhs_type lhs_;
   };
-  
-  
+
+
   //stream operator for output:
   /** @brief Convenience overload for printing a compiletime unary expression to an output stream */
   template <typename LHS, typename OP>
@@ -73,7 +73,7 @@ namespace viennamath
     return stream;
   }
 
-  
+
 }
 
 #endif

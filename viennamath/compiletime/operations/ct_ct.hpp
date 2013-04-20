@@ -29,7 +29,7 @@
 
 namespace viennamath
 {
-  
+
   namespace result_of
   {
     /** @brief Metafunction for adding two compiletime expressions */
@@ -39,8 +39,8 @@ namespace viennamath
       typedef ct_binary_expr<LHS,
                              op_plus<default_numeric_type>,
                              RHS >              type;
-                      
-      static type instance(LHS const & lhs, RHS const & rhs) { return type(); }                
+
+      static type instance(LHS const & lhs, RHS const & rhs) { return type(); }
     };
 
     /** @brief Metafunction for subtracting two compiletime expressions */
@@ -50,8 +50,8 @@ namespace viennamath
       typedef ct_binary_expr<LHS,
                              op_minus<default_numeric_type>,
                              RHS >              type;
-                      
-      static type instance(LHS const & lhs, RHS const & rhs) { return type(); }                
+
+      static type instance(LHS const & lhs, RHS const & rhs) { return type(); }
     };
 
     /** @brief Metafunction for multiplying two compiletime expressions */
@@ -61,8 +61,8 @@ namespace viennamath
       typedef ct_binary_expr<LHS,
                              op_mult<default_numeric_type>,
                              RHS >              type;
-                      
-      static type instance(LHS const & lhs, RHS const & rhs) { return type(); }                
+
+      static type instance(LHS const & lhs, RHS const & rhs) { return type(); }
     };
 
     /** @brief Metafunction for dividing two compiletime expressions */
@@ -72,15 +72,15 @@ namespace viennamath
       typedef ct_binary_expr<LHS,
                              op_div<default_numeric_type>,
                              RHS >              type;
-                      
-      static type instance(LHS const & lhs, RHS const & rhs) { return type(); }                
+
+      static type instance(LHS const & lhs, RHS const & rhs) { return type(); }
     };
-    
+
   }
-  
-  
-  
-  
+
+
+
+
 }
 
 #endif

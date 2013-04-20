@@ -37,8 +37,8 @@ namespace viennamath
                 typename ExpressionType>
       struct coefficient_impl;
 
-      
-      
+
+
       //
       // Helper metafunction: Returns the number of factors FactorType found in ExpressionType
       template <typename FactorType,
@@ -47,7 +47,7 @@ namespace viennamath
       {
         enum { value = 0 };
       };
-      
+
       template <typename FactorType>
       struct has_factor<FactorType, FactorType>
       {
@@ -61,7 +61,7 @@ namespace viennamath
         typedef typename ct_binary_expr<LHS, op_plus<NumericT>, RHS>::ERROR_EXPRESSION_NOT_FULLY_EXPANDED    error_type;
         enum { value = 0 };
       };
-      
+
       template <typename FactorType,
                 typename LHS, typename NumericT, typename RHS>
       struct has_factor< FactorType, ct_binary_expr<LHS, op_minus<NumericT>, RHS> >
@@ -69,22 +69,22 @@ namespace viennamath
         typedef typename ct_binary_expr<LHS, op_minus<NumericT>, RHS>::ERROR_EXPRESSION_NOT_FULLY_EXPANDED    error_type;
         enum { value = 0 };
       };
-      
+
       template <typename FactorType,
                 typename LHS, typename NumericT, typename RHS>
       struct has_factor< FactorType, ct_binary_expr<LHS, op_mult<NumericT>, RHS> >
       {
         enum { value = has_factor<FactorType, LHS>::value + has_factor<FactorType, RHS>::value };
       };
-      
+
       template <typename FactorType,
                 typename LHS, typename NumericT, typename RHS>
       struct has_factor< FactorType, ct_binary_expr<LHS, op_div<NumericT>, RHS> >
       {
         enum { value = has_factor<FactorType, LHS>::value };
       };
-      
-      
+
+
       //
       // Extracts the factor from an expression free of plus and minus operations
       template <typename FactorType,
@@ -97,7 +97,7 @@ namespace viennamath
         // default case: neither LHS nor RHS have the factor
         typedef ct_constant<0>     type;
       };
-      
+
       template <typename FactorType,
                 typename LHS, typename NumericT, typename RHS>
       struct extract_factor_from_product<FactorType, LHS, NumericT, RHS, true, false>
@@ -130,7 +130,7 @@ namespace viennamath
                                 RHS
                               >                    type;
       };
-      
+
 
       //
       // Tokenizer: Extracts the factor from each token
@@ -146,7 +146,7 @@ namespace viennamath
       {
         typedef ct_constant<1>    type;
       };
-      
+
       template <typename FactorType,
                 typename LHS, typename NumericT, typename RHS>
       struct coefficient_impl< FactorType, ct_binary_expr<LHS, op_plus<NumericT>, RHS> >
@@ -194,7 +194,7 @@ namespace viennamath
       {
         typedef FactorType    type;
       };
-      
+
       template <typename FactorType,
                 typename LHS, typename NumericT, typename RHS>
       struct coefficient_impl< FactorType, ct_binary_expr<LHS, op_div<NumericT>, RHS> >
@@ -204,32 +204,32 @@ namespace viennamath
                                 RHS
                               >   type;
       };
-      
+
     } //namespace detail
-    
+
     //
     // Interface metafunction:
-    /** @brief User metafunction for extracting the coefficient of a variable or sub-expression from an expression 
+    /** @brief User metafunction for extracting the coefficient of a variable or sub-expression from an expression
      *
      * @tparam FactorType       The variable or sub-expression to be extracted
-     * @tparam ExpressionType   The expression from which the coefficient is to be extracted 
+     * @tparam ExpressionType   The expression from which the coefficient is to be extracted
      */
     template <typename FactorType,
               typename ExpressionType>
     struct coefficient
     {
       typedef typename viennamath::result_of::expand<ExpressionType>::type    expanded_expression;
-      
+
       typedef typename detail::coefficient_impl<FactorType, expanded_expression>::type    type;
     };
   }
-  
-  
+
+
   //public interface:
   /** @brief User function for extracting the coefficient of a variable or sub-expression from an expression
    *
    * @param f     The variable or sub-expression to be extracted
-   * @param e     The expression from which the coefficient is to be extracted 
+   * @param e     The expression from which the coefficient is to be extracted
    */
   template <typename FactorType,
             typename ExpressionType>
@@ -238,15 +238,15 @@ namespace viennamath
   {
     return typename viennamath::result_of::coefficient<FactorType, ExpressionType>::type();
   }
-  
-  
-  
-  
-  
+
+
+
+
+
   //////////////// run time ///////////////////////////
-  
+
   // Not yet available
-  
+
 }
 
 #endif

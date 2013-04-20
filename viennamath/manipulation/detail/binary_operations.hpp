@@ -32,7 +32,7 @@
 namespace viennamath
 {
 
-  
+
   //
   // addition
   //
@@ -44,7 +44,7 @@ namespace viennamath
                                                 new op_binary<op_plus<NumericT>, InterfaceType>(),
                                                 rhs->diff(diff_var) );
   }
-  
+
   /** @brief Implementation of the simplification procedures for an expression of the form e1 + e2 */
   template <typename InterfaceType, typename NumericT>
   InterfaceType * simplify_impl(const InterfaceType * lhs, op_plus<NumericT>, const InterfaceType * rhs)
@@ -54,7 +54,7 @@ namespace viennamath
           NumericT val = lhs->unwrap();
           if (val == 0.0)
             return rhs->simplify();
-          
+
           return new rt_binary_expr<InterfaceType>(new rt_constant<NumericT, InterfaceType>(val),
                                                    new op_binary<op_plus<NumericT>, InterfaceType>(),
                                                    rhs->simplify());
@@ -64,17 +64,17 @@ namespace viennamath
           NumericT val = rhs->unwrap();
           if (val == 0.0)
             return lhs->simplify();
-          
+
           return new rt_binary_expr<InterfaceType>(lhs->simplify(),
                                                    new op_binary<op_plus<NumericT>, InterfaceType>(),
                                                    new rt_constant<NumericT, InterfaceType>(val));
         }
-        
+
         return new rt_binary_expr<InterfaceType>(lhs->simplify(),
                                                  new op_binary<op_plus<NumericT>, InterfaceType>(),
                                                  rhs->simplify());
   }
-  
+
   /** @brief Checks whether an expression of the form e1 + e2 can be simplified */
   template <typename InterfaceType, typename NumericT>
   bool can_simplify_impl(const InterfaceType * lhs, op_plus<NumericT>, const InterfaceType * rhs)
@@ -97,10 +97,10 @@ namespace viennamath
       }
       return lhs->can_simplify() || rhs->can_simplify();
   }
-  
-  
-  
-  
+
+
+
+
   //
   // subtraction
   //
@@ -112,7 +112,7 @@ namespace viennamath
                                                 new op_binary<op_minus<NumericT>, InterfaceType>(),
                                                 rhs->diff(diff_var) );
   }
-  
+
   /** @brief Implementation of the simplification procedures for an expression of the form e1 - e2 */
   template <typename InterfaceType, typename NumericT>
   InterfaceType * simplify_impl(const InterfaceType * lhs, op_minus<NumericT>, const InterfaceType * rhs)
@@ -126,7 +126,7 @@ namespace viennamath
                                                      new op_binary<op_mult<NumericT>, InterfaceType>(),
                                                      rhs->simplify());
           }
-          
+
           return new rt_binary_expr<InterfaceType>(new rt_constant<NumericT, InterfaceType>(val),
                                                    new op_binary<op_minus<NumericT>, InterfaceType>(),
                                                    rhs->simplify());
@@ -136,17 +136,17 @@ namespace viennamath
           NumericT val = rhs->unwrap();
           if (val == 0.0)
             return lhs->simplify();
-          
+
           return new rt_binary_expr<InterfaceType>(lhs->simplify(),
                                                    new op_binary<op_minus<NumericT>, InterfaceType>(),
                                                    new rt_constant<NumericT, InterfaceType>(val));
         }
-        
+
         return new rt_binary_expr<InterfaceType>(lhs->simplify(),
                                                  new op_binary<op_minus<NumericT>, InterfaceType>(),
                                                  rhs->simplify());
   }
-  
+
   /** @brief Checks whether an expression of the form e1 - e2 can be simplified */
   template <typename InterfaceType, typename NumericT>
   bool can_simplify_impl(const InterfaceType * lhs, op_minus<NumericT>, const InterfaceType * rhs)
@@ -159,7 +159,7 @@ namespace viennamath
           return true;
         }
       }
-      
+
       if (rhs->is_constant())
       {
         if (rhs->unwrap() == 0.0)
@@ -168,13 +168,13 @@ namespace viennamath
           return true;
         }
       }
-      
+
       return lhs->can_simplify() || rhs->can_simplify();
   }
-  
-  
-  
-  
+
+
+
+
   //
   // multiplication
   //
@@ -191,7 +191,7 @@ namespace viennamath
                                                                                   rhs->diff(diff_var) )
                             );
   }
-  
+
   /** @brief Implementation of the simplification procedures for an expression of the form e1 * e2 */
   template <typename InterfaceType, typename NumericT>
   InterfaceType * simplify_impl(const InterfaceType * lhs, op_mult<NumericT>, const InterfaceType * rhs)
@@ -203,7 +203,7 @@ namespace viennamath
             return new rt_constant<NumericT, InterfaceType>(0.0);
           if (val == 1.0)
             return rhs->simplify();
-          
+
           return new rt_binary_expr<InterfaceType>(new rt_constant<NumericT, InterfaceType>(val),
                                                    new op_binary<op_mult<NumericT>, InterfaceType>(),
                                                    rhs->simplify());
@@ -215,23 +215,23 @@ namespace viennamath
             return new rt_constant<NumericT, InterfaceType>(0.0);
           if (val == 1.0)
             return lhs->simplify();
-          
+
           return new rt_binary_expr<InterfaceType>(lhs->simplify(),
                                                    new op_binary<op_mult<NumericT>, InterfaceType>(),
                                                    new rt_constant<NumericT, InterfaceType>(val));
         }
-        
+
         rt_vector_expr<InterfaceType> const * lhs_vec = dynamic_cast<rt_vector_expr<InterfaceType> const *>(lhs);
         rt_vector_expr<InterfaceType> const * rhs_vec = dynamic_cast<rt_vector_expr<InterfaceType> const *>(rhs);
-        
+
         if (lhs_vec != NULL && rhs_vec != NULL)
           return (*lhs_vec * *rhs_vec).get()->clone();
-        
+
         return new rt_binary_expr<InterfaceType>(lhs->simplify(),
                                                  new op_binary<op_mult<NumericT>, InterfaceType>(),
                                                  rhs->simplify());
   }
-  
+
   /** @brief Checks whether an expression of the form e1 * e2 can be simplified */
   template <typename InterfaceType, typename NumericT>
   bool can_simplify_impl(const InterfaceType * lhs, op_mult<NumericT>, const InterfaceType * rhs)
@@ -264,19 +264,19 @@ namespace viennamath
           return true;
         }
       }
-      
+
       rt_vector_expr<InterfaceType> const * lhs_vec = dynamic_cast<rt_vector_expr<InterfaceType> const *>(lhs);
       rt_vector_expr<InterfaceType> const * rhs_vec = dynamic_cast<rt_vector_expr<InterfaceType> const *>(rhs);
-      
+
       if (lhs_vec != NULL && rhs_vec != NULL)
         return true;
-      
+
       return lhs->can_simplify() || rhs->can_simplify();
   }
-  
-  
-  
-  
+
+
+
+
   //
   // division
   //
@@ -298,7 +298,7 @@ namespace viennamath
                                                                                 rhs->clone())
                                          );
   }
-  
+
   /** @brief Implementation of the simplification procedures for an expression of the form e1 / e2 */
   template <typename InterfaceType, typename NumericT>
   InterfaceType * simplify_impl(const InterfaceType * lhs, op_div<NumericT>, const InterfaceType * rhs)
@@ -308,7 +308,7 @@ namespace viennamath
       NumericT val = lhs->unwrap();
       if (val == 0.0)
         return new rt_constant<NumericT, InterfaceType>(0.0);
-      
+
       return new rt_binary_expr<InterfaceType>(new rt_constant<NumericT, InterfaceType>(val),
                                                new op_binary<op_div<NumericT>, InterfaceType>(),
                                                rhs->simplify());
@@ -318,17 +318,17 @@ namespace viennamath
       NumericT val = rhs->unwrap();
       if (val == 1.0)
         return lhs->simplify();
-      
+
       return new rt_binary_expr<InterfaceType>(lhs->simplify(),
                                                new op_binary<op_div<NumericT>, InterfaceType>(),
                                                new rt_constant<NumericT, InterfaceType>(val));
     }
-    
+
     return new rt_binary_expr<InterfaceType>(lhs->simplify(),
                                              new op_binary<op_div<NumericT>, InterfaceType>(),
                                              rhs->simplify());
   }
-  
+
   /** @brief Checks whether an expression of the form e1 / e2 can be simplified */
   template <typename InterfaceType, typename NumericT>
   bool can_simplify_impl(const InterfaceType * lhs, op_div<NumericT>, const InterfaceType * rhs)
@@ -351,9 +351,9 @@ namespace viennamath
     }
     return lhs->can_simplify() || rhs->can_simplify();
   }
-  
-  
-  
+
+
+
 }
 
 #endif

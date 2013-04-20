@@ -31,9 +31,9 @@
 
 namespace viennamath
 {
-  
+
   /////// two common tags:
-  
+
   /** @brief A compiletime tag for an unknown function: */
   template <id_type ct_id = 0>
   struct unknown_tag
@@ -44,10 +44,10 @@ namespace viennamath
       ss << "unknown[" << ct_id << "]";
       return ss.str();
     }
-    
+
     static id_type tag_id() { return 0; }
   };
-    
+
   /** @brief A compiletime tag for a test function: */
   template <id_type ct_id = 0>
   struct test_tag
@@ -58,17 +58,17 @@ namespace viennamath
       ss << "test[" << ct_id << "]";
       return ss.str();
     }
-    
+
     static id_type tag_id() { return 1; }
   };
-  
-  
-  
-  
-  
-  
 
-  /** @brief A function symbol. Can be used for unknown functions, test functions, etc. Cannot be evaluated, but substituted with an evaluable object 
+
+
+
+
+
+
+  /** @brief A function symbol. Can be used for unknown functions, test functions, etc. Cannot be evaluated, but substituted with an evaluable object
    *
    * @tparam Tag    A tag class typically used to distinguish between different function symbols. Tag requirements: 'static std::string str();' which returns an identification string
    */
@@ -81,8 +81,8 @@ namespace viennamath
       }
   };
 
-  
-  
+
+
   /** @brief Convenience overload for printing a compiletime function symbol to an output stream */
   template <typename Tag>
   std::ostream& operator<<(std::ostream & stream, ct_function_symbol<Tag> const & v)
@@ -90,9 +90,9 @@ namespace viennamath
     stream << ct_function_symbol<Tag>::str();
     return stream;
   }
-  
-  
-  
+
+
+
 }
 
 #endif

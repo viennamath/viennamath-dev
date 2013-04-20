@@ -35,19 +35,19 @@
 
 namespace viennamath
 {
-  
+
   /** @brief Runtime representation of a binary expression F(x,y), where F is a function of two argument (e.g. +) and x,y are expressions.
-   * 
+   *
    * @tparam InterfaceType    The expression runtime interface to inherit from. Usually rt_expression_interface, but extensions are possible.
-   */ 
+   */
   template <typename InterfaceType /* see forwards.h for default argument */>
   class rt_binary_expr : public InterfaceType
   {
     typedef op_interface<InterfaceType>                                           op_interface_type;
     typedef op_unary<op_id<typename InterfaceType::numeric_type>, InterfaceType>  op_unary_id_type;
-    
+
       typedef rt_binary_expr<InterfaceType>    self_type;
-    
+
     public:
       typedef typename InterfaceType::numeric_type         numeric_type;
 //       explicit expr(InterfaceType * lhs,
@@ -60,7 +60,7 @@ namespace viennamath
                            InterfaceType * rhs) : lhs_(lhs),
                                                          op_(op),
                                                          rhs_(rhs) {}
-                    
+
       template <typename LHS, typename OP, typename RHS>
       explicit rt_binary_expr(ct_binary_expr<LHS, OP, RHS> const & other) : op_(new op_binary<OP, InterfaceType>())
       {
@@ -152,20 +152,20 @@ namespace viennamath
                                                                rhs_(new rt_constant<numeric_type, InterfaceType>(value)) {}  */
 
       //Copy CTOR:
-      rt_binary_expr(binary_expr const & other) : lhs_(other.lhs_->clone()), 
+      rt_binary_expr(binary_expr const & other) : lhs_(other.lhs_->clone()),
                                                op_(other.op_->clone()),
                                                rhs_(other.rhs_->clone()) {}
 
-      //assignments:                           
+      //assignments:
       template <typename LHS, typename OP, typename RHS>
-      rt_binary_expr & operator=(ct_binary_expr<LHS, OP, RHS> const & other) 
+      rt_binary_expr & operator=(ct_binary_expr<LHS, OP, RHS> const & other)
       {
         lhs_ = std::auto_ptr<InterfaceType>(new rt_binary_expr<InterfaceType>(other.lhs()));
         op_ = std::auto_ptr<op_interface_type>(new op_binary<OP, InterfaceType>());
         rhs_ = std::auto_ptr<InterfaceType>(new rt_binary_expr<InterfaceType>(other.rhs()));
         return *this;
       }
-      
+
       template <typename LHS, typename OP, long value>
       rt_binary_expr & operator=(ct_binary_expr<LHS, OP, ct_constant<value> > const & other)
       {
@@ -195,9 +195,9 @@ namespace viennamath
         rhs_ = std::auto_ptr<InterfaceType>(new rt_constant<numeric_type, InterfaceType>(OP().apply(value1, value2)));
         return *this;
       }
-      
 
-      rt_binary_expr & operator=(rt_binary_expr const & other) 
+
+      rt_binary_expr & operator=(rt_binary_expr const & other)
       {
         lhs_ = std::auto_ptr<InterfaceType>(other.lhs()->clone());
         op_  = std::auto_ptr<op_interface_type>(other.op()->clone());
@@ -231,9 +231,9 @@ namespace viennamath
       const InterfaceType      * lhs() const { return lhs_.get(); }
       const op_interface_type  * op()  const { return op_.get(); }
       const InterfaceType      * rhs() const { return rhs_.get(); }
-      
+
       ///////////////// evaluation: ///////////////////////////////
-      
+
       //operator() is a convenience layer:
       numeric_type operator()(numeric_type val) const
       {
@@ -245,7 +245,7 @@ namespace viennamath
       {
         return this->eval(static_cast<numeric_type>(val));
       }
-      
+
       template <long value>
       numeric_type operator()(ct_constant<value> val) const
       {
@@ -258,7 +258,7 @@ namespace viennamath
         std::vector<double> stl_v(v.size());
         for (std::size_t i=0; i<v.size(); ++i)
           stl_v[i] = v[i];
-        
+
         return this->eval(stl_v);
       }
 
@@ -283,7 +283,7 @@ namespace viennamath
         stl_v[1] = v[ct_index<1>()];
         return this->eval(stl_v);
       }
-      
+
       template <typename T0, typename T1, typename T2>
       numeric_type operator()(viennamath::ct_vector_3<T0, T1, T2> const & v) const
       {
@@ -293,7 +293,7 @@ namespace viennamath
         stl_v[2] = v[ct_index<2>()];
         return this->eval(stl_v);
       }
-      
+
       //virtual functions for evaluations
       numeric_type eval(std::vector<double> const & v) const
       {
@@ -306,18 +306,18 @@ namespace viennamath
       }
 
       ///////////////////// substitution /////////////////////////////
-      
-      
+
+
       /** @brief Returns a simplified expression with trivial operations removed. The caller is responsible for deleting the object the returned pointer refers to. */
       InterfaceType * simplify() const
       {
         if (lhs_->is_constant() && rhs_->is_constant())
           return new rt_constant<numeric_type, InterfaceType>( unwrap() );
-        
+
         //std::cout << "Optimization forwarded to " << op_->str() << std::endl;
         return op_->simplify(lhs_.get(), rhs_.get());
       }
-      
+
       /** @brief Returns true if the expression can be simplified */
       bool can_simplify() const
       {
@@ -328,11 +328,11 @@ namespace viennamath
         }
         return op_->can_simplify(lhs_.get(), rhs_.get());
       }
-      
+
       ///////// other interface requirements ////////////////////////
       /** @brief Returns a copy of the binary expression. The caller is responsible for deleting the returned object. */
       InterfaceType * clone() const { return new rt_binary_expr(lhs_->clone(), op_->clone(), rhs_->clone()); }
-      
+
       /** @brief Returns a detailed string describing the binary expression. Acts recursively. */
       std::string deep_str() const
       {
@@ -342,18 +342,18 @@ namespace viennamath
         ss << op_->str();
         ss << rhs_->deep_str();
         ss << ")";
-        return ss.str();        
+        return ss.str();
       }
-      
+
       /** @brief Returns a short string describing the unary expression. Does not act recursively. */
       std::string shallow_str() const
       {
         return std::string("binary_expr");
       }
-      
+
       /** @brief Returns whether the expression is a unary expression, which is not the case (-> false) */
       bool is_unary() const { return false; }
-      
+
       /** @brief Reduces the expression to a constant. If this is not possible, an expression_not_unwrappable_exception is thrown. */
       numeric_type unwrap() const
       {
@@ -361,20 +361,20 @@ namespace viennamath
         //  return lhs_->unwrap();
         return op_->apply(lhs_->unwrap(), rhs_->unwrap());
       }
-      
+
       /** @brief Returns true if the expression merely represents a constant value */
       bool is_constant() const { return lhs_->is_constant() && rhs_->is_constant(); };
-      
+
       /** @brief If 'e' equals to this binary expression, the replacement 'repl' is returned. Otherwise, the unary expression is cloned. Note that the caller must ensure proper deletion of the returned object.  */
       InterfaceType * substitute(const InterfaceType * e,
                                  const InterfaceType * repl) const
       {
         if (deep_equal(e))
           return repl->clone();
-        
+
         return new rt_binary_expr(lhs_->substitute(e, repl),
                                op_->clone(),
-                               rhs_->substitute(e, repl) ); 
+                               rhs_->substitute(e, repl) );
       };
 
       /** @brief If one of the expressions in 'e' equals to this binary expression, the respective replacement 'repl' is returned. Otherwise, a copy of *this is returned. Note that the caller must ensure proper deletion of the returned object. */
@@ -384,13 +384,13 @@ namespace viennamath
         for (size_t i=0; i<e.size(); ++i)
           if (deep_equal(e[i]))
             return repl[i]->clone();
-        
+
         return new rt_binary_expr(lhs_->substitute(e, repl),
                                op_->clone(),
-                               rhs_->substitute(e, repl) ); 
+                               rhs_->substitute(e, repl) );
       };
-      
-      
+
+
       /** @brief Performs a detailed comparison of the binary expression with the passed expression. Returns true if they represent the same expression (equal operands, equal operations, etc.) */
       bool deep_equal(const InterfaceType * other) const
       {
@@ -425,7 +425,7 @@ namespace viennamath
 
         return new rt_binary_expr(lhs_->recursive_manipulation(fw),
                                op_->clone(),
-                               rhs_->recursive_manipulation(fw) ); 
+                               rhs_->recursive_manipulation(fw) );
       }
 
       /** @brief Recursively traverses the expression by calling the wrapper for each object without manipulating it. */
@@ -449,13 +449,13 @@ namespace viennamath
       /** @brief The right hand side operand */
       std::auto_ptr<InterfaceType>         rhs_;
   };
-  
-  
+
+
   /** @brief Overload of the stream operator in order to allow for a convenient conversion of a unary expression to a string. */
   template <typename InterfaceType>
   std::ostream& operator<<(std::ostream & stream, rt_binary_expr<InterfaceType> const & e)
   {
-    stream << "expr" 
+    stream << "expr"
            << e.deep_str()
            << "";
     return stream;
@@ -469,7 +469,7 @@ namespace viennamath
                                           new op_unary<T, InterfaceType>(),
                                           rhs->clone());
   }
-  
+
 }
 
 #endif

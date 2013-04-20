@@ -30,8 +30,8 @@
 
 namespace viennamath
 {
-  
-  /** @brief Transforms the expression to a Cartesian coordinate system in one dimension 
+
+  /** @brief Transforms the expression to a Cartesian coordinate system in one dimension
    *
    * @param ex     The runtime expression wrapper to be transformed
    */
@@ -41,21 +41,21 @@ namespace viennamath
     rt_function_symbol<InterfaceType> u(0, unknown_tag<>());
     rt_function_symbol<InterfaceType> v(0, test_tag<>());
     rt_variable<InterfaceType> x(0);
-    
+
     //replace grad:
     rt_expr<InterfaceType> new_ex = ex;
     rt_expr<InterfaceType> new_ex1(substitute(grad(u), diff(u, x), new_ex) );
     rt_expr<InterfaceType> new_ex2(substitute(grad(v), diff(v, x), new_ex1) );
-    
+
     //replace div:
     rt_expr<InterfaceType> new_ex3(substitute(div(u), diff(u, x), new_ex2) );
     rt_expr<InterfaceType> new_ex4(substitute(div(v), diff(v, x), new_ex3) );
-    
+
     return new_ex4;
   }
 
 
-  /** @brief Transforms the expression to a Cartesian coordinate system in one dimension 
+  /** @brief Transforms the expression to a Cartesian coordinate system in one dimension
    *
    * @param ex     The runtime unary expression to be transformed
    */
@@ -66,7 +66,7 @@ namespace viennamath
     return apply_coordinate_system(cartesian<1>(), temp);
   }
 
-  /** @brief Transforms the expression to a Cartesian coordinate system in one dimension 
+  /** @brief Transforms the expression to a Cartesian coordinate system in one dimension
    *
    * @param ex     The runtime binary expression to be transformed
    */
@@ -76,8 +76,8 @@ namespace viennamath
     rt_expr<InterfaceType> temp(ex);
     return apply_coordinate_system(cartesian<1>(), temp);
   }
-  
-  
+
+
   /********* 2d *********/
 
   /** @brief Transforms the expression to a Cartesian coordinate system in two dimensions
@@ -91,7 +91,7 @@ namespace viennamath
     rt_function_symbol<InterfaceType> v(0, test_tag<>());
     rt_variable<InterfaceType> x(0);
     rt_variable<InterfaceType> y(1);
-    
+
     rt_vector_expr<InterfaceType> grad_u(2);
     grad_u[0] = diff(u, x);
     grad_u[1] = diff(u, y);
@@ -99,19 +99,19 @@ namespace viennamath
     rt_vector_expr<InterfaceType> grad_v(2);
     grad_v[0] = diff(v, x);
     grad_v[1] = diff(v, y);
-    
+
     //replace grad:
     rt_expr<InterfaceType> new_ex1(substitute(grad(u), grad_u, ex) );
     rt_expr<InterfaceType> new_ex2(substitute(grad(v), grad_v, new_ex1) );
-    
+
     //replace div:
     rt_expr<InterfaceType> new_ex3(substitute(div(u), diff(u, x) + diff(u, y), new_ex2) );
     rt_expr<InterfaceType> new_ex4(substitute(div(v), diff(v, x) + diff(v, y), new_ex3) );
-    
+
     return new_ex4;
   }
-  
-  /** @brief Transforms the expression to a Cartesian coordinate system in two dimensions 
+
+  /** @brief Transforms the expression to a Cartesian coordinate system in two dimensions
    *
    * @param ex     The runtime unary expression to be transformed
    */
@@ -122,7 +122,7 @@ namespace viennamath
     return apply_coordinate_system(cartesian<2>(), temp);
   }
 
-  /** @brief Transforms the expression to a Cartesian coordinate system in two dimensions 
+  /** @brief Transforms the expression to a Cartesian coordinate system in two dimensions
    *
    * @param ex     The runtime binary expression to be transformed
    */
@@ -148,7 +148,7 @@ namespace viennamath
     rt_variable<InterfaceType> x(0);
     rt_variable<InterfaceType> y(1);
     rt_variable<InterfaceType> z(2);
-    
+
     rt_vector_expr<InterfaceType> grad_u(3);
     grad_u[0] = diff(u, x);
     grad_u[1] = diff(u, y);
@@ -158,19 +158,19 @@ namespace viennamath
     grad_v[0] = diff(v, x);
     grad_v[1] = diff(v, y);
     grad_v[2] = diff(v, z);
-    
+
     //replace grad:
     rt_expr<InterfaceType> new_ex1(substitute(grad(u), grad_u, ex) );
     rt_expr<InterfaceType> new_ex2(substitute(grad(v), grad_v, new_ex1) );
-    
+
     //replace div:
     rt_expr<InterfaceType> new_ex3(substitute(div(u), diff(u, x) + diff(u, y) + diff(u, z), new_ex2) );
     rt_expr<InterfaceType> new_ex4(substitute(div(v), diff(v, x) + diff(v, y) + diff(v, z), new_ex3) );
-    
+
     return new_ex4;
   }
-  
-  /** @brief Transforms the expression to a Cartesian coordinate system in three dimensions 
+
+  /** @brief Transforms the expression to a Cartesian coordinate system in three dimensions
    *
    * @param ex     The runtime unary expression to be transformed
    */
@@ -181,7 +181,7 @@ namespace viennamath
     return apply_coordinate_system(cartesian<3>(), temp);
   }
 
-  /** @brief Transforms the expression to a Cartesian coordinate system in three dimensions 
+  /** @brief Transforms the expression to a Cartesian coordinate system in three dimensions
    *
    * @param ex     The runtime binary expression to be transformed
    */
@@ -191,13 +191,13 @@ namespace viennamath
     rt_expr<InterfaceType> temp(ex);
     return apply_coordinate_system(cartesian<3>(), temp);
   }
-  
-  
+
+
   //TODO: more and better compile time derivation
-  
-  
-  
-  
+
+
+
+
 
 
   //tries to automatically derive the weak formulation from the strong formulation

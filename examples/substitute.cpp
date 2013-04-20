@@ -39,7 +39,7 @@ int main()
   viennamath::expr e2 = 1 + x - z;
   viennamath::expr e3 = x * y * z;
   viennamath::expr e4 = c4 + c6 - x;
-  
+
   std::cout << "Substituting x with (1-y) in " << e1 << " results in: " << viennamath::substitute(x, 1-y, e1) << std::endl;
   std::cout << "Substituting y with (1-x) in " << e1 << " results in: " << viennamath::substitute(y, 1-x, e1) << std::endl;
   std::cout << std::endl;
@@ -49,10 +49,10 @@ int main()
   std::vector<viennamath::expr> search1(3); search1[0] = x; search1[1] = y; search1[2] = z;
   std::vector<viennamath::expr> repl1(3);     repl1[0] = 1;   repl1[1] = 2;   repl1[2] = 3;
   std::cout << "Substituting (x,y,z) with (1,2,3) in " << e3 << " results in: " << viennamath::substitute(search1, repl1, e3) << std::endl;
-  
+
   std::cout << "****************************************************" << std::endl;
   std::cout << "*****     TUTORIAL COMPLETED SUCCESSFULLY!     *****" << std::endl;
   std::cout << "****************************************************" << std::endl;
-  
+
   return EXIT_SUCCESS;
 }

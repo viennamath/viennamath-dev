@@ -53,30 +53,30 @@ int main()
   std::cout << "*****************" << std::endl;
   std::cout << "* Test started! *" << std::endl;
   std::cout << "*****************" << std::endl;
-  
-  
+
+
   //doing nothing but instantiating a few types
   viennamath::variable x(0);
   viennamath::variable y(1);
   std::vector<double> v(3);
   v[0] = 1.0; v[1] = 2.0; v[2] = 3.0;
-  
+
   viennamath::expr e = x - y;
-  
-  std::cout << "Evaluation of " << e 
+
+  std::cout << "Evaluation of " << e
             << " at (" << v[0] << ", " << v[1] << ", " << v[2]
             << ") results in "
             << viennamath::eval(e, v)
             << std::endl;
-  
+
   //this is the external linkage check:
   other_func();
-  
-  
-  
+
+
+
   std::cout << "*******************************" << std::endl;
   std::cout << "* Test finished successfully! *" << std::endl;
   std::cout << "*******************************" << std::endl;
-  
+
   return EXIT_SUCCESS;
 }

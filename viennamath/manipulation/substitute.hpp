@@ -27,11 +27,11 @@
 
 namespace viennamath
 {
-  
+
   //
   //   Section 1: Compile time substitution
   //
-  
+
   namespace result_of
   {
     /** @brief Default case for the compiletime substitution metafunction: Do not define any return type. This provides SFINAE for the interface function. */
@@ -39,7 +39,7 @@ namespace viennamath
               typename ReplacementType,
               typename ExpressionType>
     struct substitute {};  //Note: not having a default type defined serves as SFINAE for viennamath::substitute() as well (no runtime types allowed)
-    
+
     //
     // generic handling of primitives
     //
@@ -72,7 +72,7 @@ namespace viennamath
     {
       typedef ct_constant<value>   type;
     };
-    
+
     /** @brief By default, a compiletime function symbol is left unmodified (no match). */
     template <typename SearchType,
               typename ReplacementType,
@@ -81,7 +81,7 @@ namespace viennamath
     {
       typedef ct_function_symbol<TAG>   type;
     };
-    
+
     /** @brief By default, a compiletime variable is left unmodified (no match). */
     template <typename SearchType,
               typename ReplacementType,
@@ -90,7 +90,7 @@ namespace viennamath
     {
       typedef ct_variable<id>   type;
     };
-    
+
     //
     // replacement specializations
     //
@@ -117,7 +117,7 @@ namespace viennamath
     {
       typedef ReplacementType   type;
     };
-    
+
     /** @brief If there is a match for the compiletime function symbol, the replacement is returned. */
     template <typename ReplacementType,
               typename TAG>
@@ -125,7 +125,7 @@ namespace viennamath
     {
       typedef ReplacementType   type;
     };
-    
+
     /** @brief If there is a match for the compiletime variable, the replacement is returned. */
     template <typename ReplacementType,
               id_type id>
@@ -133,12 +133,12 @@ namespace viennamath
     {
       typedef ReplacementType   type;
     };
-    
+
   }
-  
+
   // interface:
   /** @brief The generic interface function for compiletime substitution.
-   * 
+   *
    * @tparam SearchType    Type of the expression to be substituted
    * @tparam ReplacementType   Type of the expression used as replacement
    * @tparam ExpressionType    Type of the expression in which the substitution is carried out
@@ -151,15 +151,15 @@ namespace viennamath
   {
     return typename result_of::substitute< SearchType, ReplacementType, ExpressionType>::type();
   }
-  
-  
-  
+
+
+
   //
   //   Section 2: Run time substitution
   //
-  
-  
-  
+
+
+
   //public interface:
   /** @brief Replaces all occurances of the variable 'u' in the expression 'e' with 'repl'. */
   template <typename InterfaceType, typename ReplacementType, typename ExpressionType>
@@ -271,15 +271,15 @@ namespace viennamath
                                     rt_expr<InterfaceType> const & e)
   {
     assert(search.size() == repl.size() && "Search and replace array must have the same length!");
-    
+
     std::vector<const InterfaceType *> search_ptrs(search.size());
     for (size_t i=0; i<search_ptrs.size(); ++i)
       search_ptrs[i] = search[i].get();
-    
+
     std::vector<const InterfaceType *> repl_ptrs(repl.size());
     for (size_t i=0; i<repl_ptrs.size(); ++i)
       repl_ptrs[i] = repl[i].get();
-    
+
     rt_expr<InterfaceType> temp(e.get()->substitute(search_ptrs, repl_ptrs));
     inplace_simplify(temp);
     return temp;
@@ -288,24 +288,24 @@ namespace viennamath
 
 
   // substitute intervals
-  
+
   /** @brief Implementation details for functionality in ViennaMath. Not intended for direct use. */
   namespace detail
   {
     template <typename InterfaceType>
     class integral_substitution_functor : public viennamath::rt_manipulation_interface<InterfaceType>
     {
-      public: 
+      public:
         integral_substitution_functor(op_unary<op_rt_integral<InterfaceType>, InterfaceType> const * ptr) : ptr_(ptr) {}
-        
-        
-        InterfaceType * operator()(InterfaceType const * e) const 
+
+
+        InterfaceType * operator()(InterfaceType const * e) const
         {
           viennamath::rt_unary_expr<InterfaceType> const * ex_ptr = dynamic_cast< viennamath::rt_unary_expr<InterfaceType> const * >(e);
           if (ex_ptr != NULL)
           {
             typedef op_unary<op_rt_symbolic_integral<InterfaceType>, InterfaceType> const *  OpPtrType;
-            
+
             OpPtrType op_ptr = dynamic_cast< OpPtrType >(ex_ptr->op());
             if (op_ptr != NULL)
             {
@@ -313,19 +313,19 @@ namespace viennamath
               return new viennamath::rt_unary_expr<InterfaceType>(ex_ptr->lhs()->clone(), ptr_->clone());
             }
           }
-          
+
           return e->clone();
         }
 
 
-        bool modifies(InterfaceType const * e) const 
+        bool modifies(InterfaceType const * e) const
         {
           //std::cout << "Checking " << e->shallow_str() << std::endl;
           viennamath::rt_unary_expr<InterfaceType> const * ex_ptr = dynamic_cast< viennamath::rt_unary_expr<InterfaceType> const * >(e);
           if (ex_ptr != NULL)
           {
             typedef op_unary<op_rt_symbolic_integral<InterfaceType>, InterfaceType> const *  OpPtrType;
-            
+
             OpPtrType op_ptr = dynamic_cast< OpPtrType >(ex_ptr->op());
             if (op_ptr != NULL)
             {
@@ -340,9 +340,9 @@ namespace viennamath
         std::auto_ptr<const op_unary<op_rt_integral<InterfaceType>, InterfaceType> > ptr_;
     };
   } //namespace detail
-  
+
   /** @brief Substitutes a symbolic interval with a concrete interval.
-   * 
+   *
    * @param search     The symbolic interval to be replaced
    * @param repl       A pair consisting of the integration interval and the integration variable. Must be interface compatible with std::pair<>.
    * @param e          The expression on which the substitution is carried out
@@ -353,14 +353,14 @@ namespace viennamath
                                     rt_expr<InterfaceType> const & e)
   {
     typedef op_rt_integral<InterfaceType>    OperatorT;
-    
+
     viennamath::rt_manipulation_wrapper<> fun( new detail::integral_substitution_functor<InterfaceType>(new op_unary<OperatorT>(OperatorT(repl.first, repl.second))) );
-    
+
     rt_expr<InterfaceType> temp(e.get()->recursive_manipulation(fun));
-    
+
     return temp;
   }
-  
+
 }
 
 #endif

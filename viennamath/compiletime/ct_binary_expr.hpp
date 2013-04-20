@@ -27,9 +27,9 @@
 
 namespace viennamath
 {
-  
+
   /** @brief A compile time expression consisting of two operands and one operation (taking two arguments)
-   * 
+   *
    * @tparam LHS     The first operand ('left hand side')
    * @tparam OP      The operation (addition, subtraction, etc.)
    * @tparam RHS     The second operand ('right hand side')
@@ -43,24 +43,24 @@ namespace viennamath
       typedef typename expression_traits<RHS>::const_reference_type    internal_rhs_type;
     public:
       typedef typename OP::numeric_type            numeric_type;
-      
+
       typedef LHS    lhs_type;
       typedef OP     op_type;
       typedef RHS    rhs_type;
-      
-      explicit ct_binary_expr() : lhs_(LHS()), rhs_(RHS()) {} 
-      
+
+      explicit ct_binary_expr() : lhs_(LHS()), rhs_(RHS()) {}
+
       explicit ct_binary_expr(internal_lhs_type lhs,
                               internal_rhs_type rhs) : lhs_(lhs), rhs_(rhs) {}
-                          
+
       internal_lhs_type lhs() const { return lhs_; }
       internal_rhs_type rhs() const { return rhs_; }
-      
+
       numeric_type operator()() const
       {
         return OP::apply(static_cast<numeric_type>(lhs_), static_cast<numeric_type>(rhs_));
       }
-      
+
       template <typename VectorType>
       numeric_type operator()(VectorType const & v) const
       {
@@ -72,8 +72,8 @@ namespace viennamath
       internal_lhs_type lhs_;
       internal_rhs_type rhs_;
   };
-  
-  
+
+
   //stream operator for output:
   /** @brief Convenience overload for printing a compiletime binary expression to an output stream */
   template <typename LHS, typename OP, typename RHS>
@@ -83,7 +83,7 @@ namespace viennamath
     return stream;
   }
 
-  
+
 }
 
 #endif

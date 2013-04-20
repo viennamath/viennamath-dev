@@ -53,7 +53,7 @@ int main()
   std::cout << viennamath::make_equation(c8, x + y) << std::endl;
   std::cout << viennamath::make_equation(c8, x) << std::endl;
   std::cout << viennamath::make_equation(c8, c8) << std::endl;
-  
+
   //run time:
   std::cout << viennamath::make_equation(x, 3.0) << std::endl;
   std::cout << viennamath::make_equation(viennamath::exp(x), 3.0) << std::endl;
@@ -62,11 +62,11 @@ int main()
   std::cout << viennamath::make_equation(x*x + y, 3.0) << std::endl;
   std::cout << viennamath::make_equation(x_pow_4 + y*y, 5.0) << std::endl;
   std::cout << viennamath::make_equation(x_pow_4 + y*y, x*x + y) << std::endl;
-   
+
 
   std::cout << "************************************************" << std::endl;
   std::cout << "*****     TEST COMPLETED SUCCESSFULLY!     *****" << std::endl;
   std::cout << "************************************************" << std::endl;
-  
+
   return EXIT_SUCCESS;
 }

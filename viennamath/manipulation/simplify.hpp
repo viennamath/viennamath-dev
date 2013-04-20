@@ -27,18 +27,18 @@
 
 namespace viennamath
 {
-  
+
   //
   //   Section 1: Compile time optimization
   //
-  
+
   namespace result_of
   {
-    
-    
+
+
     namespace detail
     {
-    
+
       // general handling:
       template <typename ExpressionType>
       struct simplify_impl
@@ -47,7 +47,7 @@ namespace viennamath
         enum { value = 0 };
         typedef ExpressionType        type;
       };
-      
+
       template <typename LHS, typename OP, typename RHS>
       struct simplify_impl< ct_binary_expr<LHS, OP, RHS> >
       {
@@ -58,10 +58,10 @@ namespace viennamath
                               typename simplify_impl<RHS>::type
                               >        type;
       };
-      
-      
+
+
       ////////// Addition of zero:
-      
+
       // something plus 0 is something
       template <typename LHS, typename NumericT>
       struct simplify_impl < ct_binary_expr<LHS, op_plus<NumericT>, ct_constant<0> > >
@@ -69,7 +69,7 @@ namespace viennamath
         enum { value = 1 };
         typedef LHS          type;
       };
-      
+
       // 0 plus something is something
       template <typename NumericT, typename RHS>
       struct simplify_impl < ct_binary_expr<ct_constant<0>, op_plus<NumericT>, RHS> >
@@ -85,12 +85,12 @@ namespace viennamath
         enum { value = 1 };
         typedef ct_constant<0>          type;
       };
-      
-      
-      
-      
+
+
+
+
       ////////// Subtraction of zero:
-      
+
       // something minus 0 is something
       template <typename LHS, typename NumericT>
       struct simplify_impl < ct_binary_expr<LHS, op_minus<NumericT>, ct_constant<0> > >
@@ -98,7 +98,7 @@ namespace viennamath
         enum { value = 1 };
         typedef LHS          type;
       };
-      
+
 
       template <typename LHS1, typename NumericT, typename RHS2>
       struct simplify_impl < ct_binary_expr<LHS1,
@@ -113,7 +113,7 @@ namespace viennamath
                               op_minus<NumericT>,
                               RHS2>                   type;
       };
-      
+
       template <typename LHS1, typename NumericT, typename RHS2>
       struct simplify_impl < ct_binary_expr<LHS1,
                                             op_minus<NumericT>,
@@ -141,7 +141,7 @@ namespace viennamath
                               op_minus<NumericT>,
                               RHS1>                   type;
       };
-      
+
       template <typename RHS1, typename NumericT, typename RHS2>
       struct simplify_impl < ct_binary_expr<ct_binary_expr< ct_constant<0>,
                                                             op_minus<NumericT>,
@@ -158,7 +158,7 @@ namespace viennamath
                                               RHS2>
                               >                 type;
       };
-      
+
       // resolve ambituity for plus:
       template <typename RHS1, typename NumericT, typename RHS2>
       struct simplify_impl < ct_binary_expr<ct_binary_expr< ct_constant<0>,
@@ -167,7 +167,7 @@ namespace viennamath
                                             op_plus<NumericT>,
                                             ct_binary_expr< ct_constant<0>,
                                                             op_minus<NumericT>,
-                                                            RHS2 >                                          
+                                                            RHS2 >
                                             > >
       {
         enum { value = 1 };
@@ -187,7 +187,7 @@ namespace viennamath
                                             op_minus<NumericT>,
                                             ct_binary_expr< ct_constant<0>,
                                                             op_minus<NumericT>,
-                                                            RHS2 >                                          
+                                                            RHS2 >
                                             > >
       {
         enum { value = 1 };
@@ -195,11 +195,11 @@ namespace viennamath
                               op_minus<NumericT>,
                               RHS1>                   type;
       };
-      
-      
-      
+
+
+
       ///////// Multiplication by zero:
-      
+
       // something times 0 is 0
       template <typename LHS, typename NumericT>
       struct simplify_impl < ct_binary_expr<LHS, op_mult<NumericT>, ct_constant<0> > >
@@ -207,7 +207,7 @@ namespace viennamath
         enum { value = 1 };
         typedef ct_constant<0>          type;
       };
-      
+
       // 0 times something is 0
       template <typename NumericT, typename RHS>
       struct simplify_impl < ct_binary_expr<ct_constant<0>, op_mult<NumericT>, RHS> >
@@ -223,10 +223,10 @@ namespace viennamath
         enum { value = 1 };
         typedef ct_constant<0>          type;
       };
-      
-      
+
+
       ///////// Multiplication by one:
-      
+
       // something times 1 is something
       template <typename LHS, typename NumericT>
       struct simplify_impl < ct_binary_expr<LHS, op_mult<NumericT>, ct_constant<1> > >
@@ -234,7 +234,7 @@ namespace viennamath
         enum { value = 1 };
         typedef LHS          type;
       };
-      
+
       // 1 times something is something
       template <typename NumericT, typename RHS>
       struct simplify_impl < ct_binary_expr<ct_constant<1>, op_mult<NumericT>, RHS> >
@@ -242,7 +242,7 @@ namespace viennamath
         enum { value = 1 };
         typedef RHS          type;
       };
-      
+
       // 1 times 1 is 1 (resolve ambiguity)
       template <typename NumericT>
       struct simplify_impl < ct_binary_expr<ct_constant<1>, op_mult<NumericT>, ct_constant<1> > >
@@ -250,7 +250,7 @@ namespace viennamath
         enum { value = 1 };
         typedef ct_constant<1>          type;
       };
-      
+
       // resolve amgibuity for 0 * 1:
       template <typename NumericT>
       struct simplify_impl < ct_binary_expr<ct_constant<1>, op_mult<NumericT>, ct_constant<0> > >
@@ -265,10 +265,10 @@ namespace viennamath
         enum { value = 1 };
         typedef ct_constant<0>          type;
       };
-      
-      
+
+
       ////////// Zero in factional expressions
-      
+
       // 0 divided by something is 0
       template <typename NumericT, typename RHS>
       struct simplify_impl < ct_binary_expr<ct_constant<0>, op_div<NumericT>, RHS> >
@@ -284,8 +284,8 @@ namespace viennamath
         enum { value = 1 };
         typedef typename ct_binary_expr<LHS, op_div<NumericT>, ct_constant<0> >::ERROR_ENCOUNTERED_DIVISION_BY_ZERO          type;
       };
-      
-      
+
+
       // 0 divided by 0 is a compile time error :-)
       template <typename NumericT>
       struct simplify_impl < ct_binary_expr<ct_constant<0>, op_div<NumericT>, ct_constant<0> > >
@@ -293,10 +293,10 @@ namespace viennamath
         enum { value = 1 };
         typedef typename ct_binary_expr<ct_constant<0>, op_div<NumericT>, ct_constant<0> >::ERROR_ENCOUNTERED_DIVISION_BY_ZERO          type;
       };
-      
-      
+
+
       ////////// One in denominator: Throw away
-      
+
       // something divided by 1 is 1
       template <typename LHS, typename NumericT>
       struct simplify_impl < ct_binary_expr<LHS, op_div<NumericT>, ct_constant<1> > >
@@ -304,9 +304,9 @@ namespace viennamath
         enum { value = 1 };
         typedef LHS          type;
       };
-      
+
       ////////// (1 / X) * Y  and  Y * (1/X)   results in Y/X
-      
+
       template <typename LHS, typename NumericT, typename RHS>
       struct simplify_impl < ct_binary_expr<LHS,
                                             op_mult<NumericT>,
@@ -341,16 +341,16 @@ namespace viennamath
         enum { value = 1 };
         typedef ct_binary_expr<ct_constant<1>,
                               op_div<NumericT>,
-                              ct_binary_expr<RHS1, op_mult<NumericT>, RHS2> 
+                              ct_binary_expr<RHS1, op_mult<NumericT>, RHS2>
                               >                             type;
       };
-      
-      
-      
+
+
+
       ///////////////////// Rational evaluations ////////////////////////////////
-      
+
       //////////////// reduce a rational expression consistnig of ct_constants to its simplest form ///////////////////////
-      
+
       // A + B:
       template <long numerator_1, long denominator_1, typename NumericT,
                 long numerator_2, long denominator_2>
@@ -367,8 +367,8 @@ namespace viennamath
         enum { value = 1,
               numerator = numerator_1 * denominator_2 + numerator_2 * denominator_1,
               denominator = denominator_1 * denominator_2 };
-        
-        
+
+
         typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
                                 op_div<NumericT>,
                                 ct_constant<denominator / result_of::gcd<numerator, denominator>::value > >        type;
@@ -387,7 +387,7 @@ namespace viennamath
         enum { value = 1,
               numerator = value_1 * denominator_2 + numerator_2,
               denominator = denominator_2 };
-              
+
         typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
                                 op_div<NumericT>,
                                 ct_constant<denominator / result_of::gcd<numerator, denominator>::value > >        type;
@@ -406,14 +406,14 @@ namespace viennamath
         enum { value = 1,
               numerator = numerator_1 + value_2 * denominator_1,
               denominator = denominator_1 };
-              
+
         typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
                                 op_div<NumericT>,
                                 ct_constant<denominator / result_of::gcd<numerator, denominator>::value > >        type;
       };
-      
-      
-      
+
+
+
       // A - B:
       template <long numerator_1, long denominator_1, typename NumericT,
                 long numerator_2, long denominator_2>
@@ -429,12 +429,12 @@ namespace viennamath
         enum { value = 1,
               numerator = numerator_1 * denominator_2 - numerator_2 * denominator_1,
               denominator = denominator_1 * denominator_2 };
-              
+
         typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
                                 op_div<NumericT>,
                                 ct_constant<denominator / result_of::gcd<numerator, denominator>::value > >        type;
       };
-      
+
       template <long value_1, typename NumericT,
                 long numerator_2, long denominator_2>
       struct simplify_impl< ct_binary_expr<ct_constant<value_1>,
@@ -447,7 +447,7 @@ namespace viennamath
         enum { value = 1,
               numerator = value_1 * denominator_2 - numerator_2,
               denominator = denominator_2 };
-              
+
         typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
                                 op_div<NumericT>,
                                 ct_constant<denominator / result_of::gcd<numerator, denominator>::value > >        type;
@@ -465,12 +465,12 @@ namespace viennamath
         enum { value = 1,
               numerator = numerator_1 - value_2 * denominator_1,
               denominator = denominator_1 };
-              
+
         typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
                                 op_div<NumericT>,
                                 ct_constant<denominator / result_of::gcd<numerator, denominator>::value > >        type;
       };
-      
+
       // resolve ambiguity with elimination of zero
       template <long numerator_1, long denominator_1, typename NumericT>
       struct simplify_impl< ct_binary_expr<ct_binary_expr<ct_constant<numerator_1>,
@@ -483,13 +483,13 @@ namespace viennamath
         enum { value = 1,
               numerator = numerator_1,
               denominator = denominator_1 };
-              
+
         typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
                                 op_div<NumericT>,
                                 ct_constant<denominator / result_of::gcd<numerator, denominator>::value > >        type;
       };
-      
-      
+
+
       // A * B:
       template <long numerator_1, long denominator_1, typename NumericT,
                 long numerator_2, long denominator_2>
@@ -505,12 +505,12 @@ namespace viennamath
         enum { value = 1,
               numerator = numerator_1 * numerator_2,
               denominator = denominator_1 * denominator_2 };
-              
+
         typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
                                 op_div<NumericT>,
                                 ct_constant<denominator / result_of::gcd<numerator, denominator>::value > >        type;
       };
-      
+
       template <long value_1, typename NumericT,
                 long numerator_2, long denominator_2>
       struct simplify_impl< ct_binary_expr<ct_constant<value_1>,
@@ -523,7 +523,7 @@ namespace viennamath
         enum { value = 1,
               numerator = value_1 * numerator_2,
               denominator = denominator_2 };
-              
+
         typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
                                 op_div<NumericT>,
                                 ct_constant<denominator / result_of::gcd<numerator, denominator>::value > >        type;
@@ -541,12 +541,12 @@ namespace viennamath
         enum { value = 1,
               numerator = numerator_1 * value_2,
               denominator = denominator_1 };
-              
+
         typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
                                 op_div<NumericT>,
                                 ct_constant<denominator / result_of::gcd<numerator, denominator>::value > >        type;
       };
-      
+
       // A / B:
       template <long numerator_1, long denominator_1, typename NumericT,
                 long numerator_2, long denominator_2>
@@ -562,12 +562,12 @@ namespace viennamath
         enum { value = 1,
               numerator = numerator_1 * denominator_2,
               denominator = denominator_1 * numerator_2 };
-              
+
         typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
                                 op_div<NumericT>,
                                 ct_constant<denominator / result_of::gcd<numerator, denominator>::value > >        type;
       };
-      
+
       template <long value_1, typename NumericT,
                 long numerator_2, long denominator_2>
       struct simplify_impl< ct_binary_expr<ct_constant<value_1>,
@@ -580,7 +580,7 @@ namespace viennamath
         enum { value = 1,
               numerator = value_1 * denominator_2,
               denominator = numerator_2 };
-              
+
         typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
                                 op_div<NumericT>,
                                 ct_constant<denominator / result_of::gcd<numerator, denominator>::value > >        type;
@@ -598,12 +598,12 @@ namespace viennamath
         enum { value = 1,
               numerator = numerator_1,
               denominator = denominator_1 * value_2 };
-              
+
         typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
                                 op_div<NumericT>,
                                 ct_constant<denominator / result_of::gcd<numerator, denominator>::value > >        type;
       };
-      
+
       //primitive expressions
       template <long value_1, typename NumericT, long value_2>
       struct simplify_impl< ct_binary_expr<ct_constant<value_1>,
@@ -634,7 +634,7 @@ namespace viennamath
         enum { value = 1 };
         typedef ct_constant<value_2>   type;
       };
-      
+
       template <long value_1, typename NumericT, long value_2>
       struct simplify_impl< ct_binary_expr<ct_constant<value_1>,
                                           op_minus<NumericT>,
@@ -665,10 +665,10 @@ namespace viennamath
         enum { value = 1 };
         typedef ct_constant<-1>   type;
       };
-      
-      
+
+
       //////// const * const:
-      
+
       template <long value_1, typename NumericT, long value_2>
       struct simplify_impl< ct_binary_expr<ct_constant<value_1>,
                                           op_mult<NumericT>,
@@ -699,7 +699,7 @@ namespace viennamath
         enum { value = 1 };
         typedef ct_constant<value_1>   type;
       };
-      
+
       template <long value_1, typename NumericT>
       struct simplify_impl< ct_binary_expr<ct_constant<value_1>,
                                           op_mult<NumericT>,
@@ -709,7 +709,7 @@ namespace viennamath
         enum { value = 1 };
         typedef ct_constant<0>   type;
       };
-      
+
       template <typename NumericT, long value_2>
       struct simplify_impl< ct_binary_expr<ct_constant<0>,
                                           op_mult<NumericT>,
@@ -718,12 +718,12 @@ namespace viennamath
       {
         enum { value = 1 };
         typedef ct_constant<0>   type;
-      };  
-        
-      
+      };
+
+
       // a / b
-      
-      
+
+
       template <long value_1, typename NumericT, long value_2>
       struct simplify_impl< ct_binary_expr<ct_constant<value_1>,
                                           op_div<NumericT>,
@@ -766,8 +766,8 @@ namespace viennamath
         enum { value = 1 };
         typedef ct_constant<value_1>            type;
       };
-      
-      
+
+
       template <long value_1, typename NumericT>
       struct simplify_impl< ct_binary_expr<ct_constant<value_1>,
                                           op_div<NumericT>,
@@ -777,19 +777,19 @@ namespace viennamath
         enum { value = 1 };
         typedef ct_constant<-value_1>            type;
       };
-      
-      
-    } //namespace detail      
-    
+
+
+    } //namespace detail
+
     ////////////////////////////////////////////////////////////////////////////////////
-    
+
     //
     // interfacing metafunction: loops over simplification routines until no more optimization is possible
     //
     /** @brief Top-level metafunction for the simplification of expressions. Loops over simplification rules until no more simplifications can be applied.
      *
      * Note that the default case provides SFINAE for the compile time interface function simplify()
-     * 
+     *
      * @tparam ExpressionType          The compile time expression to be simplified
      * @tparam optimization_possible   Internal flag, which is evaluated to true as long as optimizations can be applied. Should not be passed by the user.
      */
@@ -797,7 +797,7 @@ namespace viennamath
               bool optimization_possible = (detail::simplify_impl<ExpressionType>::value != 0)
              >
     struct simplify {}; //provides SFINAE for the compile time interface function simplify()
-    
+
     // binary expression
     /** @brief Specialization for a binary expression, for which optimizations can be applied. */
     template <typename LHS, typename OP, typename RHS>
@@ -871,25 +871,25 @@ namespace viennamath
       typedef typename detail::simplify_impl< ct_variable<id> >::type    simplified_type;
       typedef typename simplify<simplified_type>::type       type;
     };
-    
+
     /** @brief Specialization for a compiletime variable, for which no optimizations can be applied: Return the unmodified constant. */
     template <id_type id>
     struct simplify < ct_variable<id>, false >
     {
       typedef ct_variable<id>       type;
     };
-    
+
   } //namespace result_of
-  
-  
+
+
   /** @brief The generic interface function for compiletime manipulations */
   template <typename ExpressionType>
   typename result_of::simplify<ExpressionType>::type
   simplify(ExpressionType const & e)
   {
     return typename result_of::simplify<ExpressionType>::type();
-  } 
-  
+  }
+
 
 
 
@@ -897,9 +897,9 @@ namespace viennamath
   //
   //   Section 2: Run time simplification
   //
-  
-  
-  
+
+
+
   //public interface:
   /** @brief Simplifies an expression. Directly manipulates the provided expression. */
   template <typename InterfaceType>
@@ -931,8 +931,8 @@ namespace viennamath
   {
     //do nothing, since primitive types cannot be simplified
   }
-  
-  
+
+
 
   /** @brief Returns a new, simplified expression. */
   template <typename InterfaceType>

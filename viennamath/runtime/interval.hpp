@@ -26,7 +26,7 @@
 
 namespace viennamath
 {
-  
+
   /** @brief Represents an interval [a,b] at runtime. Note that the interval boundaries do not need to be constants. */
   template <typename InterfaceType>
   class rt_interval
@@ -36,17 +36,17 @@ namespace viennamath
       typedef rt_expr<InterfaceType>                  value_type;
       typedef InterfaceType                           interface_type;
       typedef typename InterfaceType::numeric_type    numeric_type;
-      
+
       explicit rt_interval() : lower_(new rt_constant<numeric_type, InterfaceType>(0)),
-                               upper_(new rt_constant<numeric_type, InterfaceType>(1)) {} 
-      
+                               upper_(new rt_constant<numeric_type, InterfaceType>(1)) {}
+
       explicit rt_interval(const rt_expr<InterfaceType> & a,
                            const rt_expr<InterfaceType> & b) : lower_(a.get()->clone()),
                                                                upper_(b.get()->clone()) {}
-                           
+
       rt_interval(rt_interval const & other) : lower_(other.lower_.get()->clone()),
                                                upper_(other.upper_.get()->clone()) {}
-      
+
       /** @brief Returns the lower bound 'a' of the interval. */
       rt_expr<InterfaceType> const & lower() const { return lower_; }
       /** @brief Returns the upper bound 'b' of the interval. */
@@ -57,12 +57,12 @@ namespace viennamath
         lower_ = other.lower().get()->clone();
         upper_ = other.upper().get()->clone();
       };
-      
+
     private:
       rt_expr<InterfaceType> lower_;
       rt_expr<InterfaceType> upper_;
   };
- 
+
   /** @brief Convenience overload for streaming an interval to an output stream. */
   template <typename InterfaceType>
   std::ostream& operator<<(std::ostream & stream, rt_interval<InterfaceType> const & e)
@@ -70,75 +70,75 @@ namespace viennamath
     stream << "interval(" << e.lower() << ", " << e.upper() << ")";
     return stream;
   }
-  
-  
-  
-  
+
+
+
+
   //////// helper functions for creating equations (uniform interface for compile time and run time: ///////////
-  
-  
+
+
   //
   // run time
   //
-  
+
   ////// scalar is first argument:
   /** @brief Creates an interval with two numerical limits */
   inline rt_interval<> make_interval(default_numeric_type lhs, default_numeric_type rhs)
   {
     rt_expr<> a = rt_constant<>(lhs);
     rt_expr<> b = rt_constant<>(rhs);
-    return rt_interval<>(a, b); 
+    return rt_interval<>(a, b);
   }
-  
+
   /** @brief Creates an interval, where the upper bound is given by a ViennaMath constant */
   template <typename NumericT, typename InterfaceType, typename RHSType>
   rt_interval<InterfaceType> make_interval(typename InterfaceType::numeric_type lhs, rt_constant<NumericT, InterfaceType> const & rhs)
   {
-    return rt_interval<InterfaceType>(lhs, rhs); 
+    return rt_interval<InterfaceType>(lhs, rhs);
   }
-  
+
   /** @brief Creates an interval, where the upper bound is given by a ViennaMath runtime variable */
   template <typename InterfaceType>
   rt_interval<InterfaceType> make_interval(typename InterfaceType::numeric_type lhs, rt_variable<InterfaceType> const & rhs)
   {
-    return rt_interval<InterfaceType>(lhs, rhs); 
+    return rt_interval<InterfaceType>(lhs, rhs);
   }
 
   /** @brief Creates an interval, where the upper bound is given by a ViennaMath compiletime variable */
   template <id_type id>
   rt_interval<> make_interval(default_numeric_type lhs, ct_variable<id> const & rhs)
   {
-    return rt_interval<>(lhs, rhs); 
+    return rt_interval<>(lhs, rhs);
   }
 
   /** @brief Creates an interval, where the upper bound is given by a ViennaMath unary expression */
   template <typename InterfaceType>
   rt_interval<InterfaceType> make_interval(typename InterfaceType::numeric_type lhs, rt_unary_expr<InterfaceType> const & rhs)
   {
-    return rt_interval<InterfaceType>(lhs, rhs); 
+    return rt_interval<InterfaceType>(lhs, rhs);
   }
 
   /** @brief Creates an interval, where the upper bound is given by a ViennaMath binary expression */
   template <typename InterfaceType>
   rt_interval<InterfaceType> make_interval(typename InterfaceType::numeric_type lhs, rt_binary_expr<InterfaceType> const & rhs)
   {
-    return rt_interval<InterfaceType>(lhs, rhs); 
+    return rt_interval<InterfaceType>(lhs, rhs);
   }
 
   /** @brief Creates an interval, where the upper bound is given by a ViennaMath expression wrapper */
   template <typename InterfaceType>
   rt_interval<InterfaceType> make_interval(typename InterfaceType::numeric_type lhs, rt_expr<InterfaceType> const & rhs)
   {
-    return rt_interval<InterfaceType>(lhs, rhs); 
+    return rt_interval<InterfaceType>(lhs, rhs);
   }
 
-  
+
   //constant:
   /** @brief Creates an interval, where the lower bound is given by a ViennaMath runtime constant */
   template <typename NumericT, typename InterfaceType, typename RHSType>
   rt_interval<InterfaceType> make_interval(rt_constant<NumericT, InterfaceType> const & lhs, RHSType const & rhs)
   {
-    return rt_interval<InterfaceType>(lhs, rhs); 
+    return rt_interval<InterfaceType>(lhs, rhs);
   }
 
   //variable:
@@ -146,7 +146,7 @@ namespace viennamath
   template <typename InterfaceType, typename RHSType>
   rt_interval<InterfaceType> make_interval(rt_variable<InterfaceType> const & lhs, RHSType const & rhs)
   {
-    return rt_interval<InterfaceType>(lhs, rhs); 
+    return rt_interval<InterfaceType>(lhs, rhs);
   }
 
   /** @brief Creates an interval, where the lower bound is given by a ViennaMath compiletime variable */
@@ -154,7 +154,7 @@ namespace viennamath
   rt_interval<> make_interval(ct_variable<id> const & lhs, RHSType const & rhs)
   {
     rt_variable<> temp(id);
-    return rt_interval<>(temp, rhs); 
+    return rt_interval<>(temp, rhs);
   }
 
   //function_symbol:
@@ -162,7 +162,7 @@ namespace viennamath
   template <typename InterfaceType, typename RHSType>
   rt_interval<InterfaceType> make_interval(rt_function_symbol<InterfaceType> const & lhs, RHSType const & rhs)
   {
-    return rt_interval<InterfaceType>(lhs, rhs); 
+    return rt_interval<InterfaceType>(lhs, rhs);
   }
 
   //unary:
@@ -170,7 +170,7 @@ namespace viennamath
   template <typename InterfaceType, typename RHSType>
   rt_interval<InterfaceType> make_interval(rt_unary_expr<InterfaceType> const & lhs, RHSType const & rhs)
   {
-    return rt_interval<InterfaceType>(lhs, rhs); 
+    return rt_interval<InterfaceType>(lhs, rhs);
   }
 
 
@@ -179,7 +179,7 @@ namespace viennamath
   template <typename InterfaceType, typename RHSType>
   rt_interval<InterfaceType> make_interval(rt_binary_expr<InterfaceType> const & lhs, RHSType const & rhs)
   {
-    return rt_interval<InterfaceType>(lhs, rhs); 
+    return rt_interval<InterfaceType>(lhs, rhs);
   }
 
   //expr
@@ -187,7 +187,7 @@ namespace viennamath
   template <typename InterfaceType, typename RHSType>
   rt_interval<InterfaceType> make_interval(rt_expr<InterfaceType> const & lhs, RHSType const & rhs)
   {
-    return rt_interval<InterfaceType>(lhs, rhs); 
+    return rt_interval<InterfaceType>(lhs, rhs);
   }
 
   //compile time with run time stuff also possible:
@@ -196,7 +196,7 @@ namespace viennamath
   rt_interval<typename RHSType::interface_type>
   make_interval(ct_binary_expr<LHS, OP, RHS> const & lhs, RHSType const & rhs)
   {
-    return rt_interval<typename RHSType::interface_type>(lhs, rhs); 
+    return rt_interval<typename RHSType::interface_type>(lhs, rhs);
   }
 
   /** @brief Creates an interval, where the lower bound is given by a ViennaMath compiletime unary expression */
@@ -204,7 +204,7 @@ namespace viennamath
   rt_interval<typename RHSType::interface_type>
   make_interval(ct_unary_expr<LHS, OP> const & lhs, RHSType const & rhs)
   {
-    return rt_interval<typename RHSType::interface_type>(lhs, rhs); 
+    return rt_interval<typename RHSType::interface_type>(lhs, rhs);
   }
 
   /** @brief Creates an interval, where the lower bound is given by a ViennaMath compiletime constant */
@@ -212,7 +212,7 @@ namespace viennamath
   rt_interval<typename RHSType::interface_type>
   make_interval(ct_constant<val> const & lhs, RHSType const & rhs)
   {
-    return rt_interval<typename RHSType::interface_type>(lhs, rhs); 
+    return rt_interval<typename RHSType::interface_type>(lhs, rhs);
   }
 
   /** @brief Creates an interval, where the lower bound is given by a ViennaMath compiletime function symbol */
@@ -220,7 +220,7 @@ namespace viennamath
   rt_interval<typename RHSType::interface_type>
   make_interval(ct_function_symbol<TAG> const & lhs, RHSType const & rhs)
   {
-    return rt_interval<typename RHSType::interface_type>(lhs, rhs); 
+    return rt_interval<typename RHSType::interface_type>(lhs, rhs);
   }
 
   /** @brief Creates an interval, where the lower bound is given by a ViennaMath compiletime variable */
@@ -228,9 +228,9 @@ namespace viennamath
   rt_interval<typename RHSType::interface_type>
   make_interval(ct_variable<id> const & lhs, RHSType const & rhs)
   {
-    return rt_interval<typename RHSType::interface_type>(lhs, rhs); 
+    return rt_interval<typename RHSType::interface_type>(lhs, rhs);
   }
-  
+
 }
 
 #endif

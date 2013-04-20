@@ -44,15 +44,15 @@ int main()
   std::cout << viennamath::diff(x+y, x) << std::endl;
   std::cout << viennamath::diff(x+y, y) << std::endl;
   std::cout << viennamath::diff(x+y, z) << std::endl;
-  
+
   std::cout << viennamath::diff(x*y+c8, x) << std::endl;
   std::cout << viennamath::diff(x*y+c8, y) << std::endl;
   std::cout << viennamath::diff(x*y+c8, z) << std::endl;
-  
+
   std::cout << viennamath::diff(x/y-c8, x) << std::endl;
   std::cout << viennamath::diff(x/y-c8, y) << std::endl;
   std::cout << viennamath::diff(x/y-c8, z) << std::endl;
-  
+
   //run time:
   std::cout << viennamath::diff(e1, x) << std::endl;
   std::cout << viennamath::diff(e1, y) << std::endl;
@@ -66,7 +66,7 @@ int main()
   std::cout << viennamath::diff(e3, y) << std::endl;
   std::cout << viennamath::diff(e3, z) << std::endl;
 
-  
+
   std::cout << viennamath::diff(viennamath::exp(x), x) << std::endl;
   std::cout << viennamath::diff(viennamath::exp(e1), x) << std::endl;
 
@@ -75,19 +75,19 @@ int main()
 
   std::cout << viennamath::diff(viennamath::cos(x), x) << std::endl;
   std::cout << viennamath::diff(viennamath::cos(e1), x) << std::endl;
-  
+
   std::cout << viennamath::diff(viennamath::tan(x), x) << std::endl;
   std::cout << viennamath::diff(viennamath::tan(e1), x) << std::endl;
-  
+
   std::cout << viennamath::diff(viennamath::sqrt(x), x) << std::endl;
   std::cout << viennamath::diff(viennamath::sqrt(e1), x) << std::endl;
-  
+
   std::cout << viennamath::diff(viennamath::log(x), x) << std::endl;
   std::cout << viennamath::diff(viennamath::log(e1), x) << std::endl;
 
   std::cout << viennamath::diff(viennamath::log10(x), x) << std::endl;
   std::cout << viennamath::diff(viennamath::log10(e1), x) << std::endl;
-   
+
   //
   // Gateaux derivatives
   //
@@ -110,6 +110,6 @@ int main()
   std::cout << "************************************************" << std::endl;
   std::cout << "*****     TEST COMPLETED SUCCESSFULLY!     *****" << std::endl;
   std::cout << "************************************************" << std::endl;
-  
+
   return EXIT_SUCCESS;
 }

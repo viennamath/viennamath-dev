@@ -44,12 +44,12 @@ int main()
   viennamath::function_symbol u(0, viennamath::unknown_tag<>());
   viennamath::function_symbol v(0, viennamath::test_tag<>());
   viennamath::expr x_pow_4 = (x*x)*(x*x);
-  
+
   viennamath::vector_expr  vec(3);
   vec[0] = x;
   //vec[1] = c6;             //uncomment this is you do not want to have the default constant '0' here
   //vec[2] = x*y + z - c6;   //uncomment this is you do not want to have the default constant '0' here
-   
+
   viennamath::vector_expr  vec2(vec);
   vec[1] = c6;
 
@@ -57,49 +57,49 @@ int main()
   vec3 = vec2;
   vec2[1] = c8;
   vec2[2] = c6;
-  
+
   std::cout << "vec: " << vec << std::endl;
   std::cout << "vec2: " << vec2 << std::endl;
   std::cout << "vec3: " << vec3 << std::endl;
   std::cout << "----------------------" << std::endl;
   std::cout << "vec + vec2: " << vec + vec2 << std::endl;
   std::cout << "vec - vec2: " << vec - vec2 << std::endl;
-  
+
   // check multiplication:
   std::cout << "z * vec2: "   << z * vec2   << std::endl;
   std::cout << "vec2 * z: "   << vec2 * z   << std::endl;
 
   std::cout << "c4 * vec2: "   << c4 * vec2   << std::endl;
   std::cout << "vec2 * c4: "   << vec2 * c4   << std::endl;
-  
+
   std::cout << "c6 * vec2: "   << c6 * vec2   << std::endl;
   std::cout << "vec2 * c6: "   << vec2 * c6   << std::endl;
-  
+
   std::cout << "c6 * vec2: "   << c8 * vec2   << std::endl;
   std::cout << "vec2 * c6: "   << vec2 * c8   << std::endl;
-  
+
   // check division:
   std::cout << "c6 / vec2: "  << c6 / vec2  << std::endl;
   std::cout << "vec2 / z: "   << vec2 / c6  << std::endl;
-  
-  
+
+
   std::cout << "----------------------" << std::endl;
   std::cout << "vec * vec2: "   << vec * vec2  << std::endl;
-  
+
   viennamath::expr vec_expr = vec;
   std::cout << "vec as expr: " << vec_expr << std::endl;
-  
-  
+
+
   viennamath::expr uv = u*v;
   viennamath::expr substi1 = viennamath::substitute(u, vec_expr, uv);
   viennamath::expr substi2 = viennamath::substitute(v, vec_expr, substi1);
   std::cout << "Substituted 1: " << substi1 << std::endl;
   std::cout << "Substituted 2: " << substi2 << std::endl;
-  
-  
+
+
   std::cout << "****************************************************" << std::endl;
   std::cout << "*****     TUTORIAL COMPLETED SUCCESSFULLY!     *****" << std::endl;
   std::cout << "****************************************************" << std::endl;
-  
+
   return EXIT_SUCCESS;
 }

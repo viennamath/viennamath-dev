@@ -37,28 +37,28 @@ namespace viennamath
     {
       enum { value = 0 };
     };
-    
+
     /** @brief Specialization: Determines whether a binary expression is compiletime evaluable by recursively acting on the operands */
     template <typename LHS, typename OP, typename RHS>
     struct is_ct_evaluable< ct_binary_expr<LHS, OP, RHS> >
     {
       enum { value = is_ct_evaluable<LHS>::value * is_ct_evaluable<RHS>::value };
     };
-    
+
     /** @brief Specialization: A constant is compiletime evaluable. */
     template <long val>
     struct is_ct_evaluable< ct_constant<val> >
     {
       enum { value = 1 };
     };
-    
+
     /** @brief Specialization: A variable is compiletime evaluable. */
     template <id_type id>
     struct is_ct_evaluable< ct_variable<id> >
     {
       enum { value = 1 };
     };
-    
+
     /** @brief Returns nonzero if the supplied vector type is a compile-time vector */
     template <typename VectorType>
     struct is_ct_vector
@@ -68,7 +68,7 @@ namespace viennamath
 
     /** @brief Specialization of the helper function for the determination of whether a vector is a compiletime type */
     template <typename T0>
-    struct is_ct_vector< ct_vector_1<T0> > 
+    struct is_ct_vector< ct_vector_1<T0> >
     {
       enum { value = is_compiletime<T0>::value };
     };
@@ -82,17 +82,17 @@ namespace viennamath
 
     /** @brief Specialization of the helper function for the determination of whether a vector is a compiletime type */
     template <typename T0, typename T1, typename T2>
-    struct is_ct_vector< ct_vector_3<T0, T1, T2> > 
+    struct is_ct_vector< ct_vector_3<T0, T1, T2> >
     {
       enum { value = is_compiletime<T0>::value && is_compiletime<T1>::value && is_compiletime<T2>::value };
     };
-    
-    
+
+
     //
     // compile time evaluation metafunction
-    
-    /** @brief Main metafunction for compiletime evaluation 
-     * 
+
+    /** @brief Main metafunction for compiletime evaluation
+     *
      * @tparam ExpressionType     The expression to be evaluated
      * @tparam VectorType         A vector of compile time values
      * @tparam ct_evaluable       'true' if the expression can be evaluated at compile time. Must not be specified by the user.
@@ -104,7 +104,7 @@ namespace viennamath
     {
       typedef typename ExpressionType::ERROR_INVALID_EXPRESSION_TYPE_FOR_COMPILETIME_EVALUATION  error_type;
     };
-    
+
     //valid arguments:
     /** @brief Specialization for the evaluation of a binary expression at compile time */
     template <typename LHS, typename OP, typename RHS, typename VectorType>
@@ -113,52 +113,52 @@ namespace viennamath
       typedef ct_binary_expr< typename eval<LHS, VectorType>::type,
                               OP,
                               typename eval<RHS, VectorType>::type >  intermediate_type;
-      
+
       // run two rational evaluations in the following (the second ensures a resolution of a/1 and 0/b cases)
       typedef typename result_of::simplify<intermediate_type>::type   type;
     };
-    
+
     /** @brief Specialization for the evaluation of a constant at compile time */
     template <long value, typename VectorType>
     struct eval< ct_constant<value>, VectorType, true>
     {
       typedef ct_constant<value>    type;
     };
-    
+
     /** @brief Specialization for the evaluation of a variable at compile time */
     template <id_type id, typename VectorType>
     struct eval< ct_variable<id>, VectorType, true>
     {
       typedef typename type_by_index<VectorType, id>::type  type;
     };
-    
+
     /** @brief Specialization for the evaluation of a variable at compile time */
     template <long value>
     struct eval< ct_variable<0>, ct_constant<value>, true>
     {
       typedef ct_constant<value>  type;
     };
-    
+
   } //namespace result_of
-  
+
   //the public interface function:
-  /** @brief Main user function for the evaluation of a compiletime expression at compiletime 
-   * 
+  /** @brief Main user function for the evaluation of a compiletime expression at compiletime
+   *
    * @param e          The compiletime expression
-   * @param v          A compiletime vector    
+   * @param v          A compiletime vector
    */
   template <typename ExpressionType, typename VectorType>
   typename enable_if<result_of::is_ct_evaluable<ExpressionType>::value && result_of::is_ct_vector<VectorType>::value,
-                     default_numeric_type>::type 
+                     default_numeric_type>::type
   eval(ExpressionType const & e, VectorType const & v)
   {
     return typename result_of::eval<ExpressionType, VectorType>::type()();
   }
-  
 
-  
+
+
   ///////////// run time ///////////////////////////////
-  
+
   /*template <typename ExpressionType, typename VectorType>
   typename ExpressionType::numeric_type eval(ExpressionType const & e, VectorType const & v)
   {
@@ -191,10 +191,10 @@ namespace viennamath
     return c();
   }
 
-  /** @brief Evaluation of a ViennaMath expression wrapper. 
+  /** @brief Evaluation of a ViennaMath expression wrapper.
    *
    * @param e         The expression wrapper
-   * @param v         Either a single number (typically of type double) or a vector type offering bracket-access 
+   * @param v         Either a single number (typically of type double) or a vector type offering bracket-access
    */
   template <typename InterfaceType, typename VectorType>
   typename InterfaceType::numeric_type
@@ -206,7 +206,7 @@ namespace viennamath
   /** @brief Evaluation of a ViennaMath binary expression.
    *
    * @param e         The expression wrapper
-   * @param v         Either a single number (typically of type double) or a vector type offering bracket-access 
+   * @param v         Either a single number (typically of type double) or a vector type offering bracket-access
    */
   template <typename InterfaceType, typename VectorType>
   typename InterfaceType::numeric_type
@@ -218,7 +218,7 @@ namespace viennamath
   /** @brief Evaluation of a ViennaMath unary expression.
    *
    * @param e         The expression wrapper
-   * @param v         Either a single number (typically of type double) or a vector type offering bracket-access 
+   * @param v         Either a single number (typically of type double) or a vector type offering bracket-access
    */
   template <typename InterfaceType, typename VectorType>
   typename InterfaceType::numeric_type
@@ -230,7 +230,7 @@ namespace viennamath
   /** @brief Evaluation of a ViennaMath variable.
    *
    * @param e         The expression wrapper
-   * @param v         Either a single number (typically of type double) or a vector type offering bracket-access 
+   * @param v         Either a single number (typically of type double) or a vector type offering bracket-access
    */
   template <typename InterfaceType, typename VectorType>
   typename InterfaceType::numeric_type
@@ -248,12 +248,12 @@ namespace viennamath
    */
   template <typename LHS, typename OP, typename RHS, typename VectorType>
   typename enable_if<!result_of::is_ct_evaluable< ct_binary_expr<LHS, OP, RHS> >::value || !result_of::is_ct_vector<VectorType>::value,
-                     default_numeric_type>::type 
+                     default_numeric_type>::type
   eval(ct_binary_expr<LHS, OP, RHS> ex, VectorType const & v)
   {
     return ex(v);
   }
-  
+
   /** @brief Evaluation of a ViennaMath compiletime unary expression using a runtime vector
    *
    * @param ex        The compiletime unary expression
@@ -261,7 +261,7 @@ namespace viennamath
    */
   template <typename LHS, typename OP, typename VectorType>
   typename enable_if<!result_of::is_ct_evaluable< ct_unary_expr<LHS, OP> >::value || !result_of::is_ct_vector<VectorType>::value,
-                     default_numeric_type>::type 
+                     default_numeric_type>::type
   eval(ct_unary_expr<LHS, OP> ex, VectorType const & v)
   {
     return ex(v);

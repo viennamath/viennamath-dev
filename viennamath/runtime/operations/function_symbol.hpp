@@ -27,12 +27,12 @@
 
 namespace viennamath
 {
-  
-      
+
+
     ////////////////// Operations //////////////////////////////
-    
+
     ////// operator+
-    
+
     ////// operator-
 
     ////// operator*
@@ -52,7 +52,7 @@ namespace viennamath
 
     ////// operator/
 
-  
+
 }
 
 #endif

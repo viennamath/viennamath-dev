@@ -32,24 +32,24 @@
 
 namespace viennamath
 {
-  
+
   //
   // Part 1: Concrete intervals
   //
-  
+
   /** @brief A unary operation defining an integral over an interval. */
   template <typename InterfaceType>
   class op_rt_integral
   {
       typedef typename InterfaceType::numeric_type    NumericT;
-    
+
     public:
       typedef InterfaceType         interface_type;
 
       op_rt_integral() : integration_variable_(0) {}
 
       /** @brief Creates the integral operation.
-       * 
+       *
        * @param interv    A runtime interval
        * @param var       The integration variable (runtime)
        */
@@ -58,7 +58,7 @@ namespace viennamath
                                                                            integration_variable_(var) {}
 
       /** @brief Creates the integral operation.
-       * 
+       *
        * @param interv    A runtime interval
        * @param var       The integration variable (compiletime)
        */
@@ -71,11 +71,11 @@ namespace viennamath
       std::string str() const
       {
         std::stringstream ss;
-        
+
         ss << "rt_integral[" << interval_ << ", " << integration_variable_ << "]";
         return ss.str();
       }
-      
+
       /** @brief Interface requirement: Applies the integral operation. No symbolic integration at runtime available, thus an exception is thrown. */
       NumericT apply(NumericT value) const
       {
@@ -83,20 +83,20 @@ namespace viennamath
         throw analytic_integration_not_supported_exception();
         return value;
       }
-      
+
       /** @brief Interface requirement: A integral operation cannot be optimized (at least for now). */
       bool can_simplify() const { return false; }
-      
+
       viennamath::rt_interval<InterfaceType> const & interval() const { return interval_; }
       viennamath::rt_variable<InterfaceType> const & variable() const { return integration_variable_; }
-      
+
     private:
       viennamath::rt_interval<InterfaceType> interval_;
       viennamath::rt_variable<InterfaceType> integration_variable_;
   };
-  
-  
-  
+
+
+
   //
   // Convenience functions with rt_interval:
   //
@@ -108,7 +108,7 @@ namespace viennamath
   {
     typedef op_rt_integral<InterfaceType>    OperatorT;
     OperatorT op(interv, var);
-    
+
     return rt_expr<InterfaceType>(new rt_unary_expr<InterfaceType>(integrand.get()->clone(),
                                                                    new op_unary<OperatorT, InterfaceType>(op))
                                  );
@@ -122,7 +122,7 @@ namespace viennamath
   {
     typedef op_rt_integral<InterfaceType>    OperatorT;
     OperatorT op(interv, rt_variable<InterfaceType>(id));
-    
+
     return rt_expr<InterfaceType>(new rt_unary_expr<InterfaceType>(integrand.get()->clone(),
                                                                    new op_unary<OperatorT, InterfaceType>(op))
                                  );
@@ -136,39 +136,39 @@ namespace viennamath
   {
     typedef op_rt_integral<InterfaceType>    OperatorT;
     OperatorT op(interv, rt_variable<InterfaceType>(id));
-    
+
     return rt_expr<InterfaceType>(new rt_unary_expr<InterfaceType>(integrand.clone(),
                                                                    new op_unary<OperatorT, InterfaceType>(op))
                                  );
   }
-  
-  
+
+
   //
   // Part 2: Symbolic integrals
   //
-  
+
   /** @brief A unary operation encoding a symbolic interval. Cannot be evaluated and is meant to be replaced by a concrete integration later on */
   template <typename InterfaceType>
   class op_rt_symbolic_integral
   {
       typedef typename InterfaceType::numeric_type    NumericT;
-    
+
     public:
       typedef InterfaceType         interface_type;
 
       op_rt_symbolic_integral() {}
 
       op_rt_symbolic_integral(viennamath::rt_symbolic_interval<InterfaceType> const & interv) : interval_(interv) {}
-      
+
       /** @brief Returns a string representation of the symbolic interval */
       std::string str() const
       {
         std::stringstream ss;
-        
+
         ss << "symbolic_integral[" << interval_ << "]";
         return ss.str();
       }
-      
+
       /** @brief Interface requirement: Application of the symbolic interval. This is bogus, thus a symbolic_integral_evaluation_not_possible_exception is thrown. */
       NumericT apply(NumericT value) const
       {
@@ -176,18 +176,18 @@ namespace viennamath
         throw symbolic_integral_evaluation_not_possible_exception();
         return value;
       }
-      
+
       /** @brief Interface requirement: Since an integral over a symbolic interval cannot be further optimized, 'false' is returned */
       bool can_simplify() const { return false; }
-      
+
       /** @brief Returns the integration interval */
       viennamath::rt_symbolic_interval<InterfaceType> const & interval() const { return interval_; }
-      
+
     private:
       viennamath::rt_symbolic_interval<InterfaceType> interval_;
   };
-  
-  
+
+
   //
   // Convenience functions with symbolic integrals
   //
@@ -197,7 +197,7 @@ namespace viennamath
                                   rt_expr<InterfaceType> const & integrand)
   {
     typedef op_rt_symbolic_integral<InterfaceType>    OperatorT;
-    
+
     return rt_expr<InterfaceType>(new rt_unary_expr<InterfaceType>(integrand.get()->clone(),
                                                                    new op_unary<OperatorT, InterfaceType>(OperatorT(interv)))
                                  );
@@ -209,7 +209,7 @@ namespace viennamath
                                   rt_binary_expr<InterfaceType> const & integrand)
   {
     typedef op_rt_symbolic_integral<InterfaceType>    OperatorT;
-    
+
     return rt_expr<InterfaceType>(new rt_unary_expr<InterfaceType>(integrand.clone(),
                                                                    new op_unary<OperatorT, InterfaceType>(OperatorT(interv)))
                                  );
@@ -221,7 +221,7 @@ namespace viennamath
                                   rt_unary_expr<InterfaceType> const & integrand)
   {
     typedef op_rt_symbolic_integral<InterfaceType>    OperatorT;
-    
+
     return rt_expr<InterfaceType>(new rt_unary_expr<InterfaceType>(integrand.clone(),
                                                                    new op_unary<OperatorT, InterfaceType>(OperatorT(interv)))
                                  );
@@ -233,7 +233,7 @@ namespace viennamath
                                   rt_constant<T, InterfaceType> const & integrand)
   {
     typedef op_rt_symbolic_integral<InterfaceType>    OperatorT;
-    
+
     return rt_expr<InterfaceType>(new rt_unary_expr<InterfaceType>(integrand.clone(),
                                                                    new op_unary<OperatorT, InterfaceType>(OperatorT(interv)))
                                  );
@@ -245,7 +245,7 @@ namespace viennamath
                                   rt_variable<InterfaceType> const & integrand)
   {
     typedef op_rt_symbolic_integral<InterfaceType>    OperatorT;
-    
+
     return rt_expr<InterfaceType>(new rt_unary_expr<InterfaceType>(integrand.clone(),
                                                                    new op_unary<OperatorT, InterfaceType>(OperatorT(interv)))
                                  );
@@ -257,7 +257,7 @@ namespace viennamath
                                   rt_function_symbol<InterfaceType> const & integrand)
   {
     typedef op_rt_symbolic_integral<InterfaceType>    OperatorT;
-    
+
     return rt_expr<InterfaceType>(new rt_unary_expr<InterfaceType>(integrand.clone(),
                                                                    new op_unary<OperatorT, InterfaceType>(OperatorT(interv)))
                                  );

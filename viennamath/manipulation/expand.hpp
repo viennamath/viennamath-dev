@@ -25,34 +25,34 @@
 #include "viennamath/runtime/integral.hpp"
 
 /** @file   expand.hpp
-    @brief  Routines for expanding an expression such that the expression is given by the addition and subtraction of tokens consisting of multiplication and divisions only. 
+    @brief  Routines for expanding an expression such that the expression is given by the addition and subtraction of tokens consisting of multiplication and divisions only.
 */
 
 namespace viennamath
 {
   //////////// compile time ///////////////////
-  
+
   namespace result_of
   {
     /** @brief The main metafunction for expanding a compiletime expression
-     * 
+     *
      * Note that the default is not to define a return type. This provides SFINAE for the user function expand().
-     * 
+     *
      * @tparam T    The compiletime expression to be expanded
      */
     template <typename T>
     struct expand {}; //Uses SFINAE for proper overloading of viennamath::expand()
-    
-    
+
+
     namespace detail
     {
       // checks for the occurance of plus or minus in an expression
       template <typename T>
-      struct has_plus_or_minus 
+      struct has_plus_or_minus
       {
         enum { value = 0 };
       };
-      
+
       template <typename LHS, typename NumericT, typename RHS>
       struct has_plus_or_minus< ct_binary_expr<LHS, op_plus<NumericT>, RHS> >
       {
@@ -76,8 +76,8 @@ namespace viennamath
       {
         enum { value = has_plus_or_minus<LHS>::value};
       };
-      
-      
+
+
       //
       template <typename ExpressionType,
                 typename FactorType,
@@ -89,7 +89,7 @@ namespace viennamath
                                 FactorType
                                 >                 type;
       };
-      
+
       template <typename LHS, typename NumericT, typename RHS,
                 typename FactorType>
       struct expand_with_factor < ct_binary_expr<LHS, op_plus<NumericT>, RHS>,
@@ -101,8 +101,8 @@ namespace viennamath
                                 typename expand_with_factor<RHS, FactorType>::type
                               >                   type;
       };
-      
-      
+
+
       template <typename LHS, typename NumericT, typename RHS,
                 typename FactorType>
       struct expand_with_factor < ct_binary_expr<LHS, op_minus<NumericT>, RHS>,
@@ -124,7 +124,7 @@ namespace viennamath
         typedef typename viennamath::result_of::expand< ct_binary_expr<LHS, op_mult<NumericT>, RHS> >::type     expanded_type;
         typedef typename expand_with_factor< expanded_type, FactorType >::type         type;
       };
-      
+
       template <typename LHS, typename NumericT, typename RHS,
                 typename FactorType>
       struct expand_with_factor < ct_binary_expr<LHS, op_div<NumericT>, RHS>,
@@ -138,7 +138,7 @@ namespace viennamath
       };
 
       ///////
-      
+
       template <typename LHS,
                 typename RHS,
                 bool lhs_expandable = (has_plus_or_minus<LHS>::value != 0),
@@ -150,7 +150,7 @@ namespace viennamath
                                 op_mult<default_numeric_type>,
                                 RHS >     type;
       };
-      
+
       template <typename LHS,
                 typename RHS>
       struct expand_product <LHS, RHS, true, false>
@@ -174,10 +174,10 @@ namespace viennamath
          //then restart:
          typedef typename viennamath::result_of::expand<intermediate_type>::type      type;
       };
-      
+
     } //namespace detail
-    
-    
+
+
     /** @brief Specialization for a binary expression (addition): Expand both addends. */
     template <typename LHS, typename NumericT, typename RHS>
     struct expand< ct_binary_expr<LHS, op_plus<NumericT>, RHS> >
@@ -218,7 +218,7 @@ namespace viennamath
     {
       typedef ct_unary_expr<LHS, OP>      type;
     };
-    
+
     /** @brief A function symbol cannot be further expanded, thus it is returned unmodified */
     template <typename TAG>
     struct expand< ct_function_symbol<TAG> >
@@ -239,14 +239,14 @@ namespace viennamath
     {
       typedef ct_variable<id>      type;
     };
-    
-    
+
+
   }
-  
-  
+
+
   /** @brief User function for expanding a compile time expression.
-   * 
-   * @tparam ExpressionType    The compiletime expression for expansion 
+   *
+   * @tparam ExpressionType    The compiletime expression for expansion
    */
   template <typename ExpressionType>
   typename result_of::expand<ExpressionType>::type
@@ -254,10 +254,10 @@ namespace viennamath
   {
     return typename result_of::expand<ExpressionType>::type();
   }
-  
-  
+
+
   //////////// run time ////////////////
-  
+
   //TODO  Support to be added in one of the next releases of ViennaMath.
 }
 
