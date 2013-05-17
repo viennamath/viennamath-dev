@@ -54,22 +54,22 @@ struct cout_functor : public viennamath::rt_traversal_interface<>
     std::cout << "non-dispatched type: " << e->shallow_str() << std::endl;
   }
 
-  void operator()(viennamath::binary_expr const & x) const
+  void operator()(viennamath::binary_expr const & /*x*/) const
   {
     std::cout << "binary_expr, dispatched!" << std::endl;
   }
 
-  void operator()(viennamath::unary_expr const & x) const
+  void operator()(viennamath::unary_expr const & /*x*/) const
   {
     std::cout << "unary_expr, dispatched!" << std::endl;
   }
 
-  void operator()(viennamath::variable const & x) const
+  void operator()(viennamath::variable const & /*x*/) const
   {
     std::cout << "variable, dispatched!" << std::endl;
   }
 
-  void operator()(viennamath::constant const & x) const
+  void operator()(viennamath::constant const & /*x*/) const
   {
     std::cout << "constant, dispatched!" << std::endl;
   }

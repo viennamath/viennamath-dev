@@ -64,7 +64,7 @@ namespace viennamath
 
   /** @brief Helper function returning true if the two arguments are of the same type. */
   template <typename T>
-  bool unary_op_equal(T const & lhs, T const & rhs) { return true; }
+  bool unary_op_equal(T const & /*lhs*/, T const & /*rhs*/) { return true; }
 
   //
   // main class for all unary operations:

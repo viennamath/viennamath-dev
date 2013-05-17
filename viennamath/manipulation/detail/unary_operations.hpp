@@ -72,7 +72,7 @@ namespace viennamath
 
   /** @brief Overload of the exponential function for a ViennaMath compiletime variable */
   template <id_type id>
-  rt_unary_expr<> exp(ct_variable<id> const & other)
+  rt_unary_expr<> exp(ct_variable<id> const & /*other*/)
   {
     return rt_unary_expr<>(new rt_variable<>(id), new op_unary<op_exp<default_numeric_type> >());
   }
@@ -137,7 +137,7 @@ namespace viennamath
 
   /** @brief Overload of the sine function for a ViennaMath compiletime variable */
   template <id_type id>
-  rt_unary_expr<> sin(ct_variable<id> const & other)
+  rt_unary_expr<> sin(ct_variable<id> const & /*other*/)
   {
     return rt_unary_expr<>(new rt_variable<>(id), new op_unary<op_sin<default_numeric_type> >());
   }
@@ -213,7 +213,7 @@ namespace viennamath
 
   /** @brief Overload of the cosine function for a ViennaMath compiletime variable */
   template <id_type id>
-  rt_unary_expr<> cos(ct_variable<id> const & other)
+  rt_unary_expr<> cos(ct_variable<id> const & /*other*/)
   {
     return rt_unary_expr<>(new rt_variable<>(id), new op_unary<op_cos<default_numeric_type> >());
   }
@@ -290,7 +290,7 @@ namespace viennamath
 
   /** @brief Overload of the tangent function for a ViennaMath compiletime variable */
   template <id_type id>
-  rt_unary_expr<> tan(ct_variable<id> const & other)
+  rt_unary_expr<> tan(ct_variable<id> const & /*other*/)
   {
     return rt_unary_expr<>(new rt_variable<>(id), new op_unary<op_tan<default_numeric_type> >());
   }
@@ -338,7 +338,7 @@ namespace viennamath
   //
   /** @brief Implementation of the differentation of |e|, where e is an expression. Since the modulus is not differentiable everywhere, an exception is thrown. */
   template <typename InterfaceType, typename NumericT>
-  InterfaceType * diff_impl(const InterfaceType * e, op_fabs<NumericT>, const InterfaceType * diff_var)
+  InterfaceType * diff_impl(const InterfaceType * /*e*/, op_fabs<NumericT>, const InterfaceType * /*diff_var*/)
   {
     throw expression_not_differentiable_exception("modulus operation not differentiable!");
     return NULL;  //TODO: Think about returning a piecewise function here?
@@ -437,7 +437,7 @@ namespace viennamath
 
   /** @brief Overload of the square-root function for a ViennaMath compiletime variable */
   template <id_type id>
-  rt_unary_expr<> sqrt(ct_variable<id> const & other)
+  rt_unary_expr<> sqrt(ct_variable<id> const & /*other*/)
   {
     return rt_unary_expr<>(new rt_variable<>(id), new op_unary<op_sqrt<default_numeric_type> >());
   }
@@ -509,7 +509,7 @@ namespace viennamath
 
   /** @brief Overload of the natural logarithm function for a ViennaMath compiletime variable */
   template <id_type id>
-  rt_unary_expr<> log(ct_variable<id> const & other)
+  rt_unary_expr<> log(ct_variable<id> const & /*other*/)
   {
     return rt_unary_expr<>(new rt_variable<>(id), new op_unary<op_log<default_numeric_type> >());
   }
@@ -589,7 +589,7 @@ namespace viennamath
 
   /** @brief Overload of the logarithm with base 10 for a ViennaMath compiletime variable */
   template <id_type id>
-  rt_unary_expr<> log10(ct_variable<id> const & other)
+  rt_unary_expr<> log10(ct_variable<id> const & /*other*/)
   {
     return rt_unary_expr<>(new rt_variable<>(id), new op_unary<op_log10<default_numeric_type> >());
   }
@@ -683,7 +683,7 @@ namespace viennamath
   //
   /** @brief Implementation of the differentation of the divergence operator. This is currently not supported, thus an exception is thrown. */
   template <typename InterfaceType, typename NumericT>
-  InterfaceType * diff_impl(const InterfaceType * e, op_divergence<NumericT>, const InterfaceType * diff_var)
+  InterfaceType * diff_impl(const InterfaceType * /*e*/, op_divergence<NumericT>, const InterfaceType * /*diff_var*/)
   {
     throw expression_not_differentiable_exception("Cannot differentiate divergence operator!");
     return NULL;
@@ -742,7 +742,7 @@ namespace viennamath
   //
   /** @brief Implementation of the differentation of a partial derivative. This is currently not supported, thus an exception is thrown. */
   template <typename InterfaceType, typename NumericT>
-  InterfaceType * diff_impl(const InterfaceType * e, op_partial_deriv<NumericT>, const InterfaceType * diff_var)
+  InterfaceType * diff_impl(const InterfaceType * /*e*/, op_partial_deriv<NumericT>, const InterfaceType * /*diff_var*/)
   {
     throw expression_not_differentiable_exception("Cannot evaluate formal partial derivative. Use transformations first.");
     return NULL;
@@ -753,7 +753,7 @@ namespace viennamath
   //
   /** @brief Implementation of the differentation of an integral. This is currently not supported, thus an exception is thrown. */
   template <typename InterfaceType>
-  InterfaceType * diff_impl(const InterfaceType * e, op_rt_integral<InterfaceType>, const InterfaceType * diff_var)
+  InterfaceType * diff_impl(const InterfaceType * /*e*/, op_rt_integral<InterfaceType>, const InterfaceType * /*diff_var*/)
   {
     throw expression_not_differentiable_exception("Cannot differentiate runtime integration (yet)!");
     return NULL;
@@ -761,7 +761,7 @@ namespace viennamath
 
   /** @brief Implementation of the differentation of an integral with symbolic integration domain. This is currently not supported, thus an exception is thrown. */
   template <typename InterfaceType>
-  InterfaceType * diff_impl(const InterfaceType * e, op_rt_symbolic_integral<InterfaceType>, const InterfaceType * diff_var)
+  InterfaceType * diff_impl(const InterfaceType * /*e*/, op_rt_symbolic_integral<InterfaceType>, const InterfaceType * /*diff_var*/)
   {
     throw expression_not_differentiable_exception("Cannot differentiate runtime integration (yet)!");
     return NULL;

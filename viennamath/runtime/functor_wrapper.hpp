@@ -41,7 +41,7 @@ namespace viennamath
       virtual InterfaceType * operator()(InterfaceType const * e) const { return e->clone(); };
 
       /** @brief Returns true if 'e' is modified directly and not just the leaves of 'e'. Otherwise, returns 'false'. */
-      virtual bool modifies(InterfaceType const * e) const { return false; }
+      virtual bool modifies(InterfaceType const * /*e*/) const { return false; }
   };
 
   /** @brief A wrapper using type erasure for manipulation functors acting on expressions */
@@ -78,10 +78,10 @@ namespace viennamath
   {
     public:
       /** @brief Triggers the processing of the supplied expression. */
-      virtual void operator()(InterfaceType const * e) const = 0;
+      virtual void operator()(InterfaceType const * /*e*/) const = 0;
 
       /** @brief If 'true' is returned, the traversal continues the recursion. */
-      virtual bool step_into(InterfaceType const * e) const { return true; }
+      virtual bool step_into(InterfaceType const * /*e*/) const { return true; }
   };
 
   /** @brief A wrapper using type erasure for traversal functions acting on expressions */

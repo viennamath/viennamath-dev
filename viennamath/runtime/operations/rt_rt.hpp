@@ -38,13 +38,13 @@ namespace viennamath
     InterfaceType * clone(default_numeric_type d) { return new rt_constant<default_numeric_type, InterfaceType>(d); }
 
     template <typename InterfaceType, long value>
-    InterfaceType * clone(ct_constant<value> const & c) { return new rt_constant<default_numeric_type, InterfaceType>(value); }
+    InterfaceType * clone(ct_constant<value> const & /*c*/) { return new rt_constant<default_numeric_type, InterfaceType>(value); }
 
     template <typename InterfaceType>
     InterfaceType * clone(rt_variable<InterfaceType> const & v) { return v.clone(); }
 
     template <typename InterfaceType, id_type id>
-    InterfaceType * clone(ct_variable<id> const & v) { return new rt_variable<InterfaceType>(id); }
+    InterfaceType * clone(ct_variable<id> const & /*v*/) { return new rt_variable<InterfaceType>(id); }
 
     template <typename InterfaceType>
     InterfaceType * clone(rt_function_symbol<InterfaceType> const & fs) { return fs.clone(); }

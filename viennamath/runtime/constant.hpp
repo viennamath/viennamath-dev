@@ -54,7 +54,7 @@ namespace viennamath
 
       /** @brief Evaluates the constant by returning its value. */
       template <typename VectorType>
-      self_type operator() (const VectorType & p) const
+      self_type operator() (const VectorType & /*p*/) const
       {
         return *this;
       }
@@ -67,9 +67,9 @@ namespace viennamath
       InterfaceType * clone() const { return new self_type(s); }
 
       /** @brief (Trivially) Evaluates the constant. */
-      numeric_type eval(std::vector<numeric_type> const & v) const { return s; }
+      numeric_type eval(std::vector<numeric_type> const & /*v*/) const { return s; }
       /** @brief (Trivially) Evaluates the constant. */
-      numeric_type eval(numeric_type v) const { return s; }
+      numeric_type eval(numeric_type /*v*/) const { return s; }
 
       /** @brief A constant is a constant :-) */
       bool is_constant() const { return true; }
@@ -126,7 +126,7 @@ namespace viennamath
       }
 
       /** @brief Returns the result of differentiating the constant with respect to a variable, i.e. zero. */
-      InterfaceType * diff(const InterfaceType * diff_var) const
+      InterfaceType * diff(const InterfaceType * /*diff_var*/) const
       {
         return new self_type(0);
       }

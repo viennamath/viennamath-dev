@@ -39,7 +39,7 @@ namespace viennamath
                  op_mult<default_numeric_type>,
                  ct_variable<id> >
   operator+(ct_variable<id> const & lhs,
-            ct_variable<id> const & other)
+            ct_variable<id> const & /*other*/)
   {
     return ct_binary_expr<ct_constant<2>,
                           op_mult<default_numeric_type>,
@@ -51,8 +51,8 @@ namespace viennamath
   /** @brief Special overload: x - x becomes 0 */
   template <id_type id>
   ct_constant<0>
-  operator-(ct_variable<id> const & lhs,
-            ct_variable<id> const & other)
+  operator-(ct_variable<id> const & /*lhs*/,
+            ct_variable<id> const & /*other*/)
   {
     return ct_constant<0>();
   }
@@ -67,8 +67,8 @@ namespace viennamath
   /** @brief Special overload: x / x becomes 1 */
   template <id_type id>
   ct_constant<1>
-  operator/(ct_variable<id> const & lhs,
-            ct_variable<id> const & other)
+  operator/(ct_variable<id> const & /*lhs*/,
+            ct_variable<id> const & /*other*/)
   {
     return ct_constant<1>();
   }

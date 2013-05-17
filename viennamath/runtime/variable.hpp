@@ -123,7 +123,7 @@ namespace viennamath
 
       /** @brief Evaluation of the variable by a ViennaMath compiletime constant. Throws an exception if the variable index is larger than zero. */
       template <long value>
-      long operator()(ct_constant<value> const & other) const
+      long operator()(ct_constant<value> const & /*other*/) const
       {
         if (id_ > 0)
           throw variable_index_out_of_bounds_exception(id_, 0);

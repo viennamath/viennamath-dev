@@ -78,7 +78,7 @@ namespace viennamath
        * @param e                  Pointer to the ViennaMath runtime expression
        * @param str                The LaTeX string to be used for the expression referred to be 'e'
        */
-      virtual bool customize(InterfaceType const * e, std::string const & str) { return false; }
+      virtual bool customize(InterfaceType const * /*e*/, std::string const & /*str*/) { return false; }
   };
 
 
@@ -153,12 +153,14 @@ namespace viennamath
       {
         std::stringstream ss;
         ss << operator()(e.lhs()) << " = " << operator()(e.rhs());
+        static_cast<int>(use_parenthesis); //to silence unused parameter warnings
         return ss.str();
       }
       std::string operator()(Interval   const & e, bool use_parenthesis = false) const
       {
         std::stringstream ss;
         ss << " [ " << operator()(e.lower()) << "; " << operator()(e.upper()) << " ] ";
+        static_cast<int>(use_parenthesis); //to silence unused parameter warnings
         return ss.str();
       }
 
@@ -427,7 +429,7 @@ namespace viennamath
 
     private:
 
-      std::string process_impl(Constant const & e, bool use_parenthesis, rt_latex_translator<InterfaceType> const & translator) const
+      std::string process_impl(Constant const & e, bool /*use_parenthesis*/, rt_latex_translator<InterfaceType> const & /*translator*/) const
       {
         std::stringstream ss;
         ss << " " << static_cast<NumericType>(e) << " ";
@@ -477,7 +479,7 @@ namespace viennamath
 
     private:
 
-      std::string process_impl(Variable const & e, bool use_parenthesis, rt_latex_translator<InterfaceType> const & translator) const
+      std::string process_impl(Variable const & e, bool /*use_parenthesis*/, rt_latex_translator<InterfaceType> const & /*translator*/) const
       {
         std::stringstream ss;
 
@@ -535,7 +537,7 @@ namespace viennamath
 
     private:
 
-      std::string process_impl(FuncSymbol const & e, bool use_parenthesis, rt_latex_translator<InterfaceType> const & translator) const
+      std::string process_impl(FuncSymbol const & e, bool /*use_parenthesis*/, rt_latex_translator<InterfaceType> const & /*translator*/) const
       {
         std::stringstream ss;
 

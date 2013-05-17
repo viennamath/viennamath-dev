@@ -150,7 +150,7 @@ namespace viennamath
   template <typename ExpressionType, typename VectorType>
   typename enable_if<result_of::is_ct_evaluable<ExpressionType>::value && result_of::is_ct_vector<VectorType>::value,
                      default_numeric_type>::type
-  eval(ExpressionType const & e, VectorType const & v)
+  eval(ExpressionType const & /*e*/, VectorType const & /*v*/)
   {
     return typename result_of::eval<ExpressionType, VectorType>::type()();
   }
@@ -168,7 +168,7 @@ namespace viennamath
 
   /** @brief Evaluation of a numeric constant at a vector: Return the constant. */
   template <typename VectorType>
-  default_numeric_type eval(default_numeric_type value, VectorType const & v)
+  default_numeric_type eval(default_numeric_type value, VectorType const & /*v*/)
   {
     //generic approach: use operator() and hope the best:
     return value;
@@ -185,7 +185,7 @@ namespace viennamath
   /** @brief Evaluation of a runtime constant at a vector: Return the runtime constant */
   template <typename T, typename InterfaceType, typename VectorType>
   typename InterfaceType::numeric_type
-  eval(rt_constant<T, InterfaceType> c, VectorType const & v)
+  eval(rt_constant<T, InterfaceType> c, VectorType const & /*v*/)
   {
     //generic approach: use operator() and hope the best:
     return c();
@@ -273,7 +273,7 @@ namespace viennamath
    * @param v         Either a single number (typically of type double) or a vector type offering bracket-access (e.g. std::vector<>)
    */
   template <long value, typename VectorType>
-  default_numeric_type eval(ct_constant<value> c, VectorType const & v)
+  default_numeric_type eval(ct_constant<value> /*c*/, VectorType const & /*v*/)
   {
     return value;
   }
@@ -284,7 +284,7 @@ namespace viennamath
    * @param v         Either a single number (typically of type double) or a vector type offering bracket-access (e.g. std::vector<>)
    */
   template <id_type id, typename VectorType>
-  default_numeric_type eval(ct_variable<id> c, VectorType const & v)
+  default_numeric_type eval(ct_variable<id> /*c*/, VectorType const & v)
   {
     return v[id];
   }
@@ -305,7 +305,7 @@ namespace viennamath
 
   /** @brief Evaluation of a ViennaMath compiletime variable using a compiletime vector with three entries */
   template <id_type id, typename T0, typename T1, typename T2>
-  default_numeric_type eval(ct_variable<id> c, ct_vector_3<T0, T1, T2> const & v)
+  default_numeric_type eval(ct_variable<id> /*c*/, ct_vector_3<T0, T1, T2> const & v)
   {
     return v[ct_index<id>()];
   }

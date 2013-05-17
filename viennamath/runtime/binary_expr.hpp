@@ -87,7 +87,7 @@ namespace viennamath
       }
 
       template <long value1, typename OP, long value2>
-      explicit rt_binary_expr(ct_binary_expr<ct_constant<value1>, OP, ct_constant<value2> > const & other) : op_(new op_binary<OP, InterfaceType>())
+      explicit rt_binary_expr(ct_binary_expr<ct_constant<value1>, OP, ct_constant<value2> > const & /*other*/) : op_(new op_binary<OP, InterfaceType>())
       {
         //std::cout << "Constructing from expression " << other << " to " << OP::apply(value1, value2) << std::endl;
         lhs_ = std::auto_ptr<InterfaceType>(new rt_constant<numeric_type, InterfaceType>(value1));
@@ -112,7 +112,7 @@ namespace viennamath
       }
 
       template <id_type id1, typename OP, id_type id2>
-      explicit rt_binary_expr(ct_binary_expr<ct_variable<id1>, OP, ct_variable<id2> > const & other) : op_(new op_binary<OP, InterfaceType>())
+      explicit rt_binary_expr(ct_binary_expr<ct_variable<id1>, OP, ct_variable<id2> > const & /*other*/) : op_(new op_binary<OP, InterfaceType>())
       {
         //std::cout << "Constructing from expression " << other << " to " << OP::apply(value1, value2) << std::endl;
         lhs_ = std::auto_ptr<InterfaceType>(new rt_variable<InterfaceType>(id1));
@@ -121,7 +121,7 @@ namespace viennamath
 
       //resolving ambiguities:
       template <id_type id, typename OP, long value>
-      explicit rt_binary_expr(ct_binary_expr<ct_variable<id>, OP, ct_constant<value> > const & other) : op_(new op_binary<OP, InterfaceType>())
+      explicit rt_binary_expr(ct_binary_expr<ct_variable<id>, OP, ct_constant<value> > const & /*other*/) : op_(new op_binary<OP, InterfaceType>())
       {
         //std::cout << "Constructing from expression " << other << " to " << OP::apply(value1, value2) << std::endl;
         lhs_ = std::auto_ptr<InterfaceType>(new rt_variable<InterfaceType>(id));
@@ -129,7 +129,7 @@ namespace viennamath
       }
 
       template <id_type id, typename OP, long value>
-      explicit rt_binary_expr(ct_binary_expr<ct_constant<value>, OP, ct_variable<id> > const & other) : op_(new op_binary<OP, InterfaceType>())
+      explicit rt_binary_expr(ct_binary_expr<ct_constant<value>, OP, ct_variable<id> > const & /*other*/) : op_(new op_binary<OP, InterfaceType>())
       {
         //std::cout << "Constructing from expression " << other << " to " << OP::apply(value1, value2) << std::endl;
         lhs_ = std::auto_ptr<InterfaceType>(new rt_constant<numeric_type, InterfaceType>(value));

@@ -413,9 +413,9 @@ namespace viennamath
   typename result_of::integrate<LowerBound, UpperBound,
                                 IntegrandType,
                                 VariableType>::type
-  integrate( ct_interval<LowerBound, UpperBound> const & interv,
-             IntegrandType const & integrand,
-             VariableType const & var)
+  integrate( ct_interval<LowerBound, UpperBound> const & /*interv*/,
+             IntegrandType const & /*integrand*/,
+             VariableType const & /*var*/)
   {
     return typename result_of::integrate<LowerBound, UpperBound,
                                          IntegrandType,

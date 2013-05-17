@@ -234,7 +234,7 @@ namespace viennamath
   template <typename FactorType,
             typename ExpressionType>
   typename viennamath::result_of::coefficient<FactorType, ExpressionType>::type
-  coefficient(FactorType const & f, ExpressionType const & e)
+  coefficient(FactorType const & /*f*/, ExpressionType const & /*e*/)
   {
     return typename viennamath::result_of::coefficient<FactorType, ExpressionType>::type();
   }

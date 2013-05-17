@@ -40,7 +40,7 @@ namespace viennamath
                              op_plus<default_numeric_type>,
                              RHS >              type;
 
-      static type instance(LHS const & lhs, RHS const & rhs) { return type(); }
+      static type instance(LHS const & /*lhs*/, RHS const & /*rhs*/) { return type(); }
     };
 
     /** @brief Metafunction for subtracting two compiletime expressions */
@@ -51,7 +51,7 @@ namespace viennamath
                              op_minus<default_numeric_type>,
                              RHS >              type;
 
-      static type instance(LHS const & lhs, RHS const & rhs) { return type(); }
+      static type instance(LHS const & /*lhs*/, RHS const & /*rhs*/) { return type(); }
     };
 
     /** @brief Metafunction for multiplying two compiletime expressions */
@@ -62,7 +62,7 @@ namespace viennamath
                              op_mult<default_numeric_type>,
                              RHS >              type;
 
-      static type instance(LHS const & lhs, RHS const & rhs) { return type(); }
+      static type instance(LHS const & /*lhs*/, RHS const & /*rhs*/) { return type(); }
     };
 
     /** @brief Metafunction for dividing two compiletime expressions */
@@ -73,7 +73,7 @@ namespace viennamath
                              op_div<default_numeric_type>,
                              RHS >              type;
 
-      static type instance(LHS const & lhs, RHS const & rhs) { return type(); }
+      static type instance(LHS const & /*lhs*/, RHS const & /*rhs*/) { return type(); }
     };
 
   }

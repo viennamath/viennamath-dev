@@ -37,7 +37,7 @@ namespace viennamath
                      op_plus<ScalarType>,
                      RHS >
       operator+(ct_binary_expr<ct_constant<value_1>, op_plus<ScalarType>, RHS> const & lhs,
-                ct_constant<value_2> const & other)
+                ct_constant<value_2> const & /*other*/)
       {
         return ct_binary_expr<ct_constant< value_1 + value_2 >,
                               op_plus<ScalarType>,
@@ -52,7 +52,7 @@ namespace viennamath
               op_minus<ScalarType>,
               RHS >
       operator+(ct_binary_expr<ct_constant<value_1>, op_minus<ScalarType>, RHS> const & lhs,
-                ct_constant<value_2> const & other)
+                ct_constant<value_2> const & /*other*/)
       {
         return ct_binary_expr<ct_constant< value_1 + value_2 >,
                               op_minus<ScalarType>,
@@ -82,7 +82,7 @@ namespace viennamath
       template <typename ScalarType, id_type id, typename RHS>
       RHS
       operator-(ct_binary_expr<ct_variable<id>, op_plus<ScalarType>, RHS> const & lhs,
-                ct_variable<id> const & other)
+                ct_variable<id> const & /*other*/)
       {
         return lhs.rhs();
       }
@@ -94,7 +94,7 @@ namespace viennamath
                       op_plus<T>,
                       RHS >
       operator-(ct_binary_expr<ct_constant<value_1>, op_plus<T>, RHS> const & lhs,
-                ct_constant<value_2> const & other)
+                ct_constant<value_2> const & /*other*/)
       {
         return ct_binary_expr<ct_constant< value_1 - value_2 >,
                               op_plus<T>,
@@ -123,7 +123,7 @@ namespace viennamath
                op_minus<T>,
                RHS >
       operator-(ct_binary_expr<ct_constant<value_1>, op_minus<T>, RHS> const & lhs,
-                ct_constant<value_2> const & other)
+                ct_constant<value_2> const & /*other*/)
       {
         return ct_binary_expr<ct_constant< value_1 - value_2 >,
                               op_minus<T>,
@@ -137,7 +137,7 @@ namespace viennamath
                       op_minus<T>,
                       RHS >
       operator-(ct_binary_expr<rt_constant<OtherScalarType>, op_minus<T>, RHS> const & lhs,
-                ct_constant<value> const & other)
+                ct_constant<value> const & /*other*/)
       {
         typedef rt_constant< typename promote_traits<OtherScalarType, op_plus<T>, long>::result_type >    result_constant;
         return ct_binary_expr<result_constant,
@@ -157,8 +157,8 @@ namespace viennamath
       /** @brief Special overload: division of the same thing leads to '1' */
       template <typename LHS, typename OP, typename RHS>
       ct_constant<1>
-      operator/(ct_binary_expr<LHS, OP, RHS> const & lhs,
-                ct_binary_expr<LHS, OP, RHS> const & other)
+      operator/(ct_binary_expr<LHS, OP, RHS> const & /*lhs*/,
+                ct_binary_expr<LHS, OP, RHS> const & /*other*/)
       {
         return ct_constant<1>();
       }

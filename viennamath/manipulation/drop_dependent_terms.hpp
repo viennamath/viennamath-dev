@@ -64,7 +64,7 @@ namespace viennamath
   template <typename FactorType,
             typename ExpressionType>
   typename result_of::drop_dependent_terms<FactorType, ExpressionType>::type
-  drop_dependent_terms(FactorType const & f, ExpressionType const & e)
+  drop_dependent_terms(FactorType const & /*f*/, ExpressionType const & /*e*/)
   {
     return typename result_of::drop_dependent_terms<FactorType, ExpressionType>::type();
   }

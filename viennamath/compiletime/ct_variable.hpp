@@ -205,7 +205,7 @@ namespace viennamath
 
   /** @brief Convenience overload for printing a variable to an output stream. */
   template <id_type id>
-  std::ostream& operator<<(std::ostream & stream, ct_variable<id> const & u)
+  std::ostream& operator<<(std::ostream & stream, ct_variable<id> const & /*u*/)
   {
     stream << "ct_variable<" << id << ">";
     return stream;

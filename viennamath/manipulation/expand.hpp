@@ -250,7 +250,7 @@ namespace viennamath
    */
   template <typename ExpressionType>
   typename result_of::expand<ExpressionType>::type
-  expand(ExpressionType const & type)
+  expand(ExpressionType const & /*type*/)
   {
     return typename result_of::expand<ExpressionType>::type();
   }

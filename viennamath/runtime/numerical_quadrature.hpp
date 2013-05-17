@@ -215,7 +215,7 @@ namespace viennamath
       template <id_type id>
       NumericT operator()(rt_interval<InterfaceType> const & interv,
                           rt_expr<InterfaceType> const & e,
-                          ct_variable<id> const & var) const
+                          ct_variable<id> const & /*var*/) const
       {
         return quadrature_rule_->eval(interv, e, rt_variable<InterfaceType>(id));
       }

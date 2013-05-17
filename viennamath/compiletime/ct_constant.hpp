@@ -41,7 +41,7 @@ namespace viennamath
       self_type operator() () const { return *this; }
 
       template <typename VectorType>
-      self_type operator() (const VectorType & p) const { return *this; }
+      self_type operator() (const VectorType & /*p*/) const { return *this; }
 
       /** @brief A compiletime constant is implicity convertible to a long. Since ct_constant is only manipulated at compile time, this is a safe operation. */
       operator long() const { return value_; }

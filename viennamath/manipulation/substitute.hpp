@@ -147,7 +147,7 @@ namespace viennamath
             typename ReplacementType,
             typename ExpressionType>
   typename result_of::substitute< SearchType, ReplacementType, ExpressionType>::type
-  substitute(SearchType const &, ReplacementType const &, ExpressionType const & ex)
+  substitute(SearchType const &, ReplacementType const &, ExpressionType const & /*ex*/)
   {
     return typename result_of::substitute< SearchType, ReplacementType, ExpressionType>::type();
   }
@@ -348,7 +348,7 @@ namespace viennamath
    * @param e          The expression on which the substitution is carried out
    */
   template <typename InterfaceType, typename PairType>
-  rt_expr<InterfaceType> substitute(rt_symbolic_interval<InterfaceType> const & search,
+  rt_expr<InterfaceType> substitute(rt_symbolic_interval<InterfaceType> const & /*search*/,
                                     PairType const & repl,
                                     rt_expr<InterfaceType> const & e)
   {

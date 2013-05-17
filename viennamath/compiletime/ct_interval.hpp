@@ -36,7 +36,7 @@ namespace viennamath
 
   /** @brief Convenience overload for printing a compiletime interval to an output stream */
   template <typename LHS, typename RHS>
-  std::ostream& operator<<(std::ostream & stream, ct_interval<LHS, RHS> const & u)
+  std::ostream& operator<<(std::ostream & stream, ct_interval<LHS, RHS> const & /*u*/)
   {
     stream << "ct_interval(" << LHS() << ", " << RHS() << ")";
     return stream;
@@ -56,8 +56,8 @@ namespace viennamath
             typename LHS2, typename OP2, typename RHS2>
   ct_interval<ct_binary_expr<LHS1, OP1, RHS1>,
               ct_binary_expr<LHS2, OP2, RHS2> >
-  make_interval(ct_binary_expr<LHS1, OP1, RHS1> const & lhs,
-                ct_binary_expr<LHS2, OP2, RHS2> const & rhs)
+  make_interval(ct_binary_expr<LHS1, OP1, RHS1> const & /*lhs*/,
+                ct_binary_expr<LHS2, OP2, RHS2> const & /*rhs*/)
   {
     return ct_interval<ct_binary_expr<LHS1, OP1, RHS1>,
                        ct_binary_expr<LHS2, OP2, RHS2> >();
@@ -68,8 +68,8 @@ namespace viennamath
             typename LHS2, typename OP2>
   ct_interval<ct_binary_expr<LHS1, OP1, RHS1>,
               ct_unary_expr<LHS2, OP2> >
-  make_interval(ct_binary_expr<LHS1, OP1, RHS1> const & lhs,
-                ct_unary_expr<LHS2, OP2> const & rhs)
+  make_interval(ct_binary_expr<LHS1, OP1, RHS1> const & /*lhs*/,
+                ct_unary_expr<LHS2, OP2> const & /*rhs*/)
   {
     return ct_interval<ct_binary_expr<LHS1, OP1, RHS1>,
                        ct_unary_expr<LHS2, OP2> >();
@@ -80,8 +80,8 @@ namespace viennamath
             long value>
   ct_interval<ct_binary_expr<LHS1, OP1, RHS1>,
               ct_constant<value> >
-  make_interval(ct_binary_expr<LHS1, OP1, RHS1> const & lhs,
-                ct_constant<value> const & rhs)
+  make_interval(ct_binary_expr<LHS1, OP1, RHS1> const & /*lhs*/,
+                ct_constant<value> const & /*rhs*/)
   {
     return ct_interval<ct_binary_expr<LHS1, OP1, RHS1>,
                        ct_constant<value> >();
@@ -92,8 +92,8 @@ namespace viennamath
             typename TAG>
   ct_interval<ct_binary_expr<LHS1, OP1, RHS1>,
               ct_function_symbol<TAG> >
-  make_interval(ct_binary_expr<LHS1, OP1, RHS1> const & lhs,
-                ct_function_symbol<TAG> const & rhs)
+  make_interval(ct_binary_expr<LHS1, OP1, RHS1> const & /*lhs*/,
+                ct_function_symbol<TAG> const & /*rhs*/)
   {
     return ct_interval<ct_binary_expr<LHS1, OP1, RHS1>,
                        ct_function_symbol<TAG> >();
@@ -104,8 +104,8 @@ namespace viennamath
             id_type id>
   ct_interval<ct_binary_expr<LHS1, OP1, RHS1>,
               ct_variable<id> >
-  make_interval(ct_binary_expr<LHS1, OP1, RHS1> const & lhs,
-                ct_variable<id> const & rhs)
+  make_interval(ct_binary_expr<LHS1, OP1, RHS1> const & /*lhs*/,
+                ct_variable<id> const & /*rhs*/)
   {
     return ct_interval<ct_binary_expr<LHS1, OP1, RHS1>,
                        ct_variable<id> >();
@@ -119,8 +119,8 @@ namespace viennamath
             typename LHS2, typename OP2, typename RHS2>
   ct_interval<ct_unary_expr<LHS1, OP1>,
               ct_binary_expr<LHS2, OP2, RHS2> >
-  make_interval(ct_unary_expr<LHS1, OP1> const & lhs,
-                ct_binary_expr<LHS2, OP2, RHS2> const & rhs)
+  make_interval(ct_unary_expr<LHS1, OP1> const & /*lhs*/,
+                ct_binary_expr<LHS2, OP2, RHS2> const & /*rhs*/)
   {
     return ct_interval<ct_unary_expr<LHS1, OP1>,
                        ct_binary_expr<LHS2, OP2, RHS2> >();
@@ -131,8 +131,8 @@ namespace viennamath
             typename LHS2, typename OP2>
   ct_interval<ct_unary_expr<LHS1, OP1>,
               ct_unary_expr<LHS2, OP2> >
-  make_interval(ct_unary_expr<LHS1, OP1> const & lhs,
-                ct_unary_expr<LHS2, OP2> const & rhs)
+  make_interval(ct_unary_expr<LHS1, OP1> const & /*lhs*/,
+                ct_unary_expr<LHS2, OP2> const & /*rhs*/)
   {
     return ct_interval<ct_unary_expr<LHS1, OP1>,
                        ct_unary_expr<LHS2, OP2> >();
@@ -143,8 +143,8 @@ namespace viennamath
             long value>
   ct_interval<ct_unary_expr<LHS1, OP1>,
               ct_constant<value> >
-  make_interval(ct_unary_expr<LHS1, OP1> const & lhs,
-                ct_constant<value> const & rhs)
+  make_interval(ct_unary_expr<LHS1, OP1> const & /*lhs*/,
+                ct_constant<value> const & /*rhs*/)
   {
     return ct_interval<ct_unary_expr<LHS1, OP1>,
                        ct_constant<value> >();
@@ -155,8 +155,8 @@ namespace viennamath
             typename TAG>
   ct_interval<ct_unary_expr<LHS1, OP1>,
               ct_function_symbol<TAG> >
-  make_interval(ct_unary_expr<LHS1, OP1> const & lhs,
-                ct_function_symbol<TAG> const & rhs)
+  make_interval(ct_unary_expr<LHS1, OP1> const & /*lhs*/,
+                ct_function_symbol<TAG> const & /*rhs*/)
   {
     return ct_interval<ct_unary_expr<LHS1, OP1>,
                        ct_function_symbol<TAG> >();
@@ -167,8 +167,8 @@ namespace viennamath
             id_type id>
   ct_interval<ct_unary_expr<LHS1, OP1>,
               ct_variable<id> >
-  make_interval(ct_unary_expr<LHS1, OP1> const & lhs,
-                ct_variable<id> const & rhs)
+  make_interval(ct_unary_expr<LHS1, OP1> const & /*lhs*/,
+                ct_variable<id> const & /*rhs*/)
   {
     return ct_interval<ct_unary_expr<LHS1, OP1>,
                        ct_variable<id> >();
@@ -182,8 +182,8 @@ namespace viennamath
             typename LHS2, typename OP2, typename RHS2>
   ct_interval<ct_constant<value1>,
               ct_binary_expr<LHS2, OP2, RHS2> >
-  make_interval(ct_constant<value1> const & lhs,
-                ct_binary_expr<LHS2, OP2, RHS2> const & rhs)
+  make_interval(ct_constant<value1> const & /*lhs*/,
+                ct_binary_expr<LHS2, OP2, RHS2> const & /*rhs*/)
   {
     return ct_interval<ct_constant<value1>,
                        ct_binary_expr<LHS2, OP2, RHS2> >();
@@ -194,8 +194,8 @@ namespace viennamath
             typename LHS2, typename OP2>
   ct_interval<ct_constant<value1>,
               ct_unary_expr<LHS2, OP2> >
-  make_interval(ct_constant<value1> const & lhs,
-                ct_unary_expr<LHS2, OP2> const & rhs)
+  make_interval(ct_constant<value1> const & /*lhs*/,
+                ct_unary_expr<LHS2, OP2> const & /*rhs*/)
   {
     return ct_interval<ct_constant<value1>,
                        ct_unary_expr<LHS2, OP2> >();
@@ -206,8 +206,8 @@ namespace viennamath
             long value2>
   ct_interval<ct_constant<value1>,
               ct_constant<value2> >
-  make_interval(ct_constant<value1> const & lhs,
-                ct_constant<value2> const & rhs)
+  make_interval(ct_constant<value1> const & /*lhs*/,
+                ct_constant<value2> const & /*rhs*/)
   {
     return ct_interval<ct_constant<value1>,
                        ct_constant<value2> >();
@@ -218,8 +218,8 @@ namespace viennamath
             typename TAG>
   ct_interval<ct_constant<value1>,
               ct_function_symbol<TAG> >
-  make_interval(ct_constant<value1> const & lhs,
-                ct_function_symbol<TAG> const & rhs)
+  make_interval(ct_constant<value1> const & /*lhs*/,
+                ct_function_symbol<TAG> const & /*rhs*/)
   {
     return ct_interval<ct_constant<value1>,
                        ct_function_symbol<TAG> >();
@@ -231,8 +231,8 @@ namespace viennamath
             id_type id>
   ct_interval<ct_constant<value1>,
               ct_variable<id> >
-  make_interval(ct_constant<value1> const & lhs,
-                ct_variable<id> const & rhs)
+  make_interval(ct_constant<value1> const & /*lhs*/,
+                ct_variable<id> const & /*rhs*/)
   {
     return ct_interval<ct_constant<value1>,
                        ct_variable<id> >();

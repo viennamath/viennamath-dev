@@ -179,7 +179,7 @@ namespace viennamath
   {
     static std::string str() { return "grad"; }
 
-    NumericT apply(NumericT value) const
+    NumericT apply(NumericT /*value*/) const
     {
       throw "Cannot evaluate formal gradient. Use transformations first.";
       return 0;
@@ -200,7 +200,7 @@ namespace viennamath
   {
     static std::string str() { return "div"; }
 
-    NumericT apply(NumericT value) const
+    NumericT apply(NumericT /*value*/) const
     {
       throw "Cannot evaluate formal divergence. Use transformations first.";
       return 0;
@@ -230,7 +230,7 @@ namespace viennamath
         return ss.str();
       }
 
-      NumericT apply(NumericT value) const
+      NumericT apply(NumericT /*value*/) const
       {
         throw "Cannot evaluate formal partial derivative. Use transformations first.";
         return 0;

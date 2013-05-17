@@ -81,7 +81,7 @@ namespace viennamath
    */
   template <typename InterfaceType, id_type id>
   rt_expr<InterfaceType> diff(rt_binary_expr<InterfaceType> const & e,
-                              ct_variable<id> const & var)
+                              ct_variable<id> const & /*var*/)
   {
     rt_variable<InterfaceType> temp(id);
     return diff(e, temp);
@@ -94,7 +94,7 @@ namespace viennamath
    */
   template <typename InterfaceType, id_type id>
   rt_expr<InterfaceType> diff(rt_unary_expr<InterfaceType> const & e,
-                             ct_variable<id> const & var)
+                             ct_variable<id> const & /*var*/)
   {
     rt_variable<InterfaceType> temp(id);
     return diff(e, temp);
@@ -107,7 +107,7 @@ namespace viennamath
    */
   template <typename InterfaceType, id_type id>
   rt_expr<InterfaceType> diff(rt_expr<InterfaceType> const & e,
-                              ct_variable<id> const & var)
+                              ct_variable<id> const & /*var*/)
   {
     rt_variable<InterfaceType> temp(id);
     return diff(e, temp);
@@ -331,8 +331,8 @@ namespace viennamath
             id_type id>
   typename result_of::diff<ExpressionType,
                            ct_variable<id> >::result_type
-  diff(ExpressionType const & c,
-       ct_variable<id> const & var)
+  diff(ExpressionType const & /*c*/,
+       ct_variable<id> const & /*var*/)
   {
     return typename result_of::diff<ExpressionType,
                                     ct_variable<id> >::result_type();

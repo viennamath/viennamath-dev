@@ -49,7 +49,7 @@ namespace viennamath
        * @param t     A tag class used for the compiletime ct_function_symbol
        */
       template <typename Tag>
-      rt_function_symbol(id_type i, Tag const & t) : id_(i), tag_id_(Tag::tag_id()) {}
+      rt_function_symbol(id_type i, Tag const & /*t*/) : id_(i), tag_id_(Tag::tag_id()) {}
 
       /** @brief CTOR assigning the ID 'i' for the class of function symbols identified by the ID 't'
        *
@@ -71,9 +71,9 @@ namespace viennamath
       InterfaceType * clone() const { return new self_type(id_, tag_id_); }
 
       /** @brief Interface requirement: Evaluates the expression. This is illegal for a function symbol */
-      numeric_type eval(std::vector<double> const & v) const { throw expression_not_evaluable_exception("Cannot evaluate rt_function_symbol!"); return 0; }
+      numeric_type eval(std::vector<double> const & /*v*/) const { throw expression_not_evaluable_exception("Cannot evaluate rt_function_symbol!"); return 0; }
       /** @brief Interface requirement: Evaluates the expression. This is illegal for a function symbol */
-      numeric_type eval(numeric_type v) const { throw expression_not_evaluable_exception("Cannot evaluate rt_function_symbol!"); return 0; }
+      numeric_type eval(numeric_type /*v*/) const { throw expression_not_evaluable_exception("Cannot evaluate rt_function_symbol!"); return 0; }
 
       /** @brief Returns a detailed string with all informations about the function symbol */
       std::string deep_str() const

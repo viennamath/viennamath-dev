@@ -114,7 +114,7 @@ namespace viennamath
       //virtual functions for evaluations
       /** @brief Interface function for evaluating the expression. Since an rt_vector_expr cannot be evaluated, an expression_not_evaluable_exception is thrown.
        */
-      numeric_type eval(std::vector<double> const & v) const
+      numeric_type eval(std::vector<double> const & /*v*/) const
       {
         throw expression_not_evaluable_exception("Cannot evaluate a rt_vector_expr!");
         return 0;
@@ -122,7 +122,7 @@ namespace viennamath
 
       /** @brief Interface function for evaluating the expression. Since an rt_vector_expr cannot be evaluated, an expression_not_evaluable_exception is thrown.
        */
-      numeric_type eval(numeric_type val) const
+      numeric_type eval(numeric_type /*val*/) const
       {
         throw expression_not_evaluable_exception("Cannot evaluate a rt_vector_expr!");
         return 0;

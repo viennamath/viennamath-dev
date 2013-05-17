@@ -49,41 +49,41 @@ namespace viennamath
       virtual std::string    str() const = 0;
 
       /** @brief Applys the operator to the provided value. Unary operators must overwrite this function. */
-      virtual numeric_type   apply(numeric_type value) const { throw no_rhs_provided_exception(); }
+      virtual numeric_type   apply(numeric_type /*value*/) const { throw no_rhs_provided_exception(); }
 
       /** @brief Applys the operator to the left hand side 'lhs' and the right hand side 'rhs'. Binary operators must overwrite this function. */
-      virtual numeric_type   apply(numeric_type lhs,
-                                   numeric_type rhs) const { throw rhs_provided_for_unary_operation_exception(); }
+      virtual numeric_type   apply(numeric_type /*lhs*/,
+                                   numeric_type /*rhs*/) const { throw rhs_provided_for_unary_operation_exception(); }
 
       /** @brief A boolean flag that specifies whether the operator is an unary operator, i.e. taking one argument only */
       virtual bool                   is_unary() const { return true; }
 
       //unary diff:
       /** @brief Interface for differentation of a unary expression */
-      virtual InterfaceType * diff(const InterfaceType * e,
-                                   const InterfaceType * diff_var) const { throw no_rhs_provided_exception(); }
+      virtual InterfaceType * diff(const InterfaceType * /*e*/,
+                                   const InterfaceType * /*diff_var*/) const { throw no_rhs_provided_exception(); }
 
       //binary diff:
       /** @brief Interface for differentation of a binary expression */
-      virtual InterfaceType * diff(const InterfaceType * lhs,
-                                   const InterfaceType * rhs,
-                                   const InterfaceType * diff_var) const { throw rhs_provided_for_unary_operation_exception(); }
+      virtual InterfaceType * diff(const InterfaceType * /*lhs*/,
+                                   const InterfaceType * /*rhs*/,
+                                   const InterfaceType * /*diff_var*/) const { throw rhs_provided_for_unary_operation_exception(); }
 
       //optimization for binary operators:
       /** @brief Interface for the simplification of a binary expression by passing the two operands */
-      virtual InterfaceType * simplify(const InterfaceType * lhs,
-                                       const InterfaceType * rhs) const = 0; //{ throw ex_rhs_provided_for_unary_operator(); }
+      virtual InterfaceType * simplify(const InterfaceType * /*lhs*/,
+                                       const InterfaceType * /*rhs*/) const = 0; //{ throw ex_rhs_provided_for_unary_operator(); }
 
       //optimization for unary operators:
 
       /** @brief Returns true if the unary expression can be simplified */
       virtual bool can_simplify() const = 0;
       /** @brief Returns true if the binary expression can be simplified */
-      virtual bool can_simplify(const InterfaceType * lhs,
-                                const InterfaceType * rhs) const { return false; }
+      virtual bool can_simplify(const InterfaceType * /*lhs*/,
+                                const InterfaceType * /*rhs*/) const { return false; }
 
       /** @brief Returns true if 'other' is the same operation as the respective object. */
-      virtual bool equal(const op_interface * other) const = 0;
+      virtual bool equal(const op_interface * /*other*/) const = 0;
   };
 
 

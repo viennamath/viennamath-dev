@@ -78,7 +78,7 @@ namespace viennamath
       }
 
       template <id_type id>
-      rt_expr<InterfaceType>(ct_variable<id> const & other)
+      rt_expr<InterfaceType>(ct_variable<id> const & /*other*/)
       {
         rt_expr_ = std::auto_ptr<InterfaceType>(new rt_variable<InterfaceType>(id));
       }
@@ -174,7 +174,7 @@ namespace viennamath
       }
 
       template <long value>
-      rt_expr & operator=(ct_constant<value> const & other)
+      rt_expr & operator=(ct_constant<value> const & /*other*/)
       {
         rt_expr_ = std::auto_ptr<InterfaceType>(new rt_constant<numeric_type>(value));
         return *this;
@@ -215,7 +215,7 @@ namespace viennamath
       }
 
       template <long value>
-      numeric_type operator()(ct_constant<value> val) const
+      numeric_type operator()(ct_constant<value> /*val*/) const
       {
         return rt_expr_.get()->eval(value);
       }
