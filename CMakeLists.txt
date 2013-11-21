@@ -25,6 +25,8 @@ ENDIF()
 ADD_DEFINITIONS(-Wall -pedantic -O0 -g)
 
 # examples:
+option(BUILD_EXAMPLES "Build example programs" ON)
+
 if(BUILD_EXAMPLES)
   ADD_EXECUTABLE(basic                examples/basic.cpp)
   ADD_EXECUTABLE(integration          examples/integration.cpp)
@@ -35,7 +37,7 @@ if(BUILD_EXAMPLES)
   ADD_EXECUTABLE(substitute           examples/substitute.cpp)
   ADD_EXECUTABLE(vector_expr          examples/vector_expr.cpp)
 endif()
- 
+
 
 
 
