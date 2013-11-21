@@ -79,6 +79,8 @@ namespace viennamath
        * @param str                The LaTeX string to be used for the expression referred to be 'e'
        */
       virtual bool customize(InterfaceType const * /*e*/, std::string const & /*str*/) { return false; }
+
+      virtual ~rt_latex_processor_interface() {}
   };
 
 
@@ -153,14 +155,14 @@ namespace viennamath
       {
         std::stringstream ss;
         ss << operator()(e.lhs()) << " = " << operator()(e.rhs());
-        static_cast<int>(use_parenthesis); //to silence unused parameter warnings
+        (void)use_parenthesis; //to silence unused parameter warnings
         return ss.str();
       }
       std::string operator()(Interval   const & e, bool use_parenthesis = false) const
       {
         std::stringstream ss;
         ss << " [ " << operator()(e.lower()) << "; " << operator()(e.upper()) << " ] ";
-        static_cast<int>(use_parenthesis); //to silence unused parameter warnings
+        (void)use_parenthesis; //to silence unused parameter warnings
         return ss.str();
       }
 

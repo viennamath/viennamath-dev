@@ -38,7 +38,7 @@ namespace viennamath
     public:
       typedef T0   type_0;
 
-      ct_vector_1(T0 const & t0) : t0_(t0) {};
+      ct_vector_1(T0 const & t0) : t0_(t0) {}
 
       /** @brief Provides access to the first element using bracket access and a compile time index */
       T0 const & operator[](ct_index<0>) const { return t0_; }
@@ -48,6 +48,7 @@ namespace viennamath
       void operator[](ct_index<i>) const
       {
         typedef typename ct_index<i>::ERROR_VECTOR_1_INDEX_OUT_OF_BOUNDS  error_message;
+        error_message();
       }
 
       size_t size() const { return 1; }
@@ -79,7 +80,7 @@ namespace viennamath
       typedef T0   type_0;
       typedef T1   type_1;
 
-      ct_vector_2(T0 const & t0, T1 const & t1) : t0_(t0), t1_(t1) {};
+      ct_vector_2(T0 const & t0, T1 const & t1) : t0_(t0), t1_(t1) {}
 
       /** @brief Provides access to the first element using bracket access and a compile time index */
       T0 const & operator[](ct_index<0>) const { return t0_; }
@@ -91,6 +92,7 @@ namespace viennamath
       void operator[](ct_index<i>) const
       {
         typedef typename ct_index<i>::ERROR_VECTOR_2_INDEX_OUT_OF_BOUNDS  error_message;
+        error_message();
       }
 
       std::size_t size() const { return 2; }
@@ -125,7 +127,7 @@ namespace viennamath
       typedef T2   type_2;
       //typedef typename type_0::numeric_type  numeric_type;
 
-      ct_vector_3(T0 const & t0, T1 const & t1, T2 const & t2) : t0_(t0), t1_(t1), t2_(t2) {};
+      ct_vector_3(T0 const & t0, T1 const & t1, T2 const & t2) : t0_(t0), t1_(t1), t2_(t2) {}
 
       ct_vector_3(const ct_vector_3 & other) : t0_(other.t0_), t1_(other.t1_), t2_(other.t2_) {}
 
@@ -141,6 +143,7 @@ namespace viennamath
       void operator[](ct_index<i>) const
       {
         typedef typename ct_index<i>::ERROR_VECTOR_3_INDEX_OUT_OF_BOUNDS  error_message;
+        error_message();
       }
 
       std::size_t size() const { return 3; }
