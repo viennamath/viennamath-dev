@@ -28,7 +28,7 @@
 #include "viennamath/manipulation/eval.hpp"
 #include "viennamath/manipulation/substitute.hpp"
 
-#include "examples/benchmark-utils.hpp"
+#include "benchmark-utils.hpp"
 
 #define BENCHMARK_SIZE   1000000
 

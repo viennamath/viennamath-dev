@@ -1,0 +1,20 @@
+#- CMake configuration file for VIENNAMATH
+# Sets the following variables if VIENNAMATH was found:
+#  VIENNAMATH_FOUND         : TRUE if found
+#  VIENNAMATH_INCLUDE_DIRS  : Include-directories to be used
+#  VIENNAMATH_LIBRARIES     : Libraries to link against
+
+# Compute paths
+get_filename_component(VIENNAMATH_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+if(EXISTS "${VIENNAMATH_CMAKE_DIR}/CMakeCache.txt")
+   # in build tree
+   get_filename_component(VIENNAMATH_INSTALL_PREFIX "${VIENNAMATH_CMAKE_DIR}" PATH)
+   set(VIENNAMATH_INCLUDE_DIR "${_VIENNAMATH_PREFIX}")
+else()
+   set(VIENNAMATH_INSTALL_PREFIX "${VIENNAMATH_CMAKE_DIR}/@CONF_REL_INSTALL_PREFIX@")
+   set(VIENNAMATH_INCLUDE_DIR "${VIENNAMATH_CMAKE_DIR}/@CONF_REL_INCLUDE_DIR@")
+endif()
+
+# Set up variables
+set(VIENNAMATH_INCLUDE_DIRS ${VIENNAMATH_INCLUDE_DIR})
+set(VIENNAMATH_LIBRARIES "")
