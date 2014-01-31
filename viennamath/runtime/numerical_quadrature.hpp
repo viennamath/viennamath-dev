@@ -41,6 +41,8 @@ namespace viennamath
     public:
       typedef typename InterfaceType::numeric_type   numeric_type;
 
+      virtual ~numerical_quadrature_interface() {}
+
       /** @brief Returns a copy of the quadrature rule. The caller must ensure proper deletion of the object. */
       virtual numerical_quadrature_interface * clone() const = 0;
 
