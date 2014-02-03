@@ -25,6 +25,8 @@
 // A test for the proper functionality of operator overloads of runtime expressions
 //
 
+template <typename E>
+void evaluations_test(E & e, double ref_solution);
 
 template <typename E, typename T, typename U>
 void operations_test(E & e, T const & t, U const & u, double t2, double u2)
