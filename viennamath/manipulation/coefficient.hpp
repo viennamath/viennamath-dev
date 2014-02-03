@@ -45,13 +45,13 @@ namespace viennamath
                 typename ExpressionType>
       struct has_factor
       {
-        enum { value = 0 };
+        static const int value = 0;
       };
 
       template <typename FactorType>
       struct has_factor<FactorType, FactorType>
       {
-        enum { value = 1 };
+        static const int value = 1;
       };
 
       template <typename FactorType,
@@ -59,7 +59,7 @@ namespace viennamath
       struct has_factor< FactorType, ct_binary_expr<LHS, op_plus<NumericT>, RHS> >
       {
         typedef typename ct_binary_expr<LHS, op_plus<NumericT>, RHS>::ERROR_EXPRESSION_NOT_FULLY_EXPANDED    error_type;
-        enum { value = 0 };
+        static const int value = 0;
       };
 
       template <typename FactorType,
@@ -67,21 +67,21 @@ namespace viennamath
       struct has_factor< FactorType, ct_binary_expr<LHS, op_minus<NumericT>, RHS> >
       {
         typedef typename ct_binary_expr<LHS, op_minus<NumericT>, RHS>::ERROR_EXPRESSION_NOT_FULLY_EXPANDED    error_type;
-        enum { value = 0 };
+        static const int value = 0;
       };
 
       template <typename FactorType,
                 typename LHS, typename NumericT, typename RHS>
       struct has_factor< FactorType, ct_binary_expr<LHS, op_mult<NumericT>, RHS> >
       {
-        enum { value = has_factor<FactorType, LHS>::value + has_factor<FactorType, RHS>::value };
+        static const int value = has_factor<FactorType, LHS>::value + has_factor<FactorType, RHS>::value;
       };
 
       template <typename FactorType,
                 typename LHS, typename NumericT, typename RHS>
       struct has_factor< FactorType, ct_binary_expr<LHS, op_div<NumericT>, RHS> >
       {
-        enum { value = has_factor<FactorType, LHS>::value };
+        static const int value = has_factor<FactorType, LHS>::value;
       };
 
 

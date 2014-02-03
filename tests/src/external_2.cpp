@@ -34,6 +34,7 @@
 #include "viennamath/manipulation/substitute.hpp"
 
 
+void other_func();
 
 void other_func()
 {

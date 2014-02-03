@@ -36,7 +36,7 @@ namespace viennamath
   {
       typedef ct_constant<value_>     self_type;
     public:
-      explicit ct_constant() {};
+      explicit ct_constant() {}
 
       self_type operator() () const { return *this; }
 

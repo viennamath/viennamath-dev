@@ -49,7 +49,7 @@ namespace viennamath
    * This is the overload for a compile-time vector of size 1
    */
   template <typename T1>
-  default_numeric_type get_from_vector(ct_vector_1<T1> const & vec, id_type i)
+  default_numeric_type get_from_vector(ct_vector_1<T1> const & vec, id_type)
   {
     return vec[ct_index<0>()];
   }
@@ -117,7 +117,7 @@ namespace viennamath
       rt_constant<ScalarType> operator()(rt_constant<ScalarType> const & other) const
       {
         if (id_ > 0)
-          throw variable_index_out_of_bounds_exception(id_, 0);
+          throw variable_index_out_of_bounds_exception(static_cast<long>(id_), 0);
         return rt_constant<ScalarType>(static_cast<ScalarType>(other));
       }
 
@@ -126,7 +126,7 @@ namespace viennamath
       long operator()(ct_constant<value> const & /*other*/) const
       {
         if (id_ > 0)
-          throw variable_index_out_of_bounds_exception(id_, 0);
+          throw variable_index_out_of_bounds_exception(static_cast<long>(id_), 0);
         return value;
       }
 
@@ -138,7 +138,7 @@ namespace viennamath
       operator()(VectorType const & v) const
       {
         if(id_ >= v.size())
-          throw variable_index_out_of_bounds_exception(id_, v.size());
+          throw variable_index_out_of_bounds_exception(static_cast<long>(id_), static_cast<long>(v.size()));
         return get_from_vector(v, id_);
       }
 
@@ -154,7 +154,7 @@ namespace viennamath
       numeric_type eval(std::vector<double> const & v) const
       {
         if (id_ >= v.size())
-          throw variable_index_out_of_bounds_exception(id_, v.size());
+          throw variable_index_out_of_bounds_exception(static_cast<long>(id_), static_cast<long>(v.size()));
 
         return (*this)(v);
       }
@@ -163,7 +163,7 @@ namespace viennamath
       numeric_type eval(numeric_type val) const
       {
         if (id_ > 0)
-          throw variable_index_out_of_bounds_exception(id_, 1);
+          throw variable_index_out_of_bounds_exception(static_cast<long>(id_), 1);
 
         return val;
       }
@@ -180,7 +180,6 @@ namespace viennamath
       numeric_type unwrap() const
       {
         throw expression_not_unwrappable_exception();
-        return 0;
       }
 
       //protected:

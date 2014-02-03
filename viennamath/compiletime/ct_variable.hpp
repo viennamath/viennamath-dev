@@ -182,7 +182,7 @@ namespace viennamath
     }
 
     template <long value>
-    long operator()(ct_constant<value> const & other) const
+    long operator()(ct_constant<value> const &) const
     {
       if (id > 0)
         throw variable_index_out_of_bounds_exception(id, 0);
@@ -196,7 +196,7 @@ namespace viennamath
     operator()(VectorType const & v) const
     {
       if(id >= v.size())
-        throw variable_index_out_of_bounds_exception(id, v.size());
+        throw variable_index_out_of_bounds_exception(static_cast<long>(id), static_cast<long>(v.size()));
       return variable_traits<VectorType, id>::get(v);
     }
 

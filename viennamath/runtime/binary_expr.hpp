@@ -187,7 +187,7 @@ namespace viennamath
       }
 
       template <long value1, typename OP, long value2>
-      rt_binary_expr & operator=(ct_binary_expr<ct_constant<value1>, OP, ct_constant<value2> > const & other)
+      rt_binary_expr & operator=(ct_binary_expr<ct_constant<value1>, OP, ct_constant<value2> > const &)
       {
         //std::cout << "Constructing from expression " << other << std::endl;
         lhs_ = std::auto_ptr<InterfaceType>(new rt_constant<numeric_type, InterfaceType>(OP().apply(value1, value2)));
@@ -215,7 +215,7 @@ namespace viennamath
       }
 
       template <long value>
-      rt_binary_expr & operator=(ct_constant<value> const & other)
+      rt_binary_expr & operator=(ct_constant<value> const &)
       {
         return *this = value;
       }
@@ -247,7 +247,7 @@ namespace viennamath
       }
 
       template <long value>
-      numeric_type operator()(ct_constant<value> val) const
+      numeric_type operator()(ct_constant<value>) const
       {
         return this->eval(value);
       }

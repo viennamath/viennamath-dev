@@ -151,7 +151,7 @@ namespace viennamath
 
   /** @brief Creates an interval, where the lower bound is given by a ViennaMath compiletime variable */
   template <id_type id, typename RHSType>
-  rt_interval<> make_interval(ct_variable<id> const & lhs, RHSType const & rhs)
+  rt_interval<> make_interval(ct_variable<id> const &, RHSType const & rhs)
   {
     rt_variable<> temp(id);
     return rt_interval<>(temp, rhs);

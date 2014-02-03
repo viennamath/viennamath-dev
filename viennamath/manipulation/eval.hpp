@@ -35,35 +35,35 @@ namespace viennamath
     template <typename E>
     struct is_ct_evaluable
     {
-      enum { value = 0 };
+      static const int value = 0;
     };
 
     /** @brief Specialization: Determines whether a binary expression is compiletime evaluable by recursively acting on the operands */
     template <typename LHS, typename OP, typename RHS>
     struct is_ct_evaluable< ct_binary_expr<LHS, OP, RHS> >
     {
-      enum { value = is_ct_evaluable<LHS>::value * is_ct_evaluable<RHS>::value };
+      static const int value = is_ct_evaluable<LHS>::value * is_ct_evaluable<RHS>::value ;
     };
 
     /** @brief Specialization: A constant is compiletime evaluable. */
     template <long val>
     struct is_ct_evaluable< ct_constant<val> >
     {
-      enum { value = 1 };
+      static const int value = 1;
     };
 
     /** @brief Specialization: A variable is compiletime evaluable. */
     template <id_type id>
     struct is_ct_evaluable< ct_variable<id> >
     {
-      enum { value = 1 };
+      static const int value = 1;
     };
 
     /** @brief Returns nonzero if the supplied vector type is a compile-time vector */
     template <typename VectorType>
     struct is_ct_vector
     {
-      enum { value = 0 };
+      static const int value = 0;
     };
 
     /** @brief Specialization of the helper function for the determination of whether a vector is a compiletime type */
@@ -176,7 +176,7 @@ namespace viennamath
 
   /** @brief Evaluation of a long integer at a vector: Return the integer */
   template <typename VectorType>
-  long eval(long value, VectorType const & v)
+  long eval(long value, VectorType const &)
   {
     //generic approach: use operator() and hope the best:
     return value;
@@ -291,14 +291,14 @@ namespace viennamath
 
   /** @brief Evaluation of a ViennaMath compiletime variable using a compiletime vector with one entry */
   template <id_type id, typename T0>
-  default_numeric_type eval(ct_variable<id> c, ct_vector_1<T0> const & v)
+  default_numeric_type eval(ct_variable<id>, ct_vector_1<T0> const & v)
   {
     return v[ct_index<id>()];
   }
 
   /** @brief Evaluation of a ViennaMath compiletime variable using a compiletime vector with two entries */
   template <id_type id, typename T0, typename T1>
-  default_numeric_type eval(ct_variable<id> c, ct_vector_2<T0, T1> const & v)
+  default_numeric_type eval(ct_variable<id>, ct_vector_2<T0, T1> const & v)
   {
     return v[ct_index<id>()];
   }

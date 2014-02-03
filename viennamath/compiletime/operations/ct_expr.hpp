@@ -66,7 +66,7 @@ namespace viennamath
                       op_minus<ScalarType>,
                       RHS >
       operator+(ct_binary_expr<rt_constant<OtherScalarType>, op_minus<ScalarType>, RHS> const & lhs,
-                ct_constant<value> const & other)
+                ct_constant<value> const &)
       {
         typedef rt_constant< typename promote_traits<OtherScalarType, op_plus<ScalarType>, long>::result_type >    result_constant;
         return ct_binary_expr<result_constant,
@@ -108,7 +108,7 @@ namespace viennamath
                       op_plus<T>,
                       RHS >
       operator-(ct_binary_expr<rt_constant<OtherScalarType>, op_plus<T>, RHS> const & lhs,
-                ct_constant<value> const & other)
+                ct_constant<value> const &)
       {
         typedef rt_constant< typename promote_traits<OtherScalarType, op_plus<T>, long>::result_type >    result_constant;
         return ct_binary_expr<result_constant,

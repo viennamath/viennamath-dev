@@ -69,10 +69,10 @@ namespace viennamath
   class expression_not_evaluable_exception : public std::exception
   {
     public:
-      expression_not_evaluable_exception() : message_("Expression cannot be unwrapped!") {};
-      expression_not_evaluable_exception(std::string const & str) : message_(str) {};
+      expression_not_evaluable_exception() : message_("Expression cannot be unwrapped!") {}
+      expression_not_evaluable_exception(std::string const & str) : message_(str) {}
 
-      virtual ~expression_not_evaluable_exception() throw () {};
+      virtual ~expression_not_evaluable_exception() throw () {}
 
     private:
       const char * what() const throw() { return message_.c_str(); }
@@ -87,10 +87,10 @@ namespace viennamath
   class expression_not_unwrappable_exception : public std::exception
   {
     public:
-      expression_not_unwrappable_exception() : message_("Expression cannot be unwrapped!") {};
-      expression_not_unwrappable_exception(std::string const & str) : message_(str) {};
+      expression_not_unwrappable_exception() : message_("Expression cannot be unwrapped!") {}
+      expression_not_unwrappable_exception(std::string const & str) : message_(str) {}
 
-      virtual ~expression_not_unwrappable_exception() throw () {};
+      virtual ~expression_not_unwrappable_exception() throw () {}
 
     private:
       const char * what() const throw() { return message_.c_str(); }
@@ -104,10 +104,10 @@ namespace viennamath
   class expression_not_differentiable_exception : public std::exception
   {
     public:
-      expression_not_differentiable_exception() : message_("Expression not differentiable!") {};
-      expression_not_differentiable_exception(std::string const & str) : message_(str) {};
+      expression_not_differentiable_exception() : message_("Expression not differentiable!") {}
+      expression_not_differentiable_exception(std::string const & str) : message_(str) {}
 
-      virtual ~expression_not_differentiable_exception() throw () {};
+      virtual ~expression_not_differentiable_exception() throw () {}
 
     private:
       const char * what() const throw() { return message_.c_str(); }

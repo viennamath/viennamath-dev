@@ -132,7 +132,7 @@ namespace viennamath
   /** @brief Returns a symbolic representation of a differentiated function */
   template <typename InterfaceType, id_type id>
   rt_expr<InterfaceType> diff(rt_function_symbol<InterfaceType> const & other,
-                              ct_variable<id> const & var)
+                              ct_variable<id> const &)
   {
     typedef op_partial_deriv<typename InterfaceType::numeric_type> d_dx_type;
     return rt_expr<InterfaceType>(new rt_unary_expr<InterfaceType>(other.clone(),
@@ -190,16 +190,16 @@ namespace viennamath
 
   /** @brief Overload for the derivative of a function */
   template <typename InterfaceType>
-  rt_constant<typename InterfaceType::numeric_type> diff(typename InterfaceType::numeric_type value,
-                                                         rt_variable<InterfaceType> const & var)
+  rt_constant<typename InterfaceType::numeric_type> diff(typename InterfaceType::numeric_type,
+                                                         rt_variable<InterfaceType> const &)
   {
     return rt_constant<typename InterfaceType::numeric_type>(0);
   }
 
   /** @brief Overload for the derivative of a ViennaMath runtime constant */
   template <typename OtherScalarType, typename InterfaceType>
-  rt_constant<typename InterfaceType::numeric_type> diff(rt_constant<OtherScalarType, InterfaceType> const & c,
-                                                         rt_variable<InterfaceType> const & var)
+  rt_constant<typename InterfaceType::numeric_type> diff(rt_constant<OtherScalarType, InterfaceType> const &,
+                                                         rt_variable<InterfaceType> const &)
   {
     return rt_constant<typename InterfaceType::numeric_type>(0);
   }

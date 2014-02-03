@@ -360,7 +360,7 @@ namespace viennamath
 
   /** @brief Overload of the modulus function for a ViennaMath compiletime variable */
   template <id_type id>
-  rt_unary_expr<> fabs(ct_variable<id> const & other)
+  rt_unary_expr<> fabs(ct_variable<id> const &)
   {
     return rt_unary_expr<>(new rt_variable<>(id), new op_unary<op_fabs<default_numeric_type> >());
   }

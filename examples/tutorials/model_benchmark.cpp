@@ -36,8 +36,7 @@
  *  Tutorial: A small benchmark demonstrating that ViennaMath can avoid the repeated evaluation of constants in an expression
  */
 
-
-void print_stats(double result, double elapsed)
+inline void print_stats(double result, double elapsed)
 {
   std::cout << "|" << std::endl;
   std::cout << "|   * result: " << result << std::endl;

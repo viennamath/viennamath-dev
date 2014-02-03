@@ -69,8 +69,7 @@ void operations_test(T const & t)
   operations_test(t, c7 - z);
 }
 
-
-void fuzzy_check(double a, double b)
+inline void fuzzy_check(double a, double b)
 {
   if (fabs(a) < 1e-8 && fabs(b) < 1e-8)
     return;
@@ -100,7 +99,7 @@ template <typename E>
 struct evaluation_compiletime<0, E>
 {
   template <typename VectorType>
-  static void apply(E const & e, VectorType const & v, double ref_solution)
+  static void apply(E const &, VectorType const &, double)
   {
     std::cout << "Not compile-time evaluable!" << std::endl;
   }

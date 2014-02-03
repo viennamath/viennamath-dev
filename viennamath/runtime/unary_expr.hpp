@@ -107,7 +107,7 @@ namespace viennamath
       }
 
       template <long value>
-      rt_unary_expr & operator=(ct_constant<value> const & other)
+      rt_unary_expr & operator=(ct_constant<value> const &)
       {
         return *this = value;
       }
@@ -143,7 +143,7 @@ namespace viennamath
 
       /** @brief Evaluation of the unary expression at the ViennaMath compiletime constant val */
       template <long value>
-      numeric_type operator()(ct_constant<value> val) const
+      numeric_type operator()(ct_constant<value>) const
       {
         return this->eval(value);
       }

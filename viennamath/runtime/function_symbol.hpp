@@ -71,9 +71,9 @@ namespace viennamath
       InterfaceType * clone() const { return new self_type(id_, tag_id_); }
 
       /** @brief Interface requirement: Evaluates the expression. This is illegal for a function symbol */
-      numeric_type eval(std::vector<double> const & /*v*/) const { throw expression_not_evaluable_exception("Cannot evaluate rt_function_symbol!"); return 0; }
+      numeric_type eval(std::vector<double> const & /*v*/) const { throw expression_not_evaluable_exception("Cannot evaluate rt_function_symbol!"); }
       /** @brief Interface requirement: Evaluates the expression. This is illegal for a function symbol */
-      numeric_type eval(numeric_type /*v*/) const { throw expression_not_evaluable_exception("Cannot evaluate rt_function_symbol!"); return 0; }
+      numeric_type eval(numeric_type /*v*/) const { throw expression_not_evaluable_exception("Cannot evaluate rt_function_symbol!"); }
 
       /** @brief Returns a detailed string with all informations about the function symbol */
       std::string deep_str() const

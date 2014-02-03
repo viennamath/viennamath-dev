@@ -246,8 +246,8 @@ namespace viennamath
             typename LHS2, typename OP2, typename RHS2>
   ct_interval<ct_function_symbol<TAG>,
               ct_binary_expr<LHS2, OP2, RHS2> >
-  make_interval(ct_function_symbol<TAG> const & lhs,
-                ct_binary_expr<LHS2, OP2, RHS2> const & rhs)
+  make_interval(ct_function_symbol<TAG> const &,
+                ct_binary_expr<LHS2, OP2, RHS2> const &)
   {
     return ct_interval<ct_function_symbol<TAG>,
                        ct_binary_expr<LHS2, OP2, RHS2> >();
@@ -258,8 +258,8 @@ namespace viennamath
             typename LHS2, typename OP2>
   ct_interval<ct_function_symbol<TAG>,
               ct_unary_expr<LHS2, OP2> >
-  make_interval(ct_function_symbol<TAG> const & lhs,
-                ct_unary_expr<LHS2, OP2> const & rhs)
+  make_interval(ct_function_symbol<TAG> const &,
+                ct_unary_expr<LHS2, OP2> const &)
   {
     return ct_interval<ct_function_symbol<TAG>,
                        ct_unary_expr<LHS2, OP2> >();
@@ -270,8 +270,8 @@ namespace viennamath
             long value>
   ct_interval<ct_function_symbol<TAG>,
               ct_constant<value> >
-  make_interval(ct_function_symbol<TAG> const & lhs,
-                ct_constant<value> const & rhs)
+  make_interval(ct_function_symbol<TAG> const &,
+                ct_constant<value> const &)
   {
     return ct_interval<ct_function_symbol<TAG>,
                        ct_constant<value> >();
@@ -282,8 +282,8 @@ namespace viennamath
             typename TAG2>
   ct_interval<ct_function_symbol<TAG1>,
               ct_function_symbol<TAG2> >
-  make_interval(ct_function_symbol<TAG1> const & lhs,
-                ct_function_symbol<TAG2> const & rhs)
+  make_interval(ct_function_symbol<TAG1> const &,
+                ct_function_symbol<TAG2> const &)
   {
     return ct_interval<ct_function_symbol<TAG1>,
                        ct_function_symbol<TAG2> >();
@@ -294,8 +294,8 @@ namespace viennamath
             id_type id>
   ct_interval<ct_function_symbol<TAG>,
               ct_variable<id> >
-  make_interval(ct_function_symbol<TAG> const & lhs,
-                ct_variable<id> const & rhs)
+  make_interval(ct_function_symbol<TAG> const & ,
+                ct_variable<id> const &)
   {
     return ct_interval<ct_function_symbol<TAG>,
                        ct_variable<id> >();
@@ -309,8 +309,8 @@ namespace viennamath
             typename LHS2, typename OP2, typename RHS2>
   ct_interval<ct_variable<id1>,
               ct_binary_expr<LHS2, OP2, RHS2> >
-  make_interval(ct_variable<id1> const & lhs,
-                ct_binary_expr<LHS2, OP2, RHS2> const & rhs)
+  make_interval(ct_variable<id1> const &,
+                ct_binary_expr<LHS2, OP2, RHS2> const &)
   {
     return ct_interval<ct_variable<id1>,
                        ct_binary_expr<LHS2, OP2, RHS2> >();
@@ -321,8 +321,8 @@ namespace viennamath
             typename LHS2, typename OP2>
   ct_interval<ct_variable<id1>,
               ct_unary_expr<LHS2, OP2> >
-  make_interval(ct_variable<id1> const & lhs,
-                ct_unary_expr<LHS2, OP2> const & rhs)
+  make_interval(ct_variable<id1> const &,
+                ct_unary_expr<LHS2, OP2> const &)
   {
     return ct_interval<ct_variable<id1>,
                        ct_unary_expr<LHS2, OP2> >();
@@ -333,8 +333,8 @@ namespace viennamath
             long value2>
   ct_interval<ct_variable<id1>,
               ct_constant<value2> >
-  make_interval(ct_variable<id1> const & lhs,
-                ct_constant<value2> const & rhs)
+  make_interval(ct_variable<id1> const &,
+                ct_constant<value2> const &)
   {
     return ct_interval<ct_variable<id1>,
                        ct_constant<value2> >();
@@ -345,8 +345,8 @@ namespace viennamath
             typename TAG>
   ct_interval<ct_variable<id1>,
               ct_function_symbol<TAG> >
-  make_interval(ct_variable<id1> const & lhs,
-                ct_function_symbol<TAG> const & rhs)
+  make_interval(ct_variable<id1> const &,
+                ct_function_symbol<TAG> const &)
   {
     return ct_interval<ct_variable<id1>,
                        ct_function_symbol<TAG> >();
@@ -358,8 +358,8 @@ namespace viennamath
             id_type id2>
   ct_interval<ct_variable<id1>,
               ct_variable<id2> >
-  make_interval(ct_variable<id1> const & lhs,
-                ct_variable<id2> const & rhs)
+  make_interval(ct_variable<id1> const &,
+                ct_variable<id2> const &)
   {
     return ct_interval<ct_variable<id1>,
                        ct_variable<id2> >();

@@ -50,31 +50,31 @@ namespace viennamath
       template <typename T>
       struct has_plus_or_minus
       {
-        enum { value = 0 };
+        static const int value = 0;
       };
 
       template <typename LHS, typename NumericT, typename RHS>
       struct has_plus_or_minus< ct_binary_expr<LHS, op_plus<NumericT>, RHS> >
       {
-        enum { value = 1 };
+        static const int value = 1;
       };
 
       template <typename LHS, typename NumericT, typename RHS>
       struct has_plus_or_minus< ct_binary_expr<LHS, op_minus<NumericT>, RHS> >
       {
-        enum { value = 1 };
+        static const int value = 1;
       };
 
       template <typename LHS, typename NumericT, typename RHS>
       struct has_plus_or_minus< ct_binary_expr<LHS, op_mult<NumericT>, RHS> >
       {
-        enum { value = has_plus_or_minus<LHS>::value + has_plus_or_minus<RHS>::value };
+        static const int value = has_plus_or_minus<LHS>::value + has_plus_or_minus<RHS>::value;
       };
 
       template <typename LHS, typename NumericT, typename RHS>
       struct has_plus_or_minus< ct_binary_expr<LHS, op_div<NumericT>, RHS> >
       {
-        enum { value = has_plus_or_minus<LHS>::value};
+        static const int value = has_plus_or_minus<LHS>::value;
       };
 
 

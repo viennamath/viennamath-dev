@@ -182,7 +182,6 @@ namespace viennamath
     NumericT apply(NumericT /*value*/) const
     {
       throw "Cannot evaluate formal gradient. Use transformations first.";
-      return 0;
     }
     bool can_simplify() const { return false; }
   };
@@ -233,7 +232,6 @@ namespace viennamath
       NumericT apply(NumericT /*value*/) const
       {
         throw "Cannot evaluate formal partial derivative. Use transformations first.";
-        return 0;
       }
 
       bool can_simplify() const { return false; }

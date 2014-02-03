@@ -44,7 +44,7 @@ namespace viennamath
       struct simplify_impl
       {
         //default: no optimization available, thus don't manipulate anything
-        enum { value = 0 };
+        static const int value = 0;
         typedef ExpressionType        type;
       };
 
@@ -52,7 +52,7 @@ namespace viennamath
       struct simplify_impl< ct_binary_expr<LHS, OP, RHS> >
       {
         //default: no optimization available, thus don't manipulate anything
-        enum { value = simplify_impl<LHS>::value + simplify_impl<RHS>::value };
+        static const int value = simplify_impl<LHS>::value + simplify_impl<RHS>::value;
         typedef ct_binary_expr<typename simplify_impl<LHS>::type,
                               OP,
                               typename simplify_impl<RHS>::type
@@ -66,7 +66,7 @@ namespace viennamath
       template <typename LHS, typename NumericT>
       struct simplify_impl < ct_binary_expr<LHS, op_plus<NumericT>, ct_constant<0> > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef LHS          type;
       };
 
@@ -74,7 +74,7 @@ namespace viennamath
       template <typename NumericT, typename RHS>
       struct simplify_impl < ct_binary_expr<ct_constant<0>, op_plus<NumericT>, RHS> >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef RHS          type;
       };
 
@@ -82,7 +82,7 @@ namespace viennamath
       template <typename NumericT>
       struct simplify_impl < ct_binary_expr<ct_constant<0>, op_plus<NumericT>, ct_constant<0> > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_constant<0>          type;
       };
 
@@ -95,7 +95,7 @@ namespace viennamath
       template <typename LHS, typename NumericT>
       struct simplify_impl < ct_binary_expr<LHS, op_minus<NumericT>, ct_constant<0> > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef LHS          type;
       };
 
@@ -108,7 +108,7 @@ namespace viennamath
                                                           RHS2 >
                                             > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_binary_expr<LHS1,
                               op_minus<NumericT>,
                               RHS2>                   type;
@@ -122,7 +122,7 @@ namespace viennamath
                                                           RHS2 >
                                             > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_binary_expr<LHS1,
                               op_plus<NumericT>,
                               RHS2>                   type;
@@ -136,7 +136,7 @@ namespace viennamath
                                             RHS2
                                             > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_binary_expr<RHS2,
                               op_minus<NumericT>,
                               RHS1>                   type;
@@ -150,7 +150,7 @@ namespace viennamath
                                             RHS2
                                             > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_binary_expr< ct_constant<-1>,
                                 op_mult<NumericT>,
                                 ct_binary_expr<RHS1,
@@ -170,7 +170,7 @@ namespace viennamath
                                                             RHS2 >
                                             > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_binary_expr< ct_constant<-1>,
                                 op_mult<NumericT>,
                                 ct_binary_expr<RHS1,
@@ -190,7 +190,7 @@ namespace viennamath
                                                             RHS2 >
                                             > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_binary_expr<RHS2,
                               op_minus<NumericT>,
                               RHS1>                   type;
@@ -204,7 +204,7 @@ namespace viennamath
       template <typename LHS, typename NumericT>
       struct simplify_impl < ct_binary_expr<LHS, op_mult<NumericT>, ct_constant<0> > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_constant<0>          type;
       };
 
@@ -212,7 +212,7 @@ namespace viennamath
       template <typename NumericT, typename RHS>
       struct simplify_impl < ct_binary_expr<ct_constant<0>, op_mult<NumericT>, RHS> >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_constant<0>          type;
       };
 
@@ -220,7 +220,7 @@ namespace viennamath
       template <typename NumericT>
       struct simplify_impl < ct_binary_expr<ct_constant<0>, op_mult<NumericT>, ct_constant<0> > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_constant<0>          type;
       };
 
@@ -231,7 +231,7 @@ namespace viennamath
       template <typename LHS, typename NumericT>
       struct simplify_impl < ct_binary_expr<LHS, op_mult<NumericT>, ct_constant<1> > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef LHS          type;
       };
 
@@ -239,7 +239,7 @@ namespace viennamath
       template <typename NumericT, typename RHS>
       struct simplify_impl < ct_binary_expr<ct_constant<1>, op_mult<NumericT>, RHS> >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef RHS          type;
       };
 
@@ -247,7 +247,7 @@ namespace viennamath
       template <typename NumericT>
       struct simplify_impl < ct_binary_expr<ct_constant<1>, op_mult<NumericT>, ct_constant<1> > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_constant<1>          type;
       };
 
@@ -255,14 +255,14 @@ namespace viennamath
       template <typename NumericT>
       struct simplify_impl < ct_binary_expr<ct_constant<1>, op_mult<NumericT>, ct_constant<0> > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_constant<0>          type;
       };
 
       template <typename NumericT>
       struct simplify_impl < ct_binary_expr<ct_constant<0>, op_mult<NumericT>, ct_constant<1> > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_constant<0>          type;
       };
 
@@ -273,7 +273,7 @@ namespace viennamath
       template <typename NumericT, typename RHS>
       struct simplify_impl < ct_binary_expr<ct_constant<0>, op_div<NumericT>, RHS> >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_constant<0>          type;
       };
 
@@ -281,7 +281,7 @@ namespace viennamath
       template <typename LHS, typename NumericT>
       struct simplify_impl < ct_binary_expr<LHS, op_div<NumericT>, ct_constant<0> > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef typename ct_binary_expr<LHS, op_div<NumericT>, ct_constant<0> >::ERROR_ENCOUNTERED_DIVISION_BY_ZERO          type;
       };
 
@@ -290,7 +290,7 @@ namespace viennamath
       template <typename NumericT>
       struct simplify_impl < ct_binary_expr<ct_constant<0>, op_div<NumericT>, ct_constant<0> > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef typename ct_binary_expr<ct_constant<0>, op_div<NumericT>, ct_constant<0> >::ERROR_ENCOUNTERED_DIVISION_BY_ZERO          type;
       };
 
@@ -301,7 +301,7 @@ namespace viennamath
       template <typename LHS, typename NumericT>
       struct simplify_impl < ct_binary_expr<LHS, op_div<NumericT>, ct_constant<1> > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef LHS          type;
       };
 
@@ -313,7 +313,7 @@ namespace viennamath
                                             ct_binary_expr<ct_constant<1>, op_div<NumericT>, RHS>
                                           > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_binary_expr<LHS,
                               op_div<NumericT>,
                               RHS>                             type;
@@ -325,7 +325,7 @@ namespace viennamath
                                             RHS2
                                           > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_binary_expr<RHS2,
                               op_div<NumericT>,
                               RHS1>                             type;
@@ -338,7 +338,7 @@ namespace viennamath
                                             ct_binary_expr<ct_constant<1>, op_div<NumericT>, RHS2>
                                           > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_binary_expr<ct_constant<1>,
                               op_div<NumericT>,
                               ct_binary_expr<RHS1, op_mult<NumericT>, RHS2>
@@ -364,10 +364,9 @@ namespace viennamath
                                           >
                           >
       {
-        enum { value = 1,
-              numerator = numerator_1 * denominator_2 + numerator_2 * denominator_1,
-              denominator = denominator_1 * denominator_2 };
-
+        static const int value = 1;
+        static const int numerator = numerator_1 * denominator_2 + numerator_2 * denominator_1;
+        static const int denominator = denominator_1 * denominator_2;
 
         typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
                                 op_div<NumericT>,
@@ -384,9 +383,9 @@ namespace viennamath
                                           >
                           >
       {
-        enum { value = 1,
-              numerator = value_1 * denominator_2 + numerator_2,
-              denominator = denominator_2 };
+        static const int value = 1;
+        static const int numerator = value_1 * denominator_2 + numerator_2;
+        static const int denominator = denominator_2;
 
         typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
                                 op_div<NumericT>,
@@ -403,9 +402,9 @@ namespace viennamath
                                           >
                           >
       {
-        enum { value = 1,
-              numerator = numerator_1 + value_2 * denominator_1,
-              denominator = denominator_1 };
+        static const int value = 1;
+        static const int numerator = numerator_1 + value_2 * denominator_1;
+        static const int denominator = denominator_1;
 
         typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
                                 op_div<NumericT>,
@@ -426,9 +425,9 @@ namespace viennamath
                                                           ct_constant<denominator_2> >
                                           > >
       {
-        enum { value = 1,
-              numerator = numerator_1 * denominator_2 - numerator_2 * denominator_1,
-              denominator = denominator_1 * denominator_2 };
+        static const int value = 1;
+        static const int numerator = numerator_1 * denominator_2 - numerator_2 * denominator_1;
+        static const int denominator = denominator_1 * denominator_2;
 
         typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
                                 op_div<NumericT>,
@@ -444,9 +443,9 @@ namespace viennamath
                                                           ct_constant<denominator_2> >
                                           > >
       {
-        enum { value = 1,
-              numerator = value_1 * denominator_2 - numerator_2,
-              denominator = denominator_2 };
+        static const int value = 1;
+        static const int numerator = value_1 * denominator_2 - numerator_2;
+        static const int denominator = denominator_2;
 
         typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
                                 op_div<NumericT>,
@@ -462,9 +461,9 @@ namespace viennamath
                                           ct_constant<value_2>
                                           > >
       {
-        enum { value = 1,
-              numerator = numerator_1 - value_2 * denominator_1,
-              denominator = denominator_1 };
+        static const int value = 1;
+        static const int numerator = numerator_1 - value_2 * denominator_1;
+        static const int denominator = denominator_1;
 
         typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
                                 op_div<NumericT>,
@@ -480,9 +479,9 @@ namespace viennamath
                                           ct_constant<0>
                                           > >
       {
-        enum { value = 1,
-              numerator = numerator_1,
-              denominator = denominator_1 };
+        static const int value = 1;
+        static const int numerator = numerator_1;
+        static const int denominator = denominator_1;
 
         typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
                                 op_div<NumericT>,
@@ -502,9 +501,9 @@ namespace viennamath
                                                           ct_constant<denominator_2> >
                                           >  >
       {
-        enum { value = 1,
-              numerator = numerator_1 * numerator_2,
-              denominator = denominator_1 * denominator_2 };
+        static const int value = 1;
+        static const int numerator = numerator_1 * numerator_2;
+        static const int denominator = denominator_1 * denominator_2;
 
         typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
                                 op_div<NumericT>,
@@ -520,9 +519,9 @@ namespace viennamath
                                                           ct_constant<denominator_2> >
                                           > >
       {
-        enum { value = 1,
-              numerator = value_1 * numerator_2,
-              denominator = denominator_2 };
+        static const int value = 1;
+        static const int numerator = value_1 * numerator_2;
+        static const int denominator = denominator_2;
 
         typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
                                 op_div<NumericT>,
@@ -538,9 +537,9 @@ namespace viennamath
                                           ct_constant<value_2>
                                           >  >
       {
-        enum { value = 1,
-              numerator = numerator_1 * value_2,
-              denominator = denominator_1 };
+        static const int value = 1;
+        static const int numerator = numerator_1 * value_2;
+        static const int denominator = denominator_1;
 
         typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
                                 op_div<NumericT>,
@@ -559,9 +558,9 @@ namespace viennamath
                                                           ct_constant<denominator_2> >
                                           >  >
       {
-        enum { value = 1,
-              numerator = numerator_1 * denominator_2,
-              denominator = denominator_1 * numerator_2 };
+        static const int value = 1;
+        static const int numerator = numerator_1 * denominator_2;
+        static const int denominator = denominator_1 * numerator_2;
 
         typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
                                 op_div<NumericT>,
@@ -577,9 +576,9 @@ namespace viennamath
                                                           ct_constant<denominator_2> >
                                           >  >
       {
-        enum { value = 1,
-              numerator = value_1 * denominator_2,
-              denominator = numerator_2 };
+        static const int value = 1;
+        static const int numerator = value_1 * denominator_2;
+        static const int denominator = numerator_2;
 
         typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
                                 op_div<NumericT>,
@@ -595,9 +594,9 @@ namespace viennamath
                                           ct_constant<value_2>
                                           >  >
       {
-        enum { value = 1,
-              numerator = numerator_1,
-              denominator = denominator_1 * value_2 };
+        static const int value = 1;
+        static const int numerator = numerator_1;
+        static const int denominator = denominator_1 * value_2;
 
         typedef ct_binary_expr< ct_constant< numerator / result_of::gcd<numerator, denominator>::value >,
                                 op_div<NumericT>,
@@ -611,7 +610,7 @@ namespace viennamath
                                           ct_constant<value_2>
                                           >  >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_constant<value_1 + value_2>   type;
       };
 
@@ -621,7 +620,7 @@ namespace viennamath
                                           ct_constant<0>
                                           >  >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_constant<value_1>   type;
       };
 
@@ -631,7 +630,7 @@ namespace viennamath
                                           ct_constant<value_2>
                                           >  >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_constant<value_2>   type;
       };
 
@@ -641,7 +640,7 @@ namespace viennamath
                                           ct_constant<value_2>
                                           >  >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_constant<value_1 - value_2>   type;
       };
 
@@ -652,7 +651,7 @@ namespace viennamath
                                           ct_constant<0>
                                           >  >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_constant<1>   type;
       };
 
@@ -662,7 +661,7 @@ namespace viennamath
                                           ct_constant<0>
                                           >  >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_constant<-1>   type;
       };
 
@@ -675,7 +674,7 @@ namespace viennamath
                                           ct_constant<value_2>
                                           > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_constant<value_1 * value_2>   type;
       };
 
@@ -686,7 +685,7 @@ namespace viennamath
                                           ct_constant<value_2>
                                           > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_constant<value_2>   type;
       };
 
@@ -696,7 +695,7 @@ namespace viennamath
                                           ct_constant<1>
                                           > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_constant<value_1>   type;
       };
 
@@ -706,7 +705,7 @@ namespace viennamath
                                           ct_constant<0>
                                           > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_constant<0>   type;
       };
 
@@ -716,7 +715,7 @@ namespace viennamath
                                           ct_constant<value_2>
                                           > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_constant<0>   type;
       };
 
@@ -730,7 +729,7 @@ namespace viennamath
                                           ct_constant<value_2>
                                           > >
       {
-        enum { value = 0 };  //Note: this is not a change that needs to trigger an optimization, thus keep it at 0.
+        static const int value = 0;  //Note: this is not a change that needs to trigger an optimization, thus keep it at 0.
         typedef ct_binary_expr<ct_constant<value_1 / result_of::gcd<value_1, value_2>::value >,
                               op_div<NumericT>,
                               ct_constant<value_2 / result_of::gcd<value_1, value_2>::value >
@@ -743,7 +742,7 @@ namespace viennamath
                                           ct_constant<value_2>
                                           > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_constant<0>                   type;
       };
 
@@ -753,7 +752,7 @@ namespace viennamath
                                           ct_constant<1>
                                           > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_constant<0>                   type;
       };
 
@@ -763,7 +762,7 @@ namespace viennamath
                                           ct_constant<1>
                                           > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_constant<value_1>            type;
       };
 
@@ -774,7 +773,7 @@ namespace viennamath
                                           ct_constant<-1>
                                           > >
       {
-        enum { value = 1 };
+        static const int value = 1;
         typedef ct_constant<-value_1>            type;
       };
 
@@ -885,7 +884,7 @@ namespace viennamath
   /** @brief The generic interface function for compiletime manipulations */
   template <typename ExpressionType>
   typename result_of::simplify<ExpressionType>::type
-  simplify(ExpressionType const & e)
+  simplify(ExpressionType const &)
   {
     return typename result_of::simplify<ExpressionType>::type();
   }
@@ -927,7 +926,7 @@ namespace viennamath
 
   /** @brief Simplifies an expression. Directly manipulates the provided expression. */
   template <typename T>
-  void inplace_simplify(T & e)
+  void inplace_simplify(T &)
   {
     //do nothing, since primitive types cannot be simplified
   }

@@ -44,7 +44,7 @@ namespace viennamath
     public:
       typedef typename InterfaceType::numeric_type    numeric_type;
 
-      explicit rt_constant(ScalarType s_) : s(s_) {};
+      explicit rt_constant(ScalarType s_) : s(s_) {}
 
       /** @brief Evaluates the constant. */
       self_type operator() () const
@@ -114,7 +114,7 @@ namespace viennamath
       {
         const self_type * ptr = dynamic_cast< const self_type *>(other);
         if (ptr != NULL)
-          return ptr->s == s;
+          return (ptr->s <= s) && (ptr->s >= s); //to suppress warnings on Clang when using ==
 
         return false;
       }

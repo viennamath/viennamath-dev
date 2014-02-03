@@ -66,13 +66,13 @@ void evaluations_test(E const & e, double ref_solution)
             << " = " << e(p)
             << " = " << viennamath::eval(e,p)
             << " (reference solution: " << ref_solution << ")" << std::endl;
-  assert(viennamath::eval(e, p) == ref_solution);
+  assert(viennamath::eval(e, p) <= ref_solution && viennamath::eval(e, p) >= ref_solution);
 
   std::cout << e << " at vector_3 (" << viennamath::make_vector(c4, c6, c8) << ")"
             << " = " << e(viennamath::make_vector(c4, c6, c8))
             << " = " << viennamath::eval(e, viennamath::make_vector(c4, c6, c8))
             << " (reference solution: " << ref_solution << ")" << std::endl;
-  assert(viennamath::eval(e, viennamath::make_vector(c4, c6, c8)) == ref_solution);
+  assert(viennamath::eval(e, viennamath::make_vector(c4, c6, c8)) <= ref_solution && viennamath::eval(e, viennamath::make_vector(c4, c6, c8)) >= ref_solution);
 }
 
 

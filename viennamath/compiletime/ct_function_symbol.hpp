@@ -85,7 +85,7 @@ namespace viennamath
 
   /** @brief Convenience overload for printing a compiletime function symbol to an output stream */
   template <typename Tag>
-  std::ostream& operator<<(std::ostream & stream, ct_function_symbol<Tag> const & v)
+  std::ostream& operator<<(std::ostream & stream, ct_function_symbol<Tag> const &)
   {
     stream << ct_function_symbol<Tag>::str();
     return stream;

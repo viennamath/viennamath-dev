@@ -77,11 +77,10 @@ namespace viennamath
       }
 
       /** @brief Interface requirement: Applies the integral operation. No symbolic integration at runtime available, thus an exception is thrown. */
-      NumericT apply(NumericT value) const
+      NumericT apply(NumericT) const
       {
         //std::cout << "TODO: Call integration here!" << std::endl;
         throw analytic_integration_not_supported_exception();
-        return value;
       }
 
       /** @brief Interface requirement: A integral operation cannot be optimized (at least for now). */
@@ -132,7 +131,7 @@ namespace viennamath
   template <typename InterfaceType, id_type id>
   rt_expr<InterfaceType> integral(rt_interval<InterfaceType> const & interv,
                                   rt_binary_expr<InterfaceType> const & integrand,
-                                  ct_variable<id> const & var)
+                                  ct_variable<id> const &)
   {
     typedef op_rt_integral<InterfaceType>    OperatorT;
     OperatorT op(interv, rt_variable<InterfaceType>(id));
@@ -170,11 +169,10 @@ namespace viennamath
       }
 
       /** @brief Interface requirement: Application of the symbolic interval. This is bogus, thus a symbolic_integral_evaluation_not_possible_exception is thrown. */
-      NumericT apply(NumericT value) const
+      NumericT apply(NumericT) const
       {
         //std::cout << "TODO: Call integration here!" << std::endl;
         throw symbolic_integral_evaluation_not_possible_exception();
-        return value;
       }
 
       /** @brief Interface requirement: Since an integral over a symbolic interval cannot be further optimized, 'false' is returned */

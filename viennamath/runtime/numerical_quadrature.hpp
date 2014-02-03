@@ -166,7 +166,7 @@ namespace viennamath
         {
           if (e.get()->is_constant())
           {
-            if (e.get()->eval(0) == 0)
+            if (e.get()->eval(0) <= 0 && e.get()->eval(0) >= 0)
               return rt_constant<typename InterfaceType::numeric_type, InterfaceType>(0);
           }
 
@@ -202,7 +202,7 @@ namespace viennamath
           throw integration_without_integral_exception();
         }
 
-        return 0;
+        //return 0; //unreachable
       }
 
       /** @brief Integrates the provided expression 'e' over the interval 'interv' with respect to the runtime variable 'var'. */

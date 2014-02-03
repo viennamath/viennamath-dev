@@ -117,7 +117,6 @@ namespace viennamath
       numeric_type eval(std::vector<double> const & /*v*/) const
       {
         throw expression_not_evaluable_exception("Cannot evaluate a rt_vector_expr!");
-        return 0;
       }
 
       /** @brief Interface function for evaluating the expression. Since an rt_vector_expr cannot be evaluated, an expression_not_evaluable_exception is thrown.
@@ -125,7 +124,6 @@ namespace viennamath
       numeric_type eval(numeric_type /*val*/) const
       {
         throw expression_not_evaluable_exception("Cannot evaluate a rt_vector_expr!");
-        return 0;
       }
 
       /** @brief Unwraps the expression, i.e. returns the numerical value represented by the expression. Throws an expression_not_unwrappable_exception, since rt_vector_expr cannot be reduced to a constant.
@@ -133,7 +131,6 @@ namespace viennamath
       numeric_type unwrap() const
       {
         throw expression_not_unwrappable_exception("Cannot unwrap a rt_vector_expr!");
-        return 0;
       }
 
       /** @brief Returns 'true' if 'other' is strictly the same as this class. Also checks for identical IDs, etc. */

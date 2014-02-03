@@ -72,14 +72,14 @@ int main()
   std::cout << "y(" << viennamath::make_vector(c4, c6, c8) << ") = " << y( viennamath::make_vector(c4, c6, c8) ) << std::endl;
   std::cout << "z(" << viennamath::make_vector(c4, c6, c8) << ") = " << z( viennamath::make_vector(c4, c6, c8) ) << std::endl;
 
-  long long_x = x( viennamath::make_vector(c4, c6, c8) );
-  long long_y = y( viennamath::make_vector(c4, c6, c8) );
-  long long_z = z( viennamath::make_vector(c4, c6, c8) );
+  long long_x = static_cast<long>(x( viennamath::make_vector(c4, c6, c8) ));
+  long long_y = static_cast<long>(y( viennamath::make_vector(c4, c6, c8) ));
+  long long_z = static_cast<long>(z( viennamath::make_vector(c4, c6, c8) ));
   std::cout << "Long variables: " << long_x << ", " << long_y << ", " << long_z << std::endl;
 
-  long double_x = x( viennamath::make_vector(c4, c6, c8) );
-  long double_y = y( viennamath::make_vector(c4, c6, c8) );
-  long double_z = z( viennamath::make_vector(c4, c6, c8) );
+  long double_x = static_cast<long>(x( viennamath::make_vector(c4, c6, c8) ));
+  long double_y = static_cast<long>(y( viennamath::make_vector(c4, c6, c8) ));
+  long double_z = static_cast<long>(z( viennamath::make_vector(c4, c6, c8) ));
   std::cout << "Double variables: " << double_x << ", " << double_y << ", " << double_z << std::endl;
 
   std::cout << "****************************************************" << std::endl;

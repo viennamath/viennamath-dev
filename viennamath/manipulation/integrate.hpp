@@ -39,14 +39,14 @@ namespace viennamath
     template <typename VariableType, typename ExpressionType>
     struct polynomial_degree
     {
-      enum { value = 0 };
+      static const int value = 0;
     };
 
     /** @brief Specialization for the power of a single variable, which is known to be 1. */
     template <typename VariableType>
     struct polynomial_degree <VariableType, VariableType>
     {
-      enum { value = 1 };
+      static const int value = 1;
     };
 
     /** @brief Specialization for forcing a compile time error if a sum of expressions is encountered. */
@@ -70,7 +70,7 @@ namespace viennamath
               typename LHS, typename NumericT, typename RHS>
     struct polynomial_degree <VariableType, ct_binary_expr<LHS, op_mult<NumericT>, RHS> >
     {
-      enum { value = polynomial_degree<VariableType, LHS>::value + polynomial_degree<VariableType, RHS>::value };
+      static const int value = polynomial_degree<VariableType, LHS>::value + polynomial_degree<VariableType, RHS>::value;
     };
 
     /** @brief Specialization for a division: The polynomial degree is given by the difference of the polynomial degree of the numerator and the denominator. */
@@ -78,7 +78,7 @@ namespace viennamath
               typename LHS, typename NumericT, typename RHS>
     struct polynomial_degree <VariableType, ct_binary_expr<LHS, op_div<NumericT>, RHS> >
     {
-      enum { value = polynomial_degree<VariableType, LHS>::value - polynomial_degree<VariableType, RHS>::value };
+      static const int value = polynomial_degree<VariableType, LHS>::value - polynomial_degree<VariableType, RHS>::value;
     };
 
 

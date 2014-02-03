@@ -37,8 +37,10 @@ namespace viennamath
   class rt_manipulation_interface
   {
     public:
+      virtual ~rt_manipulation_interface() {}
+
       /** @brief Returns the manipulated (runtime) expression. The caller has to ensure the proper deletion of the object the pointer is referring to. */
-      virtual InterfaceType * operator()(InterfaceType const * e) const { return e->clone(); };
+      virtual InterfaceType * operator()(InterfaceType const * e) const { return e->clone(); }
 
       /** @brief Returns true if 'e' is modified directly and not just the leaves of 'e'. Otherwise, returns 'false'. */
       virtual bool modifies(InterfaceType const * /*e*/) const { return false; }
@@ -77,6 +79,8 @@ namespace viennamath
   class rt_traversal_interface
   {
     public:
+      virtual ~rt_traversal_interface() {}
+
       /** @brief Triggers the processing of the supplied expression. */
       virtual void operator()(InterfaceType const * /*e*/) const = 0;
 

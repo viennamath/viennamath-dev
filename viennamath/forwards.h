@@ -657,21 +657,21 @@ namespace viennamath
     template <long a, long b>
     struct gcd
     {
-      enum { value = gcd<b, a % b>::value };
+      static const int value = gcd<b, a % b>::value;
     };
 
     /** @brief Specialization for the computation of the greatest common divisor of a and 0, which is a */
     template <long a>
     struct gcd <a, 0>
     {
-      enum { value = a};
+      static const int value = a;
     };
 
     /** @brief Specialization forcing a compile time error, since the greatest common divisor of 0 and 0 is not defined. */
     template <>
     struct gcd <0, 0>
     {
-      enum { error = 1};
+      static const int error = 1;
     };
 
 
