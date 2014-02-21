@@ -54,7 +54,9 @@ configure_file(cmake/ViennaMathConfig.cmake.in
 configure_file(cmake/ViennaMathConfigVersion.cmake.in
    ${PROJECT_BINARY_DIR}/ViennaMathConfigVersion.cmake @ONLY)
 
-export(PACKAGE ViennaMath)
+if (CMAKE_MINOR_VERSION GREATER 6)  # export(PACKAGE ...) introduced with CMake 2.8.0
+  export(PACKAGE ViennaMath)
+endif()
 
 # Install
 #########
