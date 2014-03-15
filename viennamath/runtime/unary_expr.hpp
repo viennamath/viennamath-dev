@@ -60,7 +60,7 @@ namespace viennamath
       explicit rt_unary_expr(InterfaceType * lhs) : expr_(lhs),
                                                  op_(new op_unary_id_type()) {}
 
-      template <typename LHS, typename OP, typename RHS>
+      template <typename LHS, typename OP>
       explicit rt_unary_expr(ct_unary_expr<LHS, OP> const & other) : op_(new OP())
       {
         //std::cout << "Constructing from expression " << other << std::endl;
