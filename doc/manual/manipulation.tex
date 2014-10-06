@@ -79,7 +79,7 @@ In the course of manipulating expressions, simple operations such as $x+0$ or $x
 However, such terms constitute unnecessary overhead for later evaluations, thus it is desirable to have these operations dropped.
 Such a simplification of the expression can be achieved with the function \lstinline|simplify()| defined in \lstinline|viennamath/manipulation/simplify.hpp|:
 \begin{lstlisting}
- simplify( x + 1.0 * y - 0.0 );  // returns x
+ simplify( x + 1.0 * y - 0.0 );  // returns x + y
  simplify( x * (2.0 + 3.0) + (y * 0) / (x * 1) ); // returns 5x
 \end{lstlisting}
 \lstinline|simplify()| is available both for runtime and compiletime manipulation.
