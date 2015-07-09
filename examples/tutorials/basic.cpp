@@ -55,9 +55,9 @@ int main()
   std::cout << "c8(" << c8 << ") = " << c8(c8) << std::endl;
 
   std::cout << "--- Evaluation of variables via std::vector ---" << std::endl;
-  std::cout << "x(" << p[0] << "," << p[1] << ", " << p[2] << ") = " << x(p) << std::endl;
-  std::cout << "y(" << p[0] << "," << p[1] << ", " << p[2] << ") = " << y(p) << std::endl;
-  std::cout << "z(" << p[0] << "," << p[1] << ", " << p[2] << ") = " << z(p) << std::endl;
+  std::cout << "x(" << p[0] << ", " << p[1] << ", " << p[2] << ") = " << x(p) << std::endl;
+  std::cout << "y(" << p[0] << ", " << p[1] << ", " << p[2] << ") = " << y(p) << std::endl;
+  std::cout << "z(" << p[0] << ", " << p[1] << ", " << p[2] << ") = " << z(p) << std::endl;
 
   std::cout << "--- Evaluation of variables via constant c4 ---" << std::endl;
   std::cout << "x(" << c4 << ") = " << x(c4) << std::endl;
@@ -77,9 +77,9 @@ int main()
   long long_z = static_cast<long>(z( viennamath::make_vector(c4, c6, c8) ));
   std::cout << "Long variables: " << long_x << ", " << long_y << ", " << long_z << std::endl;
 
-  long double_x = static_cast<long>(x( viennamath::make_vector(c4, c6, c8) ));
-  long double_y = static_cast<long>(y( viennamath::make_vector(c4, c6, c8) ));
-  long double_z = static_cast<long>(z( viennamath::make_vector(c4, c6, c8) ));
+  double double_x = static_cast<double>(x( viennamath::make_vector(c4, c6, c8) ));
+  double double_y = static_cast<double>(y( viennamath::make_vector(c4, c6, c8) ));
+  double double_z = static_cast<double>(z( viennamath::make_vector(c4, c6, c8) ));
   std::cout << "Double variables: " << double_x << ", " << double_y << ", " << double_z << std::endl;
 
   std::cout << "****************************************************" << std::endl;
